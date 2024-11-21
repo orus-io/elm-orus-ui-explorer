@@ -1,0 +1,18 @@
+{
+    "type": "package",
+    "name": "orus-io/elm-orus-ui-explorer",
+    "summary": "An extendable UI Explorer based on Elm Orus UI",
+    "license": "MIT",
+    "version": "1.0.0",
+    "exposed-modules": [
+        "OUI.Explorer",
+        "OUI.Showcase"
+    ],
+    "elm-version": "0.19.0 <= v < 0.20.0",
+    "dependencies": {
+        "elm/core": "1.0.0 <= v < 2.0.0",
+        "mdgriffith/elm-ui": "1.1.8 <= v < 2.0.0",
+        "orus-io/elm-orus-ui": "1.0.1 <= v < 2.0.0"
+    },
+    "test-dependencies": {}
+}
