@@ -50,7 +50,6 @@ import Html.Attributes
 import Json.Decode
 import Json.Encode
 import List.Extra
-import MJson
 import Markdown.Parser
 import Markdown.Renderer
 import OUI.Button as Button
@@ -59,6 +58,7 @@ import OUI.Element.Modal
 import OUI.Icon as Icon
 import OUI.Material as Material
 import OUI.Material.Color as Color
+import OUI.Material.Color.Json as MJson
 import OUI.Material.Markdown
 import OUI.Material.Theme as Theme exposing (Theme)
 import OUI.Menu as Menu
