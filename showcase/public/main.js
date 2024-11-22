@@ -11316,10 +11316,21 @@ var $mdgriffith$elm_ui$Internal$Model$map = F2(
 		}
 	});
 var $mdgriffith$elm_ui$Element$map = $mdgriffith$elm_ui$Internal$Model$map;
+var $author$project$OUI$Element$Modal$map = F2(
+	function (f, modal) {
+		return {
+			content: A2($mdgriffith$elm_ui$Element$map, f, modal.content),
+			onDismiss: A2($elm$core$Maybe$map, f, modal.onDismiss)
+		};
+	});
 var $author$project$OUI$Explorer$mapView = F2(
 	function (mapper, abook) {
 		return {
 			content: A2($mdgriffith$elm_ui$Element$map, mapper, abook.content),
+			dialog: A2(
+				$elm$core$Maybe$map,
+				$author$project$OUI$Element$Modal$map(mapper),
+				abook.dialog),
 			title: abook.title
 		};
 	});
@@ -11412,6 +11423,15 @@ var $author$project$OUI$Explorer$addBook = F2(
 													return A2(v, shared, model);
 												},
 												$elm$core$List$reverse(b.chapters))),
+										dialog: function () {
+											var _v3 = b.dialog;
+											if (_v3.$ === 'Nothing') {
+												return $elm$core$Maybe$Nothing;
+											} else {
+												var d = _v3.a;
+												return A2(d, shared, model);
+											}
+										}(),
 										title: b.title
 									};
 								}
@@ -11419,12 +11439,12 @@ var $author$project$OUI$Explorer$addBook = F2(
 					},
 					expl.app),
 				categories: function () {
-					var _v3 = expl.categories;
-					if (_v3.b) {
-						var _v4 = _v3.a;
-						var cat_ = _v4.a;
-						var pages = _v4.b;
-						var tail = _v3.b;
+					var _v4 = expl.categories;
+					if (_v4.b) {
+						var _v5 = _v4.a;
+						var cat_ = _v5.a;
+						var pages = _v5.b;
+						var tail = _v4.b;
 						return A2(
 							$elm$core$List$cons,
 							_Utils_Tuple2(
@@ -12790,6 +12810,7 @@ var $orus_io$elm_spa$Effect$withNone = function (model) {
 var $author$project$OUI$Explorer$book = function (title) {
 	return {
 		chapters: _List_Nil,
+		dialog: $elm$core$Maybe$Nothing,
 		init: function (_v0) {
 			return $orus_io$elm_spa$Effect$withNone(_Utils_Tuple0);
 		},
@@ -15244,7 +15265,7 @@ var $author$project$OUI$Explorer$statefulBook = F2(
 		var subscriptions = _v0.subscriptions;
 		var update = _v0.update;
 		var init = _v0.init;
-		return {chapters: _List_Nil, init: init, subscriptions: subscriptions, title: title, update: update};
+		return {chapters: _List_Nil, dialog: $elm$core$Maybe$Nothing, init: init, subscriptions: subscriptions, title: title, update: update};
 	});
 var $author$project$OUI$Showcase$Checkbox$update = F3(
 	function (_v0, msg, model) {
@@ -15305,10 +15326,15 @@ var $author$project$OUI$Showcase$Checkbox$book = A2(
 				}),
 			update: $author$project$OUI$Showcase$Checkbox$update
 		}));
+var $author$project$OUI$Showcase$Colors$AcceptColor = {$: 'AcceptColor'};
+var $author$project$OUI$Showcase$Colors$ColorPickerMsg = function (a) {
+	return {$: 'ColorPickerMsg', a: a};
+};
 var $author$project$OUI$Showcase$Colors$ColorThemeButtonMsg = function (a) {
 	return {$: 'ColorThemeButtonMsg', a: a};
 };
 var $author$project$OUI$Showcase$Colors$CopyColorTheme = {$: 'CopyColorTheme'};
+var $author$project$OUI$Showcase$Colors$DismissColor = {$: 'DismissColor'};
 var $author$project$OUI$Showcase$Colors$SelectColorScheme = F2(
 	function (a, b) {
 		return {$: 'SelectColorScheme', a: a, b: b};
@@ -15526,1410 +15552,16 @@ var $author$project$OUI$Explorer$DeleteColorTheme = function (a) {
 	return {$: 'DeleteColorTheme', a: a};
 };
 var $author$project$OUI$Explorer$deleteColorThemeMsg = $author$project$OUI$Explorer$DeleteColorTheme;
-var $elm$core$List$drop = F2(
-	function (n, list) {
-		drop:
-		while (true) {
-			if (n <= 0) {
-				return list;
-			} else {
-				if (!list.b) {
-					return list;
-				} else {
-					var x = list.a;
-					var xs = list.b;
-					var $temp$n = n - 1,
-						$temp$list = xs;
-					n = $temp$n;
-					list = $temp$list;
-					continue drop;
-				}
-			}
-		}
-	});
-var $author$project$OUI$Explorer$BuiltinColorTheme = {$: 'BuiltinColorTheme'};
-var $author$project$OUI$Material$Color$makeTheme = F3(
-	function (name, description, keyColors) {
-		return {
-			description: description,
-			keyColors: keyColors,
-			name: name,
-			schemes: {
-				dark: $author$project$OUI$Material$Color$darkFromKeyColors(keyColors),
-				light: $author$project$OUI$Material$Color$lightFromKeyColors(keyColors)
-			}
-		};
-	});
-var $author$project$OUI$Material$Color$defaultTheme = A3($author$project$OUI$Material$Color$makeTheme, 'default', 'Default Material Colors', $author$project$OUI$Material$Color$defaultKeyColors);
-var $author$project$OUI$Explorer$getColorTheme = F2(
-	function (i, shared) {
-		return A2(
-			$elm$core$Maybe$withDefault,
-			{theme: $author$project$OUI$Material$Color$defaultTheme, type_: $author$project$OUI$Explorer$BuiltinColorTheme},
-			$elm$core$List$head(
-				A2($elm$core$List$drop, i, shared.colorThemeList)));
-	});
-var $author$project$OUI$Explorer$getSelectedColorTheme = function (shared) {
-	return A2($author$project$OUI$Explorer$getColorTheme, shared.selectedColorScheme.a, shared);
-};
-var $author$project$OUI$MenuButton$init = function (id) {
-	return {highlighted: -1, id: id, opened: false};
-};
-var $author$project$OUI$Showcase$Colors$init = function (_v0) {
-	return $orus_io$elm_spa$Effect$withNone(
-		{
-			colorThemeButton: $author$project$OUI$MenuButton$init('color-page-color-theme-button')
-		});
-};
-var $author$project$OUI$Material$Theme$menu = function (_v0) {
-	var t = _v0.a;
-	return t.menu;
-};
-var $mdgriffith$elm_ui$Internal$Model$Above = {$: 'Above'};
-var $mdgriffith$elm_ui$Element$above = function (element) {
-	return A2($mdgriffith$elm_ui$Element$createNearby, $mdgriffith$elm_ui$Internal$Model$Above, element);
-};
-var $mdgriffith$elm_ui$Internal$Model$Left = {$: 'Left'};
-var $mdgriffith$elm_ui$Element$alignLeft = $mdgriffith$elm_ui$Internal$Model$AlignX($mdgriffith$elm_ui$Internal$Model$Left);
-var $mdgriffith$elm_ui$Internal$Model$Right = {$: 'Right'};
-var $mdgriffith$elm_ui$Element$alignRight = $mdgriffith$elm_ui$Internal$Model$AlignX($mdgriffith$elm_ui$Internal$Model$Right);
-var $mdgriffith$elm_ui$Internal$Model$Below = {$: 'Below'};
-var $mdgriffith$elm_ui$Element$below = function (element) {
-	return A2($mdgriffith$elm_ui$Element$createNearby, $mdgriffith$elm_ui$Internal$Model$Below, element);
-};
-var $author$project$OUI$MenuButton$getButton = function (_v0) {
-	var props = _v0.a;
-	return props.button;
-};
-var $author$project$OUI$MenuButton$getMenu = function (_v0) {
-	var props = _v0.a;
-	return props.menu;
-};
-var $author$project$OUI$MenuButton$getMenuAlign = function (_v0) {
-	var props = _v0.a;
-	return props.menuAlign;
-};
-var $author$project$OUI$MenuButton$getOnKeyDown = function (_v0) {
-	var props = _v0.a;
-	return props.onKeyDown;
-};
-var $author$project$OUI$MenuButton$getOnLoseFocus = function (_v0) {
-	var props = _v0.a;
-	return props.onLoseFocus;
-};
-var $author$project$OUI$MenuButton$getOpenCloseIcons = function (_v0) {
-	var props = _v0.a;
-	return props.openCloseIcons;
-};
-var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
-var $mdgriffith$elm_ui$Element$moveDown = function (y) {
-	return A2(
-		$mdgriffith$elm_ui$Internal$Model$TransformComponent,
-		$mdgriffith$elm_ui$Internal$Flag$moveY,
-		$mdgriffith$elm_ui$Internal$Model$MoveY(y));
-};
-var $author$project$OUI$MenuButton$ArrowDown = {$: 'ArrowDown'};
-var $author$project$OUI$MenuButton$ArrowUp = {$: 'ArrowUp'};
-var $author$project$OUI$MenuButton$Enter = {$: 'Enter'};
-var $author$project$OUI$MenuButton$Esc = {$: 'Esc'};
-var $author$project$OUI$Material$MenuButton$onKeyDown = function (msg) {
-	var stringToKey = function (str) {
-		switch (str) {
-			case 'ArrowDown':
-				return $elm$json$Json$Decode$succeed($author$project$OUI$MenuButton$ArrowDown);
-			case 'ArrowUp':
-				return $elm$json$Json$Decode$succeed($author$project$OUI$MenuButton$ArrowUp);
-			case 'Enter':
-				return $elm$json$Json$Decode$succeed($author$project$OUI$MenuButton$Enter);
-			case 'Escape':
-				return $elm$json$Json$Decode$succeed($author$project$OUI$MenuButton$Esc);
-			default:
-				return $elm$json$Json$Decode$fail('not used key');
-		}
-	};
-	var keyDecoder = A2(
-		$elm$json$Json$Decode$andThen,
-		stringToKey,
-		A2($elm$json$Json$Decode$field, 'key', $elm$json$Json$Decode$string));
-	return $mdgriffith$elm_ui$Element$htmlAttribute(
-		A2(
-			$elm$html$Html$Events$on,
-			'keydown',
-			A2($elm$json$Json$Decode$map, msg, keyDecoder)));
-};
-var $elm$html$Html$Events$onBlur = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'blur',
-		$elm$json$Json$Decode$succeed(msg));
-};
-var $mdgriffith$elm_ui$Element$Events$onLoseFocus = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Attr, $elm$html$Html$Events$onBlur);
-var $author$project$OUI$Icon$blank = $author$project$OUI$Icon$fromRenderer(
-	$author$project$OUI$Icon$Html(
-		F2(
-			function (size, _v0) {
-				var sizeAsString = $elm$core$String$fromInt(size);
-				return A2(
-					$elm$svg$Svg$svg,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
-							$elm$svg$Svg$Attributes$height(sizeAsString),
-							$elm$svg$Svg$Attributes$width(sizeAsString)
-						]),
-					_List_Nil);
-			})));
-var $author$project$OUI$Menu$getItemSelected = function (_v0) {
-	var props = _v0.a;
-	return props.itemSelected;
-};
-var $author$project$OUI$Menu$getItemToIcon = function (_v0) {
-	var props = _v0.a;
-	return props.itemToIcon;
-};
-var $author$project$OUI$Menu$getItemToText = function (_v0) {
-	var props = _v0.a;
-	return props.itemToText;
-};
-var $author$project$OUI$Menu$getItemToTrailingIcon = function (_v0) {
-	var props = _v0.a;
-	return props.itemToTrailingIcon;
-};
-var $author$project$OUI$Menu$getItems = function (_v0) {
-	var props = _v0.a;
-	return props.items;
-};
-var $author$project$OUI$Menu$getOnClick = function (_v0) {
-	var props = _v0.a;
-	return props.onClick;
-};
-var $author$project$OUI$Menu$getTextSize = function (_v0) {
-	var props = _v0.a;
-	return props.textSize;
-};
-var $author$project$OUI$Menu$getTextType = function (_v0) {
-	var props = _v0.a;
-	return props.textType;
-};
-var $mdgriffith$elm_ui$Internal$Model$Max = F2(
-	function (a, b) {
-		return {$: 'Max', a: a, b: b};
-	});
-var $mdgriffith$elm_ui$Element$maximum = F2(
-	function (i, l) {
-		return A2($mdgriffith$elm_ui$Internal$Model$Max, i, l);
-	});
-var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 'MayStopPropagation', a: a};
-};
-var $elm$html$Html$Events$stopPropagationOn = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
-	});
-var $author$project$OUI$Material$Menu$passiveOnClick = function (msg) {
-	return $mdgriffith$elm_ui$Element$htmlAttribute(
-		A2(
-			$elm$html$Html$Events$stopPropagationOn,
-			'click',
-			$elm$json$Json$Decode$succeed(
-				_Utils_Tuple2(msg, true))));
-};
-var $author$project$OUI$Material$Menu$render = F7(
-	function (typescale, colorscheme, dividerTheme, theme, highlighted, attrs, menu) {
-		var props = {
-			itemSelected: $author$project$OUI$Menu$getItemSelected(menu),
-			itemToIcon: $author$project$OUI$Menu$getItemToIcon(menu),
-			itemToText: $author$project$OUI$Menu$getItemToText(menu),
-			itemToTrailingIcon: $author$project$OUI$Menu$getItemToTrailingIcon(menu),
-			items: $author$project$OUI$Menu$getItems(menu),
-			onClick: $author$project$OUI$Menu$getOnClick(menu),
-			textSize: $author$project$OUI$Menu$getTextSize(menu),
-			textType: $author$project$OUI$Menu$getTextType(menu)
-		};
-		var widthApprox = 48 + A3(
-			$elm$core$List$foldl,
-			F2(
-				function (i, r) {
-					return A2(
-						$elm$core$Basics$max,
-						r,
-						function () {
-							if (i.$ === 'Item') {
-								var item = i.a;
-								return $elm$core$String$length(
-									props.itemToText(item)) * 10;
-							} else {
-								return 0;
-							}
-						}());
-				}),
-			0,
-			props.items);
-		var hasLeadingIcons = A3(
-			$elm$core$List$foldl,
-			F2(
-				function (i, r) {
-					return r || function () {
-						if (i.$ === 'Item') {
-							var item = i.a;
-							return !_Utils_eq(
-								props.itemToIcon(item),
-								$elm$core$Maybe$Nothing);
-						} else {
-							return false;
-						}
-					}();
-				}),
-			false,
-			props.items);
-		return A2(
-			$mdgriffith$elm_ui$Element$column,
-			_Utils_ap(
-				attrs,
-				_Utils_ap(
-					_List_fromArray(
-						[
-							A2($mdgriffith$elm_ui$Element$paddingXY, 0, theme.topBottomPadding),
-							$mdgriffith$elm_ui$Element$Border$rounded(theme.radius),
-							$mdgriffith$elm_ui$Element$Border$shadow(
-							{
-								blur: 1,
-								color: $author$project$OUI$Material$Color$toElementColor(colorscheme.shadow),
-								offset: _Utils_Tuple2(1, 1),
-								size: 1
-							}),
-							$mdgriffith$elm_ui$Element$Background$color(
-							$author$project$OUI$Material$Color$toElementColor(colorscheme.surfaceContainer)),
-							$mdgriffith$elm_ui$Element$Font$color(
-							$author$project$OUI$Material$Color$toElementColor(colorscheme.onSurface)),
-							$mdgriffith$elm_ui$Element$width(
-							A2(
-								$mdgriffith$elm_ui$Element$maximum,
-								theme.maxWidth,
-								A2(
-									$mdgriffith$elm_ui$Element$minimum,
-									theme.minWidth,
-									$mdgriffith$elm_ui$Element$px(widthApprox))))
-						]),
-					A5($author$project$OUI$Material$Typography$attrs, props.textType, props.textSize, $author$project$OUI$Text$NoColor, typescale, colorscheme))),
-			A2(
-				$elm$core$List$indexedMap,
-				F2(
-					function (i, menuitem) {
-						if (menuitem.$ === 'Divider') {
-							return A2(
-								$mdgriffith$elm_ui$Element$el,
-								_List_fromArray(
-									[
-										$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-										A2($mdgriffith$elm_ui$Element$paddingXY, 0, theme.topBottomPadding)
-									]),
-								A4($author$project$OUI$Material$Divider$render, colorscheme, dividerTheme, _List_Nil, $author$project$OUI$Divider$new));
-						} else {
-							var item = menuitem.a;
-							return A2(
-								$mdgriffith$elm_ui$Element$row,
-								_Utils_ap(
-									_List_fromArray(
-										[
-											$mdgriffith$elm_ui$Element$height(
-											$mdgriffith$elm_ui$Element$px(theme.itemHeight)),
-											$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-											A2($mdgriffith$elm_ui$Element$paddingXY, theme.leftRightPadding, 0),
-											$mdgriffith$elm_ui$Element$spacing(theme.paddingWithinItem),
-											$mdgriffith$elm_ui$Element$mouseOver(
-											_List_fromArray(
-												[
-													$mdgriffith$elm_ui$Element$Background$color(
-													$author$project$OUI$Material$Color$toElementColor(
-														A3($author$project$OUI$Material$Color$withShade, colorscheme.onSurface, $author$project$OUI$Material$Color$hoverStateLayerOpacity, colorscheme.surfaceContainer)))
-												]))
-										]),
-									_Utils_ap(
-										function () {
-											var _v1 = props.onClick;
-											if (_v1.$ === 'Just') {
-												var msg = _v1.a;
-												return _List_fromArray(
-													[
-														$author$project$OUI$Material$Menu$passiveOnClick(
-														msg(item))
-													]);
-											} else {
-												return _List_Nil;
-											}
-										}(),
-										_Utils_eq(i, highlighted) ? _List_fromArray(
-											[
-												$mdgriffith$elm_ui$Element$Background$color(
-												$author$project$OUI$Material$Color$toElementColor(colorscheme.surfaceContainerHighest))
-											]) : _List_Nil)),
-								_Utils_ap(
-									hasLeadingIcons ? _List_fromArray(
-										[
-											A4(
-											$author$project$OUI$Material$Icon$renderWithSizeColor,
-											theme.iconSize,
-											colorscheme.onSurface,
-											_List_Nil,
-											A2(
-												$elm$core$Maybe$withDefault,
-												$author$project$OUI$Icon$blank,
-												props.itemToIcon(item)))
-										]) : _List_Nil,
-									_List_fromArray(
-										[
-											$mdgriffith$elm_ui$Element$text(
-											props.itemToText(item)),
-											A4(
-											$author$project$OUI$Material$Icon$renderWithSizeColor,
-											theme.iconSize,
-											colorscheme.onSurface,
-											_List_fromArray(
-												[$mdgriffith$elm_ui$Element$alignRight]),
-											A2(
-												$elm$core$Maybe$withDefault,
-												$author$project$OUI$Icon$blank,
-												props.itemToTrailingIcon(item)))
-										])));
-						}
-					}),
-				props.items));
-	});
-var $author$project$OUI$Material$MenuButton$render = F8(
-	function (typescale, colorscheme, buttonTheme, dividerTheme, menuTheme, state, attrs, menuBtn) {
-		var props = {
-			button: $author$project$OUI$MenuButton$getButton(menuBtn),
-			menu: $author$project$OUI$MenuButton$getMenu(menuBtn),
-			menuAlign: $author$project$OUI$MenuButton$getMenuAlign(menuBtn),
-			onKeyDown: $author$project$OUI$MenuButton$getOnKeyDown(menuBtn),
-			onLoseFocus: $author$project$OUI$MenuButton$getOnLoseFocus(menuBtn),
-			openCloseIcons: $author$project$OUI$MenuButton$getOpenCloseIcons(menuBtn)
-		};
-		return A6(
-			$author$project$OUI$Material$Button$render,
-			typescale,
-			colorscheme,
-			buttonTheme,
-			A2(
-				$elm$core$Maybe$map,
-				function (_v0) {
-					var open = _v0.a;
-					var close = _v0.b;
-					return state.opened ? close : open;
-				},
-				props.openCloseIcons),
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Element$htmlAttribute(
-					$elm$html$Html$Attributes$id(state.id)),
-				A2(
-					$elm$core$List$cons,
-					$mdgriffith$elm_ui$Element$Events$onLoseFocus(props.onLoseFocus),
-					_Utils_ap(
-						attrs,
-						function () {
-							if (state.opened) {
-								var _v1 = function () {
-									var _v2 = props.menuAlign;
-									switch (_v2.$) {
-										case 'AlignTopLeft':
-											return _Utils_Tuple2(false, false);
-										case 'AlignTopRight':
-											return _Utils_Tuple2(false, true);
-										case 'AlignBottomLeft':
-											return _Utils_Tuple2(true, false);
-										default:
-											return _Utils_Tuple2(true, true);
-									}
-								}();
-								var alignBottom = _v1.a;
-								var alignRight = _v1.b;
-								return _List_fromArray(
-									[
-										(alignBottom ? $mdgriffith$elm_ui$Element$below : $mdgriffith$elm_ui$Element$above)(
-										A7(
-											$author$project$OUI$Material$Menu$render,
-											typescale,
-											colorscheme,
-											dividerTheme,
-											menuTheme,
-											state.highlighted,
-											_List_fromArray(
-												[
-													$mdgriffith$elm_ui$Element$moveDown(1),
-													alignRight ? $mdgriffith$elm_ui$Element$alignRight : $mdgriffith$elm_ui$Element$alignLeft
-												]),
-											props.menu)),
-										$author$project$OUI$Material$MenuButton$onKeyDown(props.onKeyDown)
-									]);
-							} else {
-								return _List_Nil;
-							}
-						}()))),
-			props.button);
-	});
-var $author$project$OUI$Material$menuButton = function (theme) {
-	return A5(
-		$author$project$OUI$Material$MenuButton$render,
-		$author$project$OUI$Material$Theme$typescale(theme),
-		$author$project$OUI$Material$Theme$colorscheme(theme),
-		$author$project$OUI$Material$Theme$button(theme),
-		$author$project$OUI$Material$Theme$divider(theme),
-		$author$project$OUI$Material$Theme$menu(theme));
-};
-var $author$project$OUI$Text$Label = {$: 'Label'};
-var $author$project$OUI$Menu$new = function (itemToText) {
-	return $author$project$OUI$Menu$Menu(
-		{
-			itemSelected: function (_v0) {
-				return false;
-			},
-			itemToIcon: function (_v1) {
-				return $elm$core$Maybe$Nothing;
-			},
-			itemToText: itemToText,
-			itemToTrailingIcon: function (_v2) {
-				return $elm$core$Maybe$Nothing;
-			},
-			items: _List_Nil,
-			onClick: $elm$core$Maybe$Nothing,
-			textSize: $author$project$OUI$Text$Large,
-			textType: $author$project$OUI$Text$Label
-		});
-};
-var $author$project$OUI$MenuButton$OnBlur = {$: 'OnBlur'};
-var $author$project$OUI$MenuButton$OnClickButton = {$: 'OnClickButton'};
-var $author$project$OUI$MenuButton$OnClickItem = function (a) {
-	return {$: 'OnClickItem', a: a};
-};
-var $author$project$OUI$MenuButton$OnKeyDown = F3(
-	function (a, b, c) {
-		return {$: 'OnKeyDown', a: a, b: b, c: c};
-	});
-var $author$project$OUI$Menu$onClick = F2(
-	function (msg, _v0) {
-		var props = _v0.a;
-		return $author$project$OUI$Menu$Menu(
-			_Utils_update(
-				props,
-				{
-					onClick: $elm$core$Maybe$Just(msg)
-				}));
-	});
-var $author$project$OUI$MenuButton$new = F4(
-	function (map, onClick, button, menu) {
-		var menuitems = $author$project$OUI$Menu$getItems(menu);
-		return $author$project$OUI$MenuButton$MenuButton(
-			{
-				button: A2(
-					$author$project$OUI$Button$onClick,
-					map($author$project$OUI$MenuButton$OnClickButton),
-					button),
-				menu: A2(
-					$author$project$OUI$Menu$onClick,
-					A2(
-						$elm$core$Basics$composeL,
-						A2($elm$core$Basics$composeL, map, $author$project$OUI$MenuButton$OnClickItem),
-						onClick),
-					menu),
-				menuAlign: $author$project$OUI$MenuButton$AlignBottomLeft,
-				onKeyDown: A2(
-					$elm$core$Basics$composeR,
-					A2($author$project$OUI$MenuButton$OnKeyDown, onClick, menuitems),
-					map),
-				onLoseFocus: map($author$project$OUI$MenuButton$OnBlur),
-				openCloseIcons: $elm$core$Maybe$Nothing
-			});
-	});
-var $author$project$OUI$Explorer$sharedMsg = $author$project$OUI$Explorer$SharedMsg;
-var $author$project$OUI$Neutral = {$: 'Neutral'};
-var $author$project$OUI$Showcase$Colors$colorCell = F4(
-	function (name, color, onColor, height) {
-		return A2(
-			$mdgriffith$elm_ui$Element$row,
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$Background$color(
-					$author$project$OUI$Material$Color$toElementColor(color)),
-					$mdgriffith$elm_ui$Element$Font$color(
-					$author$project$OUI$Material$Color$toElementColor(onColor)),
-					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$height(
-					$mdgriffith$elm_ui$Element$px(height)),
-					$mdgriffith$elm_ui$Element$padding(15)
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$mdgriffith$elm_ui$Element$el,
-					_List_fromArray(
-						[$mdgriffith$elm_ui$Element$alignTop]),
-					$mdgriffith$elm_ui$Element$text(name))
-				]));
-	});
-var $author$project$OUI$Material$Typography$renderWithAttrs = F4(
-	function (typescale, colorscheme, customAttrs, text) {
-		var props = {
-			color: $author$project$OUI$Text$getColor(text),
-			size: $author$project$OUI$Text$getSize(text),
-			text: $author$project$OUI$Text$getText(text),
-			type_: $author$project$OUI$Text$getType(text)
-		};
-		return A2(
-			$mdgriffith$elm_ui$Element$el,
-			_Utils_ap(
-				A5($author$project$OUI$Material$Typography$attrs, props.type_, props.size, props.color, typescale, colorscheme),
-				customAttrs),
-			$mdgriffith$elm_ui$Element$text(props.text));
-	});
-var $author$project$OUI$Text$titleMedium = A2($author$project$OUI$Text$textTypeSize, $author$project$OUI$Text$Title, $author$project$OUI$Text$Medium);
-var $author$project$OUI$Text$Color = function (a) {
-	return {$: 'Color', a: a};
-};
-var $author$project$OUI$Text$withColor = F2(
-	function (value, _v0) {
-		var props = _v0.a;
-		return $author$project$OUI$Text$Text(
-			_Utils_update(
-				props,
-				{
-					color: $author$project$OUI$Text$Color(value)
-				}));
-	});
-var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
-	function (title, theme) {
-		var typescale = $author$project$OUI$Material$Theme$typescale(theme);
-		var scheme = $author$project$OUI$Material$Theme$colorscheme(theme);
-		return A2(
-			$mdgriffith$elm_ui$Element$el,
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$Background$color(
-					$author$project$OUI$Material$Color$toElementColor(scheme.surfaceContainer)),
-					$mdgriffith$elm_ui$Element$padding(15),
-					$mdgriffith$elm_ui$Element$Border$rounded(10),
-					$mdgriffith$elm_ui$Element$Border$color(
-					$author$project$OUI$Material$Color$toElementColor(scheme.outlineVariant)),
-					$mdgriffith$elm_ui$Element$Border$width(1)
-				]),
-			A2(
-				$mdgriffith$elm_ui$Element$column,
-				_Utils_ap(
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$spacing(5),
-							$mdgriffith$elm_ui$Element$width(
-							$mdgriffith$elm_ui$Element$px(820))
-						]),
-					A5($author$project$OUI$Material$Typography$attrs, $author$project$OUI$Text$Body, $author$project$OUI$Text$Small, $author$project$OUI$Text$NoColor, typescale, scheme)),
-				_List_fromArray(
-					[
-						A4(
-						$author$project$OUI$Material$Typography$renderWithAttrs,
-						typescale,
-						scheme,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$paddingEach(
-								{bottom: 10, left: 0, right: 0, top: 0})
-							]),
-						A2(
-							$author$project$OUI$Text$withColor,
-							$author$project$OUI$Neutral,
-							$author$project$OUI$Text$titleMedium(title))),
-						A2(
-						$mdgriffith$elm_ui$Element$row,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$spacing(5),
-								$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-							]),
-						_List_fromArray(
-							[
-								A2(
-								$mdgriffith$elm_ui$Element$column,
-								_List_fromArray(
-									[
-										$mdgriffith$elm_ui$Element$spacing(5),
-										$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$mdgriffith$elm_ui$Element$column,
-										_List_fromArray(
-											[
-												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-											]),
-										_List_fromArray(
-											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Primary', scheme.primary, scheme.onPrimary, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Primary', scheme.onPrimary, scheme.primary, 40)
-											])),
-										A2(
-										$mdgriffith$elm_ui$Element$column,
-										_List_fromArray(
-											[
-												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-											]),
-										_List_fromArray(
-											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Primary Container', scheme.primaryContainer, scheme.onPrimaryContainer, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Primary Container', scheme.onPrimaryContainer, scheme.primaryContainer, 40)
-											]))
-									])),
-								A2(
-								$mdgriffith$elm_ui$Element$column,
-								_List_fromArray(
-									[
-										$mdgriffith$elm_ui$Element$spacing(5),
-										$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$mdgriffith$elm_ui$Element$column,
-										_List_fromArray(
-											[
-												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-											]),
-										_List_fromArray(
-											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Secondary', scheme.secondary, scheme.onSecondary, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Secondary', scheme.onSecondary, scheme.secondary, 40)
-											])),
-										A2(
-										$mdgriffith$elm_ui$Element$column,
-										_List_fromArray(
-											[
-												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-											]),
-										_List_fromArray(
-											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Secondary Container', scheme.secondaryContainer, scheme.onSecondaryContainer, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Secondary Container', scheme.onSecondaryContainer, scheme.secondaryContainer, 40)
-											]))
-									])),
-								A2(
-								$mdgriffith$elm_ui$Element$column,
-								_List_fromArray(
-									[
-										$mdgriffith$elm_ui$Element$spacing(5),
-										$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$mdgriffith$elm_ui$Element$column,
-										_List_fromArray(
-											[
-												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-											]),
-										_List_fromArray(
-											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Tertiary', scheme.tertiary, scheme.onTertiary, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Tertiary', scheme.onTertiary, scheme.tertiary, 40)
-											])),
-										A2(
-										$mdgriffith$elm_ui$Element$column,
-										_List_fromArray(
-											[
-												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-											]),
-										_List_fromArray(
-											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Tertiary Container', scheme.tertiaryContainer, scheme.onTertiaryContainer, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Tertiary Container', scheme.onTertiaryContainer, scheme.tertiaryContainer, 40)
-											]))
-									])),
-								A2(
-								$mdgriffith$elm_ui$Element$column,
-								_List_fromArray(
-									[
-										$mdgriffith$elm_ui$Element$spacing(5),
-										$mdgriffith$elm_ui$Element$paddingEach(
-										{bottom: 0, left: 10, right: 0, top: 0}),
-										$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$mdgriffith$elm_ui$Element$column,
-										_List_fromArray(
-											[
-												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-											]),
-										_List_fromArray(
-											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Error', scheme.error, scheme.onError, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Error', scheme.onError, scheme.error, 40)
-											])),
-										A2(
-										$mdgriffith$elm_ui$Element$column,
-										_List_fromArray(
-											[
-												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-											]),
-										_List_fromArray(
-											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Error Container', scheme.errorContainer, scheme.onErrorContainer, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Error Container', scheme.onErrorContainer, scheme.errorContainer, 40)
-											]))
-									]))
-							])),
-						A2(
-						$mdgriffith$elm_ui$Element$row,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-								$mdgriffith$elm_ui$Element$paddingEach(
-								{bottom: 0, left: 0, right: 0, top: 10})
-							]),
-						_List_fromArray(
-							[
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Dim', scheme.surfaceDim, scheme.onSurface, 100),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface', scheme.surface, scheme.onSurface, 100),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Bright', scheme.surfaceBright, scheme.onSurface, 100)
-							])),
-						A2(
-						$mdgriffith$elm_ui$Element$row,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-							]),
-						_List_fromArray(
-							[
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container Lowest', scheme.surfaceContainerLowest, scheme.onSurface, 100),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container Low', scheme.surfaceContainerLow, scheme.onSurface, 100),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container', scheme.surfaceContainer, scheme.onSurface, 100),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container High', scheme.surfaceContainerHigh, scheme.onSurface, 100),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container Highest', scheme.surfaceContainerHighest, scheme.onSurface, 100)
-							])),
-						A2(
-						$mdgriffith$elm_ui$Element$row,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-							]),
-						_List_fromArray(
-							[
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'On Surface', scheme.onSurface, scheme.surface, 40),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'On Surface Variant', scheme.onSurfaceVariant, scheme.surfaceVariant, 40),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Outline', scheme.outline, scheme.surface, 40),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Outline Variant', scheme.outlineVariant, scheme.onSurface, 40)
-							]))
-					])));
-	});
-var $avh4$elm_color$Color$white = A4($avh4$elm_color$Color$RgbaSpace, 255 / 255, 255 / 255, 255 / 255, 1.0);
-var $author$project$OUI$Showcase$Colors$showKeyColors = function (theme) {
-	var typescale = $author$project$OUI$Material$Theme$typescale(theme);
-	var scheme = $author$project$OUI$Material$Theme$colorscheme(theme);
-	return A2(
-		$mdgriffith$elm_ui$Element$el,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Background$color(
-				$author$project$OUI$Material$Color$toElementColor(scheme.surfaceContainer)),
-				$mdgriffith$elm_ui$Element$padding(15),
-				$mdgriffith$elm_ui$Element$Border$rounded(10),
-				$mdgriffith$elm_ui$Element$Border$color(
-				$author$project$OUI$Material$Color$toElementColor(scheme.outlineVariant)),
-				$mdgriffith$elm_ui$Element$Border$width(1)
-			]),
-		A2(
-			$mdgriffith$elm_ui$Element$column,
-			_Utils_ap(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$spacing(5),
-						$mdgriffith$elm_ui$Element$width(
-						$mdgriffith$elm_ui$Element$px(820))
-					]),
-				A5($author$project$OUI$Material$Typography$attrs, $author$project$OUI$Text$Body, $author$project$OUI$Text$Small, $author$project$OUI$Text$NoColor, typescale, scheme)),
-			_List_fromArray(
-				[
-					A4(
-					$author$project$OUI$Material$Typography$renderWithAttrs,
-					typescale,
-					scheme,
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$paddingEach(
-							{bottom: 10, left: 0, right: 0, top: 0})
-						]),
-					A2(
-						$author$project$OUI$Text$withColor,
-						$author$project$OUI$Neutral,
-						$author$project$OUI$Text$titleMedium('Key Colors'))),
-					A2(
-					$mdgriffith$elm_ui$Element$row,
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$spacing(5),
-							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$mdgriffith$elm_ui$Element$column,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-								]),
-							_List_fromArray(
-								[
-									A4($author$project$OUI$Showcase$Colors$colorCell, 'Primary', scheme.surfaceContainer, scheme.onSurface, 40),
-									A4($author$project$OUI$Showcase$Colors$colorCell, '', scheme.keyColors.primary, $avh4$elm_color$Color$white, 70)
-								])),
-							A2(
-							$mdgriffith$elm_ui$Element$column,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-								]),
-							_List_fromArray(
-								[
-									A4($author$project$OUI$Showcase$Colors$colorCell, 'Secondary', scheme.surfaceContainer, scheme.onSurface, 40),
-									A4($author$project$OUI$Showcase$Colors$colorCell, '', scheme.keyColors.secondary, $avh4$elm_color$Color$white, 70)
-								])),
-							A2(
-							$mdgriffith$elm_ui$Element$column,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-								]),
-							_List_fromArray(
-								[
-									A4($author$project$OUI$Showcase$Colors$colorCell, 'Tertiary', scheme.surfaceContainer, scheme.onSurface, 40),
-									A4($author$project$OUI$Showcase$Colors$colorCell, '', scheme.keyColors.tertiary, $avh4$elm_color$Color$white, 70)
-								])),
-							A2(
-							$mdgriffith$elm_ui$Element$column,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-								]),
-							_List_fromArray(
-								[
-									A4($author$project$OUI$Showcase$Colors$colorCell, 'Error', scheme.surfaceContainer, scheme.onSurface, 40),
-									A4($author$project$OUI$Showcase$Colors$colorCell, '', scheme.keyColors.error, $avh4$elm_color$Color$white, 70)
-								])),
-							A2(
-							$mdgriffith$elm_ui$Element$column,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-								]),
-							_List_fromArray(
-								[
-									A4($author$project$OUI$Showcase$Colors$colorCell, 'Neutral', scheme.surfaceContainer, scheme.onSurface, 40),
-									A4($author$project$OUI$Showcase$Colors$colorCell, '', scheme.keyColors.neutral, $avh4$elm_color$Color$white, 70)
-								])),
-							A2(
-							$mdgriffith$elm_ui$Element$column,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-								]),
-							_List_fromArray(
-								[
-									A4($author$project$OUI$Showcase$Colors$colorCell, 'Neutral Variant', scheme.surfaceContainer, scheme.onSurface, 40),
-									A4($author$project$OUI$Showcase$Colors$colorCell, '', scheme.keyColors.neutralVariant, $avh4$elm_color$Color$white, 70)
-								]))
-						]))
-				])));
-};
-var $author$project$OUI$Explorer$AddColorTheme = function (a) {
-	return {$: 'AddColorTheme', a: a};
-};
-var $author$project$OUI$Explorer$addColorThemeMsg = $author$project$OUI$Explorer$AddColorTheme;
-var $author$project$OUI$Explorer$SelectColorScheme = F2(
-	function (a, b) {
-		return {$: 'SelectColorScheme', a: a, b: b};
-	});
-var $author$project$OUI$Explorer$selectColorScheme = F2(
-	function (i, t) {
-		return A2($author$project$OUI$Explorer$SelectColorScheme, i, t);
-	});
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $elm$core$Task$Perform = function (a) {
-	return {$: 'Perform', a: a};
-};
-var $elm$core$Task$succeed = _Scheduler_succeed;
-var $elm$core$Task$init = $elm$core$Task$succeed(_Utils_Tuple0);
-var $elm$core$Task$andThen = _Scheduler_andThen;
-var $elm$core$Task$map = F2(
-	function (func, taskA) {
-		return A2(
-			$elm$core$Task$andThen,
-			function (a) {
-				return $elm$core$Task$succeed(
-					func(a));
-			},
-			taskA);
-	});
-var $elm$core$Task$map2 = F3(
-	function (func, taskA, taskB) {
-		return A2(
-			$elm$core$Task$andThen,
-			function (a) {
-				return A2(
-					$elm$core$Task$andThen,
-					function (b) {
-						return $elm$core$Task$succeed(
-							A2(func, a, b));
-					},
-					taskB);
-			},
-			taskA);
-	});
-var $elm$core$Task$sequence = function (tasks) {
-	return A3(
-		$elm$core$List$foldr,
-		$elm$core$Task$map2($elm$core$List$cons),
-		$elm$core$Task$succeed(_List_Nil),
-		tasks);
-};
-var $elm$core$Platform$sendToApp = _Platform_sendToApp;
-var $elm$core$Task$spawnCmd = F2(
-	function (router, _v0) {
-		var task = _v0.a;
-		return _Scheduler_spawn(
-			A2(
-				$elm$core$Task$andThen,
-				$elm$core$Platform$sendToApp(router),
-				task));
-	});
-var $elm$core$Task$onEffects = F3(
-	function (router, commands, state) {
-		return A2(
-			$elm$core$Task$map,
-			function (_v0) {
-				return _Utils_Tuple0;
-			},
-			$elm$core$Task$sequence(
-				A2(
-					$elm$core$List$map,
-					$elm$core$Task$spawnCmd(router),
-					commands)));
-	});
-var $elm$core$Task$onSelfMsg = F3(
-	function (_v0, _v1, _v2) {
-		return $elm$core$Task$succeed(_Utils_Tuple0);
-	});
-var $elm$core$Task$cmdMap = F2(
-	function (tagger, _v0) {
-		var task = _v0.a;
-		return $elm$core$Task$Perform(
-			A2($elm$core$Task$map, tagger, task));
-	});
-_Platform_effectManagers['Task'] = _Platform_createManager($elm$core$Task$init, $elm$core$Task$onEffects, $elm$core$Task$onSelfMsg, $elm$core$Task$cmdMap);
-var $elm$core$Task$command = _Platform_leaf('Task');
-var $elm$core$Task$perform = F2(
-	function (toMessage, task) {
-		return $elm$core$Task$command(
-			$elm$core$Task$Perform(
-				A2($elm$core$Task$map, toMessage, task)));
-	});
-var $author$project$OUI$MenuButton$performEffect = function (_v0) {
-	var msg = _v0.a;
-	return A2(
-		$elm$core$Task$perform,
-		$elm$core$Basics$identity,
-		$elm$core$Task$succeed(msg));
-};
-var $author$project$OUI$MenuButton$Loopback = function (a) {
-	return {$: 'Loopback', a: a};
-};
-var $elm$core$Maybe$andThen = F2(
-	function (callback, maybeValue) {
-		if (maybeValue.$ === 'Just') {
-			var value = maybeValue.a;
-			return callback(value);
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
-var $author$project$OUI$MenuButton$getAtIndex = function (index) {
-	return A2(
-		$elm$core$Basics$composeR,
-		$elm$core$List$drop(index),
-		A2(
-			$elm$core$Basics$composeR,
-			$elm$core$List$head,
-			$elm$core$Maybe$andThen(
-				function (menuitem) {
-					if (menuitem.$ === 'Item') {
-						var item = menuitem.a;
-						return $elm$core$Maybe$Just(item);
-					} else {
-						return $elm$core$Maybe$Nothing;
-					}
-				})));
-};
-var $author$project$OUI$Menu$Divider = {$: 'Divider'};
-var $author$project$OUI$MenuButton$hasItems = A2(
-	$elm$core$List$foldl,
-	F2(
-		function (item, r) {
-			if (item.$ === 'Item') {
-				return true;
-			} else {
-				return r;
-			}
-		}),
-	false);
-var $author$project$OUI$MenuButton$nextIndex = F2(
-	function (items, index) {
-		nextIndex:
-		while (true) {
-			if ($author$project$OUI$MenuButton$hasItems(items)) {
-				var newIndex = (_Utils_cmp(
-					index,
-					$elm$core$List$length(items) - 1) > -1) ? 0 : (index + 1);
-				var item = $elm$core$List$head(
-					A2($elm$core$List$drop, newIndex, items));
-				if (_Utils_eq(
-					item,
-					$elm$core$Maybe$Just($author$project$OUI$Menu$Divider))) {
-					var $temp$items = items,
-						$temp$index = newIndex;
-					items = $temp$items;
-					index = $temp$index;
-					continue nextIndex;
-				} else {
-					return newIndex;
-				}
-			} else {
-				return -1;
-			}
-		}
-	});
-var $author$project$OUI$MenuButton$prevIndex = F2(
-	function (items, index) {
-		prevIndex:
-		while (true) {
-			if ($author$project$OUI$MenuButton$hasItems(items)) {
-				var newIndex = (index <= 0) ? ($elm$core$List$length(items) - 1) : (index - 1);
-				var item = $elm$core$List$head(
-					A2($elm$core$List$drop, newIndex, items));
-				if (_Utils_eq(
-					item,
-					$elm$core$Maybe$Just($author$project$OUI$Menu$Divider))) {
-					var $temp$items = items,
-						$temp$index = newIndex;
-					items = $temp$items;
-					index = $temp$index;
-					continue prevIndex;
-				} else {
-					return newIndex;
-				}
-			} else {
-				return -1;
-			}
-		}
-	});
-var $author$project$OUI$MenuButton$updateWithoutPerform = F2(
-	function (msg, state) {
-		switch (msg.$) {
-			case 'OnClickOutside':
-				return _Utils_Tuple2(
-					_Utils_update(
-						state,
-						{highlighted: -1, opened: false}),
-					$elm$core$Maybe$Nothing);
-			case 'OnClickButton':
-				return _Utils_Tuple2(
-					_Utils_update(
-						state,
-						{opened: !state.opened}),
-					$elm$core$Maybe$Nothing);
-			case 'OnClickItem':
-				var selectMsg = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						state,
-						{highlighted: -1, opened: false}),
-					$elm$core$Maybe$Just(
-						$author$project$OUI$MenuButton$Loopback(selectMsg)));
-			case 'OnBlur':
-				return _Utils_Tuple2(
-					_Utils_update(
-						state,
-						{highlighted: -1, opened: false}),
-					$elm$core$Maybe$Nothing);
-			default:
-				switch (msg.c.$) {
-					case 'ArrowUp':
-						var items = msg.b;
-						var _v1 = msg.c;
-						return _Utils_Tuple2(
-							_Utils_update(
-								state,
-								{
-									highlighted: A2($author$project$OUI$MenuButton$prevIndex, items, state.highlighted)
-								}),
-							$elm$core$Maybe$Nothing);
-					case 'ArrowDown':
-						var items = msg.b;
-						var _v2 = msg.c;
-						return _Utils_Tuple2(
-							_Utils_update(
-								state,
-								{
-									highlighted: A2($author$project$OUI$MenuButton$nextIndex, items, state.highlighted),
-									opened: true
-								}),
-							$elm$core$Maybe$Nothing);
-					case 'Enter':
-						var onClick = msg.a;
-						var items = msg.b;
-						var _v3 = msg.c;
-						return _Utils_Tuple2(
-							_Utils_update(
-								state,
-								{highlighted: -1, opened: false}),
-							A2(
-								$elm$core$Maybe$map,
-								A2($elm$core$Basics$composeR, onClick, $author$project$OUI$MenuButton$Loopback),
-								A2($author$project$OUI$MenuButton$getAtIndex, state.highlighted, items)));
-					default:
-						var _v4 = msg.c;
-						return _Utils_Tuple2(
-							_Utils_update(
-								state,
-								{highlighted: -1, opened: false}),
-							$elm$core$Maybe$Nothing);
-				}
-		}
-	});
-var $author$project$OUI$MenuButton$update = F2(
-	function (msg, state) {
-		return A2(
-			$elm$core$Tuple$mapSecond,
-			A2(
-				$elm$core$Basics$composeR,
-				$elm$core$Maybe$map($author$project$OUI$MenuButton$performEffect),
-				$elm$core$Maybe$withDefault($elm$core$Platform$Cmd$none)),
-			A2($author$project$OUI$MenuButton$updateWithoutPerform, msg, state));
-	});
-var $orus_io$elm_spa$Effect$fromCmd = $orus_io$elm_spa$Effect$Cmd;
-var $orus_io$elm_spa$Effect$withCmd = F2(
-	function (cmd, model) {
-		return _Utils_Tuple2(
-			model,
-			$orus_io$elm_spa$Effect$fromCmd(cmd));
-	});
-var $orus_io$elm_spa$Effect$withShared = F2(
-	function (shared, model) {
-		return _Utils_Tuple2(
-			model,
-			$orus_io$elm_spa$Effect$fromShared(shared));
-	});
-var $author$project$OUI$Showcase$Colors$update = F3(
-	function (shared, msg, model) {
-		switch (msg.$) {
-			case 'ColorThemeButtonMsg':
-				var buttonMsg = msg.a;
-				var _v1 = A2($author$project$OUI$MenuButton$update, buttonMsg, model.colorThemeButton);
-				var state = _v1.a;
-				var cmd = _v1.b;
-				return A2(
-					$orus_io$elm_spa$Effect$withCmd,
-					cmd,
-					_Utils_update(
-						model,
-						{colorThemeButton: state}));
-			case 'SelectColorScheme':
-				var i = msg.a;
-				var t = msg.b;
-				return A2(
-					$orus_io$elm_spa$Effect$withShared,
-					A2($author$project$OUI$Explorer$selectColorScheme, i, t),
-					model);
-			default:
-				var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme;
-				return A2(
-					$orus_io$elm_spa$Effect$withShared,
-					$author$project$OUI$Explorer$addColorThemeMsg(
-						_Utils_update(
-							currentColorTheme,
-							{name: currentColorTheme.name + ' (copy)'})),
-					model);
-		}
-	});
-var $author$project$OUI$Material$Theme$Theme = function (a) {
-	return {$: 'Theme', a: a};
-};
-var $author$project$OUI$Material$Theme$withColorscheme = F2(
-	function (value, _v0) {
-		var t = _v0.a;
-		return $author$project$OUI$Material$Theme$Theme(
-			_Utils_update(
-				t,
-				{colorscheme: value}));
-	});
-var $author$project$OUI$Showcase$Colors$book = A2(
-	$author$project$OUI$Explorer$withStaticChapter,
-	function (shared) {
-		return A2(
-			$author$project$OUI$Showcase$Colors$showColorScheme,
-			'Dark Scheme',
-			A2(
-				$author$project$OUI$Material$Theme$withColorscheme,
-				A2(
-					$elm$core$Maybe$withDefault,
-					$author$project$OUI$Material$Color$defaultDarkScheme,
-					A2(
-						$elm$core$Maybe$map,
-						A2(
-							$elm$core$Basics$composeR,
-							function ($) {
-								return $.theme;
-							},
-							A2(
-								$elm$core$Basics$composeR,
-								function ($) {
-									return $.schemes;
-								},
-								function ($) {
-									return $.dark;
-								})),
-						$elm$core$List$head(
-							A2($elm$core$List$drop, shared.selectedColorScheme.a, shared.colorThemeList)))),
-				shared.theme));
-	},
-	A2(
-		$author$project$OUI$Explorer$withStaticChapter,
-		function (shared) {
-			return A2(
-				$author$project$OUI$Showcase$Colors$showColorScheme,
-				'Light Scheme',
-				A2(
-					$author$project$OUI$Material$Theme$withColorscheme,
-					A2(
-						$elm$core$Maybe$withDefault,
-						$author$project$OUI$Material$Color$defaultLightScheme,
-						A2(
-							$elm$core$Maybe$map,
-							A2(
-								$elm$core$Basics$composeR,
-								function ($) {
-									return $.theme;
-								},
-								A2(
-									$elm$core$Basics$composeR,
-									function ($) {
-										return $.schemes;
-									},
-									function ($) {
-										return $.light;
-									})),
-							$elm$core$List$head(
-								A2($elm$core$List$drop, shared.selectedColorScheme.a, shared.colorThemeList)))),
-					shared.theme));
-		},
-		A2(
-			$author$project$OUI$Explorer$withStaticChapter,
-			function (shared) {
-				return $author$project$OUI$Showcase$Colors$showKeyColors(shared.theme);
-			},
-			A2(
-				$author$project$OUI$Explorer$withChapter,
-				F2(
-					function (shared, model) {
-						var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared);
-						return A2(
-							$mdgriffith$elm_ui$Element$row,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$spacing(20)
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$author$project$OUI$Material$text,
-									shared.theme,
-									$author$project$OUI$Text$bodyLarge('Current color scheme: ')),
-									A2(
-									$mdgriffith$elm_ui$Element$map,
-									$author$project$OUI$Explorer$bookMsg,
-									A4(
-										$author$project$OUI$Material$menuButton,
-										shared.theme,
-										model.colorThemeButton,
-										_List_fromArray(
-											[$mdgriffith$elm_ui$Element$centerX]),
-										$author$project$OUI$MenuButton$alignBottom(
-											A4(
-												$author$project$OUI$MenuButton$new,
-												$author$project$OUI$Showcase$Colors$ColorThemeButtonMsg,
-												function (i) {
-													return A2($author$project$OUI$Showcase$Colors$SelectColorScheme, i, shared.selectedColorScheme.b);
-												},
-												$author$project$OUI$Button$new(currentColorTheme.theme.name),
-												A2(
-													$author$project$OUI$Menu$addItems,
-													A2(
-														$elm$core$List$range,
-														0,
-														$elm$core$List$length(shared.colorThemeList) - 1),
-													$author$project$OUI$Menu$new(
-														function (i) {
-															return A2($author$project$OUI$Explorer$getColorTheme, i, shared).theme.name;
-														})))))),
-									A2(
-									$mdgriffith$elm_ui$Element$map,
-									$author$project$OUI$Explorer$bookMsg,
-									A3(
-										$author$project$OUI$Material$button,
-										shared.theme,
-										_List_fromArray(
-											[$mdgriffith$elm_ui$Element$centerX]),
-										A2(
-											$author$project$OUI$Button$onClick,
-											$author$project$OUI$Showcase$Colors$CopyColorTheme,
-											$author$project$OUI$Button$new('Copy')))),
-									function () {
-									var _v2 = currentColorTheme.type_;
-									if (_v2.$ === 'BuiltinColorTheme') {
-										return $mdgriffith$elm_ui$Element$none;
-									} else {
-										return A3(
-											$author$project$OUI$Material$button,
-											shared.theme,
-											_List_fromArray(
-												[$mdgriffith$elm_ui$Element$centerX]),
-											A2(
-												$author$project$OUI$Button$onClick,
-												$author$project$OUI$Explorer$sharedMsg(
-													$author$project$OUI$Explorer$deleteColorThemeMsg(shared.selectedColorScheme.a)),
-												$author$project$OUI$Button$new('Delete')));
-									}
-								}()
-								]));
-					}),
-				A2(
-					$author$project$OUI$Explorer$statefulBook,
-					'Colors',
-					{
-						init: $author$project$OUI$Showcase$Colors$init,
-						subscriptions: F2(
-							function (_v0, _v1) {
-								return $elm$core$Platform$Sub$none;
-							}),
-						update: $author$project$OUI$Showcase$Colors$update
-					})))));
 var $author$project$OUI$Material$Theme$dialog = function (_v0) {
 	var t = _v0.a;
 	return t.dialog;
 };
 var $author$project$OUI$Dialog$Fullscreen = {$: 'Fullscreen'};
+var $author$project$OUI$Neutral = {$: 'Neutral'};
+var $mdgriffith$elm_ui$Internal$Model$Left = {$: 'Left'};
+var $mdgriffith$elm_ui$Element$alignLeft = $mdgriffith$elm_ui$Internal$Model$AlignX($mdgriffith$elm_ui$Internal$Model$Left);
+var $mdgriffith$elm_ui$Internal$Model$Right = {$: 'Right'};
+var $mdgriffith$elm_ui$Element$alignRight = $mdgriffith$elm_ui$Internal$Model$AlignX($mdgriffith$elm_ui$Internal$Model$Right);
 var $author$project$OUI$Text$bodyMedium = A2($author$project$OUI$Text$textTypeSize, $author$project$OUI$Text$Body, $author$project$OUI$Text$Medium);
 var $author$project$OUI$Dialog$getAccept = function (_v0) {
 	var dialog = _v0.a;
@@ -16957,6 +15589,14 @@ var $author$project$OUI$Dialog$getWidth = function (_v0) {
 };
 var $author$project$OUI$Text$Headline = {$: 'Headline'};
 var $author$project$OUI$Text$headlineSmall = A2($author$project$OUI$Text$textTypeSize, $author$project$OUI$Text$Headline, $author$project$OUI$Text$Small);
+var $mdgriffith$elm_ui$Internal$Model$Max = F2(
+	function (a, b) {
+		return {$: 'Max', a: a, b: b};
+	});
+var $mdgriffith$elm_ui$Element$maximum = F2(
+	function (i, l) {
+		return A2($mdgriffith$elm_ui$Internal$Model$Max, i, l);
+	});
 var $mdgriffith$elm_ui$Internal$Model$Paragraph = {$: 'Paragraph'};
 var $mdgriffith$elm_ui$Element$paragraph = F2(
 	function (attrs, children) {
@@ -16975,6 +15615,21 @@ var $mdgriffith$elm_ui$Element$paragraph = F2(
 						$mdgriffith$elm_ui$Element$spacing(5),
 						attrs))),
 			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
+	});
+var $author$project$OUI$Material$Typography$renderWithAttrs = F4(
+	function (typescale, colorscheme, customAttrs, text) {
+		var props = {
+			color: $author$project$OUI$Text$getColor(text),
+			size: $author$project$OUI$Text$getSize(text),
+			text: $author$project$OUI$Text$getText(text),
+			type_: $author$project$OUI$Text$getType(text)
+		};
+		return A2(
+			$mdgriffith$elm_ui$Element$el,
+			_Utils_ap(
+				A5($author$project$OUI$Material$Typography$attrs, props.type_, props.size, props.color, typescale, colorscheme),
+				customAttrs),
+			$mdgriffith$elm_ui$Element$text(props.text));
 	});
 var $author$project$OUI$Icon$withSize = F2(
 	function (value, _v0) {
@@ -17247,8 +15902,8 @@ var $author$project$OUI$Material$Dialog$render = F7(
 				$author$project$OUI$Dialog$getDismiss(dialog))
 		};
 	});
-var $author$project$OUI$Material$dialog = F2(
-	function (theme, attrs) {
+var $author$project$OUI$Material$dialogWithContent = F3(
+	function (theme, attrs, content) {
 		return A6(
 			$author$project$OUI$Material$Dialog$render,
 			$author$project$OUI$Material$Theme$typescale(theme),
@@ -17256,8 +15911,452 @@ var $author$project$OUI$Material$dialog = F2(
 			$author$project$OUI$Material$Theme$button(theme),
 			$author$project$OUI$Material$Theme$dialog(theme),
 			attrs,
-			$elm$core$Maybe$Nothing);
+			$elm$core$Maybe$Just(content));
 	});
+var $elm$core$List$drop = F2(
+	function (n, list) {
+		drop:
+		while (true) {
+			if (n <= 0) {
+				return list;
+			} else {
+				if (!list.b) {
+					return list;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs;
+					n = $temp$n;
+					list = $temp$list;
+					continue drop;
+				}
+			}
+		}
+	});
+var $author$project$OUI$Explorer$BuiltinColorTheme = {$: 'BuiltinColorTheme'};
+var $author$project$OUI$Material$Color$makeTheme = F3(
+	function (name, description, keyColors) {
+		return {
+			description: description,
+			keyColors: keyColors,
+			name: name,
+			schemes: {
+				dark: $author$project$OUI$Material$Color$darkFromKeyColors(keyColors),
+				light: $author$project$OUI$Material$Color$lightFromKeyColors(keyColors)
+			}
+		};
+	});
+var $author$project$OUI$Material$Color$defaultTheme = A3($author$project$OUI$Material$Color$makeTheme, 'default', 'Default Material Colors', $author$project$OUI$Material$Color$defaultKeyColors);
+var $author$project$OUI$Explorer$getColorTheme = F2(
+	function (i, shared) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			{theme: $author$project$OUI$Material$Color$defaultTheme, type_: $author$project$OUI$Explorer$BuiltinColorTheme},
+			$elm$core$List$head(
+				A2($elm$core$List$drop, i, shared.colorThemeList)));
+	});
+var $author$project$OUI$Explorer$getSelectedColorTheme = function (shared) {
+	return A2($author$project$OUI$Explorer$getColorTheme, shared.selectedColorScheme.a, shared);
+};
+var $author$project$OUI$MenuButton$init = function (id) {
+	return {highlighted: -1, id: id, opened: false};
+};
+var $author$project$OUI$Showcase$Colors$init = function (_v0) {
+	return $orus_io$elm_spa$Effect$withNone(
+		{
+			colorSelector: $elm$core$Maybe$Nothing,
+			colorThemeButton: $author$project$OUI$MenuButton$init('color-page-color-theme-button')
+		});
+};
+var $author$project$OUI$Material$Theme$menu = function (_v0) {
+	var t = _v0.a;
+	return t.menu;
+};
+var $mdgriffith$elm_ui$Internal$Model$Above = {$: 'Above'};
+var $mdgriffith$elm_ui$Element$above = function (element) {
+	return A2($mdgriffith$elm_ui$Element$createNearby, $mdgriffith$elm_ui$Internal$Model$Above, element);
+};
+var $mdgriffith$elm_ui$Internal$Model$Below = {$: 'Below'};
+var $mdgriffith$elm_ui$Element$below = function (element) {
+	return A2($mdgriffith$elm_ui$Element$createNearby, $mdgriffith$elm_ui$Internal$Model$Below, element);
+};
+var $author$project$OUI$MenuButton$getButton = function (_v0) {
+	var props = _v0.a;
+	return props.button;
+};
+var $author$project$OUI$MenuButton$getMenu = function (_v0) {
+	var props = _v0.a;
+	return props.menu;
+};
+var $author$project$OUI$MenuButton$getMenuAlign = function (_v0) {
+	var props = _v0.a;
+	return props.menuAlign;
+};
+var $author$project$OUI$MenuButton$getOnKeyDown = function (_v0) {
+	var props = _v0.a;
+	return props.onKeyDown;
+};
+var $author$project$OUI$MenuButton$getOnLoseFocus = function (_v0) {
+	var props = _v0.a;
+	return props.onLoseFocus;
+};
+var $author$project$OUI$MenuButton$getOpenCloseIcons = function (_v0) {
+	var props = _v0.a;
+	return props.openCloseIcons;
+};
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
+var $mdgriffith$elm_ui$Element$moveDown = function (y) {
+	return A2(
+		$mdgriffith$elm_ui$Internal$Model$TransformComponent,
+		$mdgriffith$elm_ui$Internal$Flag$moveY,
+		$mdgriffith$elm_ui$Internal$Model$MoveY(y));
+};
+var $author$project$OUI$MenuButton$ArrowDown = {$: 'ArrowDown'};
+var $author$project$OUI$MenuButton$ArrowUp = {$: 'ArrowUp'};
+var $author$project$OUI$MenuButton$Enter = {$: 'Enter'};
+var $author$project$OUI$MenuButton$Esc = {$: 'Esc'};
+var $author$project$OUI$Material$MenuButton$onKeyDown = function (msg) {
+	var stringToKey = function (str) {
+		switch (str) {
+			case 'ArrowDown':
+				return $elm$json$Json$Decode$succeed($author$project$OUI$MenuButton$ArrowDown);
+			case 'ArrowUp':
+				return $elm$json$Json$Decode$succeed($author$project$OUI$MenuButton$ArrowUp);
+			case 'Enter':
+				return $elm$json$Json$Decode$succeed($author$project$OUI$MenuButton$Enter);
+			case 'Escape':
+				return $elm$json$Json$Decode$succeed($author$project$OUI$MenuButton$Esc);
+			default:
+				return $elm$json$Json$Decode$fail('not used key');
+		}
+	};
+	var keyDecoder = A2(
+		$elm$json$Json$Decode$andThen,
+		stringToKey,
+		A2($elm$json$Json$Decode$field, 'key', $elm$json$Json$Decode$string));
+	return $mdgriffith$elm_ui$Element$htmlAttribute(
+		A2(
+			$elm$html$Html$Events$on,
+			'keydown',
+			A2($elm$json$Json$Decode$map, msg, keyDecoder)));
+};
+var $elm$html$Html$Events$onBlur = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'blur',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $mdgriffith$elm_ui$Element$Events$onLoseFocus = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Attr, $elm$html$Html$Events$onBlur);
+var $author$project$OUI$Icon$blank = $author$project$OUI$Icon$fromRenderer(
+	$author$project$OUI$Icon$Html(
+		F2(
+			function (size, _v0) {
+				var sizeAsString = $elm$core$String$fromInt(size);
+				return A2(
+					$elm$svg$Svg$svg,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
+							$elm$svg$Svg$Attributes$height(sizeAsString),
+							$elm$svg$Svg$Attributes$width(sizeAsString)
+						]),
+					_List_Nil);
+			})));
+var $author$project$OUI$Menu$getItemSelected = function (_v0) {
+	var props = _v0.a;
+	return props.itemSelected;
+};
+var $author$project$OUI$Menu$getItemToIcon = function (_v0) {
+	var props = _v0.a;
+	return props.itemToIcon;
+};
+var $author$project$OUI$Menu$getItemToText = function (_v0) {
+	var props = _v0.a;
+	return props.itemToText;
+};
+var $author$project$OUI$Menu$getItemToTrailingIcon = function (_v0) {
+	var props = _v0.a;
+	return props.itemToTrailingIcon;
+};
+var $author$project$OUI$Menu$getItems = function (_v0) {
+	var props = _v0.a;
+	return props.items;
+};
+var $author$project$OUI$Menu$getOnClick = function (_v0) {
+	var props = _v0.a;
+	return props.onClick;
+};
+var $author$project$OUI$Menu$getTextSize = function (_v0) {
+	var props = _v0.a;
+	return props.textSize;
+};
+var $author$project$OUI$Menu$getTextType = function (_v0) {
+	var props = _v0.a;
+	return props.textType;
+};
+var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var $elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var $author$project$OUI$Material$Menu$passiveOnClick = function (msg) {
+	return $mdgriffith$elm_ui$Element$htmlAttribute(
+		A2(
+			$elm$html$Html$Events$stopPropagationOn,
+			'click',
+			$elm$json$Json$Decode$succeed(
+				_Utils_Tuple2(msg, true))));
+};
+var $author$project$OUI$Material$Menu$render = F7(
+	function (typescale, colorscheme, dividerTheme, theme, highlighted, attrs, menu) {
+		var props = {
+			itemSelected: $author$project$OUI$Menu$getItemSelected(menu),
+			itemToIcon: $author$project$OUI$Menu$getItemToIcon(menu),
+			itemToText: $author$project$OUI$Menu$getItemToText(menu),
+			itemToTrailingIcon: $author$project$OUI$Menu$getItemToTrailingIcon(menu),
+			items: $author$project$OUI$Menu$getItems(menu),
+			onClick: $author$project$OUI$Menu$getOnClick(menu),
+			textSize: $author$project$OUI$Menu$getTextSize(menu),
+			textType: $author$project$OUI$Menu$getTextType(menu)
+		};
+		var widthApprox = 48 + A3(
+			$elm$core$List$foldl,
+			F2(
+				function (i, r) {
+					return A2(
+						$elm$core$Basics$max,
+						r,
+						function () {
+							if (i.$ === 'Item') {
+								var item = i.a;
+								return $elm$core$String$length(
+									props.itemToText(item)) * 10;
+							} else {
+								return 0;
+							}
+						}());
+				}),
+			0,
+			props.items);
+		var hasLeadingIcons = A3(
+			$elm$core$List$foldl,
+			F2(
+				function (i, r) {
+					return r || function () {
+						if (i.$ === 'Item') {
+							var item = i.a;
+							return !_Utils_eq(
+								props.itemToIcon(item),
+								$elm$core$Maybe$Nothing);
+						} else {
+							return false;
+						}
+					}();
+				}),
+			false,
+			props.items);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_Utils_ap(
+				attrs,
+				_Utils_ap(
+					_List_fromArray(
+						[
+							A2($mdgriffith$elm_ui$Element$paddingXY, 0, theme.topBottomPadding),
+							$mdgriffith$elm_ui$Element$Border$rounded(theme.radius),
+							$mdgriffith$elm_ui$Element$Border$shadow(
+							{
+								blur: 1,
+								color: $author$project$OUI$Material$Color$toElementColor(colorscheme.shadow),
+								offset: _Utils_Tuple2(1, 1),
+								size: 1
+							}),
+							$mdgriffith$elm_ui$Element$Background$color(
+							$author$project$OUI$Material$Color$toElementColor(colorscheme.surfaceContainer)),
+							$mdgriffith$elm_ui$Element$Font$color(
+							$author$project$OUI$Material$Color$toElementColor(colorscheme.onSurface)),
+							$mdgriffith$elm_ui$Element$width(
+							A2(
+								$mdgriffith$elm_ui$Element$maximum,
+								theme.maxWidth,
+								A2(
+									$mdgriffith$elm_ui$Element$minimum,
+									theme.minWidth,
+									$mdgriffith$elm_ui$Element$px(widthApprox))))
+						]),
+					A5($author$project$OUI$Material$Typography$attrs, props.textType, props.textSize, $author$project$OUI$Text$NoColor, typescale, colorscheme))),
+			A2(
+				$elm$core$List$indexedMap,
+				F2(
+					function (i, menuitem) {
+						if (menuitem.$ === 'Divider') {
+							return A2(
+								$mdgriffith$elm_ui$Element$el,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+										A2($mdgriffith$elm_ui$Element$paddingXY, 0, theme.topBottomPadding)
+									]),
+								A4($author$project$OUI$Material$Divider$render, colorscheme, dividerTheme, _List_Nil, $author$project$OUI$Divider$new));
+						} else {
+							var item = menuitem.a;
+							return A2(
+								$mdgriffith$elm_ui$Element$row,
+								_Utils_ap(
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$height(
+											$mdgriffith$elm_ui$Element$px(theme.itemHeight)),
+											$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+											A2($mdgriffith$elm_ui$Element$paddingXY, theme.leftRightPadding, 0),
+											$mdgriffith$elm_ui$Element$spacing(theme.paddingWithinItem),
+											$mdgriffith$elm_ui$Element$mouseOver(
+											_List_fromArray(
+												[
+													$mdgriffith$elm_ui$Element$Background$color(
+													$author$project$OUI$Material$Color$toElementColor(
+														A3($author$project$OUI$Material$Color$withShade, colorscheme.onSurface, $author$project$OUI$Material$Color$hoverStateLayerOpacity, colorscheme.surfaceContainer)))
+												]))
+										]),
+									_Utils_ap(
+										function () {
+											var _v1 = props.onClick;
+											if (_v1.$ === 'Just') {
+												var msg = _v1.a;
+												return _List_fromArray(
+													[
+														$author$project$OUI$Material$Menu$passiveOnClick(
+														msg(item))
+													]);
+											} else {
+												return _List_Nil;
+											}
+										}(),
+										_Utils_eq(i, highlighted) ? _List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$Background$color(
+												$author$project$OUI$Material$Color$toElementColor(colorscheme.surfaceContainerHighest))
+											]) : _List_Nil)),
+								_Utils_ap(
+									hasLeadingIcons ? _List_fromArray(
+										[
+											A4(
+											$author$project$OUI$Material$Icon$renderWithSizeColor,
+											theme.iconSize,
+											colorscheme.onSurface,
+											_List_Nil,
+											A2(
+												$elm$core$Maybe$withDefault,
+												$author$project$OUI$Icon$blank,
+												props.itemToIcon(item)))
+										]) : _List_Nil,
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$text(
+											props.itemToText(item)),
+											A4(
+											$author$project$OUI$Material$Icon$renderWithSizeColor,
+											theme.iconSize,
+											colorscheme.onSurface,
+											_List_fromArray(
+												[$mdgriffith$elm_ui$Element$alignRight]),
+											A2(
+												$elm$core$Maybe$withDefault,
+												$author$project$OUI$Icon$blank,
+												props.itemToTrailingIcon(item)))
+										])));
+						}
+					}),
+				props.items));
+	});
+var $author$project$OUI$Material$MenuButton$render = F8(
+	function (typescale, colorscheme, buttonTheme, dividerTheme, menuTheme, state, attrs, menuBtn) {
+		var props = {
+			button: $author$project$OUI$MenuButton$getButton(menuBtn),
+			menu: $author$project$OUI$MenuButton$getMenu(menuBtn),
+			menuAlign: $author$project$OUI$MenuButton$getMenuAlign(menuBtn),
+			onKeyDown: $author$project$OUI$MenuButton$getOnKeyDown(menuBtn),
+			onLoseFocus: $author$project$OUI$MenuButton$getOnLoseFocus(menuBtn),
+			openCloseIcons: $author$project$OUI$MenuButton$getOpenCloseIcons(menuBtn)
+		};
+		return A6(
+			$author$project$OUI$Material$Button$render,
+			typescale,
+			colorscheme,
+			buttonTheme,
+			A2(
+				$elm$core$Maybe$map,
+				function (_v0) {
+					var open = _v0.a;
+					var close = _v0.b;
+					return state.opened ? close : open;
+				},
+				props.openCloseIcons),
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Element$htmlAttribute(
+					$elm$html$Html$Attributes$id(state.id)),
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Element$Events$onLoseFocus(props.onLoseFocus),
+					_Utils_ap(
+						attrs,
+						function () {
+							if (state.opened) {
+								var _v1 = function () {
+									var _v2 = props.menuAlign;
+									switch (_v2.$) {
+										case 'AlignTopLeft':
+											return _Utils_Tuple2(false, false);
+										case 'AlignTopRight':
+											return _Utils_Tuple2(false, true);
+										case 'AlignBottomLeft':
+											return _Utils_Tuple2(true, false);
+										default:
+											return _Utils_Tuple2(true, true);
+									}
+								}();
+								var alignBottom = _v1.a;
+								var alignRight = _v1.b;
+								return _List_fromArray(
+									[
+										(alignBottom ? $mdgriffith$elm_ui$Element$below : $mdgriffith$elm_ui$Element$above)(
+										A7(
+											$author$project$OUI$Material$Menu$render,
+											typescale,
+											colorscheme,
+											dividerTheme,
+											menuTheme,
+											state.highlighted,
+											_List_fromArray(
+												[
+													$mdgriffith$elm_ui$Element$moveDown(1),
+													alignRight ? $mdgriffith$elm_ui$Element$alignRight : $mdgriffith$elm_ui$Element$alignLeft
+												]),
+											props.menu)),
+										$author$project$OUI$Material$MenuButton$onKeyDown(props.onKeyDown)
+									]);
+							} else {
+								return _List_Nil;
+							}
+						}()))),
+			props.button);
+	});
+var $author$project$OUI$Material$menuButton = function (theme) {
+	return A5(
+		$author$project$OUI$Material$MenuButton$render,
+		$author$project$OUI$Material$Theme$typescale(theme),
+		$author$project$OUI$Material$Theme$colorscheme(theme),
+		$author$project$OUI$Material$Theme$button(theme),
+		$author$project$OUI$Material$Theme$divider(theme),
+		$author$project$OUI$Material$Theme$menu(theme));
+};
 var $author$project$OUI$Dialog$Dialog = function (a) {
 	return {$: 'Dialog', a: a};
 };
@@ -17266,6 +16365,81 @@ var $author$project$OUI$Dialog$new = function (headlineText) {
 	return $author$project$OUI$Dialog$Dialog(
 		{accept: $elm$core$Maybe$Nothing, dismiss: $elm$core$Maybe$Nothing, headline: headlineText, icon: $elm$core$Maybe$Nothing, supportingText: $elm$core$Maybe$Nothing, width: $author$project$OUI$Dialog$Small});
 };
+var $author$project$OUI$Text$Label = {$: 'Label'};
+var $author$project$OUI$Menu$new = function (itemToText) {
+	return $author$project$OUI$Menu$Menu(
+		{
+			itemSelected: function (_v0) {
+				return false;
+			},
+			itemToIcon: function (_v1) {
+				return $elm$core$Maybe$Nothing;
+			},
+			itemToText: itemToText,
+			itemToTrailingIcon: function (_v2) {
+				return $elm$core$Maybe$Nothing;
+			},
+			items: _List_Nil,
+			onClick: $elm$core$Maybe$Nothing,
+			textSize: $author$project$OUI$Text$Large,
+			textType: $author$project$OUI$Text$Label
+		});
+};
+var $author$project$OUI$MenuButton$OnBlur = {$: 'OnBlur'};
+var $author$project$OUI$MenuButton$OnClickButton = {$: 'OnClickButton'};
+var $author$project$OUI$MenuButton$OnClickItem = function (a) {
+	return {$: 'OnClickItem', a: a};
+};
+var $author$project$OUI$MenuButton$OnKeyDown = F3(
+	function (a, b, c) {
+		return {$: 'OnKeyDown', a: a, b: b, c: c};
+	});
+var $author$project$OUI$Menu$onClick = F2(
+	function (msg, _v0) {
+		var props = _v0.a;
+		return $author$project$OUI$Menu$Menu(
+			_Utils_update(
+				props,
+				{
+					onClick: $elm$core$Maybe$Just(msg)
+				}));
+	});
+var $author$project$OUI$MenuButton$new = F4(
+	function (map, onClick, button, menu) {
+		var menuitems = $author$project$OUI$Menu$getItems(menu);
+		return $author$project$OUI$MenuButton$MenuButton(
+			{
+				button: A2(
+					$author$project$OUI$Button$onClick,
+					map($author$project$OUI$MenuButton$OnClickButton),
+					button),
+				menu: A2(
+					$author$project$OUI$Menu$onClick,
+					A2(
+						$elm$core$Basics$composeL,
+						A2($elm$core$Basics$composeL, map, $author$project$OUI$MenuButton$OnClickItem),
+						onClick),
+					menu),
+				menuAlign: $author$project$OUI$MenuButton$AlignBottomLeft,
+				onKeyDown: A2(
+					$elm$core$Basics$composeR,
+					A2($author$project$OUI$MenuButton$OnKeyDown, onClick, menuitems),
+					map),
+				onLoseFocus: map($author$project$OUI$MenuButton$OnBlur),
+				openCloseIcons: $elm$core$Maybe$Nothing
+			});
+	});
+var $author$project$OUI$Dialog$onAccept = F3(
+	function (label, msg, _v0) {
+		var dialog = _v0.a;
+		return $author$project$OUI$Dialog$Dialog(
+			_Utils_update(
+				dialog,
+				{
+					accept: $elm$core$Maybe$Just(
+						_Utils_Tuple2(label, msg))
+				}));
+	});
 var $author$project$OUI$Dialog$onDismiss = F3(
 	function (label, msg, _v0) {
 		var dialog = _v0.a;
@@ -17276,6 +16450,1739 @@ var $author$project$OUI$Dialog$onDismiss = F3(
 					dismiss: $elm$core$Maybe$Just(
 						_Utils_Tuple2(label, msg))
 				}));
+	});
+var $author$project$OUI$Explorer$sharedMsg = $author$project$OUI$Explorer$SharedMsg;
+var $author$project$OUI$Showcase$Colors$colorCell = F4(
+	function (name, color, onColor, height) {
+		return A2(
+			$mdgriffith$elm_ui$Element$row,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$Background$color(
+					$author$project$OUI$Material$Color$toElementColor(color)),
+					$mdgriffith$elm_ui$Element$Font$color(
+					$author$project$OUI$Material$Color$toElementColor(onColor)),
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$height(
+					$mdgriffith$elm_ui$Element$px(height)),
+					$mdgriffith$elm_ui$Element$padding(15)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$alignTop]),
+					$mdgriffith$elm_ui$Element$text(name))
+				]));
+	});
+var $author$project$OUI$Text$titleMedium = A2($author$project$OUI$Text$textTypeSize, $author$project$OUI$Text$Title, $author$project$OUI$Text$Medium);
+var $author$project$OUI$Text$Color = function (a) {
+	return {$: 'Color', a: a};
+};
+var $author$project$OUI$Text$withColor = F2(
+	function (value, _v0) {
+		var props = _v0.a;
+		return $author$project$OUI$Text$Text(
+			_Utils_update(
+				props,
+				{
+					color: $author$project$OUI$Text$Color(value)
+				}));
+	});
+var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
+	function (title, theme) {
+		var typescale = $author$project$OUI$Material$Theme$typescale(theme);
+		var scheme = $author$project$OUI$Material$Theme$colorscheme(theme);
+		return A2(
+			$mdgriffith$elm_ui$Element$el,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$Background$color(
+					$author$project$OUI$Material$Color$toElementColor(scheme.surfaceContainer)),
+					$mdgriffith$elm_ui$Element$padding(15),
+					$mdgriffith$elm_ui$Element$Border$rounded(10),
+					$mdgriffith$elm_ui$Element$Border$color(
+					$author$project$OUI$Material$Color$toElementColor(scheme.outlineVariant)),
+					$mdgriffith$elm_ui$Element$Border$width(1)
+				]),
+			A2(
+				$mdgriffith$elm_ui$Element$column,
+				_Utils_ap(
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$spacing(5),
+							$mdgriffith$elm_ui$Element$width(
+							$mdgriffith$elm_ui$Element$px(820))
+						]),
+					A5($author$project$OUI$Material$Typography$attrs, $author$project$OUI$Text$Body, $author$project$OUI$Text$Small, $author$project$OUI$Text$NoColor, typescale, scheme)),
+				_List_fromArray(
+					[
+						A4(
+						$author$project$OUI$Material$Typography$renderWithAttrs,
+						typescale,
+						scheme,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$paddingEach(
+								{bottom: 10, left: 0, right: 0, top: 0})
+							]),
+						A2(
+							$author$project$OUI$Text$withColor,
+							$author$project$OUI$Neutral,
+							$author$project$OUI$Text$titleMedium(title))),
+						A2(
+						$mdgriffith$elm_ui$Element$row,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$spacing(5),
+								$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$mdgriffith$elm_ui$Element$column,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$spacing(5),
+										$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$mdgriffith$elm_ui$Element$column,
+										_List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+											]),
+										_List_fromArray(
+											[
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'Primary', scheme.primary, scheme.onPrimary, 100),
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Primary', scheme.onPrimary, scheme.primary, 40)
+											])),
+										A2(
+										$mdgriffith$elm_ui$Element$column,
+										_List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+											]),
+										_List_fromArray(
+											[
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'Primary Container', scheme.primaryContainer, scheme.onPrimaryContainer, 100),
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Primary Container', scheme.onPrimaryContainer, scheme.primaryContainer, 40)
+											]))
+									])),
+								A2(
+								$mdgriffith$elm_ui$Element$column,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$spacing(5),
+										$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$mdgriffith$elm_ui$Element$column,
+										_List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+											]),
+										_List_fromArray(
+											[
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'Secondary', scheme.secondary, scheme.onSecondary, 100),
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Secondary', scheme.onSecondary, scheme.secondary, 40)
+											])),
+										A2(
+										$mdgriffith$elm_ui$Element$column,
+										_List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+											]),
+										_List_fromArray(
+											[
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'Secondary Container', scheme.secondaryContainer, scheme.onSecondaryContainer, 100),
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Secondary Container', scheme.onSecondaryContainer, scheme.secondaryContainer, 40)
+											]))
+									])),
+								A2(
+								$mdgriffith$elm_ui$Element$column,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$spacing(5),
+										$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$mdgriffith$elm_ui$Element$column,
+										_List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+											]),
+										_List_fromArray(
+											[
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'Tertiary', scheme.tertiary, scheme.onTertiary, 100),
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Tertiary', scheme.onTertiary, scheme.tertiary, 40)
+											])),
+										A2(
+										$mdgriffith$elm_ui$Element$column,
+										_List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+											]),
+										_List_fromArray(
+											[
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'Tertiary Container', scheme.tertiaryContainer, scheme.onTertiaryContainer, 100),
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Tertiary Container', scheme.onTertiaryContainer, scheme.tertiaryContainer, 40)
+											]))
+									])),
+								A2(
+								$mdgriffith$elm_ui$Element$column,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$spacing(5),
+										$mdgriffith$elm_ui$Element$paddingEach(
+										{bottom: 0, left: 10, right: 0, top: 0}),
+										$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$mdgriffith$elm_ui$Element$column,
+										_List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+											]),
+										_List_fromArray(
+											[
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'Error', scheme.error, scheme.onError, 100),
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Error', scheme.onError, scheme.error, 40)
+											])),
+										A2(
+										$mdgriffith$elm_ui$Element$column,
+										_List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+											]),
+										_List_fromArray(
+											[
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'Error Container', scheme.errorContainer, scheme.onErrorContainer, 100),
+												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Error Container', scheme.onErrorContainer, scheme.errorContainer, 40)
+											]))
+									]))
+							])),
+						A2(
+						$mdgriffith$elm_ui$Element$row,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+								$mdgriffith$elm_ui$Element$paddingEach(
+								{bottom: 0, left: 0, right: 0, top: 10})
+							]),
+						_List_fromArray(
+							[
+								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Dim', scheme.surfaceDim, scheme.onSurface, 100),
+								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface', scheme.surface, scheme.onSurface, 100),
+								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Bright', scheme.surfaceBright, scheme.onSurface, 100)
+							])),
+						A2(
+						$mdgriffith$elm_ui$Element$row,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+							]),
+						_List_fromArray(
+							[
+								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container Lowest', scheme.surfaceContainerLowest, scheme.onSurface, 100),
+								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container Low', scheme.surfaceContainerLow, scheme.onSurface, 100),
+								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container', scheme.surfaceContainer, scheme.onSurface, 100),
+								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container High', scheme.surfaceContainerHigh, scheme.onSurface, 100),
+								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container Highest', scheme.surfaceContainerHighest, scheme.onSurface, 100)
+							])),
+						A2(
+						$mdgriffith$elm_ui$Element$row,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+							]),
+						_List_fromArray(
+							[
+								A4($author$project$OUI$Showcase$Colors$colorCell, 'On Surface', scheme.onSurface, scheme.surface, 40),
+								A4($author$project$OUI$Showcase$Colors$colorCell, 'On Surface Variant', scheme.onSurfaceVariant, scheme.surfaceVariant, 40),
+								A4($author$project$OUI$Showcase$Colors$colorCell, 'Outline', scheme.outline, scheme.surface, 40),
+								A4($author$project$OUI$Showcase$Colors$colorCell, 'Outline Variant', scheme.outlineVariant, scheme.onSurface, 40)
+							]))
+					])));
+	});
+var $author$project$OUI$Explorer$UserColorTheme = {$: 'UserColorTheme'};
+var $author$project$OUI$Showcase$Colors$keyColorSetError = F2(
+	function (c, kc) {
+		return _Utils_update(
+			kc,
+			{error: c});
+	});
+var $author$project$OUI$Showcase$Colors$keyColorSetNeutral = F2(
+	function (c, kc) {
+		return _Utils_update(
+			kc,
+			{primary: c});
+	});
+var $author$project$OUI$Showcase$Colors$keyColorSetNeutralVariant = F2(
+	function (c, kc) {
+		return _Utils_update(
+			kc,
+			{primary: c});
+	});
+var $author$project$OUI$Showcase$Colors$keyColorSetPrimary = F2(
+	function (c, kc) {
+		return _Utils_update(
+			kc,
+			{primary: c});
+	});
+var $author$project$OUI$Showcase$Colors$keyColorSetSecondary = F2(
+	function (c, kc) {
+		return _Utils_update(
+			kc,
+			{secondary: c});
+	});
+var $author$project$OUI$Showcase$Colors$keyColorSetTertiary = F2(
+	function (c, kc) {
+		return _Utils_update(
+			kc,
+			{tertiary: c});
+	});
+var $author$project$OUI$Showcase$Colors$EditColor = F2(
+	function (a, b) {
+		return {$: 'EditColor', a: a, b: b};
+	});
+var $author$project$OUI$Showcase$Colors$updateKeyColors = F2(
+	function (keyColors, theme) {
+		return _Utils_update(
+			theme,
+			{
+				keyColors: keyColors,
+				schemes: {
+					dark: $author$project$OUI$Material$Color$darkFromKeyColors(keyColors),
+					light: $author$project$OUI$Material$Color$lightFromKeyColors(keyColors)
+				}
+			});
+	});
+var $author$project$OUI$Showcase$Colors$keyColorEdit = F3(
+	function (getter, setter, keyColors) {
+		return $author$project$OUI$Explorer$bookMsg(
+			A2(
+				$author$project$OUI$Showcase$Colors$EditColor,
+				getter(keyColors),
+				function (c) {
+					return $author$project$OUI$Showcase$Colors$updateKeyColors(
+						A2(setter, c, keyColors));
+				}));
+	});
+var $avh4$elm_color$Color$white = A4($avh4$elm_color$Color$RgbaSpace, 255 / 255, 255 / 255, 255 / 255, 1.0);
+var $author$project$OUI$Showcase$Colors$showKeyColor = F6(
+	function (scheme, editable, name, getter, setter, keyColors) {
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				editable ? _List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Events$onClick(
+						A3($author$project$OUI$Showcase$Colors$keyColorEdit, getter, setter, keyColors)),
+						$mdgriffith$elm_ui$Element$pointer
+					]) : _List_Nil),
+			_List_fromArray(
+				[
+					A4($author$project$OUI$Showcase$Colors$colorCell, name, scheme.surfaceContainer, scheme.onSurface, 40),
+					A4(
+					$author$project$OUI$Showcase$Colors$colorCell,
+					'',
+					getter(keyColors),
+					$avh4$elm_color$Color$white,
+					70)
+				]));
+	});
+var $author$project$OUI$Showcase$Colors$showKeyColors = function (shared) {
+	var theme = shared.theme;
+	var typescale = $author$project$OUI$Material$Theme$typescale(theme);
+	var scheme = $author$project$OUI$Material$Theme$colorscheme(theme);
+	var colorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared);
+	var editable = _Utils_eq(colorTheme.type_, $author$project$OUI$Explorer$UserColorTheme);
+	var keyColors = colorTheme.theme.keyColors;
+	return A2(
+		$mdgriffith$elm_ui$Element$el,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Background$color(
+				$author$project$OUI$Material$Color$toElementColor(scheme.surfaceContainer)),
+				$mdgriffith$elm_ui$Element$padding(15),
+				$mdgriffith$elm_ui$Element$Border$rounded(10),
+				$mdgriffith$elm_ui$Element$Border$color(
+				$author$project$OUI$Material$Color$toElementColor(scheme.outlineVariant)),
+				$mdgriffith$elm_ui$Element$Border$width(1)
+			]),
+		A2(
+			$mdgriffith$elm_ui$Element$column,
+			_Utils_ap(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$spacing(5),
+						$mdgriffith$elm_ui$Element$width(
+						$mdgriffith$elm_ui$Element$px(820))
+					]),
+				A5($author$project$OUI$Material$Typography$attrs, $author$project$OUI$Text$Body, $author$project$OUI$Text$Small, $author$project$OUI$Text$NoColor, typescale, scheme)),
+			_List_fromArray(
+				[
+					A4(
+					$author$project$OUI$Material$Typography$renderWithAttrs,
+					typescale,
+					scheme,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$paddingEach(
+							{bottom: 10, left: 0, right: 0, top: 0})
+						]),
+					A2(
+						$author$project$OUI$Text$withColor,
+						$author$project$OUI$Neutral,
+						$author$project$OUI$Text$titleMedium('Key Colors'))),
+					A2(
+					$mdgriffith$elm_ui$Element$row,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$spacing(5),
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+						]),
+					_List_fromArray(
+						[
+							A6(
+							$author$project$OUI$Showcase$Colors$showKeyColor,
+							scheme,
+							editable,
+							'Primary',
+							function ($) {
+								return $.primary;
+							},
+							$author$project$OUI$Showcase$Colors$keyColorSetPrimary,
+							keyColors),
+							A6(
+							$author$project$OUI$Showcase$Colors$showKeyColor,
+							scheme,
+							editable,
+							'Secondary',
+							function ($) {
+								return $.secondary;
+							},
+							$author$project$OUI$Showcase$Colors$keyColorSetSecondary,
+							keyColors),
+							A6(
+							$author$project$OUI$Showcase$Colors$showKeyColor,
+							scheme,
+							editable,
+							'Tertiary',
+							function ($) {
+								return $.tertiary;
+							},
+							$author$project$OUI$Showcase$Colors$keyColorSetTertiary,
+							keyColors),
+							A6(
+							$author$project$OUI$Showcase$Colors$showKeyColor,
+							scheme,
+							editable,
+							'Error',
+							function ($) {
+								return $.error;
+							},
+							$author$project$OUI$Showcase$Colors$keyColorSetError,
+							keyColors),
+							A6(
+							$author$project$OUI$Showcase$Colors$showKeyColor,
+							scheme,
+							editable,
+							'Neutral',
+							function ($) {
+								return $.neutral;
+							},
+							$author$project$OUI$Showcase$Colors$keyColorSetNeutral,
+							keyColors),
+							A6(
+							$author$project$OUI$Showcase$Colors$showKeyColor,
+							scheme,
+							editable,
+							'Neutral Variant',
+							function ($) {
+								return $.neutralVariant;
+							},
+							$author$project$OUI$Showcase$Colors$keyColorSetNeutralVariant,
+							keyColors)
+						]))
+				])));
+};
+var $author$project$OUI$Explorer$AddColorTheme = function (a) {
+	return {$: 'AddColorTheme', a: a};
+};
+var $author$project$OUI$Explorer$addColorThemeMsg = $author$project$OUI$Explorer$AddColorTheme;
+var $simonh1000$elm_colorpicker$ColorPicker$State = function (a) {
+	return {$: 'State', a: a};
+};
+var $simonh1000$elm_colorpicker$ColorPicker$Unpressed = {$: 'Unpressed'};
+var $simonh1000$elm_colorpicker$ColorPicker$blankModel = {hue: $elm$core$Maybe$Nothing, mouseTarget: $simonh1000$elm_colorpicker$ColorPicker$Unpressed};
+var $simonh1000$elm_colorpicker$ColorPicker$empty = $simonh1000$elm_colorpicker$ColorPicker$State($simonh1000$elm_colorpicker$ColorPicker$blankModel);
+var $author$project$OUI$Explorer$SelectColorScheme = F2(
+	function (a, b) {
+		return {$: 'SelectColorScheme', a: a, b: b};
+	});
+var $author$project$OUI$Explorer$selectColorScheme = F2(
+	function (i, t) {
+		return A2($author$project$OUI$Explorer$SelectColorScheme, i, t);
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$widgetWidth = 200;
+var $simonh1000$elm_colorpicker$ColorPicker$calcHue = F2(
+	function (col, _v0) {
+		var mousePressed = _v0.mousePressed;
+		var x = _v0.x;
+		var hue = x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth;
+		var hsla = $avh4$elm_color$Color$toHsla(col);
+		var alpha = hsla.alpha;
+		var lightness = hsla.lightness;
+		var saturation = hsla.saturation;
+		var newCol = ((!saturation) && (lightness < 0.02)) ? _Utils_update(
+			hsla,
+			{hue: hue, lightness: 0.5, saturation: 0.5}) : _Utils_update(
+			hsla,
+			{hue: hue});
+		return $avh4$elm_color$Color$fromHsla(newCol);
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$calcOpacity = F3(
+	function (col, _v0, _v1) {
+		var mousePressed = _v1.mousePressed;
+		var x = _v1.x;
+		var hsla = $avh4$elm_color$Color$toHsla(col);
+		return $avh4$elm_color$Color$fromHsla(
+			_Utils_update(
+				hsla,
+				{
+					alpha: A3($elm$core$Basics$clamp, 0, $simonh1000$elm_colorpicker$ColorPicker$widgetWidth, x) / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth
+				}));
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$widgetHeight = 150;
+var $simonh1000$elm_colorpicker$ColorPicker$calcSatLight = F3(
+	function (col, currHue, _v0) {
+		var mousePressed = _v0.mousePressed;
+		var y = _v0.y;
+		var x = _v0.x;
+		var hsla = $avh4$elm_color$Color$toHsla(col);
+		return $avh4$elm_color$Color$fromHsla(
+			_Utils_update(
+				hsla,
+				{hue: currHue, lightness: 1 - (y / $simonh1000$elm_colorpicker$ColorPicker$widgetHeight), saturation: x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth}));
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$setHue = F3(
+	function (mouseTarget, mouseInfo, model) {
+		switch (mouseTarget.$) {
+			case 'SatLight':
+				var hue = mouseTarget.a;
+				return _Utils_update(
+					model,
+					{
+						hue: $elm$core$Maybe$Just(
+							A2($elm$core$Maybe$withDefault, hue, model.hue))
+					});
+			case 'HueSlider':
+				return _Utils_update(
+					model,
+					{
+						hue: $elm$core$Maybe$Just(mouseInfo.x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth)
+					});
+			case 'OpacitySlider':
+				var hue = mouseTarget.a;
+				return _Utils_update(
+					model,
+					{
+						hue: $elm$core$Maybe$Just(
+							A2($elm$core$Maybe$withDefault, hue, model.hue))
+					});
+			default:
+				return model;
+		}
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$setMouseTarget = F2(
+	function (mouseTarget, model) {
+		return _Utils_update(
+			model,
+			{mouseTarget: mouseTarget});
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$update_ = F3(
+	function (message, col, model) {
+		var calcNewColour = function (mouseTarget) {
+			switch (mouseTarget.$) {
+				case 'SatLight':
+					var hue = mouseTarget.a;
+					return A2(
+						$elm$core$Basics$composeL,
+						$elm$core$Maybe$Just,
+						A2(
+							$simonh1000$elm_colorpicker$ColorPicker$calcSatLight,
+							col,
+							A2($elm$core$Maybe$withDefault, hue, model.hue)));
+				case 'HueSlider':
+					return A2(
+						$elm$core$Basics$composeL,
+						$elm$core$Maybe$Just,
+						$simonh1000$elm_colorpicker$ColorPicker$calcHue(col));
+				case 'OpacitySlider':
+					var hue = mouseTarget.a;
+					return A2(
+						$elm$core$Basics$composeL,
+						$elm$core$Maybe$Just,
+						A2(
+							$simonh1000$elm_colorpicker$ColorPicker$calcOpacity,
+							col,
+							A2($elm$core$Maybe$withDefault, hue, model.hue)));
+				default:
+					return function (_v2) {
+						return $elm$core$Maybe$Nothing;
+					};
+			}
+		};
+		var handleMouseMove = F2(
+			function (mouseTarget, mouseInfo) {
+				return (mouseInfo.mousePressed && _Utils_eq(model.mouseTarget, mouseTarget)) ? _Utils_Tuple2(
+					A3($simonh1000$elm_colorpicker$ColorPicker$setHue, mouseTarget, mouseInfo, model),
+					A2(calcNewColour, mouseTarget, mouseInfo)) : (((!mouseInfo.mousePressed) && _Utils_eq(model.mouseTarget, mouseTarget)) ? _Utils_Tuple2(
+					A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, $simonh1000$elm_colorpicker$ColorPicker$Unpressed, model),
+					$elm$core$Maybe$Nothing) : _Utils_Tuple2(model, $elm$core$Maybe$Nothing));
+			});
+		switch (message.$) {
+			case 'OnMouseDown':
+				var mouseTarget = message.a;
+				var mouseInfo = message.b;
+				return _Utils_Tuple2(
+					A3(
+						$simonh1000$elm_colorpicker$ColorPicker$setHue,
+						mouseTarget,
+						mouseInfo,
+						A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, mouseTarget, model)),
+					A2(calcNewColour, mouseTarget, mouseInfo));
+			case 'OnMouseMove':
+				var mouseTarget = message.a;
+				var mouseInfo = message.b;
+				return A2(handleMouseMove, mouseTarget, mouseInfo);
+			case 'OnClick':
+				var mouseTarget = message.a;
+				var mouseInfo = message.b;
+				return _Utils_Tuple2(
+					A3($simonh1000$elm_colorpicker$ColorPicker$setHue, mouseTarget, mouseInfo, model),
+					A2(calcNewColour, mouseTarget, mouseInfo));
+			case 'OnMouseUp':
+				return _Utils_Tuple2(
+					A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, $simonh1000$elm_colorpicker$ColorPicker$Unpressed, model),
+					$elm$core$Maybe$Nothing);
+			default:
+				return _Utils_Tuple2(model, $elm$core$Maybe$Nothing);
+		}
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$update = F3(
+	function (message, col, _v0) {
+		var model = _v0.a;
+		return A2(
+			$elm$core$Tuple$mapFirst,
+			$simonh1000$elm_colorpicker$ColorPicker$State,
+			A3($simonh1000$elm_colorpicker$ColorPicker$update_, message, col, model));
+	});
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $elm$core$Task$Perform = function (a) {
+	return {$: 'Perform', a: a};
+};
+var $elm$core$Task$succeed = _Scheduler_succeed;
+var $elm$core$Task$init = $elm$core$Task$succeed(_Utils_Tuple0);
+var $elm$core$Task$andThen = _Scheduler_andThen;
+var $elm$core$Task$map = F2(
+	function (func, taskA) {
+		return A2(
+			$elm$core$Task$andThen,
+			function (a) {
+				return $elm$core$Task$succeed(
+					func(a));
+			},
+			taskA);
+	});
+var $elm$core$Task$map2 = F3(
+	function (func, taskA, taskB) {
+		return A2(
+			$elm$core$Task$andThen,
+			function (a) {
+				return A2(
+					$elm$core$Task$andThen,
+					function (b) {
+						return $elm$core$Task$succeed(
+							A2(func, a, b));
+					},
+					taskB);
+			},
+			taskA);
+	});
+var $elm$core$Task$sequence = function (tasks) {
+	return A3(
+		$elm$core$List$foldr,
+		$elm$core$Task$map2($elm$core$List$cons),
+		$elm$core$Task$succeed(_List_Nil),
+		tasks);
+};
+var $elm$core$Platform$sendToApp = _Platform_sendToApp;
+var $elm$core$Task$spawnCmd = F2(
+	function (router, _v0) {
+		var task = _v0.a;
+		return _Scheduler_spawn(
+			A2(
+				$elm$core$Task$andThen,
+				$elm$core$Platform$sendToApp(router),
+				task));
+	});
+var $elm$core$Task$onEffects = F3(
+	function (router, commands, state) {
+		return A2(
+			$elm$core$Task$map,
+			function (_v0) {
+				return _Utils_Tuple0;
+			},
+			$elm$core$Task$sequence(
+				A2(
+					$elm$core$List$map,
+					$elm$core$Task$spawnCmd(router),
+					commands)));
+	});
+var $elm$core$Task$onSelfMsg = F3(
+	function (_v0, _v1, _v2) {
+		return $elm$core$Task$succeed(_Utils_Tuple0);
+	});
+var $elm$core$Task$cmdMap = F2(
+	function (tagger, _v0) {
+		var task = _v0.a;
+		return $elm$core$Task$Perform(
+			A2($elm$core$Task$map, tagger, task));
+	});
+_Platform_effectManagers['Task'] = _Platform_createManager($elm$core$Task$init, $elm$core$Task$onEffects, $elm$core$Task$onSelfMsg, $elm$core$Task$cmdMap);
+var $elm$core$Task$command = _Platform_leaf('Task');
+var $elm$core$Task$perform = F2(
+	function (toMessage, task) {
+		return $elm$core$Task$command(
+			$elm$core$Task$Perform(
+				A2($elm$core$Task$map, toMessage, task)));
+	});
+var $author$project$OUI$MenuButton$performEffect = function (_v0) {
+	var msg = _v0.a;
+	return A2(
+		$elm$core$Task$perform,
+		$elm$core$Basics$identity,
+		$elm$core$Task$succeed(msg));
+};
+var $author$project$OUI$MenuButton$Loopback = function (a) {
+	return {$: 'Loopback', a: a};
+};
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (maybeValue.$ === 'Just') {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $author$project$OUI$MenuButton$getAtIndex = function (index) {
+	return A2(
+		$elm$core$Basics$composeR,
+		$elm$core$List$drop(index),
+		A2(
+			$elm$core$Basics$composeR,
+			$elm$core$List$head,
+			$elm$core$Maybe$andThen(
+				function (menuitem) {
+					if (menuitem.$ === 'Item') {
+						var item = menuitem.a;
+						return $elm$core$Maybe$Just(item);
+					} else {
+						return $elm$core$Maybe$Nothing;
+					}
+				})));
+};
+var $author$project$OUI$Menu$Divider = {$: 'Divider'};
+var $author$project$OUI$MenuButton$hasItems = A2(
+	$elm$core$List$foldl,
+	F2(
+		function (item, r) {
+			if (item.$ === 'Item') {
+				return true;
+			} else {
+				return r;
+			}
+		}),
+	false);
+var $author$project$OUI$MenuButton$nextIndex = F2(
+	function (items, index) {
+		nextIndex:
+		while (true) {
+			if ($author$project$OUI$MenuButton$hasItems(items)) {
+				var newIndex = (_Utils_cmp(
+					index,
+					$elm$core$List$length(items) - 1) > -1) ? 0 : (index + 1);
+				var item = $elm$core$List$head(
+					A2($elm$core$List$drop, newIndex, items));
+				if (_Utils_eq(
+					item,
+					$elm$core$Maybe$Just($author$project$OUI$Menu$Divider))) {
+					var $temp$items = items,
+						$temp$index = newIndex;
+					items = $temp$items;
+					index = $temp$index;
+					continue nextIndex;
+				} else {
+					return newIndex;
+				}
+			} else {
+				return -1;
+			}
+		}
+	});
+var $author$project$OUI$MenuButton$prevIndex = F2(
+	function (items, index) {
+		prevIndex:
+		while (true) {
+			if ($author$project$OUI$MenuButton$hasItems(items)) {
+				var newIndex = (index <= 0) ? ($elm$core$List$length(items) - 1) : (index - 1);
+				var item = $elm$core$List$head(
+					A2($elm$core$List$drop, newIndex, items));
+				if (_Utils_eq(
+					item,
+					$elm$core$Maybe$Just($author$project$OUI$Menu$Divider))) {
+					var $temp$items = items,
+						$temp$index = newIndex;
+					items = $temp$items;
+					index = $temp$index;
+					continue prevIndex;
+				} else {
+					return newIndex;
+				}
+			} else {
+				return -1;
+			}
+		}
+	});
+var $author$project$OUI$MenuButton$updateWithoutPerform = F2(
+	function (msg, state) {
+		switch (msg.$) {
+			case 'OnClickOutside':
+				return _Utils_Tuple2(
+					_Utils_update(
+						state,
+						{highlighted: -1, opened: false}),
+					$elm$core$Maybe$Nothing);
+			case 'OnClickButton':
+				return _Utils_Tuple2(
+					_Utils_update(
+						state,
+						{opened: !state.opened}),
+					$elm$core$Maybe$Nothing);
+			case 'OnClickItem':
+				var selectMsg = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						state,
+						{highlighted: -1, opened: false}),
+					$elm$core$Maybe$Just(
+						$author$project$OUI$MenuButton$Loopback(selectMsg)));
+			case 'OnBlur':
+				return _Utils_Tuple2(
+					_Utils_update(
+						state,
+						{highlighted: -1, opened: false}),
+					$elm$core$Maybe$Nothing);
+			default:
+				switch (msg.c.$) {
+					case 'ArrowUp':
+						var items = msg.b;
+						var _v1 = msg.c;
+						return _Utils_Tuple2(
+							_Utils_update(
+								state,
+								{
+									highlighted: A2($author$project$OUI$MenuButton$prevIndex, items, state.highlighted)
+								}),
+							$elm$core$Maybe$Nothing);
+					case 'ArrowDown':
+						var items = msg.b;
+						var _v2 = msg.c;
+						return _Utils_Tuple2(
+							_Utils_update(
+								state,
+								{
+									highlighted: A2($author$project$OUI$MenuButton$nextIndex, items, state.highlighted),
+									opened: true
+								}),
+							$elm$core$Maybe$Nothing);
+					case 'Enter':
+						var onClick = msg.a;
+						var items = msg.b;
+						var _v3 = msg.c;
+						return _Utils_Tuple2(
+							_Utils_update(
+								state,
+								{highlighted: -1, opened: false}),
+							A2(
+								$elm$core$Maybe$map,
+								A2($elm$core$Basics$composeR, onClick, $author$project$OUI$MenuButton$Loopback),
+								A2($author$project$OUI$MenuButton$getAtIndex, state.highlighted, items)));
+					default:
+						var _v4 = msg.c;
+						return _Utils_Tuple2(
+							_Utils_update(
+								state,
+								{highlighted: -1, opened: false}),
+							$elm$core$Maybe$Nothing);
+				}
+		}
+	});
+var $author$project$OUI$MenuButton$update = F2(
+	function (msg, state) {
+		return A2(
+			$elm$core$Tuple$mapSecond,
+			A2(
+				$elm$core$Basics$composeR,
+				$elm$core$Maybe$map($author$project$OUI$MenuButton$performEffect),
+				$elm$core$Maybe$withDefault($elm$core$Platform$Cmd$none)),
+			A2($author$project$OUI$MenuButton$updateWithoutPerform, msg, state));
+	});
+var $author$project$OUI$Explorer$UpdateColorTheme = F2(
+	function (a, b) {
+		return {$: 'UpdateColorTheme', a: a, b: b};
+	});
+var $author$project$OUI$Explorer$updateColorThemeMsg = $author$project$OUI$Explorer$UpdateColorTheme;
+var $orus_io$elm_spa$Effect$fromCmd = $orus_io$elm_spa$Effect$Cmd;
+var $orus_io$elm_spa$Effect$withCmd = F2(
+	function (cmd, model) {
+		return _Utils_Tuple2(
+			model,
+			$orus_io$elm_spa$Effect$fromCmd(cmd));
+	});
+var $orus_io$elm_spa$Effect$withShared = F2(
+	function (shared, model) {
+		return _Utils_Tuple2(
+			model,
+			$orus_io$elm_spa$Effect$fromShared(shared));
+	});
+var $author$project$OUI$Showcase$Colors$update = F3(
+	function (shared, msg, model) {
+		switch (msg.$) {
+			case 'ColorThemeButtonMsg':
+				var buttonMsg = msg.a;
+				var _v1 = A2($author$project$OUI$MenuButton$update, buttonMsg, model.colorThemeButton);
+				var state = _v1.a;
+				var cmd = _v1.b;
+				return A2(
+					$orus_io$elm_spa$Effect$withCmd,
+					cmd,
+					_Utils_update(
+						model,
+						{colorThemeButton: state}));
+			case 'SelectColorScheme':
+				var i = msg.a;
+				var t = msg.b;
+				return A2(
+					$orus_io$elm_spa$Effect$withShared,
+					A2($author$project$OUI$Explorer$selectColorScheme, i, t),
+					model);
+			case 'CopyColorTheme':
+				var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme;
+				return A2(
+					$orus_io$elm_spa$Effect$withShared,
+					$author$project$OUI$Explorer$addColorThemeMsg(
+						_Utils_update(
+							currentColorTheme,
+							{name: currentColorTheme.name + ' (copy)'})),
+					model);
+			case 'ColorPickerMsg':
+				var colorPickerMsg = msg.a;
+				return $orus_io$elm_spa$Effect$withNone(
+					function () {
+						var _v2 = model.colorSelector;
+						if (_v2.$ === 'Just') {
+							var colorSelector = _v2.a;
+							var _v3 = A3($simonh1000$elm_colorpicker$ColorPicker$update, colorPickerMsg, colorSelector.color, colorSelector.colorPicker);
+							var m = _v3.a;
+							var color = _v3.b;
+							return _Utils_update(
+								model,
+								{
+									colorSelector: $elm$core$Maybe$Just(
+										_Utils_update(
+											colorSelector,
+											{
+												color: A2($elm$core$Maybe$withDefault, colorSelector.color, color),
+												colorPicker: m
+											}))
+								});
+						} else {
+							return model;
+						}
+					}());
+			case 'EditColor':
+				var color = msg.a;
+				var setter = msg.b;
+				return $orus_io$elm_spa$Effect$withNone(
+					_Utils_update(
+						model,
+						{
+							colorSelector: $elm$core$Maybe$Just(
+								{color: color, colorPicker: $simonh1000$elm_colorpicker$ColorPicker$empty, setter: setter})
+						}));
+			case 'DismissColor':
+				return $orus_io$elm_spa$Effect$withNone(
+					_Utils_update(
+						model,
+						{colorSelector: $elm$core$Maybe$Nothing}));
+			default:
+				var _v4 = model.colorSelector;
+				if (_v4.$ === 'Just') {
+					var colorSelector = _v4.a;
+					var theme = $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme;
+					var currentThemeIndex = shared.selectedColorScheme.a;
+					return A2(
+						$orus_io$elm_spa$Effect$withShared,
+						A2(
+							$author$project$OUI$Explorer$updateColorThemeMsg,
+							currentThemeIndex,
+							A2(colorSelector.setter, colorSelector.color, theme)),
+						_Utils_update(
+							model,
+							{colorSelector: $elm$core$Maybe$Nothing}));
+				} else {
+					return $orus_io$elm_spa$Effect$withNone(model);
+				}
+		}
+	});
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $simonh1000$elm_colorpicker$ColorPicker$markerAttrs = _List_fromArray(
+	[
+		A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
+		A2($elm$html$Html$Attributes$style, 'top', '1px'),
+		A2($elm$html$Html$Attributes$style, 'bottom', '1px'),
+		A2($elm$html$Html$Attributes$style, 'border', '1px solid #ddd'),
+		A2($elm$html$Html$Attributes$style, 'background-color', '#ffffff'),
+		A2($elm$html$Html$Attributes$style, 'width', '6px'),
+		A2($elm$html$Html$Attributes$style, 'pointer-events', 'none')
+	]);
+var $simonh1000$elm_colorpicker$ColorPicker$markerCorrection = 4;
+var $simonh1000$elm_colorpicker$ColorPicker$alphaMarker = function (alpha) {
+	var xVal = $elm$core$String$fromInt(
+		$elm$core$Basics$round((alpha * $simonh1000$elm_colorpicker$ColorPicker$widgetWidth) - $simonh1000$elm_colorpicker$ColorPicker$markerCorrection));
+	return A2(
+		$elm$html$Html$div,
+		A2(
+			$elm$core$List$cons,
+			A2($elm$html$Html$Attributes$style, 'left', xVal + 'px'),
+			$simonh1000$elm_colorpicker$ColorPicker$markerAttrs),
+		_List_Nil);
+};
+var $simonh1000$elm_colorpicker$ColorPicker$NoOp = {$: 'NoOp'};
+var $simonh1000$elm_colorpicker$ColorPicker$bubblePreventer = A2(
+	$elm$html$Html$Events$stopPropagationOn,
+	'click',
+	$elm$json$Json$Decode$succeed(
+		_Utils_Tuple2($simonh1000$elm_colorpicker$ColorPicker$NoOp, true)));
+var $simonh1000$elm_colorpicker$ColorPicker$checkedBkgStyles = _List_fromArray(
+	[
+		A2($elm$html$Html$Attributes$style, 'background-size', '12px 12px'),
+		A2($elm$html$Html$Attributes$style, 'background-position', '0 0, 0 6px, 6px -6px, -6px 0px'),
+		A2($elm$html$Html$Attributes$style, 'background-image', 'linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%)')
+	]);
+var $avh4$elm_color$Color$hsl = F3(
+	function (h, s, l) {
+		return A4($avh4$elm_color$Color$hsla, h, s, l, 1.0);
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$hueMarker = function (lastHue) {
+	var xVal = $elm$core$String$fromInt(
+		$elm$core$Basics$round((lastHue * $simonh1000$elm_colorpicker$ColorPicker$widgetWidth) - $simonh1000$elm_colorpicker$ColorPicker$markerCorrection));
+	return A2(
+		$elm$html$Html$div,
+		A2(
+			$elm$core$List$cons,
+			A2($elm$html$Html$Attributes$style, 'left', xVal + 'px'),
+			$simonh1000$elm_colorpicker$ColorPicker$markerAttrs),
+		_List_Nil);
+};
+var $simonh1000$elm_colorpicker$ColorPicker$HueSlider = {$: 'HueSlider'};
+var $simonh1000$elm_colorpicker$ColorPicker$OnMouseMove = F2(
+	function (a, b) {
+		return {$: 'OnMouseMove', a: a, b: b};
+	});
+var $elm$svg$Svg$Attributes$class = _VirtualDom_attribute('class');
+var $elm$svg$Svg$defs = $elm$svg$Svg$trustedNode('defs');
+var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
+var $elm$svg$Svg$linearGradient = $elm$svg$Svg$trustedNode('linearGradient');
+var $elm$svg$Svg$Attributes$offset = _VirtualDom_attribute('offset');
+var $elm$svg$Svg$Attributes$display = _VirtualDom_attribute('display');
+var $simonh1000$elm_colorpicker$ColorPicker$sliderStyles = _List_fromArray(
+	[
+		$elm$svg$Svg$Attributes$width(
+		$elm$core$String$fromInt($simonh1000$elm_colorpicker$ColorPicker$widgetWidth)),
+		$elm$svg$Svg$Attributes$height('100%'),
+		$elm$svg$Svg$Attributes$display('block')
+	]);
+var $elm$svg$Svg$stop = $elm$svg$Svg$trustedNode('stop');
+var $elm$svg$Svg$Attributes$stopColor = _VirtualDom_attribute('stop-color');
+var $elm$svg$Svg$Attributes$stopOpacity = _VirtualDom_attribute('stop-opacity');
+var $simonh1000$elm_colorpicker$ColorPicker$OnClick = F2(
+	function (a, b) {
+		return {$: 'OnClick', a: a, b: b};
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$OnMouseDown = F2(
+	function (a, b) {
+		return {$: 'OnMouseDown', a: a, b: b};
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$OnMouseUp = {$: 'OnMouseUp'};
+var $simonh1000$elm_colorpicker$ColorPicker$MouseInfo = F3(
+	function (x, y, mousePressed) {
+		return {mousePressed: mousePressed, x: x, y: y};
+	});
+var $elm$json$Json$Decode$int = _Json_decodeInt;
+var $elm$json$Json$Decode$map3 = _Json_map3;
+var $simonh1000$elm_colorpicker$ColorPicker$decodeMouseInfo = A4(
+	$elm$json$Json$Decode$map3,
+	$simonh1000$elm_colorpicker$ColorPicker$MouseInfo,
+	A2($elm$json$Json$Decode$field, 'offsetX', $elm$json$Json$Decode$int),
+	A2($elm$json$Json$Decode$field, 'offsetY', $elm$json$Json$Decode$int),
+	A2(
+		$elm$json$Json$Decode$map,
+		$elm$core$Basics$neq(0),
+		A2($elm$json$Json$Decode$field, 'buttons', $elm$json$Json$Decode$int)));
+var $elm$svg$Svg$Events$on = $elm$html$Html$Events$on;
+var $simonh1000$elm_colorpicker$ColorPicker$onClickSvg = function (msgCreator) {
+	return A2(
+		$elm$svg$Svg$Events$on,
+		'click',
+		A2($elm$json$Json$Decode$map, msgCreator, $simonh1000$elm_colorpicker$ColorPicker$decodeMouseInfo));
+};
+var $simonh1000$elm_colorpicker$ColorPicker$onMouseDownSvg = function (msgCreator) {
+	return A2(
+		$elm$svg$Svg$Events$on,
+		'mousedown',
+		A2($elm$json$Json$Decode$map, msgCreator, $simonh1000$elm_colorpicker$ColorPicker$decodeMouseInfo));
+};
+var $simonh1000$elm_colorpicker$ColorPicker$onMouseMoveSvg = function (msgCreator) {
+	return A2(
+		$elm$svg$Svg$Events$on,
+		'mousemove',
+		A2($elm$json$Json$Decode$map, msgCreator, $simonh1000$elm_colorpicker$ColorPicker$decodeMouseInfo));
+};
+var $elm$svg$Svg$Events$onMouseUp = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'mouseup',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $simonh1000$elm_colorpicker$ColorPicker$svgDragAttrs = F3(
+	function (currMouseTgt, thisTgt, onMoveMsg) {
+		var common = _List_fromArray(
+			[
+				$simonh1000$elm_colorpicker$ColorPicker$onMouseDownSvg(
+				$simonh1000$elm_colorpicker$ColorPicker$OnMouseDown(thisTgt)),
+				$elm$svg$Svg$Events$onMouseUp($simonh1000$elm_colorpicker$ColorPicker$OnMouseUp),
+				$simonh1000$elm_colorpicker$ColorPicker$onClickSvg(
+				$simonh1000$elm_colorpicker$ColorPicker$OnClick(thisTgt))
+			]);
+		return _Utils_eq(currMouseTgt, thisTgt) ? A2(
+			$elm$core$List$cons,
+			$simonh1000$elm_colorpicker$ColorPicker$onMouseMoveSvg(onMoveMsg),
+			common) : common;
+	});
+var $elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
+var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
+var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
+var $elm$svg$Svg$Attributes$y = _VirtualDom_attribute('y');
+var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
+var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
+var $simonh1000$elm_colorpicker$ColorPicker$huePalette = function (mouseTarget) {
+	var stops = _List_fromArray(
+		[
+			_Utils_Tuple2('0%', '#FF0000'),
+			_Utils_Tuple2('17%', '#FF00FF'),
+			_Utils_Tuple2('33%', '#0000FF'),
+			_Utils_Tuple2('50%', '#00FFFF'),
+			_Utils_Tuple2('66%', '#00FF00'),
+			_Utils_Tuple2('83%', '#FFFF00'),
+			_Utils_Tuple2('100%', '#FF0000')
+		]);
+	var mkStop = function (_v0) {
+		var os = _v0.a;
+		var sc = _v0.b;
+		return A2(
+			$elm$svg$Svg$stop,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$offset(os),
+					$elm$svg$Svg$Attributes$stopColor(sc),
+					$elm$svg$Svg$Attributes$stopOpacity('1')
+				]),
+			_List_Nil);
+	};
+	return A2(
+		$elm$svg$Svg$svg,
+		A2(
+			$elm$core$List$cons,
+			$elm$svg$Svg$Attributes$class('hue-picker'),
+			$simonh1000$elm_colorpicker$ColorPicker$sliderStyles),
+		_List_fromArray(
+			[
+				A2(
+				$elm$svg$Svg$defs,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$elm$svg$Svg$linearGradient,
+						_List_fromArray(
+							[
+								$elm$svg$Svg$Attributes$id('gradient-hsv'),
+								$elm$svg$Svg$Attributes$x1('100%'),
+								$elm$svg$Svg$Attributes$y1('0%'),
+								$elm$svg$Svg$Attributes$x2('0%'),
+								$elm$svg$Svg$Attributes$y2('0%')
+							]),
+						A2($elm$core$List$map, mkStop, stops))
+					])),
+				A2(
+				$elm$svg$Svg$rect,
+				_Utils_ap(
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$x('0'),
+							$elm$svg$Svg$Attributes$y('0'),
+							$elm$svg$Svg$Attributes$width(
+							$elm$core$String$fromInt($simonh1000$elm_colorpicker$ColorPicker$widgetWidth)),
+							$elm$svg$Svg$Attributes$height('100%'),
+							$elm$svg$Svg$Attributes$fill('url(#gradient-hsv)')
+						]),
+					A3(
+						$simonh1000$elm_colorpicker$ColorPicker$svgDragAttrs,
+						mouseTarget,
+						$simonh1000$elm_colorpicker$ColorPicker$HueSlider,
+						$simonh1000$elm_colorpicker$ColorPicker$OnMouseMove($simonh1000$elm_colorpicker$ColorPicker$HueSlider))),
+				_List_Nil)
+			]));
+};
+var $simonh1000$elm_colorpicker$ColorPicker$OpacitySlider = function (a) {
+	return {$: 'OpacitySlider', a: a};
+};
+var $simonh1000$elm_colorpicker$ColorPicker$onClickHtml = function (msgCreator) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		A2($elm$json$Json$Decode$map, msgCreator, $simonh1000$elm_colorpicker$ColorPicker$decodeMouseInfo));
+};
+var $elm$html$Html$Events$onMouseUp = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'mouseup',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $simonh1000$elm_colorpicker$ColorPicker$htmlDragAttrs = F3(
+	function (currMouseTgt, thisTgt, onMoveMsg) {
+		var common = _List_fromArray(
+			[
+				A2(
+				$elm$html$Html$Events$on,
+				'mousedown',
+				A2(
+					$elm$json$Json$Decode$map,
+					$simonh1000$elm_colorpicker$ColorPicker$OnMouseDown(thisTgt),
+					$simonh1000$elm_colorpicker$ColorPicker$decodeMouseInfo)),
+				$elm$html$Html$Events$onMouseUp($simonh1000$elm_colorpicker$ColorPicker$OnMouseUp),
+				$simonh1000$elm_colorpicker$ColorPicker$onClickHtml(
+				$simonh1000$elm_colorpicker$ColorPicker$OnClick(thisTgt))
+			]);
+		return _Utils_eq(currMouseTgt, thisTgt) ? A2(
+			$elm$core$List$cons,
+			A2(
+				$elm$html$Html$Events$on,
+				'mousemove',
+				A2($elm$json$Json$Decode$map, onMoveMsg, $simonh1000$elm_colorpicker$ColorPicker$decodeMouseInfo)),
+			common) : common;
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$opacityPalette = F2(
+	function (hsla, model) {
+		var mouseTarget = $simonh1000$elm_colorpicker$ColorPicker$OpacitySlider(hsla.hue);
+		var mkCol = function (op) {
+			return $avh4$elm_color$Color$toCssString(
+				A4($avh4$elm_color$Color$hsla, hsla.hue, hsla.saturation, hsla.lightness, op));
+		};
+		var grad = 'linear-gradient(0.25turn, ' + (mkCol(0) + (', ' + (mkCol(1) + ')')));
+		var overlay = _List_fromArray(
+			[
+				A2($elm$html$Html$Attributes$style, 'background', grad),
+				A2($elm$html$Html$Attributes$style, 'height', '100%'),
+				A2($elm$html$Html$Attributes$style, 'width', '100%')
+			]);
+		return A2(
+			$elm$html$Html$div,
+			_Utils_ap(
+				overlay,
+				A3(
+					$simonh1000$elm_colorpicker$ColorPicker$htmlDragAttrs,
+					model.mouseTarget,
+					mouseTarget,
+					$simonh1000$elm_colorpicker$ColorPicker$OnMouseMove(mouseTarget))),
+			_List_Nil);
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$pickerIndicator = function (col) {
+	var adjustment = 4;
+	var _v0 = $avh4$elm_color$Color$toHsla(col);
+	var lightness = _v0.lightness;
+	var saturation = _v0.saturation;
+	var borderColor = (lightness > 0.95) ? '#cccccc' : '#ffffff';
+	var cy_ = $elm$core$String$fromInt(
+		$elm$core$Basics$round(($simonh1000$elm_colorpicker$ColorPicker$widgetHeight - (lightness * $simonh1000$elm_colorpicker$ColorPicker$widgetHeight)) - adjustment));
+	var cx_ = $elm$core$String$fromInt(
+		$elm$core$Basics$round((saturation * $simonh1000$elm_colorpicker$ColorPicker$widgetWidth) - adjustment));
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
+				A2($elm$html$Html$Attributes$style, 'top', cy_ + 'px'),
+				A2($elm$html$Html$Attributes$style, 'left', cx_ + 'px'),
+				A2($elm$html$Html$Attributes$style, 'border-radius', '100%'),
+				A2($elm$html$Html$Attributes$style, 'border', '2px solid ' + borderColor),
+				A2($elm$html$Html$Attributes$style, 'width', '6px'),
+				A2($elm$html$Html$Attributes$style, 'height', '6px'),
+				A2($elm$html$Html$Attributes$style, 'pointer-events', 'none')
+			]),
+		_List_Nil);
+};
+var $simonh1000$elm_colorpicker$ColorPicker$pickerStyles = _List_fromArray(
+	[
+		A2($elm$html$Html$Attributes$style, 'cursor', 'crosshair'),
+		A2($elm$html$Html$Attributes$style, 'position', 'relative')
+	]);
+var $simonh1000$elm_colorpicker$ColorPicker$SatLight = function (a) {
+	return {$: 'SatLight', a: a};
+};
+var $simonh1000$elm_colorpicker$ColorPicker$satLightPalette = F3(
+	function (hue, colCss, mouseTarget) {
+		return A2(
+			$elm$svg$Svg$svg,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$width(
+					$elm$core$String$fromInt($simonh1000$elm_colorpicker$ColorPicker$widgetWidth)),
+					$elm$svg$Svg$Attributes$height(
+					$elm$core$String$fromInt($simonh1000$elm_colorpicker$ColorPicker$widgetHeight)),
+					$elm$svg$Svg$Attributes$class('main-picker'),
+					$elm$svg$Svg$Attributes$display('block')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$defs,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							$elm$svg$Svg$linearGradient,
+							_List_fromArray(
+								[
+									$elm$svg$Svg$Attributes$id('pickerSaturation')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$svg$Svg$stop,
+									_List_fromArray(
+										[
+											$elm$svg$Svg$Attributes$offset('0'),
+											$elm$svg$Svg$Attributes$stopColor('#808080'),
+											$elm$svg$Svg$Attributes$stopOpacity('1')
+										]),
+									_List_Nil),
+									A2(
+									$elm$svg$Svg$stop,
+									_List_fromArray(
+										[
+											$elm$svg$Svg$Attributes$offset('1'),
+											$elm$svg$Svg$Attributes$stopColor('#808080'),
+											$elm$svg$Svg$Attributes$stopOpacity('0')
+										]),
+									_List_Nil)
+								])),
+							A2(
+							$elm$svg$Svg$linearGradient,
+							_List_fromArray(
+								[
+									$elm$svg$Svg$Attributes$id('pickerBrightness'),
+									$elm$svg$Svg$Attributes$x1('0'),
+									$elm$svg$Svg$Attributes$y1('0'),
+									$elm$svg$Svg$Attributes$x2('0'),
+									$elm$svg$Svg$Attributes$y2('1')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$svg$Svg$stop,
+									_List_fromArray(
+										[
+											$elm$svg$Svg$Attributes$offset('0'),
+											$elm$svg$Svg$Attributes$stopColor('#fff'),
+											$elm$svg$Svg$Attributes$stopOpacity('1')
+										]),
+									_List_Nil),
+									A2(
+									$elm$svg$Svg$stop,
+									_List_fromArray(
+										[
+											$elm$svg$Svg$Attributes$offset('0.499'),
+											$elm$svg$Svg$Attributes$stopColor('#fff'),
+											$elm$svg$Svg$Attributes$stopOpacity('0')
+										]),
+									_List_Nil),
+									A2(
+									$elm$svg$Svg$stop,
+									_List_fromArray(
+										[
+											$elm$svg$Svg$Attributes$offset('0.5'),
+											$elm$svg$Svg$Attributes$stopColor('#000'),
+											$elm$svg$Svg$Attributes$stopOpacity('0')
+										]),
+									_List_Nil),
+									A2(
+									$elm$svg$Svg$stop,
+									_List_fromArray(
+										[
+											$elm$svg$Svg$Attributes$offset('1'),
+											$elm$svg$Svg$Attributes$stopColor('#000'),
+											$elm$svg$Svg$Attributes$stopOpacity('1')
+										]),
+									_List_Nil)
+								]))
+						])),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$width(
+							$elm$core$String$fromInt($simonh1000$elm_colorpicker$ColorPicker$widgetWidth)),
+							$elm$svg$Svg$Attributes$height(
+							$elm$core$String$fromInt($simonh1000$elm_colorpicker$ColorPicker$widgetHeight)),
+							$elm$svg$Svg$Attributes$fill(colCss),
+							$elm$svg$Svg$Attributes$id('picker')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$width(
+							$elm$core$String$fromInt($simonh1000$elm_colorpicker$ColorPicker$widgetWidth)),
+							$elm$svg$Svg$Attributes$height(
+							$elm$core$String$fromInt($simonh1000$elm_colorpicker$ColorPicker$widgetHeight)),
+							$elm$svg$Svg$Attributes$fill('url(#pickerSaturation)')
+						]),
+					_List_Nil),
+					A2(
+					$elm$svg$Svg$rect,
+					_Utils_ap(
+						_List_fromArray(
+							[
+								$elm$svg$Svg$Attributes$width(
+								$elm$core$String$fromInt($simonh1000$elm_colorpicker$ColorPicker$widgetWidth)),
+								$elm$svg$Svg$Attributes$height(
+								$elm$core$String$fromInt($simonh1000$elm_colorpicker$ColorPicker$widgetHeight)),
+								$elm$svg$Svg$Attributes$fill('url(#pickerBrightness)')
+							]),
+						A3(
+							$simonh1000$elm_colorpicker$ColorPicker$svgDragAttrs,
+							mouseTarget,
+							$simonh1000$elm_colorpicker$ColorPicker$SatLight(hue),
+							$simonh1000$elm_colorpicker$ColorPicker$OnMouseMove(
+								$simonh1000$elm_colorpicker$ColorPicker$SatLight(hue)))),
+					_List_Nil)
+				]));
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$sliderContainerStyles = function (name) {
+	return _List_fromArray(
+		[
+			A2(
+			$elm$html$Html$Attributes$style,
+			'width',
+			$elm$core$String$fromInt($simonh1000$elm_colorpicker$ColorPicker$widgetWidth) + 'px'),
+			A2($elm$html$Html$Attributes$style, 'height', '12px'),
+			A2($elm$html$Html$Attributes$style, 'marginTop', '8px'),
+			$elm$html$Html$Attributes$class('color-picker-slider ' + name)
+		]);
+};
+var $simonh1000$elm_colorpicker$ColorPicker$view = F2(
+	function (col, _v0) {
+		var model = _v0.a;
+		var hsla = $avh4$elm_color$Color$toHsla(col);
+		var hue = A2($elm$core$Maybe$withDefault, hsla.hue, model.hue);
+		var colCss = $avh4$elm_color$Color$toCssString(
+			A3($avh4$elm_color$Color$hsl, hue, 1, 0.5));
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					A2($elm$html$Html$Attributes$style, 'background-color', 'white'),
+					A2($elm$html$Html$Attributes$style, 'padding', '6px'),
+					A2($elm$html$Html$Attributes$style, 'display', 'inline-block'),
+					A2($elm$html$Html$Attributes$style, 'border-radius', '5px'),
+					A2($elm$html$Html$Attributes$style, 'box-shadow', 'rgba(0, 0, 0, 0.15) 0px 0px 0px 1px, rgba(0, 0, 0, 0.15) 0px 8px 16px'),
+					$elm$html$Html$Attributes$class('color-picker-container'),
+					$simonh1000$elm_colorpicker$ColorPicker$bubblePreventer
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					$simonh1000$elm_colorpicker$ColorPicker$pickerStyles,
+					_List_fromArray(
+						[
+							A3($simonh1000$elm_colorpicker$ColorPicker$satLightPalette, hue, colCss, model.mouseTarget),
+							$simonh1000$elm_colorpicker$ColorPicker$pickerIndicator(col)
+						])),
+					A2(
+					$elm$html$Html$div,
+					_Utils_ap(
+						$simonh1000$elm_colorpicker$ColorPicker$pickerStyles,
+						$simonh1000$elm_colorpicker$ColorPicker$sliderContainerStyles('hue')),
+					_List_fromArray(
+						[
+							$simonh1000$elm_colorpicker$ColorPicker$huePalette(model.mouseTarget),
+							$simonh1000$elm_colorpicker$ColorPicker$hueMarker(hue)
+						])),
+					A2(
+					$elm$html$Html$div,
+					_Utils_ap(
+						$simonh1000$elm_colorpicker$ColorPicker$checkedBkgStyles,
+						_Utils_ap(
+							$simonh1000$elm_colorpicker$ColorPicker$pickerStyles,
+							$simonh1000$elm_colorpicker$ColorPicker$sliderContainerStyles('opacity'))),
+					_List_fromArray(
+						[
+							A2($simonh1000$elm_colorpicker$ColorPicker$opacityPalette, hsla, model),
+							$simonh1000$elm_colorpicker$ColorPicker$alphaMarker(hsla.alpha)
+						]))
+				]));
+	});
+var $author$project$OUI$Material$Theme$Theme = function (a) {
+	return {$: 'Theme', a: a};
+};
+var $author$project$OUI$Material$Theme$withColorscheme = F2(
+	function (value, _v0) {
+		var t = _v0.a;
+		return $author$project$OUI$Material$Theme$Theme(
+			_Utils_update(
+				t,
+				{colorscheme: value}));
+	});
+var $author$project$OUI$Explorer$withDialog = F2(
+	function (dialog, b) {
+		return _Utils_update(
+			b,
+			{
+				dialog: $elm$core$Maybe$Just(dialog)
+			});
+	});
+var $author$project$OUI$Showcase$Colors$book = A2(
+	$author$project$OUI$Explorer$withStaticChapter,
+	function (shared) {
+		return A2(
+			$author$project$OUI$Showcase$Colors$showColorScheme,
+			'Dark Scheme',
+			A2(
+				$author$project$OUI$Material$Theme$withColorscheme,
+				A2(
+					$elm$core$Maybe$withDefault,
+					$author$project$OUI$Material$Color$defaultDarkScheme,
+					A2(
+						$elm$core$Maybe$map,
+						A2(
+							$elm$core$Basics$composeR,
+							function ($) {
+								return $.theme;
+							},
+							A2(
+								$elm$core$Basics$composeR,
+								function ($) {
+									return $.schemes;
+								},
+								function ($) {
+									return $.dark;
+								})),
+						$elm$core$List$head(
+							A2($elm$core$List$drop, shared.selectedColorScheme.a, shared.colorThemeList)))),
+				shared.theme));
+	},
+	A2(
+		$author$project$OUI$Explorer$withStaticChapter,
+		function (shared) {
+			return A2(
+				$author$project$OUI$Showcase$Colors$showColorScheme,
+				'Light Scheme',
+				A2(
+					$author$project$OUI$Material$Theme$withColorscheme,
+					A2(
+						$elm$core$Maybe$withDefault,
+						$author$project$OUI$Material$Color$defaultLightScheme,
+						A2(
+							$elm$core$Maybe$map,
+							A2(
+								$elm$core$Basics$composeR,
+								function ($) {
+									return $.theme;
+								},
+								A2(
+									$elm$core$Basics$composeR,
+									function ($) {
+										return $.schemes;
+									},
+									function ($) {
+										return $.light;
+									})),
+							$elm$core$List$head(
+								A2($elm$core$List$drop, shared.selectedColorScheme.a, shared.colorThemeList)))),
+					shared.theme));
+		},
+		A2(
+			$author$project$OUI$Explorer$withStaticChapter,
+			$author$project$OUI$Showcase$Colors$showKeyColors,
+			A2(
+				$author$project$OUI$Explorer$withChapter,
+				F2(
+					function (shared, model) {
+						var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared);
+						return A2(
+							$mdgriffith$elm_ui$Element$row,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$spacing(20)
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$author$project$OUI$Material$text,
+									shared.theme,
+									$author$project$OUI$Text$bodyLarge('Current color scheme: ')),
+									A2(
+									$mdgriffith$elm_ui$Element$map,
+									$author$project$OUI$Explorer$bookMsg,
+									A4(
+										$author$project$OUI$Material$menuButton,
+										shared.theme,
+										model.colorThemeButton,
+										_List_fromArray(
+											[$mdgriffith$elm_ui$Element$centerX]),
+										$author$project$OUI$MenuButton$alignBottom(
+											A4(
+												$author$project$OUI$MenuButton$new,
+												$author$project$OUI$Showcase$Colors$ColorThemeButtonMsg,
+												function (i) {
+													return A2($author$project$OUI$Showcase$Colors$SelectColorScheme, i, shared.selectedColorScheme.b);
+												},
+												$author$project$OUI$Button$new(currentColorTheme.theme.name),
+												A2(
+													$author$project$OUI$Menu$addItems,
+													A2(
+														$elm$core$List$range,
+														0,
+														$elm$core$List$length(shared.colorThemeList) - 1),
+													$author$project$OUI$Menu$new(
+														function (i) {
+															return A2($author$project$OUI$Explorer$getColorTheme, i, shared).theme.name;
+														})))))),
+									A2(
+									$mdgriffith$elm_ui$Element$map,
+									$author$project$OUI$Explorer$bookMsg,
+									A3(
+										$author$project$OUI$Material$button,
+										shared.theme,
+										_List_fromArray(
+											[$mdgriffith$elm_ui$Element$centerX]),
+										A2(
+											$author$project$OUI$Button$onClick,
+											$author$project$OUI$Showcase$Colors$CopyColorTheme,
+											$author$project$OUI$Button$new('Copy')))),
+									function () {
+									var _v2 = currentColorTheme.type_;
+									if (_v2.$ === 'BuiltinColorTheme') {
+										return $mdgriffith$elm_ui$Element$none;
+									} else {
+										return A3(
+											$author$project$OUI$Material$button,
+											shared.theme,
+											_List_fromArray(
+												[$mdgriffith$elm_ui$Element$centerX]),
+											A2(
+												$author$project$OUI$Button$onClick,
+												$author$project$OUI$Explorer$sharedMsg(
+													$author$project$OUI$Explorer$deleteColorThemeMsg(shared.selectedColorScheme.a)),
+												$author$project$OUI$Button$new('Delete')));
+									}
+								}()
+								]));
+					}),
+				A2(
+					$author$project$OUI$Explorer$withDialog,
+					F2(
+						function (shared, model) {
+							return A2(
+								$elm$core$Maybe$map,
+								function (cp) {
+									return A2(
+										$author$project$OUI$Element$Modal$map,
+										$author$project$OUI$Explorer$bookMsg,
+										A4(
+											$author$project$OUI$Material$dialogWithContent,
+											shared.theme,
+											_List_Nil,
+											A2(
+												$mdgriffith$elm_ui$Element$map,
+												$author$project$OUI$Showcase$Colors$ColorPickerMsg,
+												$mdgriffith$elm_ui$Element$html(
+													A2($simonh1000$elm_colorpicker$ColorPicker$view, cp.color, cp.colorPicker))),
+											A3(
+												$author$project$OUI$Dialog$onDismiss,
+												'Cancel',
+												$author$project$OUI$Showcase$Colors$DismissColor,
+												A3(
+													$author$project$OUI$Dialog$onAccept,
+													'OK',
+													$author$project$OUI$Showcase$Colors$AcceptColor,
+													$author$project$OUI$Dialog$new('Select a color')))));
+								},
+								model.colorSelector);
+						}),
+					A2(
+						$author$project$OUI$Explorer$statefulBook,
+						'Colors',
+						{
+							init: $author$project$OUI$Showcase$Colors$init,
+							subscriptions: F2(
+								function (_v0, _v1) {
+									return $elm$core$Platform$Sub$none;
+								}),
+							update: $author$project$OUI$Showcase$Colors$update
+						}))))));
+var $author$project$OUI$Material$dialog = F2(
+	function (theme, attrs) {
+		return A6(
+			$author$project$OUI$Material$Dialog$render,
+			$author$project$OUI$Material$Theme$typescale(theme),
+			$author$project$OUI$Material$Theme$colorscheme(theme),
+			$author$project$OUI$Material$Theme$button(theme),
+			$author$project$OUI$Material$Theme$dialog(theme),
+			attrs,
+			$elm$core$Maybe$Nothing);
 	});
 var $mdgriffith$elm_ui$Internal$Flag$overflow = $mdgriffith$elm_ui$Internal$Flag$flag(20);
 var $mdgriffith$elm_ui$Element$clip = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.clip);
@@ -17363,17 +18270,6 @@ var $author$project$OUI$Showcase$Dialog$demo = function (shared) {
 					]))),
 		$mdgriffith$elm_ui$Element$text('Some content'));
 };
-var $author$project$OUI$Dialog$onAccept = F3(
-	function (label, msg, _v0) {
-		var dialog = _v0.a;
-		return $author$project$OUI$Dialog$Dialog(
-			_Utils_update(
-				dialog,
-				{
-					accept: $elm$core$Maybe$Just(
-						_Utils_Tuple2(label, msg))
-				}));
-	});
 var $author$project$OUI$Dialog$withWidth = F2(
 	function (value, _v0) {
 		var dialog = _v0.a;
@@ -18382,8 +19278,6 @@ var $mdgriffith$elm_ui$Internal$Model$paddingNameFloat = F4(
 	function (top, right, bottom, left) {
 		return 'pad-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(top) + ('-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(right) + ('-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(bottom) + ('-' + $mdgriffith$elm_ui$Internal$Model$floatClass(left)))))));
 	});
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $mdgriffith$elm_ui$Element$wrappedRow = F2(
 	function (attrs, children) {
 		var _v0 = $mdgriffith$elm_ui$Internal$Model$extractSpacingAndPadding(attrs);
@@ -269173,6 +270067,7 @@ var $author$project$OUI$Material$Theme$defaultTheme = $author$project$OUI$Materi
 var $author$project$OUI$Explorer$Light = {$: 'Light'};
 var $author$project$OUI$Explorer$defaultView = {
 	content: $mdgriffith$elm_ui$Element$text('invalid view'),
+	dialog: $elm$core$Maybe$Nothing,
 	title: 'Invalid'
 };
 var $orus_io$elm_spa$Spa$PageStack$setup = function (_v0) {
@@ -269233,7 +270128,6 @@ var $author$project$OUI$Explorer$OnBookClick = function (a) {
 var $author$project$OUI$Explorer$OnRouteChange = function (a) {
 	return {$: 'OnRouteChange', a: a};
 };
-var $author$project$OUI$Explorer$UserColorTheme = {$: 'UserColorTheme'};
 var $author$project$OUI$MenuButton$AlignTopLeft = {$: 'AlignTopLeft'};
 var $author$project$OUI$MenuButton$alignTop = function (_v0) {
 	var props = _v0.a;
@@ -270555,6 +271449,26 @@ var $mdgriffith$elm_ui$Element$layoutWith = F3(
 			child);
 	});
 var $orus_io$elm_spa$Spa$mapSharedMsg = $orus_io$elm_spa$Spa$SharedMsg;
+var $elm_community$list_extra$List$Extra$updateAt = F3(
+	function (index, fn, list) {
+		if (index < 0) {
+			return list;
+		} else {
+			var tail = A2($elm$core$List$drop, index, list);
+			if (tail.b) {
+				var x = tail.a;
+				var xs = tail.b;
+				return _Utils_ap(
+					A2($elm$core$List$take, index, list),
+					A2(
+						$elm$core$List$cons,
+						fn(x),
+						xs));
+			} else {
+				return list;
+			}
+		}
+	});
 var $author$project$OUI$Navigation$withHeader = F2(
 	function (text, _v0) {
 		var props = _v0.a;
@@ -270643,8 +271557,8 @@ var $author$project$MJson$toHex = function (c) {
 var $author$project$MJson$encodeColor = function (color) {
 	return $elm$json$Json$Encode$string(
 		function (_v0) {
-			var hex = _v0.hex;
 			var alpha = _v0.alpha;
+			var hex = _v0.hex;
 			return _Utils_ap(
 				hex,
 				$author$project$MJson$int255ToHex(
@@ -270889,9 +271803,9 @@ var $author$project$OUI$Explorer$finalizeWithOptions = F2(
 				$elm$core$List$head(categories)));
 		var allBooks = A2(
 			$elm$core$List$concatMap,
-			function (_v6) {
-				var cat = _v6.a;
-				var books = _v6.b;
+			function (_v8) {
+				var cat = _v8.a;
+				var books = _v8.b;
 				return A2(
 					$elm$core$List$map,
 					$author$project$OUI$Explorer$bookPath(cat),
@@ -270965,18 +271879,30 @@ var $author$project$OUI$Explorer$finalizeWithOptions = F2(
 												{backgroundColor: $elm$core$Maybe$Nothing, borderColor: $elm$core$Maybe$Nothing, shadow: $elm$core$Maybe$Nothing})
 											])
 									},
-									_List_fromArray(
-										[
-											$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-											$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-											$mdgriffith$elm_ui$Element$Background$color(
-											$author$project$OUI$Material$Color$toElementColor(colorscheme.surface)),
-											$mdgriffith$elm_ui$Element$Font$color(
-											$author$project$OUI$Material$Color$toElementColor(colorscheme.onSurface)),
-											$mdgriffith$elm_ui$Element$scrollbarY,
-											$mdgriffith$elm_ui$Element$htmlAttribute(
-											A2($elm$html$Html$Attributes$style, '-webkit-tap-highlight-color', 'transparent'))
-										]),
+									_Utils_ap(
+										_List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+												$mdgriffith$elm_ui$Element$Background$color(
+												$author$project$OUI$Material$Color$toElementColor(colorscheme.surface)),
+												$mdgriffith$elm_ui$Element$Font$color(
+												$author$project$OUI$Material$Color$toElementColor(colorscheme.onSurface)),
+												$mdgriffith$elm_ui$Element$scrollbarY,
+												$mdgriffith$elm_ui$Element$htmlAttribute(
+												A2($elm$html$Html$Attributes$style, '-webkit-tap-highlight-color', 'transparent'))
+											]),
+										function () {
+											var _v4 = b.dialog;
+											if (_v4.$ === 'Just') {
+												var d = _v4.a;
+												return $author$project$OUI$Element$Modal$single(
+													_List_fromArray(
+														[d]));
+											} else {
+												return _List_Nil;
+											}
+										}()),
 									A2(
 										$mdgriffith$elm_ui$Element$column,
 										_List_fromArray(
@@ -271199,9 +272125,9 @@ var $author$project$OUI$Explorer$finalizeWithOptions = F2(
 									$elm$core$Platform$Cmd$none);
 							case 'ColorThemeButtonMsg':
 								var buttonMsg = msg.a;
-								var _v5 = A2($author$project$OUI$MenuButton$update, buttonMsg, shared.colorThemeButton);
-								var state = _v5.a;
-								var cmd = _v5.b;
+								var _v6 = A2($author$project$OUI$MenuButton$update, buttonMsg, shared.colorThemeButton);
+								var state = _v6.a;
+								var cmd = _v6.b;
 								return _Utils_Tuple2(
 									_Utils_update(
 										shared,
@@ -271254,6 +272180,34 @@ var $author$project$OUI$Explorer$finalizeWithOptions = F2(
 										_Utils_update(
 											shared,
 											{colorThemeList: newList})));
+							case 'UpdateColorTheme':
+								var index = msg.a;
+								var theme = msg.b;
+								return A2(
+									$author$project$OUI$Explorer$withSaveSettings,
+									options,
+									A3(
+										$author$project$OUI$Explorer$changeColorScheme,
+										shared.selectedColorScheme.a,
+										shared.selectedColorScheme.b,
+										_Utils_update(
+											shared,
+											{
+												colorThemeList: A3(
+													$elm_community$list_extra$List$Extra$updateAt,
+													index,
+													function (t) {
+														var _v7 = t.type_;
+														if (_v7.$ === 'BuiltinColorTheme') {
+															return t;
+														} else {
+															return _Utils_update(
+																t,
+																{theme: theme});
+														}
+													},
+													shared.colorThemeList)
+											})));
 							case 'OnBookClick':
 								var path = msg.a;
 								return _Utils_Tuple2(
@@ -271275,68 +272229,9 @@ var $author$project$OUI$Explorer$finalizeWithOptions = F2(
 						}
 					})
 			},
-<<<<<<< HEAD
-			update: F2(
-				function (msg, shared) {
-					switch (msg.$) {
-						case 'Event':
-							var value = msg.a;
-							return _Utils_Tuple2(
-								_Utils_update(
-									shared,
-									{
-										lastEvents: A2(
-											$elm$core$List$take,
-											5,
-											A2($elm$core$List$cons, value, shared.lastEvents))
-									}),
-								$elm$core$Platform$Cmd$none);
-						case 'ColorThemeButtonMsg':
-							var buttonMsg = msg.a;
-							var _v5 = A2($author$project$OUI$MenuButton$update, buttonMsg, shared.colorThemeButton);
-							var state = _v5.a;
-							var cmd = _v5.b;
-							return _Utils_Tuple2(
-								_Utils_update(
-									shared,
-									{colorThemeButton: state}),
-								cmd);
-						case 'SelectColorScheme':
-							var index = msg.a;
-							var type_ = msg.b;
-							return _Utils_Tuple2(
-								A3($author$project$OUI$Explorer$changeColorScheme, index, type_, shared),
-								$elm$core$Platform$Cmd$none);
-						case 'OnBookClick':
-							var path = msg.a;
-							return _Utils_Tuple2(
-								shared,
-								A2($elm$browser$Browser$Navigation$pushUrl, shared.navKey, '#' + path));
-						default:
-							var route = msg.a;
-							return _Utils_Tuple2(
-								_Utils_update(
-									shared,
-									{selectedBook: route}),
-								(!_Utils_eq(
-									$elm$core$List$head(
-										A2(
-											$elm$core$List$filter,
-											$elm$core$Basics$eq(route),
-											allBooks)),
-									$elm$core$Maybe$Nothing)) ? $elm$core$Platform$Cmd$none : A2($elm$browser$Browser$Navigation$pushUrl, shared.navKey, '#' + firstBook));
-					}
-				})
-		},
-		A2($orus_io$elm_spa$Spa$beforeRouteChange, $author$project$OUI$Explorer$OnRouteChange, expl.app));
-};
-=======
 			A2($orus_io$elm_spa$Spa$beforeRouteChange, $author$project$OUI$Explorer$OnRouteChange, expl.app));
 	});
-var $author$project$Main$get_started = '\n\nAdd Elm Orus UI to your project:\n\n```\nelm install orus-io/elm-orus-ui\n```\n\nHave a look at the\n[documentation](https://package.elm-lang.org/packages/orus-io/elm-orus-ui/latest/)\nfor code snippets.\n';
-var $author$project$Main$intro = '\nElm Orus UI is a toolkit for building user interfaces. It provides an elegant*\nAPI to create and configure components and a rendering module named \'Material\'.\n\nThe design is based on [Material Design 3](https://m3.material.io/), and is\nfully customizable with a \'Theme\' type that holds all the layout key values for\neach component, and a colorscheme.\n\nThe colorscheme can be generated from a few key colors as specified in\nMaterial design.\n\nThis UI Explorer demonstrate all the components provided by Elm Orus UI. It can\nalso be extended with your own components and themes.\n\nThe package is available on [Elm Packages](https://package.elm-lang.org/packages/orus-io/elm-orus-ui/latest/),\nbut the source code is [available on Github](https://github.com/orus-io/elm-orus-ui).\n\n*This is of course our feeling about it, and we hope you make it yours\n';
 var $author$project$Main$saveSettings = _Platform_outgoingPort('saveSettings', $elm$core$Basics$identity);
->>>>>>> b904b8d (Showcase: adding settings save/load)
 var $author$project$OUI$Explorer$setColorTheme = F2(
 	function (colorTheme, _v0) {
 		var expl = _v0.a;
