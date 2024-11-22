@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Browser
 import ColorThemes
@@ -7,12 +7,16 @@ import IcidassetMaterialIcons.Outlined as Outlined
 import IcidassetMaterialIcons.Regular as Regular
 import IcidassetMaterialIcons.Round as Round
 import Landing
+import Json.Encode
 import Material.Icons.Types exposing (Coloring(..))
 import OUI.Explorer as Explorer
 import OUI.Material.Color
 import OUI.Material.Theme as Theme exposing (Theme)
 import OUI.Material.Typography
 import OUI.Showcase as Showcase
+
+
+port saveSettings : Json.Encode.Value -> Cmd currentMsg
 
 
 main =
@@ -34,7 +38,7 @@ main =
         |> Explorer.addBook Regular.book
         |> Explorer.addBook Outlined.book
         |> Explorer.addBook Round.book
-        |> Explorer.finalize
+        |> Explorer.finalizeWithOptions { saveSettingsPort = Just saveSettings }
         |> Browser.application
 
 

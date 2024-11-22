@@ -4655,7 +4655,10 @@ function _Url_percentDecode(string)
 	{
 		return $elm$core$Maybe$Nothing;
 	}
-}var $elm$core$List$cons = _List_cons;
+}var $elm$core$Maybe$Just = function (a) {
+	return {$: 'Just', a: a};
+};
+var $elm$core$List$cons = _List_cons;
 var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
 var $elm$core$Array$foldr = F3(
 	function (func, baseCase, _v0) {
@@ -4743,9 +4746,6 @@ var $elm$core$Basics$identity = function (x) {
 };
 var $author$project$OUI$Explorer$Explorer = function (a) {
 	return {$: 'Explorer', a: a};
-};
-var $elm$core$Maybe$Just = function (a) {
-	return {$: 'Just', a: a};
 };
 var $elm$core$Maybe$Nothing = {$: 'Nothing'};
 var $elm$core$Result$Ok = function (a) {
@@ -269655,18 +269655,619 @@ var $author$project$OUI$Explorer$changeColorScheme = F3(
 				theme: A2($author$project$OUI$Material$Theme$withColorscheme, colorScheme, shared.theme)
 			});
 	});
-var $author$project$OUI$Explorer$Flags = function (dark_mode) {
-	return {dark_mode: dark_mode};
-};
+var $author$project$OUI$Explorer$Flags = F2(
+	function (dark_mode, settings) {
+		return {dark_mode: dark_mode, settings: settings};
+	});
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
-var $author$project$OUI$Explorer$decodeFlags = A2(
+var $author$project$OUI$Explorer$Settings = function (colorThemes) {
+	return {colorThemes: colorThemes};
+};
+var $author$project$OUI$Material$Color$Theme = F4(
+	function (name, description, keyColors, schemes) {
+		return {description: description, keyColors: keyColors, name: name, schemes: schemes};
+	});
+var $author$project$OUI$Material$Color$Scheme = function (keyColors) {
+	return function (primary) {
+		return function (primaryContainer) {
+			return function (onPrimary) {
+				return function (onPrimaryContainer) {
+					return function (inversePrimary) {
+						return function (secondary) {
+							return function (secondaryContainer) {
+								return function (onSecondary) {
+									return function (onSecondaryContainer) {
+										return function (tertiary) {
+											return function (tertiaryContainer) {
+												return function (onTertiary) {
+													return function (onTertiaryContainer) {
+														return function (surface) {
+															return function (surfaceDim) {
+																return function (surfaceBright) {
+																	return function (surfaceContainerLowest) {
+																		return function (surfaceContainerLow) {
+																			return function (surfaceContainer) {
+																				return function (surfaceContainerHigh) {
+																					return function (surfaceContainerHighest) {
+																						return function (surfaceVariant) {
+																							return function (onSurface) {
+																								return function (onSurfaceVariant) {
+																									return function (inverseSurface) {
+																										return function (inverseOnSurface) {
+																											return function (background) {
+																												return function (onBackground) {
+																													return function (error) {
+																														return function (errorContainer) {
+																															return function (onError) {
+																																return function (onErrorContainer) {
+																																	return function (outline) {
+																																		return function (outlineVariant) {
+																																			return function (shadow) {
+																																				return function (surfaceTint) {
+																																					return function (scrim) {
+																																						return {background: background, error: error, errorContainer: errorContainer, inverseOnSurface: inverseOnSurface, inversePrimary: inversePrimary, inverseSurface: inverseSurface, keyColors: keyColors, onBackground: onBackground, onError: onError, onErrorContainer: onErrorContainer, onPrimary: onPrimary, onPrimaryContainer: onPrimaryContainer, onSecondary: onSecondary, onSecondaryContainer: onSecondaryContainer, onSurface: onSurface, onSurfaceVariant: onSurfaceVariant, onTertiary: onTertiary, onTertiaryContainer: onTertiaryContainer, outline: outline, outlineVariant: outlineVariant, primary: primary, primaryContainer: primaryContainer, scrim: scrim, secondary: secondary, secondaryContainer: secondaryContainer, shadow: shadow, surface: surface, surfaceBright: surfaceBright, surfaceContainer: surfaceContainer, surfaceContainerHigh: surfaceContainerHigh, surfaceContainerHighest: surfaceContainerHighest, surfaceContainerLow: surfaceContainerLow, surfaceContainerLowest: surfaceContainerLowest, surfaceDim: surfaceDim, surfaceTint: surfaceTint, surfaceVariant: surfaceVariant, tertiary: tertiary, tertiaryContainer: tertiaryContainer};
+																																					};
+																																				};
+																																			};
+																																		};
+																																	};
+																																};
+																															};
+																														};
+																													};
+																												};
+																											};
+																										};
+																									};
+																								};
+																							};
+																						};
+																					};
+																				};
+																			};
+																		};
+																	};
+																};
+															};
+														};
+													};
+												};
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var $elm$core$Char$toLower = _Char_toLower;
+var $author$project$MJson$hexToInt = function (_char) {
+	var _v0 = $elm$core$Char$toLower(_char);
+	switch (_v0.valueOf()) {
+		case '0':
+			return $elm$core$Maybe$Just(0);
+		case '1':
+			return $elm$core$Maybe$Just(1);
+		case '2':
+			return $elm$core$Maybe$Just(2);
+		case '3':
+			return $elm$core$Maybe$Just(3);
+		case '4':
+			return $elm$core$Maybe$Just(4);
+		case '5':
+			return $elm$core$Maybe$Just(5);
+		case '6':
+			return $elm$core$Maybe$Just(6);
+		case '7':
+			return $elm$core$Maybe$Just(7);
+		case '8':
+			return $elm$core$Maybe$Just(8);
+		case '9':
+			return $elm$core$Maybe$Just(9);
+		case 'a':
+			return $elm$core$Maybe$Just(10);
+		case 'b':
+			return $elm$core$Maybe$Just(11);
+		case 'c':
+			return $elm$core$Maybe$Just(12);
+		case 'd':
+			return $elm$core$Maybe$Just(13);
+		case 'e':
+			return $elm$core$Maybe$Just(14);
+		case 'f':
+			return $elm$core$Maybe$Just(15);
+		default:
+			return $elm$core$Maybe$Nothing;
+	}
+};
+var $elm$core$Maybe$map2 = F3(
+	function (func, ma, mb) {
+		if (ma.$ === 'Nothing') {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var a = ma.a;
+			if (mb.$ === 'Nothing') {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var b = mb.a;
+				return $elm$core$Maybe$Just(
+					A2(func, a, b));
+			}
+		}
+	});
+var $author$project$MJson$hex2ToInt = F2(
+	function (c1, c2) {
+		return A3(
+			$elm$core$Maybe$map2,
+			F2(
+				function (v1, v2) {
+					return (v1 << 4) + v2;
+				}),
+			$author$project$MJson$hexToInt(c1),
+			$author$project$MJson$hexToInt(c2));
+	});
+var $elm$core$Maybe$map4 = F5(
+	function (func, ma, mb, mc, md) {
+		if (ma.$ === 'Nothing') {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var a = ma.a;
+			if (mb.$ === 'Nothing') {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var b = mb.a;
+				if (mc.$ === 'Nothing') {
+					return $elm$core$Maybe$Nothing;
+				} else {
+					var c = mc.a;
+					if (md.$ === 'Nothing') {
+						return $elm$core$Maybe$Nothing;
+					} else {
+						var d = md.a;
+						return $elm$core$Maybe$Just(
+							A4(func, a, b, c, d));
+					}
+				}
+			}
+		}
+	});
+var $avh4$elm_color$Color$rgba = F4(
+	function (r, g, b, a) {
+		return A4($avh4$elm_color$Color$RgbaSpace, r, g, b, a);
+	});
+var $author$project$MJson$fromHex8 = F4(
+	function (_v0, _v1, _v2, _v3) {
+		var r1 = _v0.a;
+		var r2 = _v0.b;
+		var g1 = _v1.a;
+		var g2 = _v1.b;
+		var b1 = _v2.a;
+		var b2 = _v2.b;
+		var a1 = _v3.a;
+		var a2 = _v3.b;
+		return A5(
+			$elm$core$Maybe$map4,
+			F4(
+				function (r, g, b, a) {
+					return A4($avh4$elm_color$Color$rgba, r / 255, g / 255, b / 255, a / 255);
+				}),
+			A2($author$project$MJson$hex2ToInt, r1, r2),
+			A2($author$project$MJson$hex2ToInt, g1, g2),
+			A2($author$project$MJson$hex2ToInt, b1, b2),
+			A2($author$project$MJson$hex2ToInt, a1, a2));
+	});
+var $author$project$MJson$colorFromHex = function (hexString) {
+	var _v0 = $elm$core$String$toList(hexString);
+	_v0$8:
+	while (true) {
+		if ((_v0.b && _v0.b.b) && _v0.b.b.b) {
+			if (!_v0.b.b.b.b) {
+				var r = _v0.a;
+				var _v4 = _v0.b;
+				var g = _v4.a;
+				var _v5 = _v4.b;
+				var b = _v5.a;
+				return A4(
+					$author$project$MJson$fromHex8,
+					_Utils_Tuple2(r, r),
+					_Utils_Tuple2(g, g),
+					_Utils_Tuple2(b, b),
+					_Utils_Tuple2(
+						_Utils_chr('f'),
+						_Utils_chr('f')));
+			} else {
+				if (!_v0.b.b.b.b.b) {
+					if ('#' === _v0.a.valueOf()) {
+						var _v1 = _v0.b;
+						var r = _v1.a;
+						var _v2 = _v1.b;
+						var g = _v2.a;
+						var _v3 = _v2.b;
+						var b = _v3.a;
+						return A4(
+							$author$project$MJson$fromHex8,
+							_Utils_Tuple2(r, r),
+							_Utils_Tuple2(g, g),
+							_Utils_Tuple2(b, b),
+							_Utils_Tuple2(
+								_Utils_chr('f'),
+								_Utils_chr('f')));
+					} else {
+						var r = _v0.a;
+						var _v10 = _v0.b;
+						var g = _v10.a;
+						var _v11 = _v10.b;
+						var b = _v11.a;
+						var _v12 = _v11.b;
+						var a = _v12.a;
+						return A4(
+							$author$project$MJson$fromHex8,
+							_Utils_Tuple2(r, r),
+							_Utils_Tuple2(g, g),
+							_Utils_Tuple2(b, b),
+							_Utils_Tuple2(a, a));
+					}
+				} else {
+					if (!_v0.b.b.b.b.b.b) {
+						if ('#' === _v0.a.valueOf()) {
+							var _v6 = _v0.b;
+							var r = _v6.a;
+							var _v7 = _v6.b;
+							var g = _v7.a;
+							var _v8 = _v7.b;
+							var b = _v8.a;
+							var _v9 = _v8.b;
+							var a = _v9.a;
+							return A4(
+								$author$project$MJson$fromHex8,
+								_Utils_Tuple2(r, r),
+								_Utils_Tuple2(g, g),
+								_Utils_Tuple2(b, b),
+								_Utils_Tuple2(a, a));
+						} else {
+							break _v0$8;
+						}
+					} else {
+						if (!_v0.b.b.b.b.b.b.b) {
+							var r1 = _v0.a;
+							var _v19 = _v0.b;
+							var r2 = _v19.a;
+							var _v20 = _v19.b;
+							var g1 = _v20.a;
+							var _v21 = _v20.b;
+							var g2 = _v21.a;
+							var _v22 = _v21.b;
+							var b1 = _v22.a;
+							var _v23 = _v22.b;
+							var b2 = _v23.a;
+							return A4(
+								$author$project$MJson$fromHex8,
+								_Utils_Tuple2(r1, r2),
+								_Utils_Tuple2(g1, g2),
+								_Utils_Tuple2(b1, b2),
+								_Utils_Tuple2(
+									_Utils_chr('f'),
+									_Utils_chr('f')));
+						} else {
+							if (!_v0.b.b.b.b.b.b.b.b) {
+								if ('#' === _v0.a.valueOf()) {
+									var _v13 = _v0.b;
+									var r1 = _v13.a;
+									var _v14 = _v13.b;
+									var r2 = _v14.a;
+									var _v15 = _v14.b;
+									var g1 = _v15.a;
+									var _v16 = _v15.b;
+									var g2 = _v16.a;
+									var _v17 = _v16.b;
+									var b1 = _v17.a;
+									var _v18 = _v17.b;
+									var b2 = _v18.a;
+									return A4(
+										$author$project$MJson$fromHex8,
+										_Utils_Tuple2(r1, r2),
+										_Utils_Tuple2(g1, g2),
+										_Utils_Tuple2(b1, b2),
+										_Utils_Tuple2(
+											_Utils_chr('f'),
+											_Utils_chr('f')));
+								} else {
+									break _v0$8;
+								}
+							} else {
+								if (_v0.b.b.b.b.b.b.b.b.b) {
+									if (('#' === _v0.a.valueOf()) && (!_v0.b.b.b.b.b.b.b.b.b.b)) {
+										var _v24 = _v0.b;
+										var r1 = _v24.a;
+										var _v25 = _v24.b;
+										var r2 = _v25.a;
+										var _v26 = _v25.b;
+										var g1 = _v26.a;
+										var _v27 = _v26.b;
+										var g2 = _v27.a;
+										var _v28 = _v27.b;
+										var b1 = _v28.a;
+										var _v29 = _v28.b;
+										var b2 = _v29.a;
+										var _v30 = _v29.b;
+										var a1 = _v30.a;
+										var _v31 = _v30.b;
+										var a2 = _v31.a;
+										return A4(
+											$author$project$MJson$fromHex8,
+											_Utils_Tuple2(r1, r2),
+											_Utils_Tuple2(g1, g2),
+											_Utils_Tuple2(b1, b2),
+											_Utils_Tuple2(a1, a2));
+									} else {
+										break _v0$8;
+									}
+								} else {
+									var r1 = _v0.a;
+									var _v32 = _v0.b;
+									var r2 = _v32.a;
+									var _v33 = _v32.b;
+									var g1 = _v33.a;
+									var _v34 = _v33.b;
+									var g2 = _v34.a;
+									var _v35 = _v34.b;
+									var b1 = _v35.a;
+									var _v36 = _v35.b;
+									var b2 = _v36.a;
+									var _v37 = _v36.b;
+									var a1 = _v37.a;
+									var _v38 = _v37.b;
+									var a2 = _v38.a;
+									return A4(
+										$author$project$MJson$fromHex8,
+										_Utils_Tuple2(r1, r2),
+										_Utils_Tuple2(g1, g2),
+										_Utils_Tuple2(b1, b2),
+										_Utils_Tuple2(a1, a2));
+								}
+							}
+						}
+					}
+				}
+			}
+		} else {
+			break _v0$8;
+		}
+	}
+	return $elm$core$Maybe$Nothing;
+};
+var $author$project$MJson$decodeColor = A2(
+	$elm$json$Json$Decode$andThen,
+	function (s) {
+		var _v0 = $author$project$MJson$colorFromHex(s);
+		if (_v0.$ === 'Nothing') {
+			return $elm$json$Json$Decode$fail('Invalid color' + s);
+		} else {
+			var c = _v0.a;
+			return $elm$json$Json$Decode$succeed(c);
+		}
+	},
+	$elm$json$Json$Decode$string);
+var $author$project$OUI$Material$Color$KeyColors = F6(
+	function (primary, secondary, tertiary, error, neutral, neutralVariant) {
+		return {error: error, neutral: neutral, neutralVariant: neutralVariant, primary: primary, secondary: secondary, tertiary: tertiary};
+	});
+var $elm$json$Json$Decode$map6 = _Json_map6;
+var $author$project$MJson$decodeKeyColors = A7(
+	$elm$json$Json$Decode$map6,
+	$author$project$OUI$Material$Color$KeyColors,
+	A2($elm$json$Json$Decode$field, 'primary', $author$project$MJson$decodeColor),
+	A2($elm$json$Json$Decode$field, 'secondary', $author$project$MJson$decodeColor),
+	A2($elm$json$Json$Decode$field, 'tertiary', $author$project$MJson$decodeColor),
+	A2($elm$json$Json$Decode$field, 'error', $author$project$MJson$decodeColor),
+	A2($elm$json$Json$Decode$field, 'neutral', $author$project$MJson$decodeColor),
+	A2($elm$json$Json$Decode$field, 'neutralVariant', $author$project$MJson$decodeColor));
+var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$custom = $elm$json$Json$Decode$map2($elm$core$Basics$apR);
+var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required = F3(
+	function (key, valDecoder, decoder) {
+		return A2(
+			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$custom,
+			A2($elm$json$Json$Decode$field, key, valDecoder),
+			decoder);
+	});
+var $author$project$MJson$decodeColorScheme = A3(
+	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+	'scrim',
+	$author$project$MJson$decodeColor,
+	A3(
+		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+		'surfaceTint',
+		$author$project$MJson$decodeColor,
+		A3(
+			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+			'shadow',
+			$author$project$MJson$decodeColor,
+			A3(
+				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+				'outlineVariant',
+				$author$project$MJson$decodeColor,
+				A3(
+					$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+					'outline',
+					$author$project$MJson$decodeColor,
+					A3(
+						$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+						'onErrorContainer',
+						$author$project$MJson$decodeColor,
+						A3(
+							$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+							'onError',
+							$author$project$MJson$decodeColor,
+							A3(
+								$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+								'errorContainer',
+								$author$project$MJson$decodeColor,
+								A3(
+									$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+									'error',
+									$author$project$MJson$decodeColor,
+									A3(
+										$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+										'onBackground',
+										$author$project$MJson$decodeColor,
+										A3(
+											$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+											'background',
+											$author$project$MJson$decodeColor,
+											A3(
+												$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+												'inverseOnSurface',
+												$author$project$MJson$decodeColor,
+												A3(
+													$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+													'inverseSurface',
+													$author$project$MJson$decodeColor,
+													A3(
+														$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+														'onSurfaceVariant',
+														$author$project$MJson$decodeColor,
+														A3(
+															$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+															'onSurface',
+															$author$project$MJson$decodeColor,
+															A3(
+																$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																'surfaceVariant',
+																$author$project$MJson$decodeColor,
+																A3(
+																	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																	'surfaceContainerHighest',
+																	$author$project$MJson$decodeColor,
+																	A3(
+																		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																		'surfaceContainerrHigh',
+																		$author$project$MJson$decodeColor,
+																		A3(
+																			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																			'surfaceContainer',
+																			$author$project$MJson$decodeColor,
+																			A3(
+																				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																				'surfaceContainerLow',
+																				$author$project$MJson$decodeColor,
+																				A3(
+																					$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																					'surfaceContainerLowest',
+																					$author$project$MJson$decodeColor,
+																					A3(
+																						$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																						'surfaceBright',
+																						$author$project$MJson$decodeColor,
+																						A3(
+																							$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																							'surfaceDim',
+																							$author$project$MJson$decodeColor,
+																							A3(
+																								$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																								'surface',
+																								$author$project$MJson$decodeColor,
+																								A3(
+																									$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																									'onTertiaryContainer',
+																									$author$project$MJson$decodeColor,
+																									A3(
+																										$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																										'onTertiary',
+																										$author$project$MJson$decodeColor,
+																										A3(
+																											$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																											'tertiaryContainer',
+																											$author$project$MJson$decodeColor,
+																											A3(
+																												$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																												'tertiary',
+																												$author$project$MJson$decodeColor,
+																												A3(
+																													$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																													'onSecondaryContainer',
+																													$author$project$MJson$decodeColor,
+																													A3(
+																														$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																														'onSecondary',
+																														$author$project$MJson$decodeColor,
+																														A3(
+																															$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																															'secondaryContainer',
+																															$author$project$MJson$decodeColor,
+																															A3(
+																																$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																																'secondary',
+																																$author$project$MJson$decodeColor,
+																																A3(
+																																	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																																	'inversePrimary',
+																																	$author$project$MJson$decodeColor,
+																																	A3(
+																																		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																																		'onPrimaryContainer',
+																																		$author$project$MJson$decodeColor,
+																																		A3(
+																																			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																																			'onPrimary',
+																																			$author$project$MJson$decodeColor,
+																																			A3(
+																																				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																																				'primaryContainer',
+																																				$author$project$MJson$decodeColor,
+																																				A3(
+																																					$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																																					'primary',
+																																					$author$project$MJson$decodeColor,
+																																					A3(
+																																						$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
+																																						'keyColors',
+																																						$author$project$MJson$decodeKeyColors,
+																																						$elm$json$Json$Decode$succeed($author$project$OUI$Material$Color$Scheme)))))))))))))))))))))))))))))))))))))));
+var $elm$json$Json$Decode$map4 = _Json_map4;
+var $author$project$MJson$decodeColorTheme = A5(
+	$elm$json$Json$Decode$map4,
+	$author$project$OUI$Material$Color$Theme,
+	A2($elm$json$Json$Decode$field, 'name', $elm$json$Json$Decode$string),
+	A2($elm$json$Json$Decode$field, 'description', $elm$json$Json$Decode$string),
+	A2($elm$json$Json$Decode$field, 'keyColors', $author$project$MJson$decodeKeyColors),
+	A2(
+		$elm$json$Json$Decode$field,
+		'schemes',
+		A3(
+			$elm$json$Json$Decode$map2,
+			F2(
+				function (light, dark) {
+					return {dark: dark, light: light};
+				}),
+			A2($elm$json$Json$Decode$field, 'light', $author$project$MJson$decodeColorScheme),
+			A2($elm$json$Json$Decode$field, 'dark', $author$project$MJson$decodeColorScheme))));
+var $elm$json$Json$Decode$list = _Json_decodeList;
+var $author$project$OUI$Explorer$decodeSettings = A2(
 	$elm$json$Json$Decode$map,
+	$author$project$OUI$Explorer$Settings,
+	A2(
+		$elm$json$Json$Decode$field,
+		'colorThemes',
+		$elm$json$Json$Decode$list($author$project$MJson$decodeColorTheme)));
+var $author$project$OUI$Explorer$decodeFlags = A3(
+	$elm$json$Json$Decode$map2,
 	$author$project$OUI$Explorer$Flags,
 	$elm$json$Json$Decode$oneOf(
 		_List_fromArray(
 			[
 				A2($elm$json$Json$Decode$field, 'dark_mode', $elm$json$Json$Decode$bool),
 				$elm$json$Json$Decode$succeed(false)
+			])),
+	$elm$json$Json$Decode$oneOf(
+		_List_fromArray(
+			[
+				A2($elm$json$Json$Decode$field, 'settings', $author$project$OUI$Explorer$decodeSettings),
+				$elm$json$Json$Decode$succeed(
+				{colorThemes: _List_Nil})
 			])));
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $mdgriffith$elm_ui$Internal$Model$FocusStyleOption = function (a) {
@@ -269897,299 +270498,356 @@ var $author$project$OUI$Navigation$withSelected = F2(
 					selected: $elm$core$Maybe$Just(key)
 				}));
 	});
-var $author$project$OUI$Explorer$finalize = function (_v0) {
-	var expl = _v0.a;
-	var categories = $elm$core$List$reverse(
-		A2(
-			$elm$core$List$map,
-			$elm$core$Tuple$mapSecond($elm$core$List$reverse),
-			expl.categories));
-	var firstCategory = A2(
-		$elm$core$Maybe$withDefault,
-		'',
-		A2(
-			$elm$core$Maybe$map,
-			$elm$core$Tuple$first,
-			$elm$core$List$head(categories)));
-	var allBooks = A2(
-		$elm$core$List$concatMap,
-		function (_v6) {
-			var cat = _v6.a;
-			var books = _v6.b;
-			return A2(
+var $author$project$OUI$Explorer$finalizeWithOptions = F2(
+	function (options, _v0) {
+		var expl = _v0.a;
+		var categories = $elm$core$List$reverse(
+			A2(
 				$elm$core$List$map,
-				$author$project$OUI$Explorer$bookPath(cat),
-				books);
-		},
-		categories);
-	var firstBook = A2(
-		$elm$core$Maybe$withDefault,
-		'',
-		$elm$core$List$head(allBooks));
-	return A3(
-		$orus_io$elm_spa$Spa$application,
-		$author$project$OUI$Explorer$mapView,
-		{
-			init: F2(
-				function (flags, key) {
-					var dFlags = A2(
-						$elm$core$Result$withDefault,
-						{dark_mode: false},
-						A2($elm$json$Json$Decode$decodeValue, $author$project$OUI$Explorer$decodeFlags, flags));
-					return _Utils_Tuple2(
-						A3(
-							$author$project$OUI$Explorer$changeColorScheme,
-							0,
-							dFlags.dark_mode ? $author$project$OUI$Explorer$Dark : $author$project$OUI$Explorer$Light,
+				$elm$core$Tuple$mapSecond($elm$core$List$reverse),
+				expl.categories));
+		var firstCategory = A2(
+			$elm$core$Maybe$withDefault,
+			'',
+			A2(
+				$elm$core$Maybe$map,
+				$elm$core$Tuple$first,
+				$elm$core$List$head(categories)));
+		var allBooks = A2(
+			$elm$core$List$concatMap,
+			function (_v6) {
+				var cat = _v6.a;
+				var books = _v6.b;
+				return A2(
+					$elm$core$List$map,
+					$author$project$OUI$Explorer$bookPath(cat),
+					books);
+			},
+			categories);
+		var firstBook = A2(
+			$elm$core$Maybe$withDefault,
+			'',
+			$elm$core$List$head(allBooks));
+		return A3(
+			$orus_io$elm_spa$Spa$application,
+			$author$project$OUI$Explorer$mapView,
+			{
+				init: F2(
+					function (flags, key) {
+						var dFlags = A2(
+							$elm$core$Result$withDefault,
 							{
-								colorThemeButton: $author$project$OUI$MenuButton$init('color-theme-button'),
-								colorThemeList: expl.initialShared.colorThemeList,
-								lastEvents: _List_Nil,
-								navKey: key,
-								selectedBook: '',
-								selectedColorScheme: expl.initialShared.selectedColorScheme,
-								theme: expl.initialShared.theme
-							}),
-						$elm$core$Platform$Cmd$none);
-				}),
-			protectPage: function (_v1) {
-				return '/';
-			},
-			subscriptions: function (_v2) {
-				return $elm$core$Platform$Sub$none;
-			},
-			toDocument: F2(
-				function (shared, b) {
-					var colorscheme = $author$project$OUI$Material$Theme$colorscheme(shared.theme);
-					return {
-						body: _List_fromArray(
-							[
-								A3(
-								$mdgriffith$elm_ui$Element$layoutWith,
+								dark_mode: false,
+								settings: {colorThemes: _List_Nil}
+							},
+							A2($elm$json$Json$Decode$decodeValue, $author$project$OUI$Explorer$decodeFlags, flags));
+						return _Utils_Tuple2(
+							A3(
+								$author$project$OUI$Explorer$changeColorScheme,
+								0,
+								dFlags.dark_mode ? $author$project$OUI$Explorer$Dark : $author$project$OUI$Explorer$Light,
 								{
-									options: _List_fromArray(
-										[
-											$mdgriffith$elm_ui$Element$focusStyle(
-											{backgroundColor: $elm$core$Maybe$Nothing, borderColor: $elm$core$Maybe$Nothing, shadow: $elm$core$Maybe$Nothing})
-										])
-								},
-								_List_fromArray(
-									[
-										$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-										$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-										$mdgriffith$elm_ui$Element$Background$color(
-										$author$project$OUI$Material$Color$toElementColor(colorscheme.surface)),
-										$mdgriffith$elm_ui$Element$Font$color(
-										$author$project$OUI$Material$Color$toElementColor(colorscheme.onSurface)),
-										$mdgriffith$elm_ui$Element$scrollbarY,
-										$mdgriffith$elm_ui$Element$htmlAttribute(
-										A2($elm$html$Html$Attributes$style, '-webkit-tap-highlight-color', 'transparent'))
-									]),
-								A2(
-									$mdgriffith$elm_ui$Element$column,
+									colorThemeButton: $author$project$OUI$MenuButton$init('color-theme-button'),
+									colorThemeList: expl.initialShared.colorThemeList,
+									lastEvents: _List_Nil,
+									navKey: key,
+									selectedBook: '',
+									selectedColorScheme: expl.initialShared.selectedColorScheme,
+									theme: expl.initialShared.theme
+								}),
+							$elm$core$Platform$Cmd$none);
+					}),
+				protectPage: function (_v1) {
+					return '/';
+				},
+				subscriptions: function (_v2) {
+					return $elm$core$Platform$Sub$none;
+				},
+				toDocument: F2(
+					function (shared, b) {
+						var colorscheme = $author$project$OUI$Material$Theme$colorscheme(shared.theme);
+						return {
+							body: _List_fromArray(
+								[
+									A3(
+									$mdgriffith$elm_ui$Element$layoutWith,
+									{
+										options: _List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$focusStyle(
+												{backgroundColor: $elm$core$Maybe$Nothing, borderColor: $elm$core$Maybe$Nothing, shadow: $elm$core$Maybe$Nothing})
+											])
+									},
 									_List_fromArray(
 										[
 											$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-											$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+											$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+											$mdgriffith$elm_ui$Element$Background$color(
+											$author$project$OUI$Material$Color$toElementColor(colorscheme.surface)),
+											$mdgriffith$elm_ui$Element$Font$color(
+											$author$project$OUI$Material$Color$toElementColor(colorscheme.onSurface)),
+											$mdgriffith$elm_ui$Element$scrollbarY,
+											$mdgriffith$elm_ui$Element$htmlAttribute(
+											A2($elm$html$Html$Attributes$style, '-webkit-tap-highlight-color', 'transparent'))
 										]),
-									_List_fromArray(
-										[
-											A2(
-											$mdgriffith$elm_ui$Element$row,
-											_List_fromArray(
-												[
-													$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-													$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-												]),
-											_List_fromArray(
-												[
-													A2(
-													$mdgriffith$elm_ui$Element$column,
-													_List_fromArray(
-														[
-															$mdgriffith$elm_ui$Element$alignTop,
-															$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
-														]),
-													_List_fromArray(
-														[
-															A3(
-															$author$project$OUI$Material$navigation,
-															shared.theme,
-															_List_Nil,
-															function (nav) {
-																return A3(
-																	$elm$core$List$foldl,
-																	function (_v3) {
-																		var cat = _v3.a;
-																		var books = _v3.b;
-																		return A2(
-																			$elm$core$Basics$composeR,
-																			(!_Utils_eq(cat, firstCategory)) ? $author$project$OUI$Navigation$addDivider : $elm$core$Basics$identity,
-																			A2(
-																				$elm$core$Basics$composeR,
-																				$author$project$OUI$Navigation$addSectionHeader(cat),
-																				function (bn) {
-																					return A3(
-																						$elm$core$List$foldl,
-																						function (bookName) {
-																							return A3(
-																								$author$project$OUI$Navigation$addEntry,
-																								A2($author$project$OUI$Explorer$bookPath, cat, bookName),
-																								bookName,
-																								$author$project$OUI$Icon$blank);
-																						},
-																						bn,
-																						books);
-																				}));
-																	},
-																	nav,
-																	categories);
-															}(
-																A2(
-																	$author$project$OUI$Navigation$withSelected,
-																	shared.selectedBook,
-																	A2(
-																		$author$project$OUI$Navigation$withHeader,
-																		'Orus UI Explorer',
-																		$author$project$OUI$Navigation$new(
-																			A2($elm$core$Basics$composeL, $orus_io$elm_spa$Spa$mapSharedMsg, $author$project$OUI$Explorer$OnBookClick)))))),
-															A2(
-															$mdgriffith$elm_ui$Element$row,
-															_List_fromArray(
-																[
-																	$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-																	$mdgriffith$elm_ui$Element$padding(15),
-																	$mdgriffith$elm_ui$Element$spacing(15),
-																	$mdgriffith$elm_ui$Element$Background$color(
-																	$author$project$OUI$Material$Color$toElementColor(colorscheme.surfaceContainerHigh))
-																]),
-															_List_fromArray(
-																[
-																	A2(
-																	$mdgriffith$elm_ui$Element$el,
-																	_List_fromArray(
-																		[$mdgriffith$elm_ui$Element$alignLeft]),
-																	A2(
-																		$author$project$OUI$Material$text,
-																		shared.theme,
-																		$author$project$OUI$Text$labelMedium('Color theme:'))),
-																	A2(
-																	$mdgriffith$elm_ui$Element$map,
-																	$orus_io$elm_spa$Spa$mapSharedMsg,
-																	A4(
-																		$author$project$OUI$Material$menuButton,
-																		shared.theme,
-																		shared.colorThemeButton,
-																		_List_fromArray(
-																			[$mdgriffith$elm_ui$Element$centerX]),
-																		$author$project$OUI$MenuButton$alignTop(
-																			A4(
-																				$author$project$OUI$MenuButton$new,
-																				$author$project$OUI$Explorer$ColorThemeButtonMsg,
-																				function (i) {
-																					return A2($author$project$OUI$Explorer$SelectColorScheme, i, shared.selectedColorScheme.b);
-																				},
-																				$author$project$OUI$Button$new(
-																					$author$project$OUI$Explorer$getSelectedColorTheme(shared).name),
-																				A2(
-																					$author$project$OUI$Menu$addItems,
-																					A2(
-																						$elm$core$List$range,
-																						0,
-																						$elm$core$List$length(shared.colorThemeList) - 1),
-																					$author$project$OUI$Menu$new(
-																						function (i) {
-																							return A2($author$project$OUI$Explorer$getColorTheme, i, shared).name;
-																						})))))),
-																	A3(
-																	$author$project$OUI$Material$switch,
-																	shared.theme,
-																	_List_fromArray(
-																		[$mdgriffith$elm_ui$Element$alignRight]),
-																	A2(
-																		$author$project$OUI$Switch$withIconUnselected,
-																		$author$project$OUI$Icon$light_mode,
-																		A2(
-																			$author$project$OUI$Switch$withIconSelected,
-																			$author$project$OUI$Icon$dark_mode,
-																			A2(
-																				$author$project$OUI$Switch$onChange,
-																				function (dark) {
-																					return $orus_io$elm_spa$Spa$mapSharedMsg(
-																						A2(
-																							$author$project$OUI$Explorer$SelectColorScheme,
-																							shared.selectedColorScheme.a,
-																							dark ? $author$project$OUI$Explorer$Dark : $author$project$OUI$Explorer$Light));
-																				},
-																				$author$project$OUI$Switch$new(
-																					_Utils_eq(shared.selectedColorScheme.b, $author$project$OUI$Explorer$Dark))))))
-																]))
-														])),
-													A2(
-													$mdgriffith$elm_ui$Element$column,
-													_List_fromArray(
-														[
-															$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-															$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-															$mdgriffith$elm_ui$Element$padding(20)
-														]),
-													_List_fromArray(
-														[
-															A2(
-															$mdgriffith$elm_ui$Element$el,
-															_List_fromArray(
-																[
-																	A2($mdgriffith$elm_ui$Element$paddingXY, 0, 30)
-																]),
-															A2(
-																$author$project$OUI$Material$text,
+									A2(
+										$mdgriffith$elm_ui$Element$column,
+										_List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+											]),
+										_List_fromArray(
+											[
+												A2(
+												$mdgriffith$elm_ui$Element$row,
+												_List_fromArray(
+													[
+														$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+														$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$mdgriffith$elm_ui$Element$column,
+														_List_fromArray(
+															[
+																$mdgriffith$elm_ui$Element$alignTop,
+																$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
+															]),
+														_List_fromArray(
+															[
+																A3(
+																$author$project$OUI$Material$navigation,
 																shared.theme,
-																$author$project$OUI$Text$displayLarge(b.title))),
-															A2(
-															$mdgriffith$elm_ui$Element$el,
-															_List_fromArray(
-																[
-																	$mdgriffith$elm_ui$Element$scrollbarY,
-																	$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-																	$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-																]),
-															b.content),
-															A2(
-															$mdgriffith$elm_ui$Element$column,
-															_List_fromArray(
-																[
-																	$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
-																	$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-																	$mdgriffith$elm_ui$Element$Background$color(
-																	$author$project$OUI$Material$Color$toElementColor(colorscheme.surfaceContainerLow)),
-																	$mdgriffith$elm_ui$Element$padding(15),
-																	$mdgriffith$elm_ui$Element$spacing(8)
-																]),
-															A2(
-																$elm$core$List$indexedMap,
-																F2(
-																	function (i, event) {
-																		return A2(
-																			$mdgriffith$elm_ui$Element$el,
+																_List_Nil,
+																function (nav) {
+																	return A3(
+																		$elm$core$List$foldl,
+																		function (_v3) {
+																			var cat = _v3.a;
+																			var books = _v3.b;
+																			return A2(
+																				$elm$core$Basics$composeR,
+																				(!_Utils_eq(cat, firstCategory)) ? $author$project$OUI$Navigation$addDivider : $elm$core$Basics$identity,
+																				A2(
+																					$elm$core$Basics$composeR,
+																					$author$project$OUI$Navigation$addSectionHeader(cat),
+																					function (bn) {
+																						return A3(
+																							$elm$core$List$foldl,
+																							function (bookName) {
+																								return A3(
+																									$author$project$OUI$Navigation$addEntry,
+																									A2($author$project$OUI$Explorer$bookPath, cat, bookName),
+																									bookName,
+																									$author$project$OUI$Icon$blank);
+																							},
+																							bn,
+																							books);
+																					}));
+																		},
+																		nav,
+																		categories);
+																}(
+																	A2(
+																		$author$project$OUI$Navigation$withSelected,
+																		shared.selectedBook,
+																		A2(
+																			$author$project$OUI$Navigation$withHeader,
+																			'Orus UI Explorer',
+																			$author$project$OUI$Navigation$new(
+																				A2($elm$core$Basics$composeL, $orus_io$elm_spa$Spa$mapSharedMsg, $author$project$OUI$Explorer$OnBookClick)))))),
+																A2(
+																$mdgriffith$elm_ui$Element$row,
+																_List_fromArray(
+																	[
+																		$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+																		$mdgriffith$elm_ui$Element$padding(15),
+																		$mdgriffith$elm_ui$Element$spacing(15),
+																		$mdgriffith$elm_ui$Element$Background$color(
+																		$author$project$OUI$Material$Color$toElementColor(colorscheme.surfaceContainerHigh))
+																	]),
+																_List_fromArray(
+																	[
+																		A2(
+																		$mdgriffith$elm_ui$Element$el,
+																		_List_fromArray(
+																			[$mdgriffith$elm_ui$Element$alignLeft]),
+																		A2(
+																			$author$project$OUI$Material$text,
+																			shared.theme,
+																			$author$project$OUI$Text$labelMedium('Color theme:'))),
+																		A2(
+																		$mdgriffith$elm_ui$Element$map,
+																		$orus_io$elm_spa$Spa$mapSharedMsg,
+																		A4(
+																			$author$project$OUI$Material$menuButton,
+																			shared.theme,
+																			shared.colorThemeButton,
 																			_List_fromArray(
-																				[
-																					$mdgriffith$elm_ui$Element$Font$color(
-																					$author$project$OUI$Material$Color$toElementColor(
-																						A2($author$project$OUI$Material$Color$setAlpha, 1.0 - (i / 5.0), colorscheme.onSurface)))
-																				]),
-																			$mdgriffith$elm_ui$Element$text(event));
-																	}),
-																shared.lastEvents))
-														]))
-												]))
-										])))
-							]),
-						title: b.title
-					};
-				}),
-			toRoute: function (url) {
-				return A2($elm$core$Maybe$withDefault, '/', url.fragment);
+																				[$mdgriffith$elm_ui$Element$centerX]),
+																			$author$project$OUI$MenuButton$alignTop(
+																				A4(
+																					$author$project$OUI$MenuButton$new,
+																					$author$project$OUI$Explorer$ColorThemeButtonMsg,
+																					function (i) {
+																						return A2($author$project$OUI$Explorer$SelectColorScheme, i, shared.selectedColorScheme.b);
+																					},
+																					$author$project$OUI$Button$new(
+																						$author$project$OUI$Explorer$getSelectedColorTheme(shared).name),
+																					A2(
+																						$author$project$OUI$Menu$addItems,
+																						A2(
+																							$elm$core$List$range,
+																							0,
+																							$elm$core$List$length(shared.colorThemeList) - 1),
+																						$author$project$OUI$Menu$new(
+																							function (i) {
+																								return A2($author$project$OUI$Explorer$getColorTheme, i, shared).name;
+																							})))))),
+																		A3(
+																		$author$project$OUI$Material$switch,
+																		shared.theme,
+																		_List_fromArray(
+																			[$mdgriffith$elm_ui$Element$alignRight]),
+																		A2(
+																			$author$project$OUI$Switch$withIconUnselected,
+																			$author$project$OUI$Icon$light_mode,
+																			A2(
+																				$author$project$OUI$Switch$withIconSelected,
+																				$author$project$OUI$Icon$dark_mode,
+																				A2(
+																					$author$project$OUI$Switch$onChange,
+																					function (dark) {
+																						return $orus_io$elm_spa$Spa$mapSharedMsg(
+																							A2(
+																								$author$project$OUI$Explorer$SelectColorScheme,
+																								shared.selectedColorScheme.a,
+																								dark ? $author$project$OUI$Explorer$Dark : $author$project$OUI$Explorer$Light));
+																					},
+																					$author$project$OUI$Switch$new(
+																						_Utils_eq(shared.selectedColorScheme.b, $author$project$OUI$Explorer$Dark))))))
+																	]))
+															])),
+														A2(
+														$mdgriffith$elm_ui$Element$column,
+														_List_fromArray(
+															[
+																$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+																$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+																$mdgriffith$elm_ui$Element$padding(20)
+															]),
+														_List_fromArray(
+															[
+																A2(
+																$mdgriffith$elm_ui$Element$el,
+																_List_fromArray(
+																	[
+																		A2($mdgriffith$elm_ui$Element$paddingXY, 0, 30)
+																	]),
+																A2(
+																	$author$project$OUI$Material$text,
+																	shared.theme,
+																	$author$project$OUI$Text$displayLarge(b.title))),
+																A2(
+																$mdgriffith$elm_ui$Element$el,
+																_List_fromArray(
+																	[
+																		$mdgriffith$elm_ui$Element$scrollbarY,
+																		$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+																		$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+																	]),
+																b.content),
+																A2(
+																$mdgriffith$elm_ui$Element$column,
+																_List_fromArray(
+																	[
+																		$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
+																		$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+																		$mdgriffith$elm_ui$Element$Background$color(
+																		$author$project$OUI$Material$Color$toElementColor(colorscheme.surfaceContainerLow)),
+																		$mdgriffith$elm_ui$Element$padding(15),
+																		$mdgriffith$elm_ui$Element$spacing(8)
+																	]),
+																A2(
+																	$elm$core$List$indexedMap,
+																	F2(
+																		function (i, event) {
+																			return A2(
+																				$mdgriffith$elm_ui$Element$el,
+																				_List_fromArray(
+																					[
+																						$mdgriffith$elm_ui$Element$Font$color(
+																						$author$project$OUI$Material$Color$toElementColor(
+																							A2($author$project$OUI$Material$Color$setAlpha, 1.0 - (i / 5.0), colorscheme.onSurface)))
+																					]),
+																				$mdgriffith$elm_ui$Element$text(event));
+																		}),
+																	shared.lastEvents))
+															]))
+													]))
+											])))
+								]),
+							title: b.title
+						};
+					}),
+				toRoute: function (url) {
+					return A2($elm$core$Maybe$withDefault, '/', url.fragment);
+				},
+				update: F2(
+					function (msg, shared) {
+						switch (msg.$) {
+							case 'Event':
+								var value = msg.a;
+								return _Utils_Tuple2(
+									_Utils_update(
+										shared,
+										{
+											lastEvents: A2(
+												$elm$core$List$take,
+												5,
+												A2($elm$core$List$cons, value, shared.lastEvents))
+										}),
+									$elm$core$Platform$Cmd$none);
+							case 'ColorThemeButtonMsg':
+								var buttonMsg = msg.a;
+								var _v5 = A2($author$project$OUI$MenuButton$update, buttonMsg, shared.colorThemeButton);
+								var state = _v5.a;
+								var cmd = _v5.b;
+								return _Utils_Tuple2(
+									_Utils_update(
+										shared,
+										{colorThemeButton: state}),
+									cmd);
+							case 'SelectColorScheme':
+								var index = msg.a;
+								var type_ = msg.b;
+								return _Utils_Tuple2(
+									A3($author$project$OUI$Explorer$changeColorScheme, index, type_, shared),
+									$elm$core$Platform$Cmd$none);
+							case 'OnBookClick':
+								var path = msg.a;
+								return _Utils_Tuple2(
+									shared,
+									A2($elm$browser$Browser$Navigation$pushUrl, shared.navKey, '#' + path));
+							default:
+								var route = msg.a;
+								return _Utils_Tuple2(
+									_Utils_update(
+										shared,
+										{selectedBook: route}),
+									(!_Utils_eq(
+										$elm$core$List$head(
+											A2(
+												$elm$core$List$filter,
+												$elm$core$Basics$eq(route),
+												allBooks)),
+										$elm$core$Maybe$Nothing)) ? $elm$core$Platform$Cmd$none : A2($elm$browser$Browser$Navigation$pushUrl, shared.navKey, '#' + firstBook));
+						}
+					})
 			},
+<<<<<<< HEAD
 			update: F2(
 				function (msg, shared) {
 					switch (msg.$) {
@@ -270244,6 +270902,13 @@ var $author$project$OUI$Explorer$finalize = function (_v0) {
 		},
 		A2($orus_io$elm_spa$Spa$beforeRouteChange, $author$project$OUI$Explorer$OnRouteChange, expl.app));
 };
+=======
+			A2($orus_io$elm_spa$Spa$beforeRouteChange, $author$project$OUI$Explorer$OnRouteChange, expl.app));
+	});
+var $author$project$Main$get_started = '\n\nAdd Elm Orus UI to your project:\n\n```\nelm install orus-io/elm-orus-ui\n```\n\nHave a look at the\n[documentation](https://package.elm-lang.org/packages/orus-io/elm-orus-ui/latest/)\nfor code snippets.\n';
+var $author$project$Main$intro = '\nElm Orus UI is a toolkit for building user interfaces. It provides an elegant*\nAPI to create and configure components and a rendering module named \'Material\'.\n\nThe design is based on [Material Design 3](https://m3.material.io/), and is\nfully customizable with a \'Theme\' type that holds all the layout key values for\neach component, and a colorscheme.\n\nThe colorscheme can be generated from a few key colors as specified in\nMaterial design.\n\nThis UI Explorer demonstrate all the components provided by Elm Orus UI. It can\nalso be extended with your own components and themes.\n\nThe package is available on [Elm Packages](https://package.elm-lang.org/packages/orus-io/elm-orus-ui/latest/),\nbut the source code is [available on Github](https://github.com/orus-io/elm-orus-ui).\n\n*This is of course our feeling about it, and we hope you make it yours\n';
+var $author$project$Main$saveSettings = _Platform_outgoingPort('saveSettings', $elm$core$Basics$identity);
+>>>>>>> b904b8d (Showcase: adding settings save/load)
 var $author$project$OUI$Explorer$setColorTheme = F2(
 	function (colorTheme, _v0) {
 		var expl = _v0.a;
@@ -272747,7 +273412,11 @@ var $author$project$Landing$view = function (_v0) {
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$application(
-	$author$project$OUI$Explorer$finalize(
+	A2(
+		$author$project$OUI$Explorer$finalizeWithOptions,
+		{
+			saveSettingsPort: $elm$core$Maybe$Just($author$project$Main$saveSettings)
+		},
 		A2(
 			$author$project$OUI$Explorer$addBook,
 			$author$project$IcidassetMaterialIcons$Round$book,
