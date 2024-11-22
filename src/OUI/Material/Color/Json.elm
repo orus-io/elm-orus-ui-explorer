@@ -1,4 +1,4 @@
-module OUI.Material.Color.Json exposing (decodeColorTheme, encodeColorTheme)
+module OUI.Material.Color.Json exposing (decodeColorTheme, encodeColorTheme, toHex, toHexWithAlpha)
 
 import Bitwise
 import Color
@@ -302,6 +302,14 @@ hexToInt char =
 
         _ ->
             Nothing
+
+
+toHexWithAlpha : Color.Color -> String
+toHexWithAlpha c =
+    toHex c
+        |> (\{ hex, alpha } ->
+                hex ++ (alpha * 255 |> round |> int255ToHex)
+           )
 
 
 {-| This function will convert a color to a 6-digit hexadecimal string in the format `#rrggbb`.
