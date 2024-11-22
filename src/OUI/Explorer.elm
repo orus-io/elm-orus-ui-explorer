@@ -6,7 +6,7 @@ module OUI.Explorer exposing
     , withMarkdownChapter, withStaticChapter, withChapter
     , Page, Route, Shared, SharedMsg
     , setTheme, category, logEvent, logEffect, finalize, finalizeWithOptions
-    , ColorThemeType(..), addColorThemeMsg, deleteColorThemeMsg
+    , ColorThemeType(..), addColorThemeMsg, deleteColorThemeMsg, updateColorThemeMsg
     )
 
 {-|
@@ -131,6 +131,7 @@ type SharedMsg
     | OnRouteChange String
     | AddColorTheme Color.Theme
     | DeleteColorTheme Int
+    | UpdateColorTheme Int Color.Theme
 
 
 defaultView : Page msg
@@ -395,6 +396,11 @@ addColorThemeMsg =
 deleteColorThemeMsg : Int -> SharedMsg
 deleteColorThemeMsg =
     DeleteColorTheme
+
+
+updateColorThemeMsg : Int -> Color.Theme -> SharedMsg
+updateColorThemeMsg =
+    UpdateColorTheme
 
 
 {-| Creates a new static book
@@ -776,6 +782,25 @@ finalizeWithOptions options (Explorer expl) =
                                     (shared.selectedColorScheme
                                         |> Tuple.second
                                     )
+                                |> withSaveSettings options
+
+                        UpdateColorTheme index theme ->
+                            { shared
+                                | colorThemeList =
+                                    shared.colorThemeList
+                                        |> List.Extra.updateAt index
+                                            (\t ->
+                                                case t.type_ of
+                                                    BuiltinColorTheme ->
+                                                        t
+
+                                                    UserColorTheme ->
+                                                        { t | theme = theme }
+                                            )
+                            }
+                                |> changeColorScheme
+                                    (Tuple.first shared.selectedColorScheme)
+                                    (Tuple.second shared.selectedColorScheme)
                                 |> withSaveSettings options
 
                         OnBookClick path ->
