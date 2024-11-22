@@ -1,11 +1,12 @@
 module OUI.Explorer exposing
     ( Explorer, explorer, explorerWithTheme
-    , Book, BookMsg, addBook, book, statefulBook, bookMsg
+    , Book, BookMsg, addBook, book, statefulBook, bookMsg, sharedMsg
     , ColorSchemeType, setColorTheme, addColorTheme
     , selectColorScheme, getColorTheme, getSelectedColorTheme
     , withMarkdownChapter, withStaticChapter, withChapter
     , Page, Route, Shared, SharedMsg
     , setTheme, category, logEvent, logEffect, finalize, finalizeWithOptions
+    , ColorThemeType(..), addColorThemeMsg, deleteColorThemeMsg
     )
 
 {-|
@@ -18,7 +19,7 @@ module OUI.Explorer exposing
 
 # Books
 
-@docs Book, BookMsg, addBook, book, statefulBook, bookMsg
+@docs Book, BookMsg, addBook, book, statefulBook, bookMsg, sharedMsg
 
 
 # Colorschemes
@@ -48,6 +49,7 @@ import Element.Font as Font
 import Html.Attributes
 import Json.Decode
 import Json.Encode
+import List.Extra
 import MJson
 import Markdown.Parser
 import Markdown.Renderer
@@ -88,13 +90,24 @@ type ColorSchemeType
     | Dark
 
 
+type ColorThemeType
+    = BuiltinColorTheme
+    | UserColorTheme
+
+
+type alias ColorTheme =
+    { theme : Color.Theme
+    , type_ : ColorThemeType
+    }
+
+
 {-| The shared state
 -}
 type alias Shared themeExt =
     { navKey : Browser.Navigation.Key
     , lastEvents : List String
     , theme : Theme themeExt
-    , colorThemeList : List Color.Theme
+    , colorThemeList : List ColorTheme
     , selectedColorScheme : ( Int, ColorSchemeType )
     , selectedBook : String
     , colorThemeButton : MenuButton.State
@@ -116,6 +129,8 @@ type SharedMsg
     | ColorThemeButtonMsg (MenuButton.Msg Int SharedMsg)
     | OnBookClick String
     | OnRouteChange String
+    | AddColorTheme Color.Theme
+    | DeleteColorTheme Int
 
 
 defaultView : Page msg
@@ -360,11 +375,26 @@ bookMsg =
     BookMsg
 
 
+sharedMsg : SharedMsg -> BookMsg msg
+sharedMsg =
+    SharedMsg
+
+
 {-| build a Explorer.SharedMsg that changes the currently selected color scheme
 -}
 selectColorScheme : Int -> ColorSchemeType -> SharedMsg
 selectColorScheme i t =
     SelectColorScheme i t
+
+
+addColorThemeMsg : Color.Theme -> SharedMsg
+addColorThemeMsg =
+    AddColorTheme
+
+
+deleteColorThemeMsg : Int -> SharedMsg
+deleteColorThemeMsg =
+    DeleteColorTheme
 
 
 {-| Creates a new static book
@@ -474,7 +504,6 @@ decodeFlags =
         )
         (Json.Decode.oneOf
             [ Json.Decode.field "settings" decodeSettings
-            , Json.Decode.succeed { colorThemes = [] }
             ]
         )
 
@@ -489,19 +518,26 @@ decodeSettings =
         )
 
 
+encodeSettings : Settings -> Json.Encode.Value
+encodeSettings settings =
+    Json.Encode.object
+        [ ( "colorThemes", Json.Encode.list MJson.encodeColorTheme settings.colorThemes )
+        ]
+
+
 {-| return the color theme with the given index
 -}
-getColorTheme : Int -> Shared themeExt -> Color.Theme
+getColorTheme : Int -> Shared themeExt -> ColorTheme
 getColorTheme i shared =
     shared.colorThemeList
         |> List.drop i
         |> List.head
-        |> Maybe.withDefault Color.defaultTheme
+        |> Maybe.withDefault { type_ = BuiltinColorTheme, theme = Color.defaultTheme }
 
 
 {-| return the currently selected color theme
 -}
-getSelectedColorTheme : Shared themeExt -> Color.Theme
+getSelectedColorTheme : Shared themeExt -> ColorTheme
 getSelectedColorTheme shared =
     getColorTheme (shared.selectedColorScheme |> Tuple.first) shared
 
@@ -534,10 +570,10 @@ changeColorScheme index type_ shared =
                     (\colorTheme ->
                         case type_ of
                             Light ->
-                                colorTheme.schemes.light
+                                colorTheme.theme.schemes.light
 
                             Dark ->
-                                colorTheme.schemes.dark
+                                colorTheme.theme.schemes.dark
                     )
                 |> Maybe.withDefault Color.defaultLightScheme
     in
@@ -558,10 +594,44 @@ finalize =
         }
 
 
+withSaveSettings :
+    { saveSettingsPort : Maybe (Json.Encode.Value -> Cmd SharedMsg) }
+    -> Shared themeExt
+    -> ( Shared themeExt, Cmd SharedMsg )
+withSaveSettings options shared =
+    ( shared, buildSaveSettingsMsg options shared )
+
+
+buildSaveSettingsMsg :
+    { saveSettingsPort : Maybe (Json.Encode.Value -> Cmd SharedMsg) }
+    -> Shared themeExt
+    -> Cmd SharedMsg
+buildSaveSettingsMsg options shared =
+    case options.saveSettingsPort of
+        Nothing ->
+            Cmd.none
+
+        Just saveSettings ->
+            { colorThemes =
+                shared.colorThemeList
+                    |> List.filterMap
+                        (\t ->
+                            case t.type_ of
+                                BuiltinColorTheme ->
+                                    Nothing
+
+                                UserColorTheme ->
+                                    Just t.theme
+                        )
+            }
+                |> encodeSettings
+                |> saveSettings
+
+
 {-| Finalize a explorer and returns Program
 -}
 finalizeWithOptions :
-    { saveSettingsPort : Maybe (Json.Encode.Value -> Cmd currentMsg) }
+    { saveSettingsPort : Maybe (Json.Encode.Value -> Cmd SharedMsg) }
     -> Explorer themeExt current previous currentMsg previousMsg
     -> Spa.Application Json.Decode.Value (Shared themeExt) SharedMsg String current previous currentMsg previousMsg
 finalizeWithOptions options (Explorer expl) =
@@ -609,7 +679,17 @@ finalizeWithOptions options (Explorer expl) =
                     ( { navKey = key
                       , lastEvents = []
                       , theme = expl.initialShared.theme
-                      , colorThemeList = expl.initialShared.colorThemeList
+                      , colorThemeList =
+                            List.append
+                                (List.map
+                                    (\t ->
+                                        { theme = t, type_ = BuiltinColorTheme }
+                                    )
+                                    expl.initialShared.colorThemeList
+                                )
+                                (List.map (\t -> { theme = t, type_ = UserColorTheme })
+                                    dFlags.settings.colorThemes
+                                )
                       , selectedColorScheme = expl.initialShared.selectedColorScheme
                       , selectedBook = ""
                       , colorThemeButton = MenuButton.init "color-theme-button"
@@ -651,6 +731,52 @@ finalizeWithOptions options (Explorer expl) =
                             ( changeColorScheme index type_ shared
                             , Cmd.none
                             )
+
+                        AddColorTheme theme ->
+                            { shared
+                                | colorThemeList =
+                                    List.append
+                                        shared.colorThemeList
+                                        [ { type_ = UserColorTheme, theme = theme } ]
+                                , selectedColorScheme =
+                                    ( List.length shared.colorThemeList
+                                    , Tuple.second shared.selectedColorScheme
+                                    )
+                            }
+                                |> withSaveSettings options
+
+                        DeleteColorTheme index ->
+                            let
+                                newList =
+                                    shared.colorThemeList
+                                        |> List.Extra.indexedFoldr
+                                            (\i t ->
+                                                if i == index && t.type_ == UserColorTheme then
+                                                    identity
+
+                                                else
+                                                    (::) t
+                                            )
+                                            []
+                            in
+                            { shared
+                                | colorThemeList = newList
+                            }
+                                |> changeColorScheme
+                                    (shared.selectedColorScheme
+                                        |> Tuple.first
+                                        |> (\currentIndex ->
+                                                if currentIndex == index then
+                                                    0
+
+                                                else
+                                                    currentIndex
+                                           )
+                                    )
+                                    (shared.selectedColorScheme
+                                        |> Tuple.second
+                                    )
+                                |> withSaveSettings options
 
                         OnBookClick path ->
                             ( shared
@@ -739,11 +865,12 @@ finalizeWithOptions options (Explorer expl) =
                                                     (Tuple.second shared.selectedColorScheme)
                                             )
                                             (Button.new
-                                                (getSelectedColorTheme shared |> .name)
+                                                (getSelectedColorTheme shared |> .theme |> .name)
                                             )
                                             (Menu.new
                                                 (\i ->
                                                     getColorTheme i shared
+                                                        |> .theme
                                                         |> .name
                                                 )
                                                 |> Menu.addItems (List.range 0 (List.length shared.colorThemeList - 1))

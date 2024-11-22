@@ -15308,6 +15308,7 @@ var $author$project$OUI$Showcase$Checkbox$book = A2(
 var $author$project$OUI$Showcase$Colors$ColorThemeButtonMsg = function (a) {
 	return {$: 'ColorThemeButtonMsg', a: a};
 };
+var $author$project$OUI$Showcase$Colors$CopyColorTheme = {$: 'CopyColorTheme'};
 var $author$project$OUI$Showcase$Colors$SelectColorScheme = F2(
 	function (a, b) {
 		return {$: 'SelectColorScheme', a: a, b: b};
@@ -15521,6 +15522,10 @@ var $author$project$OUI$Material$Color$lightFromKeyColors = function (keyColors)
 	};
 };
 var $author$project$OUI$Material$Color$defaultLightScheme = $author$project$OUI$Material$Color$lightFromKeyColors($author$project$OUI$Material$Color$defaultKeyColors);
+var $author$project$OUI$Explorer$DeleteColorTheme = function (a) {
+	return {$: 'DeleteColorTheme', a: a};
+};
+var $author$project$OUI$Explorer$deleteColorThemeMsg = $author$project$OUI$Explorer$DeleteColorTheme;
 var $elm$core$List$drop = F2(
 	function (n, list) {
 		drop:
@@ -15542,6 +15547,7 @@ var $elm$core$List$drop = F2(
 			}
 		}
 	});
+var $author$project$OUI$Explorer$BuiltinColorTheme = {$: 'BuiltinColorTheme'};
 var $author$project$OUI$Material$Color$makeTheme = F3(
 	function (name, description, keyColors) {
 		return {
@@ -15559,7 +15565,7 @@ var $author$project$OUI$Explorer$getColorTheme = F2(
 	function (i, shared) {
 		return A2(
 			$elm$core$Maybe$withDefault,
-			$author$project$OUI$Material$Color$defaultTheme,
+			{theme: $author$project$OUI$Material$Color$defaultTheme, type_: $author$project$OUI$Explorer$BuiltinColorTheme},
 			$elm$core$List$head(
 				A2($elm$core$List$drop, i, shared.colorThemeList)));
 	});
@@ -16039,6 +16045,7 @@ var $author$project$OUI$MenuButton$new = F4(
 				openCloseIcons: $elm$core$Maybe$Nothing
 			});
 	});
+var $author$project$OUI$Explorer$sharedMsg = $author$project$OUI$Explorer$SharedMsg;
 var $author$project$OUI$Neutral = {$: 'Neutral'};
 var $author$project$OUI$Showcase$Colors$colorCell = F4(
 	function (name, color, onColor, height) {
@@ -16436,6 +16443,10 @@ var $author$project$OUI$Showcase$Colors$showKeyColors = function (theme) {
 						]))
 				])));
 };
+var $author$project$OUI$Explorer$AddColorTheme = function (a) {
+	return {$: 'AddColorTheme', a: a};
+};
+var $author$project$OUI$Explorer$addColorThemeMsg = $author$project$OUI$Explorer$AddColorTheme;
 var $author$project$OUI$Explorer$SelectColorScheme = F2(
 	function (a, b) {
 		return {$: 'SelectColorScheme', a: a, b: b};
@@ -16721,25 +16732,35 @@ var $orus_io$elm_spa$Effect$withShared = F2(
 			$orus_io$elm_spa$Effect$fromShared(shared));
 	});
 var $author$project$OUI$Showcase$Colors$update = F3(
-	function (_v0, msg, model) {
-		if (msg.$ === 'ColorThemeButtonMsg') {
-			var buttonMsg = msg.a;
-			var _v2 = A2($author$project$OUI$MenuButton$update, buttonMsg, model.colorThemeButton);
-			var state = _v2.a;
-			var cmd = _v2.b;
-			return A2(
-				$orus_io$elm_spa$Effect$withCmd,
-				cmd,
-				_Utils_update(
-					model,
-					{colorThemeButton: state}));
-		} else {
-			var i = msg.a;
-			var t = msg.b;
-			return A2(
-				$orus_io$elm_spa$Effect$withShared,
-				A2($author$project$OUI$Explorer$selectColorScheme, i, t),
-				model);
+	function (shared, msg, model) {
+		switch (msg.$) {
+			case 'ColorThemeButtonMsg':
+				var buttonMsg = msg.a;
+				var _v1 = A2($author$project$OUI$MenuButton$update, buttonMsg, model.colorThemeButton);
+				var state = _v1.a;
+				var cmd = _v1.b;
+				return A2(
+					$orus_io$elm_spa$Effect$withCmd,
+					cmd,
+					_Utils_update(
+						model,
+						{colorThemeButton: state}));
+			case 'SelectColorScheme':
+				var i = msg.a;
+				var t = msg.b;
+				return A2(
+					$orus_io$elm_spa$Effect$withShared,
+					A2($author$project$OUI$Explorer$selectColorScheme, i, t),
+					model);
+			default:
+				var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme;
+				return A2(
+					$orus_io$elm_spa$Effect$withShared,
+					$author$project$OUI$Explorer$addColorThemeMsg(
+						_Utils_update(
+							currentColorTheme,
+							{name: currentColorTheme.name + ' (copy)'})),
+					model);
 		}
 	});
 var $author$project$OUI$Material$Theme$Theme = function (a) {
@@ -16769,11 +16790,16 @@ var $author$project$OUI$Showcase$Colors$book = A2(
 						A2(
 							$elm$core$Basics$composeR,
 							function ($) {
-								return $.schemes;
+								return $.theme;
 							},
-							function ($) {
-								return $.dark;
-							}),
+							A2(
+								$elm$core$Basics$composeR,
+								function ($) {
+									return $.schemes;
+								},
+								function ($) {
+									return $.dark;
+								})),
 						$elm$core$List$head(
 							A2($elm$core$List$drop, shared.selectedColorScheme.a, shared.colorThemeList)))),
 				shared.theme));
@@ -16794,11 +16820,16 @@ var $author$project$OUI$Showcase$Colors$book = A2(
 							A2(
 								$elm$core$Basics$composeR,
 								function ($) {
-									return $.schemes;
+									return $.theme;
 								},
-								function ($) {
-									return $.light;
-								}),
+								A2(
+									$elm$core$Basics$composeR,
+									function ($) {
+										return $.schemes;
+									},
+									function ($) {
+										return $.light;
+									})),
 							$elm$core$List$head(
 								A2($elm$core$List$drop, shared.selectedColorScheme.a, shared.colorThemeList)))),
 					shared.theme));
@@ -16812,22 +16843,23 @@ var $author$project$OUI$Showcase$Colors$book = A2(
 				$author$project$OUI$Explorer$withChapter,
 				F2(
 					function (shared, model) {
+						var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared);
 						return A2(
-							$mdgriffith$elm_ui$Element$map,
-							$author$project$OUI$Explorer$bookMsg,
-							A2(
-								$mdgriffith$elm_ui$Element$row,
-								_List_fromArray(
-									[
-										$mdgriffith$elm_ui$Element$spacing(20)
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$author$project$OUI$Material$text,
-										shared.theme,
-										$author$project$OUI$Text$bodyLarge('Current color scheme: ')),
-										A4(
+							$mdgriffith$elm_ui$Element$row,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$spacing(20)
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$author$project$OUI$Material$text,
+									shared.theme,
+									$author$project$OUI$Text$bodyLarge('Current color scheme: ')),
+									A2(
+									$mdgriffith$elm_ui$Element$map,
+									$author$project$OUI$Explorer$bookMsg,
+									A4(
 										$author$project$OUI$Material$menuButton,
 										shared.theme,
 										model.colorThemeButton,
@@ -16840,8 +16872,7 @@ var $author$project$OUI$Showcase$Colors$book = A2(
 												function (i) {
 													return A2($author$project$OUI$Showcase$Colors$SelectColorScheme, i, shared.selectedColorScheme.b);
 												},
-												$author$project$OUI$Button$new(
-													$author$project$OUI$Explorer$getSelectedColorTheme(shared).name),
+												$author$project$OUI$Button$new(currentColorTheme.theme.name),
 												A2(
 													$author$project$OUI$Menu$addItems,
 													A2(
@@ -16850,9 +16881,38 @@ var $author$project$OUI$Showcase$Colors$book = A2(
 														$elm$core$List$length(shared.colorThemeList) - 1),
 													$author$project$OUI$Menu$new(
 														function (i) {
-															return A2($author$project$OUI$Explorer$getColorTheme, i, shared).name;
-														})))))
-									])));
+															return A2($author$project$OUI$Explorer$getColorTheme, i, shared).theme.name;
+														})))))),
+									A2(
+									$mdgriffith$elm_ui$Element$map,
+									$author$project$OUI$Explorer$bookMsg,
+									A3(
+										$author$project$OUI$Material$button,
+										shared.theme,
+										_List_fromArray(
+											[$mdgriffith$elm_ui$Element$centerX]),
+										A2(
+											$author$project$OUI$Button$onClick,
+											$author$project$OUI$Showcase$Colors$CopyColorTheme,
+											$author$project$OUI$Button$new('Copy')))),
+									function () {
+									var _v2 = currentColorTheme.type_;
+									if (_v2.$ === 'BuiltinColorTheme') {
+										return $mdgriffith$elm_ui$Element$none;
+									} else {
+										return A3(
+											$author$project$OUI$Material$button,
+											shared.theme,
+											_List_fromArray(
+												[$mdgriffith$elm_ui$Element$centerX]),
+											A2(
+												$author$project$OUI$Button$onClick,
+												$author$project$OUI$Explorer$sharedMsg(
+													$author$project$OUI$Explorer$deleteColorThemeMsg(shared.selectedColorScheme.a)),
+												$author$project$OUI$Button$new('Delete')));
+									}
+								}()
+								]));
 					}),
 				A2(
 					$author$project$OUI$Explorer$statefulBook,
@@ -269173,6 +269233,7 @@ var $author$project$OUI$Explorer$OnBookClick = function (a) {
 var $author$project$OUI$Explorer$OnRouteChange = function (a) {
 	return {$: 'OnRouteChange', a: a};
 };
+var $author$project$OUI$Explorer$UserColorTheme = {$: 'UserColorTheme'};
 var $author$project$OUI$MenuButton$AlignTopLeft = {$: 'AlignTopLeft'};
 var $author$project$OUI$MenuButton$alignTop = function (_v0) {
 	var props = _v0.a;
@@ -269641,9 +269702,9 @@ var $author$project$OUI$Explorer$changeColorScheme = F3(
 				$elm$core$Maybe$map,
 				function (colorTheme) {
 					if (type_.$ === 'Light') {
-						return colorTheme.schemes.light;
+						return colorTheme.theme.schemes.light;
 					} else {
-						return colorTheme.schemes.dark;
+						return colorTheme.theme.schemes.dark;
 					}
 				},
 				$elm$core$List$head(
@@ -270144,7 +270205,7 @@ var $author$project$MJson$decodeColorScheme = A3(
 																	$author$project$MJson$decodeColor,
 																	A3(
 																		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
-																		'surfaceContainerrHigh',
+																		'surfaceContainerHigh',
 																		$author$project$MJson$decodeColor,
 																		A3(
 																			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
@@ -270265,15 +270326,31 @@ var $author$project$OUI$Explorer$decodeFlags = A3(
 	$elm$json$Json$Decode$oneOf(
 		_List_fromArray(
 			[
-				A2($elm$json$Json$Decode$field, 'settings', $author$project$OUI$Explorer$decodeSettings),
-				$elm$json$Json$Decode$succeed(
-				{colorThemes: _List_Nil})
+				A2($elm$json$Json$Decode$field, 'settings', $author$project$OUI$Explorer$decodeSettings)
 			])));
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $mdgriffith$elm_ui$Internal$Model$FocusStyleOption = function (a) {
 	return {$: 'FocusStyleOption', a: a};
 };
 var $mdgriffith$elm_ui$Element$focusStyle = $mdgriffith$elm_ui$Internal$Model$FocusStyleOption;
+var $elm_community$list_extra$List$Extra$indexedFoldr = F3(
+	function (func, acc, list) {
+		var step = F2(
+			function (x, _v0) {
+				var i = _v0.a;
+				var thisAcc = _v0.b;
+				return _Utils_Tuple2(
+					i - 1,
+					A3(func, i, x, thisAcc));
+			});
+		return A3(
+			$elm$core$List$foldr,
+			step,
+			_Utils_Tuple2(
+				$elm$core$List$length(list) - 1,
+				acc),
+			list).b;
+	});
 var $mdgriffith$elm_ui$Internal$Model$OnlyDynamic = F2(
 	function (a, b) {
 		return {$: 'OnlyDynamic', a: a, b: b};
@@ -270488,6 +270565,303 @@ var $author$project$OUI$Navigation$withHeader = F2(
 					header: $elm$core$Maybe$Just(text)
 				}));
 	});
+var $elm$core$Tuple$mapBoth = F3(
+	function (funcA, funcB, _v0) {
+		var x = _v0.a;
+		var y = _v0.b;
+		return _Utils_Tuple2(
+			funcA(x),
+			funcB(y));
+	});
+var $author$project$MJson$unsafeInt255Digits = function (n) {
+	var digit1 = (n / 16) | 0;
+	var digit0 = (!(!digit1)) ? A2($elm$core$Basics$modBy, digit1 * 16, n) : n;
+	return _Utils_Tuple2(digit1, digit0);
+};
+var $author$project$MJson$unsafeIntToChar = function (i) {
+	if (i < 10) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			_Utils_chr('0'),
+			A2(
+				$elm$core$Maybe$map,
+				$elm$core$Tuple$first,
+				$elm$core$String$uncons(
+					$elm$core$String$fromInt(i))));
+	} else {
+		switch (i) {
+			case 10:
+				return _Utils_chr('a');
+			case 11:
+				return _Utils_chr('b');
+			case 12:
+				return _Utils_chr('c');
+			case 13:
+				return _Utils_chr('d');
+			case 14:
+				return _Utils_chr('e');
+			case 15:
+				return _Utils_chr('f');
+			default:
+				return _Utils_chr('0');
+		}
+	}
+};
+var $author$project$MJson$int255ToHex = function (n) {
+	return (n < 0) ? '00' : ((n > 255) ? 'ff' : function (_v0) {
+		var a = _v0.a;
+		var b = _v0.b;
+		return A2(
+			$elm$core$String$cons,
+			a,
+			A2($elm$core$String$cons, b, ''));
+	}(
+		A3(
+			$elm$core$Tuple$mapBoth,
+			$author$project$MJson$unsafeIntToChar,
+			$author$project$MJson$unsafeIntToChar,
+			$author$project$MJson$unsafeInt255Digits(n))));
+};
+var $author$project$MJson$toHex = function (c) {
+	var components = $avh4$elm_color$Color$toRgba(c);
+	return {
+		alpha: components.alpha,
+		hex: '#' + $elm$core$String$concat(
+			A2(
+				$elm$core$List$map,
+				$author$project$MJson$int255ToHex,
+				A2(
+					$elm$core$List$map,
+					$elm$core$Basics$round,
+					A2(
+						$elm$core$List$map,
+						$elm$core$Basics$mul(255),
+						_List_fromArray(
+							[components.red, components.green, components.blue])))))
+	};
+};
+var $author$project$MJson$encodeColor = function (color) {
+	return $elm$json$Json$Encode$string(
+		function (_v0) {
+			var hex = _v0.hex;
+			var alpha = _v0.alpha;
+			return _Utils_ap(
+				hex,
+				$author$project$MJson$int255ToHex(
+					$elm$core$Basics$round(alpha * 255)));
+		}(
+			$author$project$MJson$toHex(color)));
+};
+var $author$project$MJson$encodeKeyColors = function (keyColors) {
+	return $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'primary',
+				$author$project$MJson$encodeColor(keyColors.primary)),
+				_Utils_Tuple2(
+				'secondary',
+				$author$project$MJson$encodeColor(keyColors.secondary)),
+				_Utils_Tuple2(
+				'tertiary',
+				$author$project$MJson$encodeColor(keyColors.tertiary)),
+				_Utils_Tuple2(
+				'error',
+				$author$project$MJson$encodeColor(keyColors.error)),
+				_Utils_Tuple2(
+				'neutral',
+				$author$project$MJson$encodeColor(keyColors.neutral)),
+				_Utils_Tuple2(
+				'neutralVariant',
+				$author$project$MJson$encodeColor(keyColors.neutralVariant))
+			]));
+};
+var $author$project$MJson$encodeColorScheme = function (scheme) {
+	return $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'keyColors',
+				$author$project$MJson$encodeKeyColors(scheme.keyColors)),
+				_Utils_Tuple2(
+				'primary',
+				$author$project$MJson$encodeColor(scheme.primary)),
+				_Utils_Tuple2(
+				'primaryContainer',
+				$author$project$MJson$encodeColor(scheme.primaryContainer)),
+				_Utils_Tuple2(
+				'onPrimary',
+				$author$project$MJson$encodeColor(scheme.onPrimary)),
+				_Utils_Tuple2(
+				'onPrimaryContainer',
+				$author$project$MJson$encodeColor(scheme.onPrimaryContainer)),
+				_Utils_Tuple2(
+				'inversePrimary',
+				$author$project$MJson$encodeColor(scheme.inversePrimary)),
+				_Utils_Tuple2(
+				'secondary',
+				$author$project$MJson$encodeColor(scheme.secondary)),
+				_Utils_Tuple2(
+				'secondaryContainer',
+				$author$project$MJson$encodeColor(scheme.secondaryContainer)),
+				_Utils_Tuple2(
+				'onSecondary',
+				$author$project$MJson$encodeColor(scheme.onSecondary)),
+				_Utils_Tuple2(
+				'onSecondaryContainer',
+				$author$project$MJson$encodeColor(scheme.onSecondaryContainer)),
+				_Utils_Tuple2(
+				'tertiary',
+				$author$project$MJson$encodeColor(scheme.tertiary)),
+				_Utils_Tuple2(
+				'tertiaryContainer',
+				$author$project$MJson$encodeColor(scheme.tertiaryContainer)),
+				_Utils_Tuple2(
+				'onTertiary',
+				$author$project$MJson$encodeColor(scheme.onTertiary)),
+				_Utils_Tuple2(
+				'onTertiaryContainer',
+				$author$project$MJson$encodeColor(scheme.onTertiaryContainer)),
+				_Utils_Tuple2(
+				'surface',
+				$author$project$MJson$encodeColor(scheme.surface)),
+				_Utils_Tuple2(
+				'surfaceDim',
+				$author$project$MJson$encodeColor(scheme.surfaceDim)),
+				_Utils_Tuple2(
+				'surfaceBright',
+				$author$project$MJson$encodeColor(scheme.surfaceBright)),
+				_Utils_Tuple2(
+				'surfaceContainerLowest',
+				$author$project$MJson$encodeColor(scheme.surfaceContainerLowest)),
+				_Utils_Tuple2(
+				'surfaceContainerLow',
+				$author$project$MJson$encodeColor(scheme.surfaceContainerLow)),
+				_Utils_Tuple2(
+				'surfaceContainer',
+				$author$project$MJson$encodeColor(scheme.surfaceContainer)),
+				_Utils_Tuple2(
+				'surfaceContainerHigh',
+				$author$project$MJson$encodeColor(scheme.surfaceContainerHigh)),
+				_Utils_Tuple2(
+				'surfaceContainerHighest',
+				$author$project$MJson$encodeColor(scheme.surfaceContainerHighest)),
+				_Utils_Tuple2(
+				'surfaceVariant',
+				$author$project$MJson$encodeColor(scheme.surfaceVariant)),
+				_Utils_Tuple2(
+				'onSurface',
+				$author$project$MJson$encodeColor(scheme.onSurface)),
+				_Utils_Tuple2(
+				'onSurfaceVariant',
+				$author$project$MJson$encodeColor(scheme.onSurfaceVariant)),
+				_Utils_Tuple2(
+				'inverseSurface',
+				$author$project$MJson$encodeColor(scheme.inverseSurface)),
+				_Utils_Tuple2(
+				'inverseOnSurface',
+				$author$project$MJson$encodeColor(scheme.inverseOnSurface)),
+				_Utils_Tuple2(
+				'background',
+				$author$project$MJson$encodeColor(scheme.background)),
+				_Utils_Tuple2(
+				'onBackground',
+				$author$project$MJson$encodeColor(scheme.onBackground)),
+				_Utils_Tuple2(
+				'error',
+				$author$project$MJson$encodeColor(scheme.error)),
+				_Utils_Tuple2(
+				'errorContainer',
+				$author$project$MJson$encodeColor(scheme.errorContainer)),
+				_Utils_Tuple2(
+				'onError',
+				$author$project$MJson$encodeColor(scheme.onError)),
+				_Utils_Tuple2(
+				'onErrorContainer',
+				$author$project$MJson$encodeColor(scheme.onErrorContainer)),
+				_Utils_Tuple2(
+				'outline',
+				$author$project$MJson$encodeColor(scheme.outline)),
+				_Utils_Tuple2(
+				'outlineVariant',
+				$author$project$MJson$encodeColor(scheme.outlineVariant)),
+				_Utils_Tuple2(
+				'shadow',
+				$author$project$MJson$encodeColor(scheme.shadow)),
+				_Utils_Tuple2(
+				'surfaceTint',
+				$author$project$MJson$encodeColor(scheme.surfaceTint)),
+				_Utils_Tuple2(
+				'scrim',
+				$author$project$MJson$encodeColor(scheme.scrim))
+			]));
+};
+var $author$project$MJson$encodeColorTheme = function (theme) {
+	return $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'name',
+				$elm$json$Json$Encode$string(theme.name)),
+				_Utils_Tuple2(
+				'description',
+				$elm$json$Json$Encode$string(theme.description)),
+				_Utils_Tuple2(
+				'keyColors',
+				$author$project$MJson$encodeKeyColors(theme.keyColors)),
+				_Utils_Tuple2(
+				'schemes',
+				$elm$json$Json$Encode$object(
+					_List_fromArray(
+						[
+							_Utils_Tuple2(
+							'light',
+							$author$project$MJson$encodeColorScheme(theme.schemes.light)),
+							_Utils_Tuple2(
+							'dark',
+							$author$project$MJson$encodeColorScheme(theme.schemes.dark))
+						])))
+			]));
+};
+var $author$project$OUI$Explorer$encodeSettings = function (settings) {
+	return $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'colorThemes',
+				A2($elm$json$Json$Encode$list, $author$project$MJson$encodeColorTheme, settings.colorThemes))
+			]));
+};
+var $author$project$OUI$Explorer$buildSaveSettingsMsg = F2(
+	function (options, shared) {
+		var _v0 = options.saveSettingsPort;
+		if (_v0.$ === 'Nothing') {
+			return $elm$core$Platform$Cmd$none;
+		} else {
+			var saveSettings = _v0.a;
+			return saveSettings(
+				$author$project$OUI$Explorer$encodeSettings(
+					{
+						colorThemes: A2(
+							$elm$core$List$filterMap,
+							function (t) {
+								var _v1 = t.type_;
+								if (_v1.$ === 'BuiltinColorTheme') {
+									return $elm$core$Maybe$Nothing;
+								} else {
+									return $elm$core$Maybe$Just(t.theme);
+								}
+							},
+							shared.colorThemeList)
+					}));
+		}
+	});
+var $author$project$OUI$Explorer$withSaveSettings = F2(
+	function (options, shared) {
+		return _Utils_Tuple2(
+			shared,
+			A2($author$project$OUI$Explorer$buildSaveSettingsMsg, options, shared));
+	});
 var $author$project$OUI$Navigation$withSelected = F2(
 	function (key, _v0) {
 		var props = _v0.a;
@@ -270548,7 +270922,20 @@ var $author$project$OUI$Explorer$finalizeWithOptions = F2(
 								dFlags.dark_mode ? $author$project$OUI$Explorer$Dark : $author$project$OUI$Explorer$Light,
 								{
 									colorThemeButton: $author$project$OUI$MenuButton$init('color-theme-button'),
-									colorThemeList: expl.initialShared.colorThemeList,
+									colorThemeList: A2(
+										$elm$core$List$append,
+										A2(
+											$elm$core$List$map,
+											function (t) {
+												return {theme: t, type_: $author$project$OUI$Explorer$BuiltinColorTheme};
+											},
+											expl.initialShared.colorThemeList),
+										A2(
+											$elm$core$List$map,
+											function (t) {
+												return {theme: t, type_: $author$project$OUI$Explorer$UserColorTheme};
+											},
+											dFlags.settings.colorThemes)),
 									lastEvents: _List_Nil,
 									navKey: key,
 									selectedBook: '',
@@ -270695,7 +271082,7 @@ var $author$project$OUI$Explorer$finalizeWithOptions = F2(
 																						return A2($author$project$OUI$Explorer$SelectColorScheme, i, shared.selectedColorScheme.b);
 																					},
 																					$author$project$OUI$Button$new(
-																						$author$project$OUI$Explorer$getSelectedColorTheme(shared).name),
+																						$author$project$OUI$Explorer$getSelectedColorTheme(shared).theme.name),
 																					A2(
 																						$author$project$OUI$Menu$addItems,
 																						A2(
@@ -270704,7 +271091,7 @@ var $author$project$OUI$Explorer$finalizeWithOptions = F2(
 																							$elm$core$List$length(shared.colorThemeList) - 1),
 																						$author$project$OUI$Menu$new(
 																							function (i) {
-																								return A2($author$project$OUI$Explorer$getColorTheme, i, shared).name;
+																								return A2($author$project$OUI$Explorer$getColorTheme, i, shared).theme.name;
 																							})))))),
 																		A3(
 																		$author$project$OUI$Material$switch,
@@ -270826,6 +271213,47 @@ var $author$project$OUI$Explorer$finalizeWithOptions = F2(
 								return _Utils_Tuple2(
 									A3($author$project$OUI$Explorer$changeColorScheme, index, type_, shared),
 									$elm$core$Platform$Cmd$none);
+							case 'AddColorTheme':
+								var theme = msg.a;
+								return A2(
+									$author$project$OUI$Explorer$withSaveSettings,
+									options,
+									_Utils_update(
+										shared,
+										{
+											colorThemeList: A2(
+												$elm$core$List$append,
+												shared.colorThemeList,
+												_List_fromArray(
+													[
+														{theme: theme, type_: $author$project$OUI$Explorer$UserColorTheme}
+													])),
+											selectedColorScheme: _Utils_Tuple2(
+												$elm$core$List$length(shared.colorThemeList),
+												shared.selectedColorScheme.b)
+										}));
+							case 'DeleteColorTheme':
+								var index = msg.a;
+								var newList = A3(
+									$elm_community$list_extra$List$Extra$indexedFoldr,
+									F2(
+										function (i, t) {
+											return (_Utils_eq(i, index) && _Utils_eq(t.type_, $author$project$OUI$Explorer$UserColorTheme)) ? $elm$core$Basics$identity : $elm$core$List$cons(t);
+										}),
+									_List_Nil,
+									shared.colorThemeList);
+								return A2(
+									$author$project$OUI$Explorer$withSaveSettings,
+									options,
+									A3(
+										$author$project$OUI$Explorer$changeColorScheme,
+										function (currentIndex) {
+											return _Utils_eq(currentIndex, index) ? 0 : currentIndex;
+										}(shared.selectedColorScheme.a),
+										shared.selectedColorScheme.b,
+										_Utils_update(
+											shared,
+											{colorThemeList: newList})));
 							case 'OnBookClick':
 								var path = msg.a;
 								return _Utils_Tuple2(
