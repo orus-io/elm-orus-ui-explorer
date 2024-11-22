@@ -3,10 +3,10 @@ module OUI.Explorer exposing
     , Book, BookMsg, addBook, book, statefulBook, bookMsg, sharedMsg
     , ColorSchemeType, setColorTheme, addColorTheme
     , selectColorScheme, getColorTheme, getSelectedColorTheme
-    , withMarkdownChapter, withStaticChapter, withChapter
+    , withMarkdownChapter, withStaticChapter, withChapter, withDialog
     , Page, Route, Shared, SharedMsg
     , setTheme, category, logEvent, logEffect, finalize, finalizeWithOptions
-    , ColorThemeType(..), addColorThemeMsg, deleteColorThemeMsg, updateColorThemeMsg
+    , ColorTheme, ColorThemeType(..), addColorThemeMsg, deleteColorThemeMsg, updateColorThemeMsg
     )
 
 {-|
@@ -30,7 +30,7 @@ module OUI.Explorer exposing
 
 # Chapters
 
-@docs withMarkdownChapter, withStaticChapter, withChapter
+@docs withMarkdownChapter, withStaticChapter, withChapter, withDialog
 
 
 # Other
@@ -54,6 +54,8 @@ import MJson
 import Markdown.Parser
 import Markdown.Renderer
 import OUI.Button as Button
+import OUI.Dialog
+import OUI.Element.Modal
 import OUI.Icon as Icon
 import OUI.Material as Material
 import OUI.Material.Color as Color
@@ -80,6 +82,7 @@ type alias Route =
 type alias Page msg =
     { title : String
     , content : Element msg
+    , dialog : Maybe (OUI.Element.Modal.Modal msg)
     }
 
 
@@ -138,6 +141,7 @@ defaultView : Page msg
 defaultView =
     { title = "Invalid"
     , content = Element.text "invalid view"
+    , dialog = Nothing
     }
 
 
@@ -145,6 +149,9 @@ mapView : (msg -> msg1) -> Page msg -> Page msg1
 mapView mapper abook =
     { title = abook.title
     , content = Element.map mapper abook.content
+    , dialog =
+        abook.dialog
+            |> Maybe.map (OUI.Element.Modal.map mapper)
     }
 
 
@@ -311,6 +318,13 @@ addBook b (Explorer expl) =
                                                 , Element.width Element.fill
                                                 , Element.height Element.fill
                                                 ]
+                                    , dialog =
+                                        case b.dialog of
+                                            Nothing ->
+                                                Nothing
+
+                                            Just d ->
+                                                d shared model
                                     }
                             , subscriptions =
                                 \model ->
@@ -337,6 +351,7 @@ type alias Book themeExt model msg =
     , update : Shared themeExt -> msg -> model -> ( model, Effect SharedMsg msg )
     , subscriptions : Shared themeExt -> model -> Sub msg
     , chapters : List (Shared themeExt -> model -> Element (BookMsg msg))
+    , dialog : Maybe (Shared themeExt -> model -> Maybe (OUI.Element.Modal.Modal (BookMsg msg)))
     }
 
 
@@ -412,6 +427,7 @@ book title =
     , update = \_ () () -> ( (), Effect.none )
     , subscriptions = \_ () -> Sub.none
     , chapters = []
+    , dialog = Nothing
     }
 
 
@@ -431,6 +447,7 @@ statefulBook title { init, update, subscriptions } =
     , update = update
     , subscriptions = subscriptions
     , chapters = []
+    , dialog = Nothing
     }
 
 
@@ -473,6 +490,18 @@ withChapter : (Shared themeExt -> model -> Element (BookMsg msg)) -> Book themeE
 withChapter body b =
     { b
         | chapters = body :: b.chapters
+    }
+
+
+{-| set a Dialog
+-}
+withDialog :
+    (Shared themeExt -> model -> Maybe (OUI.Element.Modal.Modal (BookMsg msg)))
+    -> Book themeExt model msg
+    -> Book themeExt model msg
+withDialog dialog b =
+    { b
+        | dialog = Just dialog
     }
 
 
@@ -976,14 +1005,24 @@ finalizeWithOptions options (Explorer expl) =
                                         }
                                     ]
                                 }
-                                [ Element.height Element.fill
-                                , Element.width Element.fill
-                                , Background.color <| Color.toElementColor colorscheme.surface
-                                , Font.color <| Color.toElementColor colorscheme.onSurface
-                                , Element.scrollbarY
-                                , Element.htmlAttribute <|
+                                ([ Element.height Element.fill
+                                 , Element.width Element.fill
+                                 , Background.color <| Color.toElementColor colorscheme.surface
+                                 , Font.color <| Color.toElementColor colorscheme.onSurface
+                                 , Element.scrollbarY
+                                 , Element.htmlAttribute <|
                                     Html.Attributes.style "-webkit-tap-highlight-color" "transparent"
-                                ]
+                                 ]
+                                    ++ (case
+                                            b.dialog
+                                        of
+                                            Just d ->
+                                                OUI.Element.Modal.single [ d ]
+
+                                            Nothing ->
+                                                []
+                                       )
+                                )
                         ]
                     }
             }

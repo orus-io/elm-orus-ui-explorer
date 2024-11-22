@@ -1,13 +1,17 @@
 module OUI.Showcase.Colors exposing (Model, Msg, book)
 
 import Color exposing (Color)
+import ColorPicker
 import Effect exposing (Effect)
 import Element exposing (Element)
 import Element.Background as Background
 import Element.Border as Border
+import Element.Events as Events
 import Element.Font as Font
 import OUI
 import OUI.Button
+import OUI.Dialog
+import OUI.Element.Modal
 import OUI.Explorer as Explorer
 import OUI.Material
 import OUI.Material.Color exposing (KeyColors)
@@ -31,9 +35,84 @@ colorCell name color onColor height =
         ]
 
 
-showKeyColors : OUI.Material.Theme.Theme themeExt -> Element msg
-showKeyColors theme =
+keyColorEdit :
+    (KeyColors -> Color)
+    -> (Color -> KeyColors -> KeyColors)
+    -> KeyColors
+    -> Explorer.BookMsg Msg
+keyColorEdit getter setter keyColors =
+    EditColor
+        (getter keyColors)
+        (\c -> keyColors |> setter c |> updateKeyColors)
+        |> Explorer.bookMsg
+
+
+keyColorSetPrimary : Color -> KeyColors -> KeyColors
+keyColorSetPrimary c kc =
+    { kc | primary = c }
+
+
+keyColorSetSecondary : Color -> KeyColors -> KeyColors
+keyColorSetSecondary c kc =
+    { kc | secondary = c }
+
+
+keyColorSetTertiary : Color -> KeyColors -> KeyColors
+keyColorSetTertiary c kc =
+    { kc | tertiary = c }
+
+
+keyColorSetError : Color -> KeyColors -> KeyColors
+keyColorSetError c kc =
+    { kc | error = c }
+
+
+keyColorSetNeutral : Color -> KeyColors -> KeyColors
+keyColorSetNeutral c kc =
+    { kc | primary = c }
+
+
+keyColorSetNeutralVariant : Color -> KeyColors -> KeyColors
+keyColorSetNeutralVariant c kc =
+    { kc | primary = c }
+
+
+showKeyColor :
+    OUI.Material.Color.Scheme
+    -> Bool
+    -> String
+    -> (KeyColors -> Color)
+    -> (Color -> KeyColors -> KeyColors)
+    -> KeyColors
+    -> Element (Explorer.BookMsg Msg)
+showKeyColor scheme editable name getter setter keyColors =
+    Element.column
+        (Element.width Element.fill
+            :: (if editable then
+                    [ Events.onClick (keyColorEdit getter setter keyColors)
+                    , Element.pointer
+                    ]
+
+                else
+                    []
+               )
+        )
+        [ colorCell name scheme.surfaceContainer scheme.onSurface 40
+        , colorCell "" (getter keyColors) Color.white 70
+        ]
+
+
+showKeyColors : Explorer.Shared themeExt -> Element (Explorer.BookMsg Msg)
+showKeyColors shared =
     let
+        theme : OUI.Material.Theme.Theme themeExt
+        theme =
+            shared.theme
+
+        colorTheme : Explorer.ColorTheme
+        colorTheme =
+            Explorer.getSelectedColorTheme shared
+
         scheme : OUI.Material.Color.Scheme
         scheme =
             OUI.Material.Theme.colorscheme theme
@@ -41,6 +120,14 @@ showKeyColors theme =
         typescale : OUI.Material.Typography.Typescale
         typescale =
             OUI.Material.Theme.typescale theme
+
+        keyColors : OUI.Material.Color.KeyColors
+        keyColors =
+            colorTheme.theme.keyColors
+
+        editable : Bool
+        editable =
+            colorTheme.type_ == Explorer.UserColorTheme
     in
     Element.column
         ([ Element.spacing 5
@@ -56,30 +143,12 @@ showKeyColors theme =
                 [ Element.paddingEach { bottom = 10, top = 0, left = 0, right = 0 }
                 ]
         , Element.row [ Element.spacing 5, Element.width Element.fill ]
-            [ Element.column [ Element.width Element.fill ]
-                [ colorCell "Primary" scheme.surfaceContainer scheme.onSurface 40
-                , colorCell "" scheme.keyColors.primary Color.white 70
-                ]
-            , Element.column [ Element.width Element.fill ]
-                [ colorCell "Secondary" scheme.surfaceContainer scheme.onSurface 40
-                , colorCell "" scheme.keyColors.secondary Color.white 70
-                ]
-            , Element.column [ Element.width Element.fill ]
-                [ colorCell "Tertiary" scheme.surfaceContainer scheme.onSurface 40
-                , colorCell "" scheme.keyColors.tertiary Color.white 70
-                ]
-            , Element.column [ Element.width Element.fill ]
-                [ colorCell "Error" scheme.surfaceContainer scheme.onSurface 40
-                , colorCell "" scheme.keyColors.error Color.white 70
-                ]
-            , Element.column [ Element.width Element.fill ]
-                [ colorCell "Neutral" scheme.surfaceContainer scheme.onSurface 40
-                , colorCell "" scheme.keyColors.neutral Color.white 70
-                ]
-            , Element.column [ Element.width Element.fill ]
-                [ colorCell "Neutral Variant" scheme.surfaceContainer scheme.onSurface 40
-                , colorCell "" scheme.keyColors.neutralVariant Color.white 70
-                ]
+            [ showKeyColor scheme editable "Primary" .primary keyColorSetPrimary keyColors
+            , showKeyColor scheme editable "Secondary" .secondary keyColorSetSecondary keyColors
+            , showKeyColor scheme editable "Tertiary" .tertiary keyColorSetTertiary keyColors
+            , showKeyColor scheme editable "Error" .error keyColorSetError keyColors
+            , showKeyColor scheme editable "Neutral" .neutral keyColorSetNeutral keyColors
+            , showKeyColor scheme editable "Neutral Variant" .neutralVariant keyColorSetNeutralVariant keyColors
             ]
         ]
         |> Element.el
@@ -204,6 +273,24 @@ book =
         , update = update
         , subscriptions = \_ _ -> Sub.none
         }
+        |> Explorer.withDialog
+            (\shared model ->
+                model.colorSelector
+                    |> Maybe.map
+                        (\cp ->
+                            OUI.Dialog.new "Select a color"
+                                |> OUI.Dialog.onAccept "OK" AcceptColor
+                                |> OUI.Dialog.onDismiss "Cancel" DismissColor
+                                |> OUI.Material.dialogWithContent
+                                    shared.theme
+                                    []
+                                    (ColorPicker.view cp.color cp.colorPicker
+                                        |> Element.html
+                                        |> Element.map ColorPickerMsg
+                                    )
+                                |> OUI.Element.Modal.map Explorer.bookMsg
+                        )
+            )
         |> Explorer.withChapter
             (\shared model ->
                 let
@@ -261,10 +348,7 @@ book =
                     ]
             )
         |> Explorer.withStaticChapter
-            (\shared ->
-                shared.theme
-                    |> showKeyColors
-            )
+            showKeyColors
         |> Explorer.withStaticChapter
             (\shared ->
                 shared.theme
@@ -291,20 +375,36 @@ book =
             )
 
 
+type alias ColorSetter =
+    Color -> OUI.Material.Color.Theme -> OUI.Material.Color.Theme
+
+
 type Msg
     = ColorThemeButtonMsg (OUI.MenuButton.Msg Int Msg)
     | SelectColorScheme Int Explorer.ColorSchemeType
     | CopyColorTheme
+    | EditColor Color ColorSetter
+    | ColorPickerMsg ColorPicker.Msg
+    | AcceptColor
+    | DismissColor
 
 
 type alias Model =
     { colorThemeButton : OUI.MenuButton.State
+    , colorSelector :
+        Maybe
+            { setter : ColorSetter
+            , color : Color
+            , colorPicker : ColorPicker.State
+            }
     }
 
 
 init : Explorer.Shared themeExt -> ( Model, Effect Explorer.SharedMsg Msg )
 init shared =
-    { colorThemeButton = OUI.MenuButton.init "color-page-color-theme-button" }
+    { colorThemeButton = OUI.MenuButton.init "color-page-color-theme-button"
+    , colorSelector = Nothing
+    }
         |> Effect.withNone
 
 
@@ -335,3 +435,73 @@ update shared msg model =
                     (Explorer.addColorThemeMsg
                         { currentColorTheme | name = currentColorTheme.name ++ " (copy)" }
                     )
+
+        ColorPickerMsg colorPickerMsg ->
+            (case model.colorSelector of
+                Just colorSelector ->
+                    let
+                        ( m, color ) =
+                            ColorPicker.update colorPickerMsg colorSelector.color colorSelector.colorPicker
+                    in
+                    { model
+                        | colorSelector =
+                            Just
+                                { colorSelector
+                                    | colorPicker = m
+                                    , color = color |> Maybe.withDefault colorSelector.color
+                                }
+                    }
+
+                Nothing ->
+                    model
+            )
+                |> Effect.withNone
+
+        EditColor color setter ->
+            { model
+                | colorSelector =
+                    Just
+                        { setter = setter
+                        , color = color
+                        , colorPicker = ColorPicker.empty
+                        }
+            }
+                |> Effect.withNone
+
+        DismissColor ->
+            { model | colorSelector = Nothing }
+                |> Effect.withNone
+
+        AcceptColor ->
+            case model.colorSelector of
+                Just colorSelector ->
+                    let
+                        currentThemeIndex =
+                            shared.selectedColorScheme |> Tuple.first
+
+                        theme =
+                            Explorer.getSelectedColorTheme shared
+                                |> .theme
+                    in
+                    { model | colorSelector = Nothing }
+                        |> Effect.withShared
+                            (Explorer.updateColorThemeMsg
+                                currentThemeIndex
+                                (theme |> colorSelector.setter colorSelector.color)
+                            )
+
+                Nothing ->
+                    model
+                        |> Effect.withNone
+
+
+updateKeyColors : KeyColors -> OUI.Material.Color.Theme -> OUI.Material.Color.Theme
+updateKeyColors keyColors theme =
+    -- TODO propagate only the keyColors that were changed
+    { theme
+        | keyColors = keyColors
+        , schemes =
+            { light = OUI.Material.Color.lightFromKeyColors keyColors
+            , dark = OUI.Material.Color.darkFromKeyColors keyColors
+            }
+    }
