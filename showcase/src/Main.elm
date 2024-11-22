@@ -1,10 +1,11 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Browser
 import ColorThemes
 import IcidassetMaterialIcons.Outlined as Outlined
 import IcidassetMaterialIcons.Regular as Regular
 import IcidassetMaterialIcons.Round as Round
+import Json.Encode
 import Material.Icons.Types exposing (Coloring(..))
 import OUI.Explorer as Explorer
 import OUI.Material.Color
@@ -52,6 +53,9 @@ for code snippets.
 """
 
 
+port saveSettings : Json.Encode.Value -> Cmd currentMsg
+
+
 main =
     Explorer.explorer
         |> Explorer.setColorTheme OUI.Material.Color.defaultTheme
@@ -71,7 +75,7 @@ main =
         |> Explorer.addBook Regular.book
         |> Explorer.addBook Outlined.book
         |> Explorer.addBook Round.book
-        |> Explorer.finalize
+        |> Explorer.finalizeWithOptions { saveSettingsPort = Just saveSettings }
         |> Browser.application
 
 

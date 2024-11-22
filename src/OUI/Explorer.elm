@@ -5,7 +5,7 @@ module OUI.Explorer exposing
     , selectColorScheme, getColorTheme, getSelectedColorTheme
     , withMarkdownChapter, withStaticChapter, withChapter
     , Page, Route, Shared, SharedMsg
-    , setTheme, category, logEvent, logEffect, finalize
+    , setTheme, category, logEvent, logEffect, finalize, finalizeWithOptions
     )
 
 {-|
@@ -36,7 +36,7 @@ module OUI.Explorer exposing
 
 @docs Page, Route, Shared, SharedMsg
 
-@docs setTheme, category, logEvent, logEffect, finalize
+@docs setTheme, category, logEvent, logEffect, finalize, finalizeWithOptions
 
 -}
 
@@ -48,6 +48,7 @@ import Element.Font as Font
 import Html.Attributes
 import Json.Decode
 import Json.Encode
+import MJson
 import Markdown.Parser
 import Markdown.Renderer
 import OUI.Button as Button
@@ -454,16 +455,37 @@ bookPath cat title =
 
 type alias Flags =
     { dark_mode : Bool
+    , settings : Settings
+    }
+
+
+type alias Settings =
+    { colorThemes : List Color.Theme
     }
 
 
 decodeFlags : Json.Decode.Decoder Flags
 decodeFlags =
-    Json.Decode.map Flags
+    Json.Decode.map2 Flags
         (Json.Decode.oneOf
             [ Json.Decode.field "dark_mode" Json.Decode.bool
             , Json.Decode.succeed False
             ]
+        )
+        (Json.Decode.oneOf
+            [ Json.Decode.field "settings" decodeSettings
+            , Json.Decode.succeed { colorThemes = [] }
+            ]
+        )
+
+
+decodeSettings : Json.Decode.Decoder Settings
+decodeSettings =
+    Json.Decode.map Settings
+        (Json.Decode.field "colorThemes"
+            (Json.Decode.list
+                MJson.decodeColorTheme
+            )
         )
 
 
@@ -530,7 +552,19 @@ changeColorScheme index type_ shared =
 finalize :
     Explorer themeExt current previous currentMsg previousMsg
     -> Spa.Application Json.Decode.Value (Shared themeExt) SharedMsg String current previous currentMsg previousMsg
-finalize (Explorer expl) =
+finalize =
+    finalizeWithOptions
+        { saveSettingsPort = Nothing
+        }
+
+
+{-| Finalize a explorer and returns Program
+-}
+finalizeWithOptions :
+    { saveSettingsPort : Maybe (Json.Encode.Value -> Cmd currentMsg) }
+    -> Explorer themeExt current previous currentMsg previousMsg
+    -> Spa.Application Json.Decode.Value (Shared themeExt) SharedMsg String current previous currentMsg previousMsg
+finalizeWithOptions options (Explorer expl) =
     let
         categories : List ( String, List String )
         categories =
@@ -567,10 +601,10 @@ finalize (Explorer expl) =
             , init =
                 \flags key ->
                     let
-                        dFlags : { dark_mode : Bool }
+                        dFlags : Flags
                         dFlags =
                             Json.Decode.decodeValue decodeFlags flags
-                                |> Result.withDefault { dark_mode = False }
+                                |> Result.withDefault { dark_mode = False, settings = { colorThemes = [] } }
                     in
                     ( { navKey = key
                       , lastEvents = []
