@@ -1,4 +1,4 @@
-module MJson exposing (decodeColorTheme, encodeColorTheme)
+module OUI.Material.Color.Json exposing (decodeColorTheme, encodeColorTheme)
 
 import Bitwise
 import Color

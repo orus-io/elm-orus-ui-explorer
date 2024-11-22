@@ -270700,7 +270700,7 @@ var $author$project$OUI$Material$Color$Scheme = function (keyColors) {
 	};
 };
 var $elm$core$Char$toLower = _Char_toLower;
-var $author$project$MJson$hexToInt = function (_char) {
+var $author$project$OUI$Material$Color$Json$hexToInt = function (_char) {
 	var _v0 = $elm$core$Char$toLower(_char);
 	switch (_v0.valueOf()) {
 		case '0':
@@ -270754,7 +270754,7 @@ var $elm$core$Maybe$map2 = F3(
 			}
 		}
 	});
-var $author$project$MJson$hex2ToInt = F2(
+var $author$project$OUI$Material$Color$Json$hex2ToInt = F2(
 	function (c1, c2) {
 		return A3(
 			$elm$core$Maybe$map2,
@@ -270762,8 +270762,8 @@ var $author$project$MJson$hex2ToInt = F2(
 				function (v1, v2) {
 					return (v1 << 4) + v2;
 				}),
-			$author$project$MJson$hexToInt(c1),
-			$author$project$MJson$hexToInt(c2));
+			$author$project$OUI$Material$Color$Json$hexToInt(c1),
+			$author$project$OUI$Material$Color$Json$hexToInt(c2));
 	});
 var $elm$core$Maybe$map4 = F5(
 	function (func, ma, mb, mc, md) {
@@ -270794,7 +270794,7 @@ var $avh4$elm_color$Color$rgba = F4(
 	function (r, g, b, a) {
 		return A4($avh4$elm_color$Color$RgbaSpace, r, g, b, a);
 	});
-var $author$project$MJson$fromHex8 = F4(
+var $author$project$OUI$Material$Color$Json$fromHex8 = F4(
 	function (_v0, _v1, _v2, _v3) {
 		var r1 = _v0.a;
 		var r2 = _v0.b;
@@ -270810,12 +270810,12 @@ var $author$project$MJson$fromHex8 = F4(
 				function (r, g, b, a) {
 					return A4($avh4$elm_color$Color$rgba, r / 255, g / 255, b / 255, a / 255);
 				}),
-			A2($author$project$MJson$hex2ToInt, r1, r2),
-			A2($author$project$MJson$hex2ToInt, g1, g2),
-			A2($author$project$MJson$hex2ToInt, b1, b2),
-			A2($author$project$MJson$hex2ToInt, a1, a2));
+			A2($author$project$OUI$Material$Color$Json$hex2ToInt, r1, r2),
+			A2($author$project$OUI$Material$Color$Json$hex2ToInt, g1, g2),
+			A2($author$project$OUI$Material$Color$Json$hex2ToInt, b1, b2),
+			A2($author$project$OUI$Material$Color$Json$hex2ToInt, a1, a2));
 	});
-var $author$project$MJson$colorFromHex = function (hexString) {
+var $author$project$OUI$Material$Color$Json$colorFromHex = function (hexString) {
 	var _v0 = $elm$core$String$toList(hexString);
 	_v0$8:
 	while (true) {
@@ -270827,7 +270827,7 @@ var $author$project$MJson$colorFromHex = function (hexString) {
 				var _v5 = _v4.b;
 				var b = _v5.a;
 				return A4(
-					$author$project$MJson$fromHex8,
+					$author$project$OUI$Material$Color$Json$fromHex8,
 					_Utils_Tuple2(r, r),
 					_Utils_Tuple2(g, g),
 					_Utils_Tuple2(b, b),
@@ -270844,7 +270844,7 @@ var $author$project$MJson$colorFromHex = function (hexString) {
 						var _v3 = _v2.b;
 						var b = _v3.a;
 						return A4(
-							$author$project$MJson$fromHex8,
+							$author$project$OUI$Material$Color$Json$fromHex8,
 							_Utils_Tuple2(r, r),
 							_Utils_Tuple2(g, g),
 							_Utils_Tuple2(b, b),
@@ -270860,7 +270860,7 @@ var $author$project$MJson$colorFromHex = function (hexString) {
 						var _v12 = _v11.b;
 						var a = _v12.a;
 						return A4(
-							$author$project$MJson$fromHex8,
+							$author$project$OUI$Material$Color$Json$fromHex8,
 							_Utils_Tuple2(r, r),
 							_Utils_Tuple2(g, g),
 							_Utils_Tuple2(b, b),
@@ -270878,7 +270878,7 @@ var $author$project$MJson$colorFromHex = function (hexString) {
 							var _v9 = _v8.b;
 							var a = _v9.a;
 							return A4(
-								$author$project$MJson$fromHex8,
+								$author$project$OUI$Material$Color$Json$fromHex8,
 								_Utils_Tuple2(r, r),
 								_Utils_Tuple2(g, g),
 								_Utils_Tuple2(b, b),
@@ -270900,7 +270900,7 @@ var $author$project$MJson$colorFromHex = function (hexString) {
 							var _v23 = _v22.b;
 							var b2 = _v23.a;
 							return A4(
-								$author$project$MJson$fromHex8,
+								$author$project$OUI$Material$Color$Json$fromHex8,
 								_Utils_Tuple2(r1, r2),
 								_Utils_Tuple2(g1, g2),
 								_Utils_Tuple2(b1, b2),
@@ -270923,7 +270923,7 @@ var $author$project$MJson$colorFromHex = function (hexString) {
 									var _v18 = _v17.b;
 									var b2 = _v18.a;
 									return A4(
-										$author$project$MJson$fromHex8,
+										$author$project$OUI$Material$Color$Json$fromHex8,
 										_Utils_Tuple2(r1, r2),
 										_Utils_Tuple2(g1, g2),
 										_Utils_Tuple2(b1, b2),
@@ -270953,7 +270953,7 @@ var $author$project$MJson$colorFromHex = function (hexString) {
 										var _v31 = _v30.b;
 										var a2 = _v31.a;
 										return A4(
-											$author$project$MJson$fromHex8,
+											$author$project$OUI$Material$Color$Json$fromHex8,
 											_Utils_Tuple2(r1, r2),
 											_Utils_Tuple2(g1, g2),
 											_Utils_Tuple2(b1, b2),
@@ -270978,7 +270978,7 @@ var $author$project$MJson$colorFromHex = function (hexString) {
 									var _v38 = _v37.b;
 									var a2 = _v38.a;
 									return A4(
-										$author$project$MJson$fromHex8,
+										$author$project$OUI$Material$Color$Json$fromHex8,
 										_Utils_Tuple2(r1, r2),
 										_Utils_Tuple2(g1, g2),
 										_Utils_Tuple2(b1, b2),
@@ -270995,10 +270995,10 @@ var $author$project$MJson$colorFromHex = function (hexString) {
 	}
 	return $elm$core$Maybe$Nothing;
 };
-var $author$project$MJson$decodeColor = A2(
+var $author$project$OUI$Material$Color$Json$decodeColor = A2(
 	$elm$json$Json$Decode$andThen,
 	function (s) {
-		var _v0 = $author$project$MJson$colorFromHex(s);
+		var _v0 = $author$project$OUI$Material$Color$Json$colorFromHex(s);
 		if (_v0.$ === 'Nothing') {
 			return $elm$json$Json$Decode$fail('Invalid color' + s);
 		} else {
@@ -271012,15 +271012,15 @@ var $author$project$OUI$Material$Color$KeyColors = F6(
 		return {error: error, neutral: neutral, neutralVariant: neutralVariant, primary: primary, secondary: secondary, tertiary: tertiary};
 	});
 var $elm$json$Json$Decode$map6 = _Json_map6;
-var $author$project$MJson$decodeKeyColors = A7(
+var $author$project$OUI$Material$Color$Json$decodeKeyColors = A7(
 	$elm$json$Json$Decode$map6,
 	$author$project$OUI$Material$Color$KeyColors,
-	A2($elm$json$Json$Decode$field, 'primary', $author$project$MJson$decodeColor),
-	A2($elm$json$Json$Decode$field, 'secondary', $author$project$MJson$decodeColor),
-	A2($elm$json$Json$Decode$field, 'tertiary', $author$project$MJson$decodeColor),
-	A2($elm$json$Json$Decode$field, 'error', $author$project$MJson$decodeColor),
-	A2($elm$json$Json$Decode$field, 'neutral', $author$project$MJson$decodeColor),
-	A2($elm$json$Json$Decode$field, 'neutralVariant', $author$project$MJson$decodeColor));
+	A2($elm$json$Json$Decode$field, 'primary', $author$project$OUI$Material$Color$Json$decodeColor),
+	A2($elm$json$Json$Decode$field, 'secondary', $author$project$OUI$Material$Color$Json$decodeColor),
+	A2($elm$json$Json$Decode$field, 'tertiary', $author$project$OUI$Material$Color$Json$decodeColor),
+	A2($elm$json$Json$Decode$field, 'error', $author$project$OUI$Material$Color$Json$decodeColor),
+	A2($elm$json$Json$Decode$field, 'neutral', $author$project$OUI$Material$Color$Json$decodeColor),
+	A2($elm$json$Json$Decode$field, 'neutralVariant', $author$project$OUI$Material$Color$Json$decodeColor));
 var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$custom = $elm$json$Json$Decode$map2($elm$core$Basics$apR);
 var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required = F3(
 	function (key, valDecoder, decoder) {
@@ -271029,166 +271029,166 @@ var $NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required = F3(
 			A2($elm$json$Json$Decode$field, key, valDecoder),
 			decoder);
 	});
-var $author$project$MJson$decodeColorScheme = A3(
+var $author$project$OUI$Material$Color$Json$decodeColorScheme = A3(
 	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 	'scrim',
-	$author$project$MJson$decodeColor,
+	$author$project$OUI$Material$Color$Json$decodeColor,
 	A3(
 		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 		'surfaceTint',
-		$author$project$MJson$decodeColor,
+		$author$project$OUI$Material$Color$Json$decodeColor,
 		A3(
 			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 			'shadow',
-			$author$project$MJson$decodeColor,
+			$author$project$OUI$Material$Color$Json$decodeColor,
 			A3(
 				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 				'outlineVariant',
-				$author$project$MJson$decodeColor,
+				$author$project$OUI$Material$Color$Json$decodeColor,
 				A3(
 					$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 					'outline',
-					$author$project$MJson$decodeColor,
+					$author$project$OUI$Material$Color$Json$decodeColor,
 					A3(
 						$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 						'onErrorContainer',
-						$author$project$MJson$decodeColor,
+						$author$project$OUI$Material$Color$Json$decodeColor,
 						A3(
 							$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 							'onError',
-							$author$project$MJson$decodeColor,
+							$author$project$OUI$Material$Color$Json$decodeColor,
 							A3(
 								$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 								'errorContainer',
-								$author$project$MJson$decodeColor,
+								$author$project$OUI$Material$Color$Json$decodeColor,
 								A3(
 									$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 									'error',
-									$author$project$MJson$decodeColor,
+									$author$project$OUI$Material$Color$Json$decodeColor,
 									A3(
 										$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 										'onBackground',
-										$author$project$MJson$decodeColor,
+										$author$project$OUI$Material$Color$Json$decodeColor,
 										A3(
 											$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 											'background',
-											$author$project$MJson$decodeColor,
+											$author$project$OUI$Material$Color$Json$decodeColor,
 											A3(
 												$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 												'inverseOnSurface',
-												$author$project$MJson$decodeColor,
+												$author$project$OUI$Material$Color$Json$decodeColor,
 												A3(
 													$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 													'inverseSurface',
-													$author$project$MJson$decodeColor,
+													$author$project$OUI$Material$Color$Json$decodeColor,
 													A3(
 														$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 														'onSurfaceVariant',
-														$author$project$MJson$decodeColor,
+														$author$project$OUI$Material$Color$Json$decodeColor,
 														A3(
 															$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 															'onSurface',
-															$author$project$MJson$decodeColor,
+															$author$project$OUI$Material$Color$Json$decodeColor,
 															A3(
 																$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																'surfaceVariant',
-																$author$project$MJson$decodeColor,
+																$author$project$OUI$Material$Color$Json$decodeColor,
 																A3(
 																	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																	'surfaceContainerHighest',
-																	$author$project$MJson$decodeColor,
+																	$author$project$OUI$Material$Color$Json$decodeColor,
 																	A3(
 																		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																		'surfaceContainerHigh',
-																		$author$project$MJson$decodeColor,
+																		$author$project$OUI$Material$Color$Json$decodeColor,
 																		A3(
 																			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																			'surfaceContainer',
-																			$author$project$MJson$decodeColor,
+																			$author$project$OUI$Material$Color$Json$decodeColor,
 																			A3(
 																				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																				'surfaceContainerLow',
-																				$author$project$MJson$decodeColor,
+																				$author$project$OUI$Material$Color$Json$decodeColor,
 																				A3(
 																					$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																					'surfaceContainerLowest',
-																					$author$project$MJson$decodeColor,
+																					$author$project$OUI$Material$Color$Json$decodeColor,
 																					A3(
 																						$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																						'surfaceBright',
-																						$author$project$MJson$decodeColor,
+																						$author$project$OUI$Material$Color$Json$decodeColor,
 																						A3(
 																							$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																							'surfaceDim',
-																							$author$project$MJson$decodeColor,
+																							$author$project$OUI$Material$Color$Json$decodeColor,
 																							A3(
 																								$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																								'surface',
-																								$author$project$MJson$decodeColor,
+																								$author$project$OUI$Material$Color$Json$decodeColor,
 																								A3(
 																									$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																									'onTertiaryContainer',
-																									$author$project$MJson$decodeColor,
+																									$author$project$OUI$Material$Color$Json$decodeColor,
 																									A3(
 																										$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																										'onTertiary',
-																										$author$project$MJson$decodeColor,
+																										$author$project$OUI$Material$Color$Json$decodeColor,
 																										A3(
 																											$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																											'tertiaryContainer',
-																											$author$project$MJson$decodeColor,
+																											$author$project$OUI$Material$Color$Json$decodeColor,
 																											A3(
 																												$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																												'tertiary',
-																												$author$project$MJson$decodeColor,
+																												$author$project$OUI$Material$Color$Json$decodeColor,
 																												A3(
 																													$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																													'onSecondaryContainer',
-																													$author$project$MJson$decodeColor,
+																													$author$project$OUI$Material$Color$Json$decodeColor,
 																													A3(
 																														$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																														'onSecondary',
-																														$author$project$MJson$decodeColor,
+																														$author$project$OUI$Material$Color$Json$decodeColor,
 																														A3(
 																															$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																															'secondaryContainer',
-																															$author$project$MJson$decodeColor,
+																															$author$project$OUI$Material$Color$Json$decodeColor,
 																															A3(
 																																$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																																'secondary',
-																																$author$project$MJson$decodeColor,
+																																$author$project$OUI$Material$Color$Json$decodeColor,
 																																A3(
 																																	$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																																	'inversePrimary',
-																																	$author$project$MJson$decodeColor,
+																																	$author$project$OUI$Material$Color$Json$decodeColor,
 																																	A3(
 																																		$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																																		'onPrimaryContainer',
-																																		$author$project$MJson$decodeColor,
+																																		$author$project$OUI$Material$Color$Json$decodeColor,
 																																		A3(
 																																			$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																																			'onPrimary',
-																																			$author$project$MJson$decodeColor,
+																																			$author$project$OUI$Material$Color$Json$decodeColor,
 																																			A3(
 																																				$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																																				'primaryContainer',
-																																				$author$project$MJson$decodeColor,
+																																				$author$project$OUI$Material$Color$Json$decodeColor,
 																																				A3(
 																																					$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																																					'primary',
-																																					$author$project$MJson$decodeColor,
+																																					$author$project$OUI$Material$Color$Json$decodeColor,
 																																					A3(
 																																						$NoRedInk$elm_json_decode_pipeline$Json$Decode$Pipeline$required,
 																																						'keyColors',
-																																						$author$project$MJson$decodeKeyColors,
+																																						$author$project$OUI$Material$Color$Json$decodeKeyColors,
 																																						$elm$json$Json$Decode$succeed($author$project$OUI$Material$Color$Scheme)))))))))))))))))))))))))))))))))))))));
 var $elm$json$Json$Decode$map4 = _Json_map4;
-var $author$project$MJson$decodeColorTheme = A5(
+var $author$project$OUI$Material$Color$Json$decodeColorTheme = A5(
 	$elm$json$Json$Decode$map4,
 	$author$project$OUI$Material$Color$Theme,
 	A2($elm$json$Json$Decode$field, 'name', $elm$json$Json$Decode$string),
 	A2($elm$json$Json$Decode$field, 'description', $elm$json$Json$Decode$string),
-	A2($elm$json$Json$Decode$field, 'keyColors', $author$project$MJson$decodeKeyColors),
+	A2($elm$json$Json$Decode$field, 'keyColors', $author$project$OUI$Material$Color$Json$decodeKeyColors),
 	A2(
 		$elm$json$Json$Decode$field,
 		'schemes',
@@ -271198,8 +271198,8 @@ var $author$project$MJson$decodeColorTheme = A5(
 				function (light, dark) {
 					return {dark: dark, light: light};
 				}),
-			A2($elm$json$Json$Decode$field, 'light', $author$project$MJson$decodeColorScheme),
-			A2($elm$json$Json$Decode$field, 'dark', $author$project$MJson$decodeColorScheme))));
+			A2($elm$json$Json$Decode$field, 'light', $author$project$OUI$Material$Color$Json$decodeColorScheme),
+			A2($elm$json$Json$Decode$field, 'dark', $author$project$OUI$Material$Color$Json$decodeColorScheme))));
 var $elm$json$Json$Decode$list = _Json_decodeList;
 var $author$project$OUI$Explorer$decodeSettings = A2(
 	$elm$json$Json$Decode$map,
@@ -271207,7 +271207,7 @@ var $author$project$OUI$Explorer$decodeSettings = A2(
 	A2(
 		$elm$json$Json$Decode$field,
 		'colorThemes',
-		$elm$json$Json$Decode$list($author$project$MJson$decodeColorTheme)));
+		$elm$json$Json$Decode$list($author$project$OUI$Material$Color$Json$decodeColorTheme)));
 var $author$project$OUI$Explorer$decodeFlags = A3(
 	$elm$json$Json$Decode$map2,
 	$author$project$OUI$Explorer$Flags,
@@ -271487,12 +271487,12 @@ var $elm$core$Tuple$mapBoth = F3(
 			funcA(x),
 			funcB(y));
 	});
-var $author$project$MJson$unsafeInt255Digits = function (n) {
+var $author$project$OUI$Material$Color$Json$unsafeInt255Digits = function (n) {
 	var digit1 = (n / 16) | 0;
 	var digit0 = (!(!digit1)) ? A2($elm$core$Basics$modBy, digit1 * 16, n) : n;
 	return _Utils_Tuple2(digit1, digit0);
 };
-var $author$project$MJson$unsafeIntToChar = function (i) {
+var $author$project$OUI$Material$Color$Json$unsafeIntToChar = function (i) {
 	if (i < 10) {
 		return A2(
 			$elm$core$Maybe$withDefault,
@@ -271521,7 +271521,7 @@ var $author$project$MJson$unsafeIntToChar = function (i) {
 		}
 	}
 };
-var $author$project$MJson$int255ToHex = function (n) {
+var $author$project$OUI$Material$Color$Json$int255ToHex = function (n) {
 	return (n < 0) ? '00' : ((n > 255) ? 'ff' : function (_v0) {
 		var a = _v0.a;
 		var b = _v0.b;
@@ -271532,18 +271532,18 @@ var $author$project$MJson$int255ToHex = function (n) {
 	}(
 		A3(
 			$elm$core$Tuple$mapBoth,
-			$author$project$MJson$unsafeIntToChar,
-			$author$project$MJson$unsafeIntToChar,
-			$author$project$MJson$unsafeInt255Digits(n))));
+			$author$project$OUI$Material$Color$Json$unsafeIntToChar,
+			$author$project$OUI$Material$Color$Json$unsafeIntToChar,
+			$author$project$OUI$Material$Color$Json$unsafeInt255Digits(n))));
 };
-var $author$project$MJson$toHex = function (c) {
+var $author$project$OUI$Material$Color$Json$toHex = function (c) {
 	var components = $avh4$elm_color$Color$toRgba(c);
 	return {
 		alpha: components.alpha,
 		hex: '#' + $elm$core$String$concat(
 			A2(
 				$elm$core$List$map,
-				$author$project$MJson$int255ToHex,
+				$author$project$OUI$Material$Color$Json$int255ToHex,
 				A2(
 					$elm$core$List$map,
 					$elm$core$Basics$round,
@@ -271554,163 +271554,163 @@ var $author$project$MJson$toHex = function (c) {
 							[components.red, components.green, components.blue])))))
 	};
 };
-var $author$project$MJson$encodeColor = function (color) {
+var $author$project$OUI$Material$Color$Json$encodeColor = function (color) {
 	return $elm$json$Json$Encode$string(
 		function (_v0) {
 			var alpha = _v0.alpha;
 			var hex = _v0.hex;
 			return _Utils_ap(
 				hex,
-				$author$project$MJson$int255ToHex(
+				$author$project$OUI$Material$Color$Json$int255ToHex(
 					$elm$core$Basics$round(alpha * 255)));
 		}(
-			$author$project$MJson$toHex(color)));
+			$author$project$OUI$Material$Color$Json$toHex(color)));
 };
-var $author$project$MJson$encodeKeyColors = function (keyColors) {
+var $author$project$OUI$Material$Color$Json$encodeKeyColors = function (keyColors) {
 	return $elm$json$Json$Encode$object(
 		_List_fromArray(
 			[
 				_Utils_Tuple2(
 				'primary',
-				$author$project$MJson$encodeColor(keyColors.primary)),
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.primary)),
 				_Utils_Tuple2(
 				'secondary',
-				$author$project$MJson$encodeColor(keyColors.secondary)),
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.secondary)),
 				_Utils_Tuple2(
 				'tertiary',
-				$author$project$MJson$encodeColor(keyColors.tertiary)),
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.tertiary)),
 				_Utils_Tuple2(
 				'error',
-				$author$project$MJson$encodeColor(keyColors.error)),
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.error)),
 				_Utils_Tuple2(
 				'neutral',
-				$author$project$MJson$encodeColor(keyColors.neutral)),
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.neutral)),
 				_Utils_Tuple2(
 				'neutralVariant',
-				$author$project$MJson$encodeColor(keyColors.neutralVariant))
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.neutralVariant))
 			]));
 };
-var $author$project$MJson$encodeColorScheme = function (scheme) {
+var $author$project$OUI$Material$Color$Json$encodeColorScheme = function (scheme) {
 	return $elm$json$Json$Encode$object(
 		_List_fromArray(
 			[
 				_Utils_Tuple2(
 				'keyColors',
-				$author$project$MJson$encodeKeyColors(scheme.keyColors)),
+				$author$project$OUI$Material$Color$Json$encodeKeyColors(scheme.keyColors)),
 				_Utils_Tuple2(
 				'primary',
-				$author$project$MJson$encodeColor(scheme.primary)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.primary)),
 				_Utils_Tuple2(
 				'primaryContainer',
-				$author$project$MJson$encodeColor(scheme.primaryContainer)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.primaryContainer)),
 				_Utils_Tuple2(
 				'onPrimary',
-				$author$project$MJson$encodeColor(scheme.onPrimary)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onPrimary)),
 				_Utils_Tuple2(
 				'onPrimaryContainer',
-				$author$project$MJson$encodeColor(scheme.onPrimaryContainer)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onPrimaryContainer)),
 				_Utils_Tuple2(
 				'inversePrimary',
-				$author$project$MJson$encodeColor(scheme.inversePrimary)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inversePrimary)),
 				_Utils_Tuple2(
 				'secondary',
-				$author$project$MJson$encodeColor(scheme.secondary)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.secondary)),
 				_Utils_Tuple2(
 				'secondaryContainer',
-				$author$project$MJson$encodeColor(scheme.secondaryContainer)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.secondaryContainer)),
 				_Utils_Tuple2(
 				'onSecondary',
-				$author$project$MJson$encodeColor(scheme.onSecondary)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSecondary)),
 				_Utils_Tuple2(
 				'onSecondaryContainer',
-				$author$project$MJson$encodeColor(scheme.onSecondaryContainer)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSecondaryContainer)),
 				_Utils_Tuple2(
 				'tertiary',
-				$author$project$MJson$encodeColor(scheme.tertiary)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.tertiary)),
 				_Utils_Tuple2(
 				'tertiaryContainer',
-				$author$project$MJson$encodeColor(scheme.tertiaryContainer)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.tertiaryContainer)),
 				_Utils_Tuple2(
 				'onTertiary',
-				$author$project$MJson$encodeColor(scheme.onTertiary)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onTertiary)),
 				_Utils_Tuple2(
 				'onTertiaryContainer',
-				$author$project$MJson$encodeColor(scheme.onTertiaryContainer)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onTertiaryContainer)),
 				_Utils_Tuple2(
 				'surface',
-				$author$project$MJson$encodeColor(scheme.surface)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surface)),
 				_Utils_Tuple2(
 				'surfaceDim',
-				$author$project$MJson$encodeColor(scheme.surfaceDim)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceDim)),
 				_Utils_Tuple2(
 				'surfaceBright',
-				$author$project$MJson$encodeColor(scheme.surfaceBright)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceBright)),
 				_Utils_Tuple2(
 				'surfaceContainerLowest',
-				$author$project$MJson$encodeColor(scheme.surfaceContainerLowest)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerLowest)),
 				_Utils_Tuple2(
 				'surfaceContainerLow',
-				$author$project$MJson$encodeColor(scheme.surfaceContainerLow)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerLow)),
 				_Utils_Tuple2(
 				'surfaceContainer',
-				$author$project$MJson$encodeColor(scheme.surfaceContainer)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainer)),
 				_Utils_Tuple2(
 				'surfaceContainerHigh',
-				$author$project$MJson$encodeColor(scheme.surfaceContainerHigh)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerHigh)),
 				_Utils_Tuple2(
 				'surfaceContainerHighest',
-				$author$project$MJson$encodeColor(scheme.surfaceContainerHighest)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerHighest)),
 				_Utils_Tuple2(
 				'surfaceVariant',
-				$author$project$MJson$encodeColor(scheme.surfaceVariant)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceVariant)),
 				_Utils_Tuple2(
 				'onSurface',
-				$author$project$MJson$encodeColor(scheme.onSurface)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSurface)),
 				_Utils_Tuple2(
 				'onSurfaceVariant',
-				$author$project$MJson$encodeColor(scheme.onSurfaceVariant)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSurfaceVariant)),
 				_Utils_Tuple2(
 				'inverseSurface',
-				$author$project$MJson$encodeColor(scheme.inverseSurface)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inverseSurface)),
 				_Utils_Tuple2(
 				'inverseOnSurface',
-				$author$project$MJson$encodeColor(scheme.inverseOnSurface)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inverseOnSurface)),
 				_Utils_Tuple2(
 				'background',
-				$author$project$MJson$encodeColor(scheme.background)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.background)),
 				_Utils_Tuple2(
 				'onBackground',
-				$author$project$MJson$encodeColor(scheme.onBackground)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onBackground)),
 				_Utils_Tuple2(
 				'error',
-				$author$project$MJson$encodeColor(scheme.error)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.error)),
 				_Utils_Tuple2(
 				'errorContainer',
-				$author$project$MJson$encodeColor(scheme.errorContainer)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.errorContainer)),
 				_Utils_Tuple2(
 				'onError',
-				$author$project$MJson$encodeColor(scheme.onError)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onError)),
 				_Utils_Tuple2(
 				'onErrorContainer',
-				$author$project$MJson$encodeColor(scheme.onErrorContainer)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onErrorContainer)),
 				_Utils_Tuple2(
 				'outline',
-				$author$project$MJson$encodeColor(scheme.outline)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.outline)),
 				_Utils_Tuple2(
 				'outlineVariant',
-				$author$project$MJson$encodeColor(scheme.outlineVariant)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.outlineVariant)),
 				_Utils_Tuple2(
 				'shadow',
-				$author$project$MJson$encodeColor(scheme.shadow)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.shadow)),
 				_Utils_Tuple2(
 				'surfaceTint',
-				$author$project$MJson$encodeColor(scheme.surfaceTint)),
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceTint)),
 				_Utils_Tuple2(
 				'scrim',
-				$author$project$MJson$encodeColor(scheme.scrim))
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.scrim))
 			]));
 };
-var $author$project$MJson$encodeColorTheme = function (theme) {
+var $author$project$OUI$Material$Color$Json$encodeColorTheme = function (theme) {
 	return $elm$json$Json$Encode$object(
 		_List_fromArray(
 			[
@@ -271722,7 +271722,7 @@ var $author$project$MJson$encodeColorTheme = function (theme) {
 				$elm$json$Json$Encode$string(theme.description)),
 				_Utils_Tuple2(
 				'keyColors',
-				$author$project$MJson$encodeKeyColors(theme.keyColors)),
+				$author$project$OUI$Material$Color$Json$encodeKeyColors(theme.keyColors)),
 				_Utils_Tuple2(
 				'schemes',
 				$elm$json$Json$Encode$object(
@@ -271730,10 +271730,10 @@ var $author$project$MJson$encodeColorTheme = function (theme) {
 						[
 							_Utils_Tuple2(
 							'light',
-							$author$project$MJson$encodeColorScheme(theme.schemes.light)),
+							$author$project$OUI$Material$Color$Json$encodeColorScheme(theme.schemes.light)),
 							_Utils_Tuple2(
 							'dark',
-							$author$project$MJson$encodeColorScheme(theme.schemes.dark))
+							$author$project$OUI$Material$Color$Json$encodeColorScheme(theme.schemes.dark))
 						])))
 			]));
 };
@@ -271743,7 +271743,7 @@ var $author$project$OUI$Explorer$encodeSettings = function (settings) {
 			[
 				_Utils_Tuple2(
 				'colorThemes',
-				A2($elm$json$Json$Encode$list, $author$project$MJson$encodeColorTheme, settings.colorThemes))
+				A2($elm$json$Json$Encode$list, $author$project$OUI$Material$Color$Json$encodeColorTheme, settings.colorThemes))
 			]));
 };
 var $author$project$OUI$Explorer$buildSaveSettingsMsg = F2(
