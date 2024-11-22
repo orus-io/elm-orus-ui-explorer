@@ -3969,6 +3969,184 @@ function _VirtualDom_dekey(keyedNode)
 
 
 
+// DECODER
+
+var _File_decoder = _Json_decodePrim(function(value) {
+	// NOTE: checks if `File` exists in case this is run on node
+	return (typeof File !== 'undefined' && value instanceof File)
+		? $elm$core$Result$Ok(value)
+		: _Json_expecting('a FILE', value);
+});
+
+
+// METADATA
+
+function _File_name(file) { return file.name; }
+function _File_mime(file) { return file.type; }
+function _File_size(file) { return file.size; }
+
+function _File_lastModified(file)
+{
+	return $elm$time$Time$millisToPosix(file.lastModified);
+}
+
+
+// DOWNLOAD
+
+var _File_downloadNode;
+
+function _File_getDownloadNode()
+{
+	return _File_downloadNode || (_File_downloadNode = document.createElement('a'));
+}
+
+var _File_download = F3(function(name, mime, content)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var blob = new Blob([content], {type: mime});
+
+		// for IE10+
+		if (navigator.msSaveOrOpenBlob)
+		{
+			navigator.msSaveOrOpenBlob(blob, name);
+			return;
+		}
+
+		// for HTML5
+		var node = _File_getDownloadNode();
+		var objectUrl = URL.createObjectURL(blob);
+		node.href = objectUrl;
+		node.download = name;
+		_File_click(node);
+		URL.revokeObjectURL(objectUrl);
+	});
+});
+
+function _File_downloadUrl(href)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var node = _File_getDownloadNode();
+		node.href = href;
+		node.download = '';
+		node.origin === location.origin || (node.target = '_blank');
+		_File_click(node);
+	});
+}
+
+
+// IE COMPATIBILITY
+
+function _File_makeBytesSafeForInternetExplorer(bytes)
+{
+	// only needed by IE10 and IE11 to fix https://github.com/elm/file/issues/10
+	// all other browsers can just run `new Blob([bytes])` directly with no problem
+	//
+	return new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+}
+
+function _File_click(node)
+{
+	// only needed by IE10 and IE11 to fix https://github.com/elm/file/issues/11
+	// all other browsers have MouseEvent and do not need this conditional stuff
+	//
+	if (typeof MouseEvent === 'function')
+	{
+		node.dispatchEvent(new MouseEvent('click'));
+	}
+	else
+	{
+		var event = document.createEvent('MouseEvents');
+		event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+		document.body.appendChild(node);
+		node.dispatchEvent(event);
+		document.body.removeChild(node);
+	}
+}
+
+
+// UPLOAD
+
+var _File_node;
+
+function _File_uploadOne(mimes)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		_File_node = document.createElement('input');
+		_File_node.type = 'file';
+		_File_node.accept = A2($elm$core$String$join, ',', mimes);
+		_File_node.addEventListener('change', function(event)
+		{
+			callback(_Scheduler_succeed(event.target.files[0]));
+		});
+		_File_click(_File_node);
+	});
+}
+
+function _File_uploadOneOrMore(mimes)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		_File_node = document.createElement('input');
+		_File_node.type = 'file';
+		_File_node.multiple = true;
+		_File_node.accept = A2($elm$core$String$join, ',', mimes);
+		_File_node.addEventListener('change', function(event)
+		{
+			var elmFiles = _List_fromArray(event.target.files);
+			callback(_Scheduler_succeed(_Utils_Tuple2(elmFiles.a, elmFiles.b)));
+		});
+		_File_click(_File_node);
+	});
+}
+
+
+// CONTENT
+
+function _File_toString(blob)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var reader = new FileReader();
+		reader.addEventListener('loadend', function() {
+			callback(_Scheduler_succeed(reader.result));
+		});
+		reader.readAsText(blob);
+		return function() { reader.abort(); };
+	});
+}
+
+function _File_toBytes(blob)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var reader = new FileReader();
+		reader.addEventListener('loadend', function() {
+			callback(_Scheduler_succeed(new DataView(reader.result)));
+		});
+		reader.readAsArrayBuffer(blob);
+		return function() { reader.abort(); };
+	});
+}
+
+function _File_toUrl(blob)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var reader = new FileReader();
+		reader.addEventListener('loadend', function() {
+			callback(_Scheduler_succeed(reader.result));
+		});
+		reader.readAsDataURL(blob);
+		return function() { reader.abort(); };
+	});
+}
+
+
+
+
 
 // ELEMENT
 
@@ -15335,6 +15513,7 @@ var $author$project$OUI$Showcase$Colors$ColorThemeButtonMsg = function (a) {
 };
 var $author$project$OUI$Showcase$Colors$CopyColorTheme = {$: 'CopyColorTheme'};
 var $author$project$OUI$Showcase$Colors$DismissColor = {$: 'DismissColor'};
+var $author$project$OUI$Showcase$Colors$ExportColor = {$: 'ExportColor'};
 var $author$project$OUI$Showcase$Colors$SelectColorScheme = F2(
 	function (a, b) {
 		return {$: 'SelectColorScheme', a: a, b: b};
@@ -16939,8 +17118,8 @@ var $author$project$OUI$Material$Color$Json$toHex = function (c) {
 };
 var $author$project$OUI$Material$Color$Json$toHexWithAlpha = function (c) {
 	return function (_v0) {
-		var hex = _v0.hex;
 		var alpha = _v0.alpha;
+		var hex = _v0.hex;
 		return _Utils_ap(
 			hex,
 			$author$project$OUI$Material$Color$Json$int255ToHex(
@@ -17126,6 +17305,190 @@ var $simonh1000$elm_colorpicker$ColorPicker$State = function (a) {
 var $simonh1000$elm_colorpicker$ColorPicker$Unpressed = {$: 'Unpressed'};
 var $simonh1000$elm_colorpicker$ColorPicker$blankModel = {hue: $elm$core$Maybe$Nothing, mouseTarget: $simonh1000$elm_colorpicker$ColorPicker$Unpressed};
 var $simonh1000$elm_colorpicker$ColorPicker$empty = $simonh1000$elm_colorpicker$ColorPicker$State($simonh1000$elm_colorpicker$ColorPicker$blankModel);
+var $author$project$OUI$Showcase$ColorPicker$empty = {colorPicker: $simonh1000$elm_colorpicker$ColorPicker$empty, text: '', textFocused: false};
+var $author$project$OUI$Material$Color$Json$encodeColor = function (color) {
+	return $elm$json$Json$Encode$string(
+		function (_v0) {
+			var alpha = _v0.alpha;
+			var hex = _v0.hex;
+			return _Utils_ap(
+				hex,
+				$author$project$OUI$Material$Color$Json$int255ToHex(
+					$elm$core$Basics$round(alpha * 255)));
+		}(
+			$author$project$OUI$Material$Color$Json$toHex(color)));
+};
+var $author$project$OUI$Material$Color$Json$encodeKeyColors = function (keyColors) {
+	return $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'primary',
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.primary)),
+				_Utils_Tuple2(
+				'secondary',
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.secondary)),
+				_Utils_Tuple2(
+				'tertiary',
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.tertiary)),
+				_Utils_Tuple2(
+				'error',
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.error)),
+				_Utils_Tuple2(
+				'neutral',
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.neutral)),
+				_Utils_Tuple2(
+				'neutralVariant',
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.neutralVariant))
+			]));
+};
+var $author$project$OUI$Material$Color$Json$encodeColorScheme = function (scheme) {
+	return $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'keyColors',
+				$author$project$OUI$Material$Color$Json$encodeKeyColors(scheme.keyColors)),
+				_Utils_Tuple2(
+				'primary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.primary)),
+				_Utils_Tuple2(
+				'primaryContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.primaryContainer)),
+				_Utils_Tuple2(
+				'onPrimary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onPrimary)),
+				_Utils_Tuple2(
+				'onPrimaryContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onPrimaryContainer)),
+				_Utils_Tuple2(
+				'inversePrimary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inversePrimary)),
+				_Utils_Tuple2(
+				'secondary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.secondary)),
+				_Utils_Tuple2(
+				'secondaryContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.secondaryContainer)),
+				_Utils_Tuple2(
+				'onSecondary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSecondary)),
+				_Utils_Tuple2(
+				'onSecondaryContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSecondaryContainer)),
+				_Utils_Tuple2(
+				'tertiary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.tertiary)),
+				_Utils_Tuple2(
+				'tertiaryContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.tertiaryContainer)),
+				_Utils_Tuple2(
+				'onTertiary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onTertiary)),
+				_Utils_Tuple2(
+				'onTertiaryContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onTertiaryContainer)),
+				_Utils_Tuple2(
+				'surface',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surface)),
+				_Utils_Tuple2(
+				'surfaceDim',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceDim)),
+				_Utils_Tuple2(
+				'surfaceBright',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceBright)),
+				_Utils_Tuple2(
+				'surfaceContainerLowest',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerLowest)),
+				_Utils_Tuple2(
+				'surfaceContainerLow',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerLow)),
+				_Utils_Tuple2(
+				'surfaceContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainer)),
+				_Utils_Tuple2(
+				'surfaceContainerHigh',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerHigh)),
+				_Utils_Tuple2(
+				'surfaceContainerHighest',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerHighest)),
+				_Utils_Tuple2(
+				'surfaceVariant',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceVariant)),
+				_Utils_Tuple2(
+				'onSurface',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSurface)),
+				_Utils_Tuple2(
+				'onSurfaceVariant',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSurfaceVariant)),
+				_Utils_Tuple2(
+				'inverseSurface',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inverseSurface)),
+				_Utils_Tuple2(
+				'inverseOnSurface',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inverseOnSurface)),
+				_Utils_Tuple2(
+				'background',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.background)),
+				_Utils_Tuple2(
+				'onBackground',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onBackground)),
+				_Utils_Tuple2(
+				'error',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.error)),
+				_Utils_Tuple2(
+				'errorContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.errorContainer)),
+				_Utils_Tuple2(
+				'onError',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onError)),
+				_Utils_Tuple2(
+				'onErrorContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onErrorContainer)),
+				_Utils_Tuple2(
+				'outline',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.outline)),
+				_Utils_Tuple2(
+				'outlineVariant',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.outlineVariant)),
+				_Utils_Tuple2(
+				'shadow',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.shadow)),
+				_Utils_Tuple2(
+				'surfaceTint',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceTint)),
+				_Utils_Tuple2(
+				'scrim',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.scrim))
+			]));
+};
+var $author$project$OUI$Material$Color$Json$encodeColorTheme = function (theme) {
+	return $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'name',
+				$elm$json$Json$Encode$string(theme.name)),
+				_Utils_Tuple2(
+				'description',
+				$elm$json$Json$Encode$string(theme.description)),
+				_Utils_Tuple2(
+				'keyColors',
+				$author$project$OUI$Material$Color$Json$encodeKeyColors(theme.keyColors)),
+				_Utils_Tuple2(
+				'schemes',
+				$elm$json$Json$Encode$object(
+					_List_fromArray(
+						[
+							_Utils_Tuple2(
+							'light',
+							$author$project$OUI$Material$Color$Json$encodeColorScheme(theme.schemes.light)),
+							_Utils_Tuple2(
+							'dark',
+							$author$project$OUI$Material$Color$Json$encodeColorScheme(theme.schemes.dark))
+						])))
+			]));
+};
 var $author$project$OUI$Explorer$SelectColorScheme = F2(
 	function (a, b) {
 		return {$: 'SelectColorScheme', a: a, b: b};
@@ -17134,162 +17497,10 @@ var $author$project$OUI$Explorer$selectColorScheme = F2(
 	function (i, t) {
 		return A2($author$project$OUI$Explorer$SelectColorScheme, i, t);
 	});
-var $simonh1000$elm_colorpicker$ColorPicker$widgetWidth = 200;
-var $simonh1000$elm_colorpicker$ColorPicker$calcHue = F2(
-	function (col, _v0) {
-		var mousePressed = _v0.mousePressed;
-		var x = _v0.x;
-		var hue = x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth;
-		var hsla = $avh4$elm_color$Color$toHsla(col);
-		var alpha = hsla.alpha;
-		var lightness = hsla.lightness;
-		var saturation = hsla.saturation;
-		var newCol = ((!saturation) && (lightness < 0.02)) ? _Utils_update(
-			hsla,
-			{hue: hue, lightness: 0.5, saturation: 0.5}) : _Utils_update(
-			hsla,
-			{hue: hue});
-		return $avh4$elm_color$Color$fromHsla(newCol);
-	});
-var $simonh1000$elm_colorpicker$ColorPicker$calcOpacity = F3(
-	function (col, _v0, _v1) {
-		var mousePressed = _v1.mousePressed;
-		var x = _v1.x;
-		var hsla = $avh4$elm_color$Color$toHsla(col);
-		return $avh4$elm_color$Color$fromHsla(
-			_Utils_update(
-				hsla,
-				{
-					alpha: A3($elm$core$Basics$clamp, 0, $simonh1000$elm_colorpicker$ColorPicker$widgetWidth, x) / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth
-				}));
-	});
-var $simonh1000$elm_colorpicker$ColorPicker$widgetHeight = 150;
-var $simonh1000$elm_colorpicker$ColorPicker$calcSatLight = F3(
-	function (col, currHue, _v0) {
-		var mousePressed = _v0.mousePressed;
-		var y = _v0.y;
-		var x = _v0.x;
-		var hsla = $avh4$elm_color$Color$toHsla(col);
-		return $avh4$elm_color$Color$fromHsla(
-			_Utils_update(
-				hsla,
-				{hue: currHue, lightness: 1 - (y / $simonh1000$elm_colorpicker$ColorPicker$widgetHeight), saturation: x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth}));
-	});
-var $simonh1000$elm_colorpicker$ColorPicker$setHue = F3(
-	function (mouseTarget, mouseInfo, model) {
-		switch (mouseTarget.$) {
-			case 'SatLight':
-				var hue = mouseTarget.a;
-				return _Utils_update(
-					model,
-					{
-						hue: $elm$core$Maybe$Just(
-							A2($elm$core$Maybe$withDefault, hue, model.hue))
-					});
-			case 'HueSlider':
-				return _Utils_update(
-					model,
-					{
-						hue: $elm$core$Maybe$Just(mouseInfo.x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth)
-					});
-			case 'OpacitySlider':
-				var hue = mouseTarget.a;
-				return _Utils_update(
-					model,
-					{
-						hue: $elm$core$Maybe$Just(
-							A2($elm$core$Maybe$withDefault, hue, model.hue))
-					});
-			default:
-				return model;
-		}
-	});
-var $simonh1000$elm_colorpicker$ColorPicker$setMouseTarget = F2(
-	function (mouseTarget, model) {
-		return _Utils_update(
-			model,
-			{mouseTarget: mouseTarget});
-	});
-var $simonh1000$elm_colorpicker$ColorPicker$update_ = F3(
-	function (message, col, model) {
-		var calcNewColour = function (mouseTarget) {
-			switch (mouseTarget.$) {
-				case 'SatLight':
-					var hue = mouseTarget.a;
-					return A2(
-						$elm$core$Basics$composeL,
-						$elm$core$Maybe$Just,
-						A2(
-							$simonh1000$elm_colorpicker$ColorPicker$calcSatLight,
-							col,
-							A2($elm$core$Maybe$withDefault, hue, model.hue)));
-				case 'HueSlider':
-					return A2(
-						$elm$core$Basics$composeL,
-						$elm$core$Maybe$Just,
-						$simonh1000$elm_colorpicker$ColorPicker$calcHue(col));
-				case 'OpacitySlider':
-					var hue = mouseTarget.a;
-					return A2(
-						$elm$core$Basics$composeL,
-						$elm$core$Maybe$Just,
-						A2(
-							$simonh1000$elm_colorpicker$ColorPicker$calcOpacity,
-							col,
-							A2($elm$core$Maybe$withDefault, hue, model.hue)));
-				default:
-					return function (_v2) {
-						return $elm$core$Maybe$Nothing;
-					};
-			}
-		};
-		var handleMouseMove = F2(
-			function (mouseTarget, mouseInfo) {
-				return (mouseInfo.mousePressed && _Utils_eq(model.mouseTarget, mouseTarget)) ? _Utils_Tuple2(
-					A3($simonh1000$elm_colorpicker$ColorPicker$setHue, mouseTarget, mouseInfo, model),
-					A2(calcNewColour, mouseTarget, mouseInfo)) : (((!mouseInfo.mousePressed) && _Utils_eq(model.mouseTarget, mouseTarget)) ? _Utils_Tuple2(
-					A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, $simonh1000$elm_colorpicker$ColorPicker$Unpressed, model),
-					$elm$core$Maybe$Nothing) : _Utils_Tuple2(model, $elm$core$Maybe$Nothing));
-			});
-		switch (message.$) {
-			case 'OnMouseDown':
-				var mouseTarget = message.a;
-				var mouseInfo = message.b;
-				return _Utils_Tuple2(
-					A3(
-						$simonh1000$elm_colorpicker$ColorPicker$setHue,
-						mouseTarget,
-						mouseInfo,
-						A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, mouseTarget, model)),
-					A2(calcNewColour, mouseTarget, mouseInfo));
-			case 'OnMouseMove':
-				var mouseTarget = message.a;
-				var mouseInfo = message.b;
-				return A2(handleMouseMove, mouseTarget, mouseInfo);
-			case 'OnClick':
-				var mouseTarget = message.a;
-				var mouseInfo = message.b;
-				return _Utils_Tuple2(
-					A3($simonh1000$elm_colorpicker$ColorPicker$setHue, mouseTarget, mouseInfo, model),
-					A2(calcNewColour, mouseTarget, mouseInfo));
-			case 'OnMouseUp':
-				return _Utils_Tuple2(
-					A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, $simonh1000$elm_colorpicker$ColorPicker$Unpressed, model),
-					$elm$core$Maybe$Nothing);
-			default:
-				return _Utils_Tuple2(model, $elm$core$Maybe$Nothing);
-		}
-	});
-var $simonh1000$elm_colorpicker$ColorPicker$update = F3(
-	function (message, col, _v0) {
-		var model = _v0.a;
-		return A2(
-			$elm$core$Tuple$mapFirst,
-			$simonh1000$elm_colorpicker$ColorPicker$State,
-			A3($simonh1000$elm_colorpicker$ColorPicker$update_, message, col, model));
-	});
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $elm$time$Time$Posix = function (a) {
+	return {$: 'Posix', a: a};
+};
+var $elm$time$Time$millisToPosix = $elm$time$Time$Posix;
 var $elm$core$Task$Perform = function (a) {
 	return {$: 'Perform', a: a};
 };
@@ -17369,6 +17580,15 @@ var $elm$core$Task$perform = F2(
 			$elm$core$Task$Perform(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
+var $elm$file$File$Download$string = F3(
+	function (name, mime, content) {
+		return A2(
+			$elm$core$Task$perform,
+			$elm$core$Basics$never,
+			A3(_File_download, name, mime, content));
+	});
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$OUI$MenuButton$performEffect = function (_v0) {
 	var msg = _v0.a;
 	return A2(
@@ -17551,6 +17771,496 @@ var $author$project$OUI$MenuButton$update = F2(
 				$elm$core$Maybe$withDefault($elm$core$Platform$Cmd$none)),
 			A2($author$project$OUI$MenuButton$updateWithoutPerform, msg, state));
 	});
+var $elm$core$Char$toLower = _Char_toLower;
+var $author$project$OUI$Material$Color$Json$hexToInt = function (_char) {
+	var _v0 = $elm$core$Char$toLower(_char);
+	switch (_v0.valueOf()) {
+		case '0':
+			return $elm$core$Maybe$Just(0);
+		case '1':
+			return $elm$core$Maybe$Just(1);
+		case '2':
+			return $elm$core$Maybe$Just(2);
+		case '3':
+			return $elm$core$Maybe$Just(3);
+		case '4':
+			return $elm$core$Maybe$Just(4);
+		case '5':
+			return $elm$core$Maybe$Just(5);
+		case '6':
+			return $elm$core$Maybe$Just(6);
+		case '7':
+			return $elm$core$Maybe$Just(7);
+		case '8':
+			return $elm$core$Maybe$Just(8);
+		case '9':
+			return $elm$core$Maybe$Just(9);
+		case 'a':
+			return $elm$core$Maybe$Just(10);
+		case 'b':
+			return $elm$core$Maybe$Just(11);
+		case 'c':
+			return $elm$core$Maybe$Just(12);
+		case 'd':
+			return $elm$core$Maybe$Just(13);
+		case 'e':
+			return $elm$core$Maybe$Just(14);
+		case 'f':
+			return $elm$core$Maybe$Just(15);
+		default:
+			return $elm$core$Maybe$Nothing;
+	}
+};
+var $elm$core$Maybe$map2 = F3(
+	function (func, ma, mb) {
+		if (ma.$ === 'Nothing') {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var a = ma.a;
+			if (mb.$ === 'Nothing') {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var b = mb.a;
+				return $elm$core$Maybe$Just(
+					A2(func, a, b));
+			}
+		}
+	});
+var $author$project$OUI$Material$Color$Json$hex2ToInt = F2(
+	function (c1, c2) {
+		return A3(
+			$elm$core$Maybe$map2,
+			F2(
+				function (v1, v2) {
+					return (v1 << 4) + v2;
+				}),
+			$author$project$OUI$Material$Color$Json$hexToInt(c1),
+			$author$project$OUI$Material$Color$Json$hexToInt(c2));
+	});
+var $elm$core$Maybe$map4 = F5(
+	function (func, ma, mb, mc, md) {
+		if (ma.$ === 'Nothing') {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var a = ma.a;
+			if (mb.$ === 'Nothing') {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var b = mb.a;
+				if (mc.$ === 'Nothing') {
+					return $elm$core$Maybe$Nothing;
+				} else {
+					var c = mc.a;
+					if (md.$ === 'Nothing') {
+						return $elm$core$Maybe$Nothing;
+					} else {
+						var d = md.a;
+						return $elm$core$Maybe$Just(
+							A4(func, a, b, c, d));
+					}
+				}
+			}
+		}
+	});
+var $avh4$elm_color$Color$rgba = F4(
+	function (r, g, b, a) {
+		return A4($avh4$elm_color$Color$RgbaSpace, r, g, b, a);
+	});
+var $author$project$OUI$Material$Color$Json$fromHex8 = F4(
+	function (_v0, _v1, _v2, _v3) {
+		var r1 = _v0.a;
+		var r2 = _v0.b;
+		var g1 = _v1.a;
+		var g2 = _v1.b;
+		var b1 = _v2.a;
+		var b2 = _v2.b;
+		var a1 = _v3.a;
+		var a2 = _v3.b;
+		return A5(
+			$elm$core$Maybe$map4,
+			F4(
+				function (r, g, b, a) {
+					return A4($avh4$elm_color$Color$rgba, r / 255, g / 255, b / 255, a / 255);
+				}),
+			A2($author$project$OUI$Material$Color$Json$hex2ToInt, r1, r2),
+			A2($author$project$OUI$Material$Color$Json$hex2ToInt, g1, g2),
+			A2($author$project$OUI$Material$Color$Json$hex2ToInt, b1, b2),
+			A2($author$project$OUI$Material$Color$Json$hex2ToInt, a1, a2));
+	});
+var $elm$core$String$foldr = _String_foldr;
+var $elm$core$String$toList = function (string) {
+	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
+};
+var $author$project$OUI$Material$Color$Json$colorFromHex = function (hexString) {
+	var _v0 = $elm$core$String$toList(hexString);
+	_v0$8:
+	while (true) {
+		if ((_v0.b && _v0.b.b) && _v0.b.b.b) {
+			if (!_v0.b.b.b.b) {
+				var r = _v0.a;
+				var _v4 = _v0.b;
+				var g = _v4.a;
+				var _v5 = _v4.b;
+				var b = _v5.a;
+				return A4(
+					$author$project$OUI$Material$Color$Json$fromHex8,
+					_Utils_Tuple2(r, r),
+					_Utils_Tuple2(g, g),
+					_Utils_Tuple2(b, b),
+					_Utils_Tuple2(
+						_Utils_chr('f'),
+						_Utils_chr('f')));
+			} else {
+				if (!_v0.b.b.b.b.b) {
+					if ('#' === _v0.a.valueOf()) {
+						var _v1 = _v0.b;
+						var r = _v1.a;
+						var _v2 = _v1.b;
+						var g = _v2.a;
+						var _v3 = _v2.b;
+						var b = _v3.a;
+						return A4(
+							$author$project$OUI$Material$Color$Json$fromHex8,
+							_Utils_Tuple2(r, r),
+							_Utils_Tuple2(g, g),
+							_Utils_Tuple2(b, b),
+							_Utils_Tuple2(
+								_Utils_chr('f'),
+								_Utils_chr('f')));
+					} else {
+						var r = _v0.a;
+						var _v10 = _v0.b;
+						var g = _v10.a;
+						var _v11 = _v10.b;
+						var b = _v11.a;
+						var _v12 = _v11.b;
+						var a = _v12.a;
+						return A4(
+							$author$project$OUI$Material$Color$Json$fromHex8,
+							_Utils_Tuple2(r, r),
+							_Utils_Tuple2(g, g),
+							_Utils_Tuple2(b, b),
+							_Utils_Tuple2(a, a));
+					}
+				} else {
+					if (!_v0.b.b.b.b.b.b) {
+						if ('#' === _v0.a.valueOf()) {
+							var _v6 = _v0.b;
+							var r = _v6.a;
+							var _v7 = _v6.b;
+							var g = _v7.a;
+							var _v8 = _v7.b;
+							var b = _v8.a;
+							var _v9 = _v8.b;
+							var a = _v9.a;
+							return A4(
+								$author$project$OUI$Material$Color$Json$fromHex8,
+								_Utils_Tuple2(r, r),
+								_Utils_Tuple2(g, g),
+								_Utils_Tuple2(b, b),
+								_Utils_Tuple2(a, a));
+						} else {
+							break _v0$8;
+						}
+					} else {
+						if (!_v0.b.b.b.b.b.b.b) {
+							var r1 = _v0.a;
+							var _v19 = _v0.b;
+							var r2 = _v19.a;
+							var _v20 = _v19.b;
+							var g1 = _v20.a;
+							var _v21 = _v20.b;
+							var g2 = _v21.a;
+							var _v22 = _v21.b;
+							var b1 = _v22.a;
+							var _v23 = _v22.b;
+							var b2 = _v23.a;
+							return A4(
+								$author$project$OUI$Material$Color$Json$fromHex8,
+								_Utils_Tuple2(r1, r2),
+								_Utils_Tuple2(g1, g2),
+								_Utils_Tuple2(b1, b2),
+								_Utils_Tuple2(
+									_Utils_chr('f'),
+									_Utils_chr('f')));
+						} else {
+							if (!_v0.b.b.b.b.b.b.b.b) {
+								if ('#' === _v0.a.valueOf()) {
+									var _v13 = _v0.b;
+									var r1 = _v13.a;
+									var _v14 = _v13.b;
+									var r2 = _v14.a;
+									var _v15 = _v14.b;
+									var g1 = _v15.a;
+									var _v16 = _v15.b;
+									var g2 = _v16.a;
+									var _v17 = _v16.b;
+									var b1 = _v17.a;
+									var _v18 = _v17.b;
+									var b2 = _v18.a;
+									return A4(
+										$author$project$OUI$Material$Color$Json$fromHex8,
+										_Utils_Tuple2(r1, r2),
+										_Utils_Tuple2(g1, g2),
+										_Utils_Tuple2(b1, b2),
+										_Utils_Tuple2(
+											_Utils_chr('f'),
+											_Utils_chr('f')));
+								} else {
+									break _v0$8;
+								}
+							} else {
+								if (_v0.b.b.b.b.b.b.b.b.b) {
+									if (('#' === _v0.a.valueOf()) && (!_v0.b.b.b.b.b.b.b.b.b.b)) {
+										var _v24 = _v0.b;
+										var r1 = _v24.a;
+										var _v25 = _v24.b;
+										var r2 = _v25.a;
+										var _v26 = _v25.b;
+										var g1 = _v26.a;
+										var _v27 = _v26.b;
+										var g2 = _v27.a;
+										var _v28 = _v27.b;
+										var b1 = _v28.a;
+										var _v29 = _v28.b;
+										var b2 = _v29.a;
+										var _v30 = _v29.b;
+										var a1 = _v30.a;
+										var _v31 = _v30.b;
+										var a2 = _v31.a;
+										return A4(
+											$author$project$OUI$Material$Color$Json$fromHex8,
+											_Utils_Tuple2(r1, r2),
+											_Utils_Tuple2(g1, g2),
+											_Utils_Tuple2(b1, b2),
+											_Utils_Tuple2(a1, a2));
+									} else {
+										break _v0$8;
+									}
+								} else {
+									var r1 = _v0.a;
+									var _v32 = _v0.b;
+									var r2 = _v32.a;
+									var _v33 = _v32.b;
+									var g1 = _v33.a;
+									var _v34 = _v33.b;
+									var g2 = _v34.a;
+									var _v35 = _v34.b;
+									var b1 = _v35.a;
+									var _v36 = _v35.b;
+									var b2 = _v36.a;
+									var _v37 = _v36.b;
+									var a1 = _v37.a;
+									var _v38 = _v37.b;
+									var a2 = _v38.a;
+									return A4(
+										$author$project$OUI$Material$Color$Json$fromHex8,
+										_Utils_Tuple2(r1, r2),
+										_Utils_Tuple2(g1, g2),
+										_Utils_Tuple2(b1, b2),
+										_Utils_Tuple2(a1, a2));
+								}
+							}
+						}
+					}
+				}
+			}
+		} else {
+			break _v0$8;
+		}
+	}
+	return $elm$core$Maybe$Nothing;
+};
+var $simonh1000$elm_colorpicker$ColorPicker$widgetWidth = 200;
+var $simonh1000$elm_colorpicker$ColorPicker$calcHue = F2(
+	function (col, _v0) {
+		var mousePressed = _v0.mousePressed;
+		var x = _v0.x;
+		var hue = x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth;
+		var hsla = $avh4$elm_color$Color$toHsla(col);
+		var alpha = hsla.alpha;
+		var lightness = hsla.lightness;
+		var saturation = hsla.saturation;
+		var newCol = ((!saturation) && (lightness < 0.02)) ? _Utils_update(
+			hsla,
+			{hue: hue, lightness: 0.5, saturation: 0.5}) : _Utils_update(
+			hsla,
+			{hue: hue});
+		return $avh4$elm_color$Color$fromHsla(newCol);
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$calcOpacity = F3(
+	function (col, _v0, _v1) {
+		var mousePressed = _v1.mousePressed;
+		var x = _v1.x;
+		var hsla = $avh4$elm_color$Color$toHsla(col);
+		return $avh4$elm_color$Color$fromHsla(
+			_Utils_update(
+				hsla,
+				{
+					alpha: A3($elm$core$Basics$clamp, 0, $simonh1000$elm_colorpicker$ColorPicker$widgetWidth, x) / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth
+				}));
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$widgetHeight = 150;
+var $simonh1000$elm_colorpicker$ColorPicker$calcSatLight = F3(
+	function (col, currHue, _v0) {
+		var mousePressed = _v0.mousePressed;
+		var y = _v0.y;
+		var x = _v0.x;
+		var hsla = $avh4$elm_color$Color$toHsla(col);
+		return $avh4$elm_color$Color$fromHsla(
+			_Utils_update(
+				hsla,
+				{hue: currHue, lightness: 1 - (y / $simonh1000$elm_colorpicker$ColorPicker$widgetHeight), saturation: x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth}));
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$setHue = F3(
+	function (mouseTarget, mouseInfo, model) {
+		switch (mouseTarget.$) {
+			case 'SatLight':
+				var hue = mouseTarget.a;
+				return _Utils_update(
+					model,
+					{
+						hue: $elm$core$Maybe$Just(
+							A2($elm$core$Maybe$withDefault, hue, model.hue))
+					});
+			case 'HueSlider':
+				return _Utils_update(
+					model,
+					{
+						hue: $elm$core$Maybe$Just(mouseInfo.x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth)
+					});
+			case 'OpacitySlider':
+				var hue = mouseTarget.a;
+				return _Utils_update(
+					model,
+					{
+						hue: $elm$core$Maybe$Just(
+							A2($elm$core$Maybe$withDefault, hue, model.hue))
+					});
+			default:
+				return model;
+		}
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$setMouseTarget = F2(
+	function (mouseTarget, model) {
+		return _Utils_update(
+			model,
+			{mouseTarget: mouseTarget});
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$update_ = F3(
+	function (message, col, model) {
+		var calcNewColour = function (mouseTarget) {
+			switch (mouseTarget.$) {
+				case 'SatLight':
+					var hue = mouseTarget.a;
+					return A2(
+						$elm$core$Basics$composeL,
+						$elm$core$Maybe$Just,
+						A2(
+							$simonh1000$elm_colorpicker$ColorPicker$calcSatLight,
+							col,
+							A2($elm$core$Maybe$withDefault, hue, model.hue)));
+				case 'HueSlider':
+					return A2(
+						$elm$core$Basics$composeL,
+						$elm$core$Maybe$Just,
+						$simonh1000$elm_colorpicker$ColorPicker$calcHue(col));
+				case 'OpacitySlider':
+					var hue = mouseTarget.a;
+					return A2(
+						$elm$core$Basics$composeL,
+						$elm$core$Maybe$Just,
+						A2(
+							$simonh1000$elm_colorpicker$ColorPicker$calcOpacity,
+							col,
+							A2($elm$core$Maybe$withDefault, hue, model.hue)));
+				default:
+					return function (_v2) {
+						return $elm$core$Maybe$Nothing;
+					};
+			}
+		};
+		var handleMouseMove = F2(
+			function (mouseTarget, mouseInfo) {
+				return (mouseInfo.mousePressed && _Utils_eq(model.mouseTarget, mouseTarget)) ? _Utils_Tuple2(
+					A3($simonh1000$elm_colorpicker$ColorPicker$setHue, mouseTarget, mouseInfo, model),
+					A2(calcNewColour, mouseTarget, mouseInfo)) : (((!mouseInfo.mousePressed) && _Utils_eq(model.mouseTarget, mouseTarget)) ? _Utils_Tuple2(
+					A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, $simonh1000$elm_colorpicker$ColorPicker$Unpressed, model),
+					$elm$core$Maybe$Nothing) : _Utils_Tuple2(model, $elm$core$Maybe$Nothing));
+			});
+		switch (message.$) {
+			case 'OnMouseDown':
+				var mouseTarget = message.a;
+				var mouseInfo = message.b;
+				return _Utils_Tuple2(
+					A3(
+						$simonh1000$elm_colorpicker$ColorPicker$setHue,
+						mouseTarget,
+						mouseInfo,
+						A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, mouseTarget, model)),
+					A2(calcNewColour, mouseTarget, mouseInfo));
+			case 'OnMouseMove':
+				var mouseTarget = message.a;
+				var mouseInfo = message.b;
+				return A2(handleMouseMove, mouseTarget, mouseInfo);
+			case 'OnClick':
+				var mouseTarget = message.a;
+				var mouseInfo = message.b;
+				return _Utils_Tuple2(
+					A3($simonh1000$elm_colorpicker$ColorPicker$setHue, mouseTarget, mouseInfo, model),
+					A2(calcNewColour, mouseTarget, mouseInfo));
+			case 'OnMouseUp':
+				return _Utils_Tuple2(
+					A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, $simonh1000$elm_colorpicker$ColorPicker$Unpressed, model),
+					$elm$core$Maybe$Nothing);
+			default:
+				return _Utils_Tuple2(model, $elm$core$Maybe$Nothing);
+		}
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$update = F3(
+	function (message, col, _v0) {
+		var model = _v0.a;
+		return A2(
+			$elm$core$Tuple$mapFirst,
+			$simonh1000$elm_colorpicker$ColorPicker$State,
+			A3($simonh1000$elm_colorpicker$ColorPicker$update_, message, col, model));
+	});
+var $author$project$OUI$Showcase$ColorPicker$update = F3(
+	function (msg, color, model) {
+		switch (msg.$) {
+			case 'ColorPickerMsg':
+				var subMsg = msg.a;
+				var _v1 = A3($simonh1000$elm_colorpicker$ColorPicker$update, subMsg, color, model.colorPicker);
+				var p = _v1.a;
+				var nextColor = _v1.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{colorPicker: p}),
+					nextColor);
+			case 'TextChange':
+				var value = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{text: value}),
+					$elm$core$Maybe$Just(
+						A2(
+							$elm$core$Maybe$withDefault,
+							color,
+							$author$project$OUI$Material$Color$Json$colorFromHex(value))));
+			default:
+				var value = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							text: value ? $author$project$OUI$Material$Color$Json$toHexWithAlpha(color) : model.text,
+							textFocused: value
+						}),
+					value ? $elm$core$Maybe$Just(color) : $author$project$OUI$Material$Color$Json$colorFromHex(model.text));
+		}
+	});
 var $author$project$OUI$Explorer$UpdateColorTheme = F2(
 	function (a, b) {
 		return {$: 'UpdateColorTheme', a: a, b: b};
@@ -17606,7 +18316,7 @@ var $author$project$OUI$Showcase$Colors$update = F3(
 						var _v2 = model.colorSelector;
 						if (_v2.$ === 'Just') {
 							var colorSelector = _v2.a;
-							var _v3 = A3($simonh1000$elm_colorpicker$ColorPicker$update, colorPickerMsg, colorSelector.color, colorSelector.colorPicker);
+							var _v3 = A3($author$project$OUI$Showcase$ColorPicker$update, colorPickerMsg, colorSelector.color, colorSelector.colorPicker);
 							var m = _v3.a;
 							var color = _v3.b;
 							return _Utils_update(
@@ -17632,14 +18342,14 @@ var $author$project$OUI$Showcase$Colors$update = F3(
 						model,
 						{
 							colorSelector: $elm$core$Maybe$Just(
-								{color: color, colorPicker: $simonh1000$elm_colorpicker$ColorPicker$empty, setter: setter})
+								{color: color, colorPicker: $author$project$OUI$Showcase$ColorPicker$empty, setter: setter})
 						}));
 			case 'DismissColor':
 				return $orus_io$elm_spa$Effect$withNone(
 					_Utils_update(
 						model,
 						{colorSelector: $elm$core$Maybe$Nothing}));
-			default:
+			case 'AcceptColor':
 				var _v4 = model.colorSelector;
 				if (_v4.$ === 'Just') {
 					var colorSelector = _v4.a;
@@ -17657,10 +18367,1489 @@ var $author$project$OUI$Showcase$Colors$update = F3(
 				} else {
 					return $orus_io$elm_spa$Effect$withNone(model);
 				}
+			default:
+				var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme;
+				return A2(
+					$orus_io$elm_spa$Effect$withCmd,
+					A3(
+						$elm$file$File$Download$string,
+						currentColorTheme.name + '.json',
+						'application/json',
+						A2(
+							$elm$json$Json$Encode$encode,
+							2,
+							$author$project$OUI$Material$Color$Json$encodeColorTheme(currentColorTheme))),
+					model);
 		}
+	});
+var $author$project$OUI$Showcase$ColorPicker$ColorPickerMsg = function (a) {
+	return {$: 'ColorPickerMsg', a: a};
+};
+var $author$project$OUI$TextField$Outlined = {$: 'Outlined'};
+var $author$project$OUI$Showcase$ColorPicker$TextChange = function (a) {
+	return {$: 'TextChange', a: a};
+};
+var $author$project$OUI$Showcase$ColorPicker$TextFocus = function (a) {
+	return {$: 'TextFocus', a: a};
+};
+var $author$project$OUI$TextField$Filled = {$: 'Filled'};
+var $author$project$OUI$TextField$Text = {$: 'Text'};
+var $author$project$OUI$TextField$TextField = function (a) {
+	return {$: 'TextField', a: a};
+};
+var $author$project$OUI$TextField$new = F3(
+	function (label, onChange, value) {
+		return $author$project$OUI$TextField$TextField(
+			{color: $author$project$OUI$Primary, datatype: $author$project$OUI$TextField$Text, errorIcon: $elm$core$Maybe$Nothing, hasFocus: false, id: $elm$core$Maybe$Nothing, label: label, leadingIcon: $elm$core$Maybe$Nothing, onChange: onChange, onFocus: $elm$core$Maybe$Nothing, onLoseFocus: $elm$core$Maybe$Nothing, onTrailingIconClick: $elm$core$Maybe$Nothing, spellcheck: false, supportingText: $elm$core$Maybe$Nothing, trailingIcon: $elm$core$Maybe$Nothing, type_: $author$project$OUI$TextField$Filled, value: value});
+	});
+var $author$project$OUI$TextField$onFocusBlur = F3(
+	function (onFocus, onLoseFocus, _v0) {
+		var props = _v0.a;
+		return $author$project$OUI$TextField$TextField(
+			_Utils_update(
+				props,
+				{
+					onFocus: $elm$core$Maybe$Just(onFocus),
+					onLoseFocus: $elm$core$Maybe$Just(onLoseFocus)
+				}));
+	});
+var $author$project$OUI$TextField$Multiline = {$: 'Multiline'};
+var $author$project$OUI$Text$bodySmall = A2($author$project$OUI$Text$textTypeSize, $author$project$OUI$Text$Body, $author$project$OUI$Text$Small);
+var $mdgriffith$elm_ui$Element$Input$TextInputNode = function (a) {
+	return {$: 'TextInputNode', a: a};
+};
+var $mdgriffith$elm_ui$Element$Input$TextArea = {$: 'TextArea'};
+var $mdgriffith$elm_ui$Internal$Model$LivePolite = {$: 'LivePolite'};
+var $mdgriffith$elm_ui$Element$Region$announce = $mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$LivePolite);
+var $mdgriffith$elm_ui$Element$Input$applyLabel = F3(
+	function (attrs, label, input) {
+		if (label.$ === 'HiddenLabel') {
+			var labelText = label.a;
+			return A4(
+				$mdgriffith$elm_ui$Internal$Model$element,
+				$mdgriffith$elm_ui$Internal$Model$asColumn,
+				$mdgriffith$elm_ui$Internal$Model$NodeName('label'),
+				attrs,
+				$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+					_List_fromArray(
+						[input])));
+		} else {
+			var position = label.a;
+			var labelAttrs = label.b;
+			var labelChild = label.c;
+			var labelElement = A4(
+				$mdgriffith$elm_ui$Internal$Model$element,
+				$mdgriffith$elm_ui$Internal$Model$asEl,
+				$mdgriffith$elm_ui$Internal$Model$div,
+				labelAttrs,
+				$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+					_List_fromArray(
+						[labelChild])));
+			switch (position.$) {
+				case 'Above':
+					return A4(
+						$mdgriffith$elm_ui$Internal$Model$element,
+						$mdgriffith$elm_ui$Internal$Model$asColumn,
+						$mdgriffith$elm_ui$Internal$Model$NodeName('label'),
+						A2(
+							$elm$core$List$cons,
+							$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputLabel),
+							attrs),
+						$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+							_List_fromArray(
+								[labelElement, input])));
+				case 'Below':
+					return A4(
+						$mdgriffith$elm_ui$Internal$Model$element,
+						$mdgriffith$elm_ui$Internal$Model$asColumn,
+						$mdgriffith$elm_ui$Internal$Model$NodeName('label'),
+						A2(
+							$elm$core$List$cons,
+							$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputLabel),
+							attrs),
+						$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+							_List_fromArray(
+								[input, labelElement])));
+				case 'OnRight':
+					return A4(
+						$mdgriffith$elm_ui$Internal$Model$element,
+						$mdgriffith$elm_ui$Internal$Model$asRow,
+						$mdgriffith$elm_ui$Internal$Model$NodeName('label'),
+						A2(
+							$elm$core$List$cons,
+							$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputLabel),
+							attrs),
+						$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+							_List_fromArray(
+								[input, labelElement])));
+				default:
+					return A4(
+						$mdgriffith$elm_ui$Internal$Model$element,
+						$mdgriffith$elm_ui$Internal$Model$asRow,
+						$mdgriffith$elm_ui$Internal$Model$NodeName('label'),
+						A2(
+							$elm$core$List$cons,
+							$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputLabel),
+							attrs),
+						$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+							_List_fromArray(
+								[labelElement, input])));
+			}
+		}
+	});
+var $mdgriffith$elm_ui$Element$Input$autofill = A2(
+	$elm$core$Basics$composeL,
+	$mdgriffith$elm_ui$Internal$Model$Attr,
+	$elm$html$Html$Attributes$attribute('autocomplete'));
+var $mdgriffith$elm_ui$Internal$Model$Behind = {$: 'Behind'};
+var $mdgriffith$elm_ui$Element$behindContent = function (element) {
+	return A2($mdgriffith$elm_ui$Element$createNearby, $mdgriffith$elm_ui$Internal$Model$Behind, element);
+};
+var $mdgriffith$elm_ui$Element$Input$calcMoveToCompensateForPadding = function (attrs) {
+	var gatherSpacing = F2(
+		function (attr, found) {
+			if ((attr.$ === 'StyleClass') && (attr.b.$ === 'SpacingStyle')) {
+				var _v2 = attr.b;
+				var x = _v2.b;
+				var y = _v2.c;
+				if (found.$ === 'Nothing') {
+					return $elm$core$Maybe$Just(y);
+				} else {
+					return found;
+				}
+			} else {
+				return found;
+			}
+		});
+	var _v0 = A3($elm$core$List$foldr, gatherSpacing, $elm$core$Maybe$Nothing, attrs);
+	if (_v0.$ === 'Nothing') {
+		return $mdgriffith$elm_ui$Internal$Model$NoAttribute;
+	} else {
+		var vSpace = _v0.a;
+		return $mdgriffith$elm_ui$Element$moveUp(
+			$elm$core$Basics$floor(vSpace / 2));
+	}
+};
+var $mdgriffith$elm_ui$Internal$Flag$overflow = $mdgriffith$elm_ui$Internal$Flag$flag(20);
+var $mdgriffith$elm_ui$Element$clip = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.clip);
+var $mdgriffith$elm_ui$Element$rgb = F3(
+	function (r, g, b) {
+		return A4($mdgriffith$elm_ui$Internal$Model$Rgba, r, g, b, 1);
+	});
+var $mdgriffith$elm_ui$Element$Input$darkGrey = A3($mdgriffith$elm_ui$Element$rgb, 186 / 255, 189 / 255, 182 / 255);
+var $mdgriffith$elm_ui$Element$Input$defaultTextPadding = A2($mdgriffith$elm_ui$Element$paddingXY, 12, 12);
+var $mdgriffith$elm_ui$Element$Input$white = A3($mdgriffith$elm_ui$Element$rgb, 1, 1, 1);
+var $mdgriffith$elm_ui$Element$Input$defaultTextBoxStyle = _List_fromArray(
+	[
+		$mdgriffith$elm_ui$Element$Input$defaultTextPadding,
+		$mdgriffith$elm_ui$Element$Border$rounded(3),
+		$mdgriffith$elm_ui$Element$Border$color($mdgriffith$elm_ui$Element$Input$darkGrey),
+		$mdgriffith$elm_ui$Element$Background$color($mdgriffith$elm_ui$Element$Input$white),
+		$mdgriffith$elm_ui$Element$Border$width(1),
+		$mdgriffith$elm_ui$Element$spacing(5),
+		$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+		$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink)
+	]);
+var $mdgriffith$elm_ui$Element$Input$getHeight = function (attr) {
+	if (attr.$ === 'Height') {
+		var h = attr.a;
+		return $elm$core$Maybe$Just(h);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $mdgriffith$elm_ui$Internal$Model$Label = function (a) {
+	return {$: 'Label', a: a};
+};
+var $mdgriffith$elm_ui$Element$Input$hiddenLabelAttribute = function (label) {
+	if (label.$ === 'HiddenLabel') {
+		var textLabel = label.a;
+		return $mdgriffith$elm_ui$Internal$Model$Describe(
+			$mdgriffith$elm_ui$Internal$Model$Label(textLabel));
+	} else {
+		return $mdgriffith$elm_ui$Internal$Model$NoAttribute;
+	}
+};
+var $mdgriffith$elm_ui$Element$Input$isConstrained = function (len) {
+	isConstrained:
+	while (true) {
+		switch (len.$) {
+			case 'Content':
+				return false;
+			case 'Px':
+				return true;
+			case 'Fill':
+				return true;
+			case 'Min':
+				var l = len.b;
+				var $temp$len = l;
+				len = $temp$len;
+				continue isConstrained;
+			default:
+				var l = len.b;
+				return true;
+		}
+	}
+};
+var $mdgriffith$elm_ui$Element$Input$isHiddenLabel = function (label) {
+	if (label.$ === 'HiddenLabel') {
+		return true;
+	} else {
+		return false;
+	}
+};
+var $mdgriffith$elm_ui$Element$Input$isStacked = function (label) {
+	if (label.$ === 'Label') {
+		var loc = label.a;
+		switch (loc.$) {
+			case 'OnRight':
+				return false;
+			case 'OnLeft':
+				return false;
+			case 'Above':
+				return true;
+			default:
+				return true;
+		}
+	} else {
+		return true;
+	}
+};
+var $mdgriffith$elm_ui$Element$Input$negateBox = function (box) {
+	return {bottom: -box.bottom, left: -box.left, right: -box.right, top: -box.top};
+};
+var $elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$html$Html$Events$targetValue = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	$elm$json$Json$Decode$string);
+var $elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			$elm$json$Json$Decode$map,
+			$elm$html$Html$Events$alwaysStop,
+			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
+};
+var $mdgriffith$elm_ui$Element$Input$isFill = function (len) {
+	isFill:
+	while (true) {
+		switch (len.$) {
+			case 'Fill':
+				return true;
+			case 'Content':
+				return false;
+			case 'Px':
+				return false;
+			case 'Min':
+				var l = len.b;
+				var $temp$len = l;
+				len = $temp$len;
+				continue isFill;
+			default:
+				var l = len.b;
+				var $temp$len = l;
+				len = $temp$len;
+				continue isFill;
+		}
+	}
+};
+var $mdgriffith$elm_ui$Element$Input$isPixel = function (len) {
+	isPixel:
+	while (true) {
+		switch (len.$) {
+			case 'Content':
+				return false;
+			case 'Px':
+				return true;
+			case 'Fill':
+				return false;
+			case 'Min':
+				var l = len.b;
+				var $temp$len = l;
+				len = $temp$len;
+				continue isPixel;
+			default:
+				var l = len.b;
+				var $temp$len = l;
+				len = $temp$len;
+				continue isPixel;
+		}
+	}
+};
+var $mdgriffith$elm_ui$Internal$Model$paddingNameFloat = F4(
+	function (top, right, bottom, left) {
+		return 'pad-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(top) + ('-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(right) + ('-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(bottom) + ('-' + $mdgriffith$elm_ui$Internal$Model$floatClass(left)))))));
 	});
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
+	function (isMultiline, stacked, attr, els) {
+		switch (attr.$) {
+			case 'Nearby':
+				return _Utils_update(
+					els,
+					{
+						parent: A2($elm$core$List$cons, attr, els.parent)
+					});
+			case 'Width':
+				var width = attr.a;
+				return $mdgriffith$elm_ui$Element$Input$isFill(width) ? _Utils_update(
+					els,
+					{
+						fullParent: A2($elm$core$List$cons, attr, els.fullParent),
+						input: A2($elm$core$List$cons, attr, els.input),
+						parent: A2($elm$core$List$cons, attr, els.parent)
+					}) : (stacked ? _Utils_update(
+					els,
+					{
+						fullParent: A2($elm$core$List$cons, attr, els.fullParent)
+					}) : _Utils_update(
+					els,
+					{
+						parent: A2($elm$core$List$cons, attr, els.parent)
+					}));
+			case 'Height':
+				var height = attr.a;
+				return (!stacked) ? _Utils_update(
+					els,
+					{
+						fullParent: A2($elm$core$List$cons, attr, els.fullParent),
+						parent: A2($elm$core$List$cons, attr, els.parent)
+					}) : ($mdgriffith$elm_ui$Element$Input$isFill(height) ? _Utils_update(
+					els,
+					{
+						fullParent: A2($elm$core$List$cons, attr, els.fullParent),
+						parent: A2($elm$core$List$cons, attr, els.parent)
+					}) : ($mdgriffith$elm_ui$Element$Input$isPixel(height) ? _Utils_update(
+					els,
+					{
+						parent: A2($elm$core$List$cons, attr, els.parent)
+					}) : _Utils_update(
+					els,
+					{
+						parent: A2($elm$core$List$cons, attr, els.parent)
+					})));
+			case 'AlignX':
+				return _Utils_update(
+					els,
+					{
+						fullParent: A2($elm$core$List$cons, attr, els.fullParent)
+					});
+			case 'AlignY':
+				return _Utils_update(
+					els,
+					{
+						fullParent: A2($elm$core$List$cons, attr, els.fullParent)
+					});
+			case 'StyleClass':
+				switch (attr.b.$) {
+					case 'SpacingStyle':
+						var _v1 = attr.b;
+						return _Utils_update(
+							els,
+							{
+								fullParent: A2($elm$core$List$cons, attr, els.fullParent),
+								input: A2($elm$core$List$cons, attr, els.input),
+								parent: A2($elm$core$List$cons, attr, els.parent),
+								wrapper: A2($elm$core$List$cons, attr, els.wrapper)
+							});
+					case 'PaddingStyle':
+						var cls = attr.a;
+						var _v2 = attr.b;
+						var pad = _v2.a;
+						var t = _v2.b;
+						var r = _v2.c;
+						var b = _v2.d;
+						var l = _v2.e;
+						if (isMultiline) {
+							return _Utils_update(
+								els,
+								{
+									cover: A2($elm$core$List$cons, attr, els.cover),
+									parent: A2($elm$core$List$cons, attr, els.parent)
+								});
+						} else {
+							var newTop = t - A2($elm$core$Basics$min, t, b);
+							var newLineHeight = $mdgriffith$elm_ui$Element$htmlAttribute(
+								A2(
+									$elm$html$Html$Attributes$style,
+									'line-height',
+									'calc(1.0em + ' + ($elm$core$String$fromFloat(
+										2 * A2($elm$core$Basics$min, t, b)) + 'px)')));
+							var newHeight = $mdgriffith$elm_ui$Element$htmlAttribute(
+								A2(
+									$elm$html$Html$Attributes$style,
+									'height',
+									'calc(1.0em + ' + ($elm$core$String$fromFloat(
+										2 * A2($elm$core$Basics$min, t, b)) + 'px)')));
+							var newBottom = b - A2($elm$core$Basics$min, t, b);
+							var reducedVerticalPadding = A2(
+								$mdgriffith$elm_ui$Internal$Model$StyleClass,
+								$mdgriffith$elm_ui$Internal$Flag$padding,
+								A5(
+									$mdgriffith$elm_ui$Internal$Model$PaddingStyle,
+									A4($mdgriffith$elm_ui$Internal$Model$paddingNameFloat, newTop, r, newBottom, l),
+									newTop,
+									r,
+									newBottom,
+									l));
+							return _Utils_update(
+								els,
+								{
+									cover: A2($elm$core$List$cons, attr, els.cover),
+									input: A2(
+										$elm$core$List$cons,
+										newHeight,
+										A2($elm$core$List$cons, newLineHeight, els.input)),
+									parent: A2($elm$core$List$cons, reducedVerticalPadding, els.parent)
+								});
+						}
+					case 'BorderWidth':
+						var _v3 = attr.b;
+						return _Utils_update(
+							els,
+							{
+								cover: A2($elm$core$List$cons, attr, els.cover),
+								parent: A2($elm$core$List$cons, attr, els.parent)
+							});
+					case 'Transform':
+						return _Utils_update(
+							els,
+							{
+								cover: A2($elm$core$List$cons, attr, els.cover),
+								parent: A2($elm$core$List$cons, attr, els.parent)
+							});
+					case 'FontSize':
+						return _Utils_update(
+							els,
+							{
+								fullParent: A2($elm$core$List$cons, attr, els.fullParent)
+							});
+					case 'FontFamily':
+						var _v4 = attr.b;
+						return _Utils_update(
+							els,
+							{
+								fullParent: A2($elm$core$List$cons, attr, els.fullParent)
+							});
+					default:
+						var flag = attr.a;
+						var cls = attr.b;
+						return _Utils_update(
+							els,
+							{
+								parent: A2($elm$core$List$cons, attr, els.parent)
+							});
+				}
+			case 'NoAttribute':
+				return els;
+			case 'Attr':
+				var a = attr.a;
+				return _Utils_update(
+					els,
+					{
+						input: A2($elm$core$List$cons, attr, els.input)
+					});
+			case 'Describe':
+				return _Utils_update(
+					els,
+					{
+						input: A2($elm$core$List$cons, attr, els.input)
+					});
+			case 'Class':
+				return _Utils_update(
+					els,
+					{
+						parent: A2($elm$core$List$cons, attr, els.parent)
+					});
+			default:
+				return _Utils_update(
+					els,
+					{
+						input: A2($elm$core$List$cons, attr, els.input)
+					});
+		}
+	});
+var $mdgriffith$elm_ui$Element$Input$redistribute = F3(
+	function (isMultiline, stacked, attrs) {
+		return function (redist) {
+			return {
+				cover: $elm$core$List$reverse(redist.cover),
+				fullParent: $elm$core$List$reverse(redist.fullParent),
+				input: $elm$core$List$reverse(redist.input),
+				parent: $elm$core$List$reverse(redist.parent),
+				wrapper: $elm$core$List$reverse(redist.wrapper)
+			};
+		}(
+			A3(
+				$elm$core$List$foldl,
+				A2($mdgriffith$elm_ui$Element$Input$redistributeOver, isMultiline, stacked),
+				{cover: _List_Nil, fullParent: _List_Nil, input: _List_Nil, parent: _List_Nil, wrapper: _List_Nil},
+				attrs));
+	});
+var $mdgriffith$elm_ui$Element$Input$renderBox = function (_v0) {
+	var left = _v0.left;
+	var bottom = _v0.bottom;
+	var right = _v0.right;
+	var top = _v0.top;
+	return $elm$core$String$fromInt(top) + ('px ' + ($elm$core$String$fromInt(right) + ('px ' + ($elm$core$String$fromInt(bottom) + ('px ' + ($elm$core$String$fromInt(left) + 'px'))))));
+};
+var $mdgriffith$elm_ui$Element$alpha = function (o) {
+	var transparency = function (x) {
+		return 1 - x;
+	}(
+		A2(
+			$elm$core$Basics$min,
+			1.0,
+			A2($elm$core$Basics$max, 0.0, o)));
+	return A2(
+		$mdgriffith$elm_ui$Internal$Model$StyleClass,
+		$mdgriffith$elm_ui$Internal$Flag$transparency,
+		A2(
+			$mdgriffith$elm_ui$Internal$Model$Transparency,
+			'transparency-' + $mdgriffith$elm_ui$Internal$Model$floatClass(transparency),
+			transparency));
+};
+var $mdgriffith$elm_ui$Element$Input$charcoal = A3($mdgriffith$elm_ui$Element$rgb, 136 / 255, 138 / 255, 133 / 255);
+var $mdgriffith$elm_ui$Element$rgba = $mdgriffith$elm_ui$Internal$Model$Rgba;
+var $mdgriffith$elm_ui$Element$Input$renderPlaceholder = F3(
+	function (_v0, forPlaceholder, on) {
+		var placeholderAttrs = _v0.a;
+		var placeholderEl = _v0.b;
+		return A2(
+			$mdgriffith$elm_ui$Element$el,
+			_Utils_ap(
+				forPlaceholder,
+				_Utils_ap(
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$Font$color($mdgriffith$elm_ui$Element$Input$charcoal),
+							$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.noTextSelection + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.passPointerEvents)),
+							$mdgriffith$elm_ui$Element$clip,
+							$mdgriffith$elm_ui$Element$Border$color(
+							A4($mdgriffith$elm_ui$Element$rgba, 0, 0, 0, 0)),
+							$mdgriffith$elm_ui$Element$Background$color(
+							A4($mdgriffith$elm_ui$Element$rgba, 0, 0, 0, 0)),
+							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+							$mdgriffith$elm_ui$Element$alpha(
+							on ? 1 : 0)
+						]),
+					placeholderAttrs)),
+			placeholderEl);
+	});
+var $mdgriffith$elm_ui$Element$scrollbarY = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.scrollbarsY);
+var $elm$html$Html$span = _VirtualDom_node('span');
+var $elm$html$Html$Attributes$spellcheck = $elm$html$Html$Attributes$boolProperty('spellcheck');
+var $mdgriffith$elm_ui$Element$Input$spellcheck = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Attr, $elm$html$Html$Attributes$spellcheck);
+var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
+var $mdgriffith$elm_ui$Element$Input$value = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Attr, $elm$html$Html$Attributes$value);
+var $mdgriffith$elm_ui$Element$Input$textHelper = F3(
+	function (textInput, attrs, textOptions) {
+		var withDefaults = _Utils_ap($mdgriffith$elm_ui$Element$Input$defaultTextBoxStyle, attrs);
+		var redistributed = A3(
+			$mdgriffith$elm_ui$Element$Input$redistribute,
+			_Utils_eq(textInput.type_, $mdgriffith$elm_ui$Element$Input$TextArea),
+			$mdgriffith$elm_ui$Element$Input$isStacked(textOptions.label),
+			withDefaults);
+		var onlySpacing = function (attr) {
+			if ((attr.$ === 'StyleClass') && (attr.b.$ === 'SpacingStyle')) {
+				var _v9 = attr.b;
+				return true;
+			} else {
+				return false;
+			}
+		};
+		var heightConstrained = function () {
+			var _v7 = textInput.type_;
+			if (_v7.$ === 'TextInputNode') {
+				var inputType = _v7.a;
+				return false;
+			} else {
+				return A2(
+					$elm$core$Maybe$withDefault,
+					false,
+					A2(
+						$elm$core$Maybe$map,
+						$mdgriffith$elm_ui$Element$Input$isConstrained,
+						$elm$core$List$head(
+							$elm$core$List$reverse(
+								A2($elm$core$List$filterMap, $mdgriffith$elm_ui$Element$Input$getHeight, withDefaults)))));
+			}
+		}();
+		var getPadding = function (attr) {
+			if ((attr.$ === 'StyleClass') && (attr.b.$ === 'PaddingStyle')) {
+				var cls = attr.a;
+				var _v6 = attr.b;
+				var pad = _v6.a;
+				var t = _v6.b;
+				var r = _v6.c;
+				var b = _v6.d;
+				var l = _v6.e;
+				return $elm$core$Maybe$Just(
+					{
+						bottom: A2(
+							$elm$core$Basics$max,
+							0,
+							$elm$core$Basics$floor(b - 3)),
+						left: A2(
+							$elm$core$Basics$max,
+							0,
+							$elm$core$Basics$floor(l - 3)),
+						right: A2(
+							$elm$core$Basics$max,
+							0,
+							$elm$core$Basics$floor(r - 3)),
+						top: A2(
+							$elm$core$Basics$max,
+							0,
+							$elm$core$Basics$floor(t - 3))
+					});
+			} else {
+				return $elm$core$Maybe$Nothing;
+			}
+		};
+		var parentPadding = A2(
+			$elm$core$Maybe$withDefault,
+			{bottom: 0, left: 0, right: 0, top: 0},
+			$elm$core$List$head(
+				$elm$core$List$reverse(
+					A2($elm$core$List$filterMap, getPadding, withDefaults))));
+		var inputElement = A4(
+			$mdgriffith$elm_ui$Internal$Model$element,
+			$mdgriffith$elm_ui$Internal$Model$asEl,
+			function () {
+				var _v3 = textInput.type_;
+				if (_v3.$ === 'TextInputNode') {
+					var inputType = _v3.a;
+					return $mdgriffith$elm_ui$Internal$Model$NodeName('input');
+				} else {
+					return $mdgriffith$elm_ui$Internal$Model$NodeName('textarea');
+				}
+			}(),
+			_Utils_ap(
+				function () {
+					var _v4 = textInput.type_;
+					if (_v4.$ === 'TextInputNode') {
+						var inputType = _v4.a;
+						return _List_fromArray(
+							[
+								$mdgriffith$elm_ui$Internal$Model$Attr(
+								$elm$html$Html$Attributes$type_(inputType)),
+								$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputText)
+							]);
+					} else {
+						return _List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$clip,
+								$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+								$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputMultiline),
+								$mdgriffith$elm_ui$Element$Input$calcMoveToCompensateForPadding(withDefaults),
+								$mdgriffith$elm_ui$Element$paddingEach(parentPadding),
+								$mdgriffith$elm_ui$Internal$Model$Attr(
+								A2(
+									$elm$html$Html$Attributes$style,
+									'margin',
+									$mdgriffith$elm_ui$Element$Input$renderBox(
+										$mdgriffith$elm_ui$Element$Input$negateBox(parentPadding)))),
+								$mdgriffith$elm_ui$Internal$Model$Attr(
+								A2($elm$html$Html$Attributes$style, 'box-sizing', 'content-box'))
+							]);
+					}
+				}(),
+				_Utils_ap(
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$Input$value(textOptions.text),
+							$mdgriffith$elm_ui$Internal$Model$Attr(
+							$elm$html$Html$Events$onInput(textOptions.onChange)),
+							$mdgriffith$elm_ui$Element$Input$hiddenLabelAttribute(textOptions.label),
+							$mdgriffith$elm_ui$Element$Input$spellcheck(textInput.spellchecked),
+							A2(
+							$elm$core$Maybe$withDefault,
+							$mdgriffith$elm_ui$Internal$Model$NoAttribute,
+							A2($elm$core$Maybe$map, $mdgriffith$elm_ui$Element$Input$autofill, textInput.autofill))
+						]),
+					redistributed.input)),
+			$mdgriffith$elm_ui$Internal$Model$Unkeyed(_List_Nil));
+		var wrappedInput = function () {
+			var _v0 = textInput.type_;
+			if (_v0.$ === 'TextArea') {
+				return A4(
+					$mdgriffith$elm_ui$Internal$Model$element,
+					$mdgriffith$elm_ui$Internal$Model$asEl,
+					$mdgriffith$elm_ui$Internal$Model$div,
+					_Utils_ap(
+						(heightConstrained ? $elm$core$List$cons($mdgriffith$elm_ui$Element$scrollbarY) : $elm$core$Basics$identity)(
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+									A2($elm$core$List$any, $mdgriffith$elm_ui$Element$Input$hasFocusStyle, withDefaults) ? $mdgriffith$elm_ui$Internal$Model$NoAttribute : $mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.focusedWithin),
+									$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputMultilineWrapper)
+								])),
+						redistributed.parent),
+					$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+						_List_fromArray(
+							[
+								A4(
+								$mdgriffith$elm_ui$Internal$Model$element,
+								$mdgriffith$elm_ui$Internal$Model$asParagraph,
+								$mdgriffith$elm_ui$Internal$Model$div,
+								A2(
+									$elm$core$List$cons,
+									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+									A2(
+										$elm$core$List$cons,
+										$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+										A2(
+											$elm$core$List$cons,
+											$mdgriffith$elm_ui$Element$inFront(inputElement),
+											A2(
+												$elm$core$List$cons,
+												$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputMultilineParent),
+												redistributed.wrapper)))),
+								$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+									function () {
+										if (textOptions.text === '') {
+											var _v1 = textOptions.placeholder;
+											if (_v1.$ === 'Nothing') {
+												return _List_fromArray(
+													[
+														$mdgriffith$elm_ui$Element$text('\u00A0')
+													]);
+											} else {
+												var place = _v1.a;
+												return _List_fromArray(
+													[
+														A3($mdgriffith$elm_ui$Element$Input$renderPlaceholder, place, _List_Nil, textOptions.text === '')
+													]);
+											}
+										} else {
+											return _List_fromArray(
+												[
+													$mdgriffith$elm_ui$Internal$Model$unstyled(
+													A2(
+														$elm$html$Html$span,
+														_List_fromArray(
+															[
+																$elm$html$Html$Attributes$class($mdgriffith$elm_ui$Internal$Style$classes.inputMultilineFiller)
+															]),
+														_List_fromArray(
+															[
+																$elm$html$Html$text(textOptions.text + '\u00A0')
+															])))
+												]);
+										}
+									}()))
+							])));
+			} else {
+				var inputType = _v0.a;
+				return A4(
+					$mdgriffith$elm_ui$Internal$Model$element,
+					$mdgriffith$elm_ui$Internal$Model$asEl,
+					$mdgriffith$elm_ui$Internal$Model$div,
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+						A2(
+							$elm$core$List$cons,
+							A2($elm$core$List$any, $mdgriffith$elm_ui$Element$Input$hasFocusStyle, withDefaults) ? $mdgriffith$elm_ui$Internal$Model$NoAttribute : $mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.focusedWithin),
+							$elm$core$List$concat(
+								_List_fromArray(
+									[
+										redistributed.parent,
+										function () {
+										var _v2 = textOptions.placeholder;
+										if (_v2.$ === 'Nothing') {
+											return _List_Nil;
+										} else {
+											var place = _v2.a;
+											return _List_fromArray(
+												[
+													$mdgriffith$elm_ui$Element$behindContent(
+													A3($mdgriffith$elm_ui$Element$Input$renderPlaceholder, place, redistributed.cover, textOptions.text === ''))
+												]);
+										}
+									}()
+									])))),
+					$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+						_List_fromArray(
+							[inputElement])));
+			}
+		}();
+		return A3(
+			$mdgriffith$elm_ui$Element$Input$applyLabel,
+			A2(
+				$elm$core$List$cons,
+				A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$cursor, $mdgriffith$elm_ui$Internal$Style$classes.cursorText),
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Element$Input$isHiddenLabel(textOptions.label) ? $mdgriffith$elm_ui$Internal$Model$NoAttribute : $mdgriffith$elm_ui$Element$spacing(5),
+					A2($elm$core$List$cons, $mdgriffith$elm_ui$Element$Region$announce, redistributed.fullParent))),
+			textOptions.label,
+			wrappedInput);
+	});
+var $mdgriffith$elm_ui$Element$Input$currentPassword = F2(
+	function (attrs, pass) {
+		return A3(
+			$mdgriffith$elm_ui$Element$Input$textHelper,
+			{
+				autofill: $elm$core$Maybe$Just('current-password'),
+				spellchecked: false,
+				type_: $mdgriffith$elm_ui$Element$Input$TextInputNode(
+					pass.show ? 'text' : 'password')
+			},
+			attrs,
+			{label: pass.label, onChange: pass.onChange, placeholder: pass.placeholder, text: pass.text});
+	});
+var $mdgriffith$elm_ui$Element$Input$email = $mdgriffith$elm_ui$Element$Input$textHelper(
+	{
+		autofill: $elm$core$Maybe$Just('email'),
+		spellchecked: false,
+		type_: $mdgriffith$elm_ui$Element$Input$TextInputNode('email')
+	});
+var $author$project$OUI$Material$TextField$filterMaybe = $elm$core$List$filterMap($elm$core$Basics$identity);
+var $author$project$OUI$TextField$getColor = function (_v0) {
+	var props = _v0.a;
+	return props.color;
+};
+var $author$project$OUI$TextField$getDatatype = function (_v0) {
+	var props = _v0.a;
+	return props.datatype;
+};
+var $author$project$OUI$TextField$getErrorIcon = function (_v0) {
+	var props = _v0.a;
+	return props.errorIcon;
+};
+var $author$project$OUI$TextField$getHasFocus = function (_v0) {
+	var props = _v0.a;
+	return props.hasFocus;
+};
+var $author$project$OUI$TextField$getID = function (_v0) {
+	var id = _v0.a.id;
+	return id;
+};
+var $author$project$OUI$TextField$getLabel = function (_v0) {
+	var props = _v0.a;
+	return props.label;
+};
+var $author$project$OUI$TextField$getLeadingIcon = function (_v0) {
+	var props = _v0.a;
+	return props.leadingIcon;
+};
+var $author$project$OUI$TextField$getOnChange = function (_v0) {
+	var props = _v0.a;
+	return props.onChange;
+};
+var $author$project$OUI$TextField$getOnFocus = function (_v0) {
+	var props = _v0.a;
+	return props.onFocus;
+};
+var $author$project$OUI$TextField$getOnLoseFocus = function (_v0) {
+	var props = _v0.a;
+	return props.onLoseFocus;
+};
+var $author$project$OUI$Material$Color$getOnSurfaceVariantColor = function (c) {
+	if (c.$ === 'Custom') {
+		var onSurface = c.a.onSurface;
+		return $elm$core$Basics$always(onSurface);
+	} else {
+		return function ($) {
+			return $.onSurfaceVariant;
+		};
+	}
+};
+var $author$project$OUI$TextField$getOnTrailingIconClick = function (_v0) {
+	var props = _v0.a;
+	return props.onTrailingIconClick;
+};
+var $author$project$OUI$TextField$getSpellcheck = function (_v0) {
+	var props = _v0.a;
+	return props.spellcheck;
+};
+var $author$project$OUI$TextField$getSupportingText = function (_v0) {
+	var props = _v0.a;
+	return props.supportingText;
+};
+var $author$project$OUI$Material$Color$getSurfaceContainerHighestColor = function (c) {
+	if (c.$ === 'Custom') {
+		var surface = c.a.surface;
+		return $elm$core$Basics$always(surface);
+	} else {
+		return function ($) {
+			return $.surfaceContainerHighest;
+		};
+	}
+};
+var $author$project$OUI$TextField$getTrailingIcon = function (_v0) {
+	var props = _v0.a;
+	return props.trailingIcon;
+};
+var $author$project$OUI$TextField$getType = function (_v0) {
+	var props = _v0.a;
+	return props.type_;
+};
+var $author$project$OUI$TextField$getValue = function (_v0) {
+	var props = _v0.a;
+	return props.value;
+};
+var $author$project$OUI$Material$TextField$ifThenElse = F3(
+	function (value, ifTrue, ifFalse) {
+		return value ? ifTrue : ifFalse;
+	});
+var $author$project$OUI$Material$Color$isError = function (c) {
+	switch (c.$) {
+		case 'Error':
+			return true;
+		case 'ErrorContainer':
+			return true;
+		default:
+			return false;
+	}
+};
+var $mdgriffith$elm_ui$Element$Input$HiddenLabel = function (a) {
+	return {$: 'HiddenLabel', a: a};
+};
+var $mdgriffith$elm_ui$Element$Input$labelHidden = $mdgriffith$elm_ui$Element$Input$HiddenLabel;
+var $mdgriffith$elm_ui$Element$moveRight = function (x) {
+	return A2(
+		$mdgriffith$elm_ui$Internal$Model$TransformComponent,
+		$mdgriffith$elm_ui$Internal$Flag$moveX,
+		$mdgriffith$elm_ui$Internal$Model$MoveX(x));
+};
+var $mdgriffith$elm_ui$Element$Input$multiline = F2(
+	function (attrs, multi) {
+		return A3(
+			$mdgriffith$elm_ui$Element$Input$textHelper,
+			{autofill: $elm$core$Maybe$Nothing, spellchecked: multi.spellcheck, type_: $mdgriffith$elm_ui$Element$Input$TextArea},
+			attrs,
+			{label: multi.label, onChange: multi.onChange, placeholder: multi.placeholder, text: multi.text});
+	});
+var $mdgriffith$elm_ui$Element$Input$newPassword = F2(
+	function (attrs, pass) {
+		return A3(
+			$mdgriffith$elm_ui$Element$Input$textHelper,
+			{
+				autofill: $elm$core$Maybe$Just('new-password'),
+				spellchecked: false,
+				type_: $mdgriffith$elm_ui$Element$Input$TextInputNode(
+					pass.show ? 'text' : 'password')
+			},
+			attrs,
+			{label: pass.label, onChange: pass.onChange, placeholder: pass.placeholder, text: pass.text});
+	});
+var $elm$html$Html$Events$onFocus = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'focus',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $mdgriffith$elm_ui$Element$Events$onFocus = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Attr, $elm$html$Html$Events$onFocus);
+var $mdgriffith$elm_ui$Element$Input$search = $mdgriffith$elm_ui$Element$Input$textHelper(
+	{
+		autofill: $elm$core$Maybe$Nothing,
+		spellchecked: false,
+		type_: $mdgriffith$elm_ui$Element$Input$TextInputNode('search')
+	});
+var $mdgriffith$elm_ui$Element$Input$text = $mdgriffith$elm_ui$Element$Input$textHelper(
+	{
+		autofill: $elm$core$Maybe$Nothing,
+		spellchecked: false,
+		type_: $mdgriffith$elm_ui$Element$Input$TextInputNode('text')
+	});
+var $author$project$OUI$Material$TextField$transition = A2(
+	$elm$core$Basics$composeR,
+	$elm$html$Html$Attributes$style('transition'),
+	$mdgriffith$elm_ui$Element$htmlAttribute);
+var $mdgriffith$elm_ui$Element$Input$username = $mdgriffith$elm_ui$Element$Input$textHelper(
+	{
+		autofill: $elm$core$Maybe$Just('username'),
+		spellchecked: false,
+		type_: $mdgriffith$elm_ui$Element$Input$TextInputNode('text')
+	});
+var $mdgriffith$elm_ui$Element$Border$widthXY = F2(
+	function (x, y) {
+		return A2(
+			$mdgriffith$elm_ui$Internal$Model$StyleClass,
+			$mdgriffith$elm_ui$Internal$Flag$borderWidth,
+			A5(
+				$mdgriffith$elm_ui$Internal$Model$BorderWidth,
+				'b-' + ($elm$core$String$fromInt(x) + ('-' + $elm$core$String$fromInt(y))),
+				y,
+				x,
+				y,
+				x));
+	});
+var $mdgriffith$elm_ui$Element$Border$widthEach = function (_v0) {
+	var right = _v0.right;
+	var left = _v0.left;
+	var top = _v0.top;
+	var bottom = _v0.bottom;
+	return (_Utils_eq(top, bottom) && _Utils_eq(left, right)) ? (_Utils_eq(top, right) ? $mdgriffith$elm_ui$Element$Border$width(top) : A2($mdgriffith$elm_ui$Element$Border$widthXY, left, top)) : A2(
+		$mdgriffith$elm_ui$Internal$Model$StyleClass,
+		$mdgriffith$elm_ui$Internal$Flag$borderWidth,
+		A5(
+			$mdgriffith$elm_ui$Internal$Model$BorderWidth,
+			'b-' + ($elm$core$String$fromInt(top) + ('-' + ($elm$core$String$fromInt(right) + ('-' + ($elm$core$String$fromInt(bottom) + ('-' + $elm$core$String$fromInt(left))))))),
+			top,
+			right,
+			bottom,
+			left));
+};
+var $author$project$OUI$Material$TextField$render = F6(
+	function (typescale, colorscheme, buttonTheme, theme, attrs, textfield) {
+		var p = {
+			color: $author$project$OUI$TextField$getColor(textfield),
+			datatype: $author$project$OUI$TextField$getDatatype(textfield),
+			errorIcon: $author$project$OUI$TextField$getErrorIcon(textfield),
+			hasFocus: $author$project$OUI$TextField$getHasFocus(textfield),
+			id: $author$project$OUI$TextField$getID(textfield),
+			label: $author$project$OUI$TextField$getLabel(textfield),
+			leadingIcon: $author$project$OUI$TextField$getLeadingIcon(textfield),
+			onChange: $author$project$OUI$TextField$getOnChange(textfield),
+			onFocus: $author$project$OUI$TextField$getOnFocus(textfield),
+			onLoseFocus: $author$project$OUI$TextField$getOnLoseFocus(textfield),
+			onTrailingIconClick: $author$project$OUI$TextField$getOnTrailingIconClick(textfield),
+			spellcheck: $author$project$OUI$TextField$getSpellcheck(textfield),
+			supportingText: $author$project$OUI$TextField$getSupportingText(textfield),
+			trailingIcon: $author$project$OUI$TextField$getTrailingIcon(textfield),
+			type_: $author$project$OUI$TextField$getType(textfield),
+			value: $author$project$OUI$TextField$getValue(textfield)
+		};
+		var isOutlined = _Utils_eq(p.type_, $author$project$OUI$TextField$Outlined);
+		var leftBorderWidth = isOutlined ? A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, 2, 1) : 0;
+		var rightBorderWidth = isOutlined ? A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, 2, 1) : 0;
+		var topBorderWidth = isOutlined ? A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, 2, 1) : 0;
+		var isMultiline = _Utils_eq(p.datatype, $author$project$OUI$TextField$Multiline);
+		var isFilled = _Utils_eq(p.type_, $author$project$OUI$TextField$Filled);
+		var isEmpty = p.value === '';
+		var labelHoldPlace = isEmpty && (!p.hasFocus);
+		var inputMoveDownBy = (isFilled && (!labelHoldPlace)) ? ((theme.height - theme.filled.topBottomPadding) - (((theme.height / 2) | 0) + ((typescale.body.large.lineHeight / 2) | 0))) : 0;
+		var heightAttr = isMultiline ? _List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$scrollbarY,
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
+			]) : _List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$height(
+				$mdgriffith$elm_ui$Element$px(theme.height))
+			]);
+		var hasLeadingIcon = !_Utils_eq(p.leadingIcon, $elm$core$Maybe$Nothing);
+		var hasError = $author$project$OUI$Material$Color$isError(p.color);
+		var labelElement = function () {
+			var labelColor = (hasError || p.hasFocus) ? A2($author$project$OUI$Material$Color$getElementColor, p.color, colorscheme) : $author$project$OUI$Material$Color$toElementColor(
+				A2($author$project$OUI$Material$Color$getOnSurfaceColor, p.color, colorscheme));
+			var staticAttrs = _List_fromArray(
+				[
+					$author$project$OUI$Material$TextField$transition('all 0.15s'),
+					$mdgriffith$elm_ui$Element$Font$color(labelColor),
+					$mdgriffith$elm_ui$Element$htmlAttribute(
+					A2($elm$html$Html$Attributes$style, 'pointer-events', 'none'))
+				]);
+			var label = p.label;
+			var inputLeftOffset = hasLeadingIcon ? ((theme.leftRightPaddingWithIcon + theme.iconSize) + theme.paddingBetweenIconAndText) : theme.leftRightPaddingWithoutIcon;
+			if (labelHoldPlace) {
+				return A2(
+					$mdgriffith$elm_ui$Element$el,
+					_Utils_ap(
+						staticAttrs,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$moveDown((((theme.height / 2) | 0) - ((typescale.body.large.size / 2) | 0)) - topBorderWidth),
+								$mdgriffith$elm_ui$Element$moveRight(inputLeftOffset - leftBorderWidth)
+							])),
+					A4(
+						$author$project$OUI$Material$Typography$renderWithAttrs,
+						typescale,
+						colorscheme,
+						_List_fromArray(
+							[
+								$author$project$OUI$Material$TextField$transition('font-size 0.15s')
+							]),
+						$author$project$OUI$Text$bodyLarge(label)));
+			} else {
+				if (isOutlined) {
+					var topOffset = (typescale.body.small.size / 2) | 0;
+					return A2(
+						$mdgriffith$elm_ui$Element$el,
+						_Utils_ap(
+							staticAttrs,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$moveUp(topOffset),
+									$mdgriffith$elm_ui$Element$moveRight(theme.leftRightPaddingWithoutIcon - theme.outlined.labelLeftRightPadding),
+									A2($mdgriffith$elm_ui$Element$paddingXY, theme.outlined.labelLeftRightPadding, 0),
+									$mdgriffith$elm_ui$Element$htmlAttribute(
+									A2(
+										$elm$html$Html$Attributes$style,
+										'background',
+										'linear-gradient(to bottom, transparent 0 ' + ($elm$core$String$fromInt(topOffset) + ('px, ' + ($avh4$elm_color$Color$toCssString(
+											A2($author$project$OUI$Material$Color$getSurfaceColor, p.color, colorscheme)) + (' ' + ($elm$core$String$fromInt(topOffset) + 'px)')))))))
+								])),
+						A4(
+							$author$project$OUI$Material$Typography$renderWithAttrs,
+							typescale,
+							colorscheme,
+							_List_fromArray(
+								[
+									$author$project$OUI$Material$TextField$transition('font-size 0.15s')
+								]),
+							$author$project$OUI$Text$bodySmall(label)));
+				} else {
+					return A2(
+						$mdgriffith$elm_ui$Element$el,
+						_Utils_ap(
+							staticAttrs,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$moveDown(theme.filled.topBottomPadding + (((typescale.body.large.lineHeight - typescale.body.large.size) / 2) | 0)),
+									$mdgriffith$elm_ui$Element$moveRight(inputLeftOffset - leftBorderWidth)
+								])),
+						A4(
+							$author$project$OUI$Material$Typography$renderWithAttrs,
+							typescale,
+							colorscheme,
+							_List_fromArray(
+								[
+									$author$project$OUI$Material$TextField$transition('font-size 0.15s')
+								]),
+							$author$project$OUI$Text$bodySmall(label)));
+				}
+			}
+		}();
+		var trailingIcon = function () {
+			var _v5 = _Utils_Tuple2(hasError, p.errorIcon);
+			if (_v5.a && (_v5.b.$ === 'Just')) {
+				var icon = _v5.b.a;
+				return $elm$core$Maybe$Just(
+					A4($author$project$OUI$Material$Icon$renderWithSizeColor, 24, colorscheme.error, _List_Nil, icon));
+			} else {
+				return A2(
+					$elm$core$Maybe$map,
+					function (icon) {
+						var _v6 = p.onTrailingIconClick;
+						if (_v6.$ === 'Nothing') {
+							return A4(
+								$author$project$OUI$Material$Icon$renderWithSizeColor,
+								24,
+								A2($author$project$OUI$Material$Color$getOnSurfaceVariantColor, p.color, colorscheme),
+								_List_Nil,
+								icon);
+						} else {
+							var onClick = _v6.a;
+							return A6(
+								$author$project$OUI$Material$Button$render,
+								typescale,
+								colorscheme,
+								buttonTheme,
+								$elm$core$Maybe$Nothing,
+								_List_fromArray(
+									[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
+								$author$project$OUI$Button$iconButton(
+									A2(
+										$author$project$OUI$Button$color,
+										A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, p.color, $author$project$OUI$Neutral),
+										A2(
+											$author$project$OUI$Button$onClick,
+											onClick,
+											A2(
+												$author$project$OUI$Button$withIcon,
+												icon,
+												$author$project$OUI$Button$new(p.label))))));
+						}
+					},
+					p.trailingIcon);
+			}
+		}();
+		var fontColorAttr = $mdgriffith$elm_ui$Element$Font$color(
+			$author$project$OUI$Material$Color$toElementColor(
+				A2($author$project$OUI$Material$Color$getOnSurfaceColor, p.color, colorscheme)));
+		var focusEvents = A2(
+			$elm$core$List$filterMap,
+			$elm$core$Basics$identity,
+			_List_fromArray(
+				[
+					A2($elm$core$Maybe$map, $mdgriffith$elm_ui$Element$Events$onFocus, p.onFocus),
+					A2($elm$core$Maybe$map, $mdgriffith$elm_ui$Element$Events$onLoseFocus, p.onLoseFocus)
+				]));
+		var bottomBorderWidth = A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, 2, 1);
+		var paddingAttrs = function () {
+			var hasTrailingIcon = !_Utils_eq(p.trailingIcon, $elm$core$Maybe$Nothing);
+			var hasClickableTrailingIcon = (!_Utils_eq(p.trailingIcon, $elm$core$Maybe$Nothing)) && (!_Utils_eq(p.onTrailingIconClick, $elm$core$Maybe$Nothing));
+			var trailingIconOffset = hasClickableTrailingIcon ? (((buttonTheme.icon.containerSize - buttonTheme.icon.iconSize) / 2) | 0) : 0;
+			var _v4 = p.type_;
+			if (_v4.$ === 'Filled') {
+				var baseverticalPadding = 0;
+				return _List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$paddingEach(
+						{
+							bottom: baseverticalPadding + A3($author$project$OUI$Material$TextField$ifThenElse, labelHoldPlace, 0, theme.filled.topBottomPadding - bottomBorderWidth),
+							left: A3($author$project$OUI$Material$TextField$ifThenElse, hasLeadingIcon, theme.leftRightPaddingWithIcon, theme.leftRightPaddingWithoutIcon),
+							right: A3($author$project$OUI$Material$TextField$ifThenElse, hasTrailingIcon, theme.leftRightPaddingWithIcon - trailingIconOffset, theme.leftRightPaddingWithoutIcon),
+							top: baseverticalPadding + A3($author$project$OUI$Material$TextField$ifThenElse, labelHoldPlace, bottomBorderWidth, theme.filled.topBottomPadding)
+						}),
+						$mdgriffith$elm_ui$Element$spacing(theme.paddingBetweenIconAndText)
+					]);
+			} else {
+				var basePadding = (((((theme.height / 2) | 0) - ((typescale.body.large.lineHeight / 2) | 0)) - 4) / 2) | 0;
+				return _List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$paddingEach(
+						{
+							bottom: basePadding + A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, 0, 1),
+							left: A3($author$project$OUI$Material$TextField$ifThenElse, hasLeadingIcon, theme.leftRightPaddingWithIcon - leftBorderWidth, theme.leftRightPaddingWithoutIcon - leftBorderWidth),
+							right: A3($author$project$OUI$Material$TextField$ifThenElse, hasTrailingIcon, (theme.leftRightPaddingWithIcon - rightBorderWidth) - trailingIconOffset, theme.leftRightPaddingWithoutIcon - rightBorderWidth),
+							top: basePadding + A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, 0, 1)
+						}),
+						$mdgriffith$elm_ui$Element$spacing(theme.paddingBetweenIconAndText)
+					]);
+			}
+		}();
+		var borderColor = (hasError || p.hasFocus) ? A2($author$project$OUI$Material$Color$getElementColor, p.color, colorscheme) : $author$project$OUI$Material$Color$toElementColor(
+			A2($author$project$OUI$Material$Color$getOnSurfaceVariantColor, p.color, colorscheme));
+		var borderAttrs = A2(
+			$elm$core$List$cons,
+			$author$project$OUI$Material$TextField$transition('color 0.15s'),
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Element$Border$color(borderColor),
+				function () {
+					var _v3 = p.type_;
+					if (_v3.$ === 'Filled') {
+						return _List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$Border$widthEach(
+								{bottom: bottomBorderWidth, left: 0, right: 0, top: 0})
+							]);
+					} else {
+						return _List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$Border$widthEach(
+								{bottom: bottomBorderWidth, left: leftBorderWidth, right: rightBorderWidth, top: topBorderWidth}),
+								$mdgriffith$elm_ui$Element$Border$rounded(theme.outlined.shape)
+							]);
+					}
+				}()));
+		var bgColorAttr = function () {
+			var _v2 = p.type_;
+			if (_v2.$ === 'Filled') {
+				return $mdgriffith$elm_ui$Element$Background$color(
+					$author$project$OUI$Material$Color$toElementColor(
+						A2($author$project$OUI$Material$Color$getSurfaceContainerHighestColor, p.color, colorscheme)));
+			} else {
+				return $mdgriffith$elm_ui$Element$Background$color(
+					$author$project$OUI$Material$Color$toElementColor(
+						A2($author$project$OUI$Material$Color$getSurfaceColor, p.color, colorscheme)));
+			}
+		}();
+		var input_attrs = A2(
+			$elm$core$List$cons,
+			bgColorAttr,
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Element$Border$width(0),
+				A2(
+					$elm$core$List$cons,
+					A2($mdgriffith$elm_ui$Element$paddingXY, 0, 12),
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Element$moveDown(inputMoveDownBy),
+						A2(
+							$elm$core$List$cons,
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+							_Utils_ap(
+								focusEvents,
+								_Utils_ap(
+									A5($author$project$OUI$Material$Typography$attrs, $author$project$OUI$Text$Body, $author$project$OUI$Text$Large, $author$project$OUI$Text$NoColor, typescale, colorscheme),
+									_Utils_ap(
+										isMultiline ? _List_fromArray(
+											[
+												$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
+											]) : _List_Nil,
+										A2(
+											$elm$core$Maybe$withDefault,
+											_List_Nil,
+											A2(
+												$elm$core$Maybe$map,
+												A2(
+													$elm$core$Basics$composeL,
+													A2($elm$core$Basics$composeL, $elm$core$List$singleton, $mdgriffith$elm_ui$Element$htmlAttribute),
+													$elm$html$Html$Attributes$id),
+												p.id))))))))));
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Element$spacing(theme.supportingTextTopPadding),
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Element$inFront(labelElement),
+					_Utils_ap(
+						isMultiline ? _List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$height(
+								$mdgriffith$elm_ui$Element$px(theme.height * 3))
+							]) : _List_Nil,
+						attrs))),
+			A2(
+				$elm$core$List$cons,
+				A2(
+					$mdgriffith$elm_ui$Element$row,
+					A2(
+						$elm$core$List$cons,
+						bgColorAttr,
+						A2(
+							$elm$core$List$cons,
+							fontColorAttr,
+							A2(
+								$elm$core$List$cons,
+								$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+								_Utils_ap(
+									borderAttrs,
+									_Utils_ap(heightAttr, paddingAttrs))))),
+					$author$project$OUI$Material$TextField$filterMaybe(
+						_List_fromArray(
+							[
+								A2(
+								$elm$core$Maybe$map,
+								A3(
+									$author$project$OUI$Material$Icon$renderWithSizeColor,
+									24,
+									A2($author$project$OUI$Material$Color$getOnSurfaceVariantColor, p.color, colorscheme),
+									_List_Nil),
+								p.leadingIcon),
+								$elm$core$Maybe$Just(
+								function () {
+									var _v0 = p.datatype;
+									switch (_v0.$) {
+										case 'Text':
+											return A2(
+												$mdgriffith$elm_ui$Element$Input$text,
+												input_attrs,
+												{
+													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
+													onChange: p.onChange,
+													placeholder: $elm$core$Maybe$Nothing,
+													text: p.value
+												});
+										case 'Search':
+											return A2(
+												$mdgriffith$elm_ui$Element$Input$search,
+												input_attrs,
+												{
+													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
+													onChange: p.onChange,
+													placeholder: $elm$core$Maybe$Nothing,
+													text: p.value
+												});
+										case 'Username':
+											return A2(
+												$mdgriffith$elm_ui$Element$Input$username,
+												input_attrs,
+												{
+													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
+													onChange: p.onChange,
+													placeholder: $elm$core$Maybe$Nothing,
+													text: p.value
+												});
+										case 'Email':
+											return A2(
+												$mdgriffith$elm_ui$Element$Input$email,
+												input_attrs,
+												{
+													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
+													onChange: p.onChange,
+													placeholder: $elm$core$Maybe$Nothing,
+													text: p.value
+												});
+										case 'Password':
+											var show = _v0.a;
+											return A2(
+												$mdgriffith$elm_ui$Element$Input$currentPassword,
+												input_attrs,
+												{
+													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
+													onChange: p.onChange,
+													placeholder: $elm$core$Maybe$Nothing,
+													show: show,
+													text: p.value
+												});
+										case 'NewPassword':
+											var show = _v0.a;
+											return A2(
+												$mdgriffith$elm_ui$Element$Input$newPassword,
+												input_attrs,
+												{
+													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
+													onChange: p.onChange,
+													placeholder: $elm$core$Maybe$Nothing,
+													show: show,
+													text: p.value
+												});
+										default:
+											return A2(
+												$mdgriffith$elm_ui$Element$Input$multiline,
+												input_attrs,
+												{
+													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
+													onChange: p.onChange,
+													placeholder: $elm$core$Maybe$Nothing,
+													spellcheck: p.spellcheck,
+													text: p.value
+												});
+									}
+								}()),
+								trailingIcon
+							]))),
+				function () {
+					var _v1 = p.supportingText;
+					if (_v1.$ === 'Just') {
+						var text = _v1.a;
+						var color = hasError ? colorscheme.error : A2($author$project$OUI$Material$Color$getOnSurfaceVariantColor, p.color, colorscheme);
+						return _List_fromArray(
+							[
+								A2(
+								$mdgriffith$elm_ui$Element$el,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$Font$color(
+										$author$project$OUI$Material$Color$toElementColor(color)),
+										A2($mdgriffith$elm_ui$Element$paddingXY, theme.leftRightPaddingWithoutIcon, 0)
+									]),
+								A3(
+									$author$project$OUI$Material$Typography$render,
+									typescale,
+									colorscheme,
+									$author$project$OUI$Text$bodySmall(text)))
+							]);
+					} else {
+						return _List_Nil;
+					}
+				}()));
+	});
+var $author$project$OUI$Material$Theme$textfield = function (_v0) {
+	var t = _v0.a;
+	return t.textfield;
+};
+var $author$project$OUI$Material$textField = function (theme) {
+	return A4(
+		$author$project$OUI$Material$TextField$render,
+		$author$project$OUI$Material$Theme$typescale(theme),
+		$author$project$OUI$Material$Theme$colorscheme(theme),
+		$author$project$OUI$Material$Theme$button(theme),
+		$author$project$OUI$Material$Theme$textfield(theme));
+};
 var $simonh1000$elm_colorpicker$ColorPicker$markerAttrs = _List_fromArray(
 	[
 		A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
@@ -18171,10 +20360,61 @@ var $simonh1000$elm_colorpicker$ColorPicker$view = F2(
 						]))
 				]));
 	});
-var $author$project$OUI$Showcase$ColorPicker$view = F2(
-	function (color, colorPicker) {
-		return $mdgriffith$elm_ui$Element$html(
-			A2($simonh1000$elm_colorpicker$ColorPicker$view, color, colorPicker));
+var $author$project$OUI$TextField$withFocused = F2(
+	function (hasFocus, _v0) {
+		var props = _v0.a;
+		return $author$project$OUI$TextField$TextField(
+			_Utils_update(
+				props,
+				{hasFocus: hasFocus}));
+	});
+var $author$project$OUI$TextField$withType = F2(
+	function (value, _v0) {
+		var props = _v0.a;
+		return $author$project$OUI$TextField$TextField(
+			_Utils_update(
+				props,
+				{type_: value}));
+	});
+var $author$project$OUI$Showcase$ColorPicker$view = F3(
+	function (theme, color, colorPicker) {
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(20)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$mdgriffith$elm_ui$Element$map,
+					$author$project$OUI$Showcase$ColorPicker$ColorPickerMsg,
+					A2(
+						$mdgriffith$elm_ui$Element$el,
+						_List_fromArray(
+							[$mdgriffith$elm_ui$Element$centerX]),
+						$mdgriffith$elm_ui$Element$html(
+							A2($simonh1000$elm_colorpicker$ColorPicker$view, color, colorPicker.colorPicker)))),
+					A3(
+					$author$project$OUI$Material$textField,
+					theme,
+					_List_Nil,
+					A2(
+						$author$project$OUI$TextField$withFocused,
+						colorPicker.textFocused,
+						A3(
+							$author$project$OUI$TextField$onFocusBlur,
+							$author$project$OUI$Showcase$ColorPicker$TextFocus(true),
+							$author$project$OUI$Showcase$ColorPicker$TextFocus(false),
+							A2(
+								$author$project$OUI$TextField$withType,
+								$author$project$OUI$TextField$Outlined,
+								A3(
+									$author$project$OUI$TextField$new,
+									'Hex',
+									$author$project$OUI$Showcase$ColorPicker$TextChange,
+									colorPicker.textFocused ? colorPicker.text : $author$project$OUI$Material$Color$Json$toHexWithAlpha(color))))))
+				]));
 	});
 var $author$project$OUI$Material$Theme$Theme = function (a) {
 	return {$: 'Theme', a: a};
@@ -18330,7 +20570,19 @@ var $author$project$OUI$Showcase$Colors$book = A2(
 													$author$project$OUI$Explorer$deleteColorThemeMsg(shared.selectedColorScheme.a)),
 												$author$project$OUI$Button$new('Delete')));
 									}
-								}()
+								}(),
+									A2(
+									$mdgriffith$elm_ui$Element$map,
+									$author$project$OUI$Explorer$bookMsg,
+									A3(
+										$author$project$OUI$Material$button,
+										shared.theme,
+										_List_fromArray(
+											[$mdgriffith$elm_ui$Element$centerX]),
+										A2(
+											$author$project$OUI$Button$onClick,
+											$author$project$OUI$Showcase$Colors$ExportColor,
+											$author$project$OUI$Button$new('Export'))))
 								]));
 					}),
 				A2(
@@ -18350,7 +20602,7 @@ var $author$project$OUI$Showcase$Colors$book = A2(
 											A2(
 												$mdgriffith$elm_ui$Element$map,
 												$author$project$OUI$Showcase$Colors$ColorPickerMsg,
-												A2($author$project$OUI$Showcase$ColorPicker$view, cp.color, cp.colorPicker)),
+												A3($author$project$OUI$Showcase$ColorPicker$view, shared.theme, cp.color, cp.colorPicker)),
 											A3(
 												$author$project$OUI$Dialog$onDismiss,
 												'Cancel',
@@ -18385,8 +20637,6 @@ var $author$project$OUI$Material$dialog = F2(
 			attrs,
 			$elm$core$Maybe$Nothing);
 	});
-var $mdgriffith$elm_ui$Internal$Flag$overflow = $mdgriffith$elm_ui$Internal$Flag$flag(20);
-var $mdgriffith$elm_ui$Element$clip = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.clip);
 var $mdgriffith$elm_ui$Element$rgba255 = F4(
 	function (red, green, blue, a) {
 		return A4($mdgriffith$elm_ui$Internal$Model$Rgba, red / 255, green / 255, blue / 255, a);
@@ -19475,10 +21725,6 @@ var $mdgriffith$elm_ui$Internal$Model$extractSpacingAndPadding = function (attrs
 		_Utils_Tuple2($elm$core$Maybe$Nothing, $elm$core$Maybe$Nothing),
 		attrs);
 };
-var $mdgriffith$elm_ui$Internal$Model$paddingNameFloat = F4(
-	function (top, right, bottom, left) {
-		return 'pad-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(top) + ('-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(right) + ('-' + ($mdgriffith$elm_ui$Internal$Model$floatClass(bottom) + ('-' + $mdgriffith$elm_ui$Internal$Model$floatClass(left)))))));
-	});
 var $mdgriffith$elm_ui$Element$wrappedRow = F2(
 	function (attrs, children) {
 		var _v0 = $mdgriffith$elm_ui$Internal$Model$extractSpacingAndPadding(attrs);
@@ -19852,24 +22098,8 @@ var $mdgriffith$elm_ui$Element$Keyed$el = F2(
 				_List_fromArray(
 					[child])));
 	});
-var $author$project$OUI$Material$Color$getOnSurfaceVariantColor = function (c) {
-	if (c.$ === 'Custom') {
-		var onSurface = c.a.onSurface;
-		return $elm$core$Basics$always(onSurface);
-	} else {
-		return function ($) {
-			return $.onSurfaceVariant;
-		};
-	}
-};
 var $author$project$OUI$Text$labelLarge = A2($author$project$OUI$Text$textTypeSize, $author$project$OUI$Text$Label, $author$project$OUI$Text$Large);
 var $author$project$OUI$Text$labelMedium = A2($author$project$OUI$Text$textTypeSize, $author$project$OUI$Text$Label, $author$project$OUI$Text$Medium);
-var $mdgriffith$elm_ui$Element$moveRight = function (x) {
-	return A2(
-		$mdgriffith$elm_ui$Internal$Model$TransformComponent,
-		$mdgriffith$elm_ui$Internal$Flag$moveX,
-		$mdgriffith$elm_ui$Internal$Model$MoveX(x));
-};
 var $mdgriffith$elm_ui$Element$Keyed$row = F2(
 	function (attrs, children) {
 		return A4(
@@ -20171,7 +22401,6 @@ var $author$project$OUI$Material$Navigation$renderEntry = F6(
 					A4($author$project$OUI$Material$Divider$render, colorscheme, dividerTheme, _List_Nil, $author$project$OUI$Divider$new));
 		}
 	});
-var $mdgriffith$elm_ui$Element$scrollbarY = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.scrollbarsY);
 var $author$project$OUI$Material$Navigation$render = F6(
 	function (typescale, colorscheme, dividerTheme, theme, _v0, nav) {
 		var props = {
@@ -21531,10 +23760,6 @@ var $author$project$OUI$Slider$onChange = F2(
 					onChange: $elm$core$Maybe$Just(value)
 				}));
 	});
-var $mdgriffith$elm_ui$Internal$Model$Behind = {$: 'Behind'};
-var $mdgriffith$elm_ui$Element$behindContent = function (element) {
-	return A2($mdgriffith$elm_ui$Element$createNearby, $mdgriffith$elm_ui$Internal$Model$Behind, element);
-};
 var $author$project$OUI$Slider$getColor = function (_v0) {
 	var slider = _v0.a;
 	return slider.color;
@@ -21561,10 +23786,6 @@ var $author$project$OUI$Slider$getValue = function (_v0) {
 	var slider = _v0.a;
 	return slider.value;
 };
-var $mdgriffith$elm_ui$Element$Input$HiddenLabel = function (a) {
-	return {$: 'HiddenLabel', a: a};
-};
-var $mdgriffith$elm_ui$Element$Input$labelHidden = $mdgriffith$elm_ui$Element$Input$HiddenLabel;
 var $mdgriffith$elm_ui$Element$Border$roundEach = function (_v0) {
 	var bottomRight = _v0.bottomRight;
 	var bottomLeft = _v0.bottomLeft;
@@ -21579,84 +23800,6 @@ var $mdgriffith$elm_ui$Element$Border$roundEach = function (_v0) {
 			'border-radius',
 			$elm$core$String$fromInt(topLeft) + ('px ' + ($elm$core$String$fromInt(topRight) + ('px ' + ($elm$core$String$fromInt(bottomRight) + ('px ' + ($elm$core$String$fromInt(bottomLeft) + 'px'))))))));
 };
-var $mdgriffith$elm_ui$Internal$Model$LivePolite = {$: 'LivePolite'};
-var $mdgriffith$elm_ui$Element$Region$announce = $mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$LivePolite);
-var $mdgriffith$elm_ui$Element$Input$applyLabel = F3(
-	function (attrs, label, input) {
-		if (label.$ === 'HiddenLabel') {
-			var labelText = label.a;
-			return A4(
-				$mdgriffith$elm_ui$Internal$Model$element,
-				$mdgriffith$elm_ui$Internal$Model$asColumn,
-				$mdgriffith$elm_ui$Internal$Model$NodeName('label'),
-				attrs,
-				$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-					_List_fromArray(
-						[input])));
-		} else {
-			var position = label.a;
-			var labelAttrs = label.b;
-			var labelChild = label.c;
-			var labelElement = A4(
-				$mdgriffith$elm_ui$Internal$Model$element,
-				$mdgriffith$elm_ui$Internal$Model$asEl,
-				$mdgriffith$elm_ui$Internal$Model$div,
-				labelAttrs,
-				$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-					_List_fromArray(
-						[labelChild])));
-			switch (position.$) {
-				case 'Above':
-					return A4(
-						$mdgriffith$elm_ui$Internal$Model$element,
-						$mdgriffith$elm_ui$Internal$Model$asColumn,
-						$mdgriffith$elm_ui$Internal$Model$NodeName('label'),
-						A2(
-							$elm$core$List$cons,
-							$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputLabel),
-							attrs),
-						$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-							_List_fromArray(
-								[labelElement, input])));
-				case 'Below':
-					return A4(
-						$mdgriffith$elm_ui$Internal$Model$element,
-						$mdgriffith$elm_ui$Internal$Model$asColumn,
-						$mdgriffith$elm_ui$Internal$Model$NodeName('label'),
-						A2(
-							$elm$core$List$cons,
-							$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputLabel),
-							attrs),
-						$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-							_List_fromArray(
-								[input, labelElement])));
-				case 'OnRight':
-					return A4(
-						$mdgriffith$elm_ui$Internal$Model$element,
-						$mdgriffith$elm_ui$Internal$Model$asRow,
-						$mdgriffith$elm_ui$Internal$Model$NodeName('label'),
-						A2(
-							$elm$core$List$cons,
-							$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputLabel),
-							attrs),
-						$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-							_List_fromArray(
-								[input, labelElement])));
-				default:
-					return A4(
-						$mdgriffith$elm_ui$Internal$Model$element,
-						$mdgriffith$elm_ui$Internal$Model$asRow,
-						$mdgriffith$elm_ui$Internal$Model$NodeName('label'),
-						A2(
-							$elm$core$List$cons,
-							$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputLabel),
-							attrs),
-						$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-							_List_fromArray(
-								[labelElement, input])));
-			}
-		}
-	});
 var $mdgriffith$elm_ui$Internal$Model$getHeight = function (attrs) {
 	return A3(
 		$elm$core$List$foldr,
@@ -21697,48 +23840,8 @@ var $mdgriffith$elm_ui$Internal$Model$getWidth = function (attrs) {
 		$elm$core$Maybe$Nothing,
 		attrs);
 };
-var $mdgriffith$elm_ui$Internal$Model$Label = function (a) {
-	return {$: 'Label', a: a};
-};
-var $mdgriffith$elm_ui$Element$Input$hiddenLabelAttribute = function (label) {
-	if (label.$ === 'HiddenLabel') {
-		var textLabel = label.a;
-		return $mdgriffith$elm_ui$Internal$Model$Describe(
-			$mdgriffith$elm_ui$Internal$Model$Label(textLabel));
-	} else {
-		return $mdgriffith$elm_ui$Internal$Model$NoAttribute;
-	}
-};
-var $mdgriffith$elm_ui$Element$Input$isHiddenLabel = function (label) {
-	if (label.$ === 'HiddenLabel') {
-		return true;
-	} else {
-		return false;
-	}
-};
 var $elm$html$Html$Attributes$max = $elm$html$Html$Attributes$stringProperty('max');
 var $elm$html$Html$Attributes$min = $elm$html$Html$Attributes$stringProperty('min');
-var $elm$html$Html$Events$alwaysStop = function (x) {
-	return _Utils_Tuple2(x, true);
-};
-var $elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
-	});
-var $elm$html$Html$Events$targetValue = A2(
-	$elm$json$Json$Decode$at,
-	_List_fromArray(
-		['target', 'value']),
-	$elm$json$Json$Decode$string);
-var $elm$html$Html$Events$onInput = function (tagger) {
-	return A2(
-		$elm$html$Html$Events$stopPropagationOn,
-		'input',
-		A2(
-			$elm$json$Json$Decode$map,
-			$elm$html$Html$Events$alwaysStop,
-			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
-};
 var $mdgriffith$elm_ui$Element$spacingXY = F2(
 	function (x, y) {
 		return A2(
@@ -21754,8 +23857,6 @@ var $elm$html$Html$Attributes$step = function (n) {
 	return A2($elm$html$Html$Attributes$stringProperty, 'step', n);
 };
 var $elm$core$String$toFloat = _String_toFloat;
-var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
-var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $elm$core$Basics$abs = function (n) {
 	return (n < 0) ? (-n) : n;
 };
@@ -22694,26 +24795,6 @@ var $author$project$OUI$Switch$getSelected = function (_v0) {
 	var _switch = _v0.a;
 	return _switch.selected;
 };
-var $author$project$OUI$Material$Color$getSurfaceContainerHighestColor = function (c) {
-	if (c.$ === 'Custom') {
-		var surface = c.a.surface;
-		return $elm$core$Basics$always(surface);
-	} else {
-		return function ($) {
-			return $.surfaceContainerHighest;
-		};
-	}
-};
-var $author$project$OUI$Material$Color$isError = function (c) {
-	switch (c.$) {
-		case 'Error':
-			return true;
-		case 'ErrorContainer':
-			return true;
-		default:
-			return false;
-	}
-};
 var $author$project$OUI$Utils$ARIA$RoleSwitch = function (a) {
 	return {$: 'RoleSwitch', a: a};
 };
@@ -23405,35 +25486,6 @@ var $author$project$OUI$Material$Tabs$renderPrimaryItem = F5(
 				onPress: $elm$core$Maybe$Just(onClick)
 			});
 	});
-var $mdgriffith$elm_ui$Element$Border$widthXY = F2(
-	function (x, y) {
-		return A2(
-			$mdgriffith$elm_ui$Internal$Model$StyleClass,
-			$mdgriffith$elm_ui$Internal$Flag$borderWidth,
-			A5(
-				$mdgriffith$elm_ui$Internal$Model$BorderWidth,
-				'b-' + ($elm$core$String$fromInt(x) + ('-' + $elm$core$String$fromInt(y))),
-				y,
-				x,
-				y,
-				x));
-	});
-var $mdgriffith$elm_ui$Element$Border$widthEach = function (_v0) {
-	var right = _v0.right;
-	var left = _v0.left;
-	var top = _v0.top;
-	var bottom = _v0.bottom;
-	return (_Utils_eq(top, bottom) && _Utils_eq(left, right)) ? (_Utils_eq(top, right) ? $mdgriffith$elm_ui$Element$Border$width(top) : A2($mdgriffith$elm_ui$Element$Border$widthXY, left, top)) : A2(
-		$mdgriffith$elm_ui$Internal$Model$StyleClass,
-		$mdgriffith$elm_ui$Internal$Flag$borderWidth,
-		A5(
-			$mdgriffith$elm_ui$Internal$Model$BorderWidth,
-			'b-' + ($elm$core$String$fromInt(top) + ('-' + ($elm$core$String$fromInt(right) + ('-' + ($elm$core$String$fromInt(bottom) + ('-' + $elm$core$String$fromInt(left))))))),
-			top,
-			right,
-			bottom,
-			left));
-};
 var $author$project$OUI$Material$Tabs$renderSecondaryItem = F5(
 	function (typescale, colorscheme, btheme, theme, _v0) {
 		var color = _v0.color;
@@ -23813,9 +25865,7 @@ var $author$project$OUI$Showcase$Tabs$book = A2(
 				}),
 			update: $author$project$OUI$Showcase$Tabs$update
 		}));
-var $author$project$OUI$TextField$Text = {$: 'Text'};
 var $author$project$OUI$TextField$Email = {$: 'Email'};
-var $author$project$OUI$TextField$Multiline = {$: 'Multiline'};
 var $author$project$OUI$TextField$NewPassword = function (a) {
 	return {$: 'NewPassword', a: a};
 };
@@ -23827,9 +25877,6 @@ var $author$project$OUI$Showcase$TextFields$SelectTab = function (a) {
 	return {$: 'SelectTab', a: a};
 };
 var $author$project$OUI$TextField$Username = {$: 'Username'};
-var $author$project$OUI$TextField$TextField = function (a) {
-	return {$: 'TextField', a: a};
-};
 var $author$project$OUI$TextField$email = function (_v0) {
 	var props = _v0.a;
 	return $author$project$OUI$TextField$TextField(
@@ -23872,7 +25919,6 @@ var $author$project$OUI$TextField$search = function (_v0) {
 			props,
 			{datatype: $author$project$OUI$TextField$Search}));
 };
-var $author$project$OUI$TextField$Filled = {$: 'Filled'};
 var $author$project$OUI$Showcase$TextFields$OnChange = F2(
 	function (a, b) {
 		return {$: 'OnChange', a: a, b: b};
@@ -23883,7 +25929,6 @@ var $author$project$OUI$Showcase$TextFields$OnFocus = function (a) {
 var $author$project$OUI$Showcase$TextFields$OnLoseFocus = function (a) {
 	return {$: 'OnLoseFocus', a: a};
 };
-var $author$project$OUI$TextField$Outlined = {$: 'Outlined'};
 var $author$project$OUI$Showcase$TextFields$newInputState = {hasFocus: false, text: ''};
 var $author$project$OUI$Showcase$TextFields$inputHasFocus = F2(
 	function (name, _v0) {
@@ -23901,1256 +25946,6 @@ var $author$project$OUI$Showcase$TextFields$inputText = F2(
 			$author$project$OUI$Showcase$TextFields$newInputState,
 			A2($elm$core$Dict$get, name, inputs)).text;
 	});
-var $author$project$OUI$TextField$new = F3(
-	function (label, onChange, value) {
-		return $author$project$OUI$TextField$TextField(
-			{color: $author$project$OUI$Primary, datatype: $author$project$OUI$TextField$Text, errorIcon: $elm$core$Maybe$Nothing, hasFocus: false, id: $elm$core$Maybe$Nothing, label: label, leadingIcon: $elm$core$Maybe$Nothing, onChange: onChange, onFocus: $elm$core$Maybe$Nothing, onLoseFocus: $elm$core$Maybe$Nothing, onTrailingIconClick: $elm$core$Maybe$Nothing, spellcheck: false, supportingText: $elm$core$Maybe$Nothing, trailingIcon: $elm$core$Maybe$Nothing, type_: $author$project$OUI$TextField$Filled, value: value});
-	});
-var $author$project$OUI$TextField$onFocusBlur = F3(
-	function (onFocus, onLoseFocus, _v0) {
-		var props = _v0.a;
-		return $author$project$OUI$TextField$TextField(
-			_Utils_update(
-				props,
-				{
-					onFocus: $elm$core$Maybe$Just(onFocus),
-					onLoseFocus: $elm$core$Maybe$Just(onLoseFocus)
-				}));
-	});
-var $author$project$OUI$Text$bodySmall = A2($author$project$OUI$Text$textTypeSize, $author$project$OUI$Text$Body, $author$project$OUI$Text$Small);
-var $mdgriffith$elm_ui$Element$Input$TextInputNode = function (a) {
-	return {$: 'TextInputNode', a: a};
-};
-var $mdgriffith$elm_ui$Element$Input$TextArea = {$: 'TextArea'};
-var $mdgriffith$elm_ui$Element$Input$autofill = A2(
-	$elm$core$Basics$composeL,
-	$mdgriffith$elm_ui$Internal$Model$Attr,
-	$elm$html$Html$Attributes$attribute('autocomplete'));
-var $mdgriffith$elm_ui$Element$Input$calcMoveToCompensateForPadding = function (attrs) {
-	var gatherSpacing = F2(
-		function (attr, found) {
-			if ((attr.$ === 'StyleClass') && (attr.b.$ === 'SpacingStyle')) {
-				var _v2 = attr.b;
-				var x = _v2.b;
-				var y = _v2.c;
-				if (found.$ === 'Nothing') {
-					return $elm$core$Maybe$Just(y);
-				} else {
-					return found;
-				}
-			} else {
-				return found;
-			}
-		});
-	var _v0 = A3($elm$core$List$foldr, gatherSpacing, $elm$core$Maybe$Nothing, attrs);
-	if (_v0.$ === 'Nothing') {
-		return $mdgriffith$elm_ui$Internal$Model$NoAttribute;
-	} else {
-		var vSpace = _v0.a;
-		return $mdgriffith$elm_ui$Element$moveUp(
-			$elm$core$Basics$floor(vSpace / 2));
-	}
-};
-var $mdgriffith$elm_ui$Element$rgb = F3(
-	function (r, g, b) {
-		return A4($mdgriffith$elm_ui$Internal$Model$Rgba, r, g, b, 1);
-	});
-var $mdgriffith$elm_ui$Element$Input$darkGrey = A3($mdgriffith$elm_ui$Element$rgb, 186 / 255, 189 / 255, 182 / 255);
-var $mdgriffith$elm_ui$Element$Input$defaultTextPadding = A2($mdgriffith$elm_ui$Element$paddingXY, 12, 12);
-var $mdgriffith$elm_ui$Element$Input$white = A3($mdgriffith$elm_ui$Element$rgb, 1, 1, 1);
-var $mdgriffith$elm_ui$Element$Input$defaultTextBoxStyle = _List_fromArray(
-	[
-		$mdgriffith$elm_ui$Element$Input$defaultTextPadding,
-		$mdgriffith$elm_ui$Element$Border$rounded(3),
-		$mdgriffith$elm_ui$Element$Border$color($mdgriffith$elm_ui$Element$Input$darkGrey),
-		$mdgriffith$elm_ui$Element$Background$color($mdgriffith$elm_ui$Element$Input$white),
-		$mdgriffith$elm_ui$Element$Border$width(1),
-		$mdgriffith$elm_ui$Element$spacing(5),
-		$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-		$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink)
-	]);
-var $mdgriffith$elm_ui$Element$Input$getHeight = function (attr) {
-	if (attr.$ === 'Height') {
-		var h = attr.a;
-		return $elm$core$Maybe$Just(h);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
-var $mdgriffith$elm_ui$Element$Input$isConstrained = function (len) {
-	isConstrained:
-	while (true) {
-		switch (len.$) {
-			case 'Content':
-				return false;
-			case 'Px':
-				return true;
-			case 'Fill':
-				return true;
-			case 'Min':
-				var l = len.b;
-				var $temp$len = l;
-				len = $temp$len;
-				continue isConstrained;
-			default:
-				var l = len.b;
-				return true;
-		}
-	}
-};
-var $mdgriffith$elm_ui$Element$Input$isStacked = function (label) {
-	if (label.$ === 'Label') {
-		var loc = label.a;
-		switch (loc.$) {
-			case 'OnRight':
-				return false;
-			case 'OnLeft':
-				return false;
-			case 'Above':
-				return true;
-			default:
-				return true;
-		}
-	} else {
-		return true;
-	}
-};
-var $mdgriffith$elm_ui$Element$Input$negateBox = function (box) {
-	return {bottom: -box.bottom, left: -box.left, right: -box.right, top: -box.top};
-};
-var $mdgriffith$elm_ui$Element$Input$isFill = function (len) {
-	isFill:
-	while (true) {
-		switch (len.$) {
-			case 'Fill':
-				return true;
-			case 'Content':
-				return false;
-			case 'Px':
-				return false;
-			case 'Min':
-				var l = len.b;
-				var $temp$len = l;
-				len = $temp$len;
-				continue isFill;
-			default:
-				var l = len.b;
-				var $temp$len = l;
-				len = $temp$len;
-				continue isFill;
-		}
-	}
-};
-var $mdgriffith$elm_ui$Element$Input$isPixel = function (len) {
-	isPixel:
-	while (true) {
-		switch (len.$) {
-			case 'Content':
-				return false;
-			case 'Px':
-				return true;
-			case 'Fill':
-				return false;
-			case 'Min':
-				var l = len.b;
-				var $temp$len = l;
-				len = $temp$len;
-				continue isPixel;
-			default:
-				var l = len.b;
-				var $temp$len = l;
-				len = $temp$len;
-				continue isPixel;
-		}
-	}
-};
-var $mdgriffith$elm_ui$Element$Input$redistributeOver = F4(
-	function (isMultiline, stacked, attr, els) {
-		switch (attr.$) {
-			case 'Nearby':
-				return _Utils_update(
-					els,
-					{
-						parent: A2($elm$core$List$cons, attr, els.parent)
-					});
-			case 'Width':
-				var width = attr.a;
-				return $mdgriffith$elm_ui$Element$Input$isFill(width) ? _Utils_update(
-					els,
-					{
-						fullParent: A2($elm$core$List$cons, attr, els.fullParent),
-						input: A2($elm$core$List$cons, attr, els.input),
-						parent: A2($elm$core$List$cons, attr, els.parent)
-					}) : (stacked ? _Utils_update(
-					els,
-					{
-						fullParent: A2($elm$core$List$cons, attr, els.fullParent)
-					}) : _Utils_update(
-					els,
-					{
-						parent: A2($elm$core$List$cons, attr, els.parent)
-					}));
-			case 'Height':
-				var height = attr.a;
-				return (!stacked) ? _Utils_update(
-					els,
-					{
-						fullParent: A2($elm$core$List$cons, attr, els.fullParent),
-						parent: A2($elm$core$List$cons, attr, els.parent)
-					}) : ($mdgriffith$elm_ui$Element$Input$isFill(height) ? _Utils_update(
-					els,
-					{
-						fullParent: A2($elm$core$List$cons, attr, els.fullParent),
-						parent: A2($elm$core$List$cons, attr, els.parent)
-					}) : ($mdgriffith$elm_ui$Element$Input$isPixel(height) ? _Utils_update(
-					els,
-					{
-						parent: A2($elm$core$List$cons, attr, els.parent)
-					}) : _Utils_update(
-					els,
-					{
-						parent: A2($elm$core$List$cons, attr, els.parent)
-					})));
-			case 'AlignX':
-				return _Utils_update(
-					els,
-					{
-						fullParent: A2($elm$core$List$cons, attr, els.fullParent)
-					});
-			case 'AlignY':
-				return _Utils_update(
-					els,
-					{
-						fullParent: A2($elm$core$List$cons, attr, els.fullParent)
-					});
-			case 'StyleClass':
-				switch (attr.b.$) {
-					case 'SpacingStyle':
-						var _v1 = attr.b;
-						return _Utils_update(
-							els,
-							{
-								fullParent: A2($elm$core$List$cons, attr, els.fullParent),
-								input: A2($elm$core$List$cons, attr, els.input),
-								parent: A2($elm$core$List$cons, attr, els.parent),
-								wrapper: A2($elm$core$List$cons, attr, els.wrapper)
-							});
-					case 'PaddingStyle':
-						var cls = attr.a;
-						var _v2 = attr.b;
-						var pad = _v2.a;
-						var t = _v2.b;
-						var r = _v2.c;
-						var b = _v2.d;
-						var l = _v2.e;
-						if (isMultiline) {
-							return _Utils_update(
-								els,
-								{
-									cover: A2($elm$core$List$cons, attr, els.cover),
-									parent: A2($elm$core$List$cons, attr, els.parent)
-								});
-						} else {
-							var newTop = t - A2($elm$core$Basics$min, t, b);
-							var newLineHeight = $mdgriffith$elm_ui$Element$htmlAttribute(
-								A2(
-									$elm$html$Html$Attributes$style,
-									'line-height',
-									'calc(1.0em + ' + ($elm$core$String$fromFloat(
-										2 * A2($elm$core$Basics$min, t, b)) + 'px)')));
-							var newHeight = $mdgriffith$elm_ui$Element$htmlAttribute(
-								A2(
-									$elm$html$Html$Attributes$style,
-									'height',
-									'calc(1.0em + ' + ($elm$core$String$fromFloat(
-										2 * A2($elm$core$Basics$min, t, b)) + 'px)')));
-							var newBottom = b - A2($elm$core$Basics$min, t, b);
-							var reducedVerticalPadding = A2(
-								$mdgriffith$elm_ui$Internal$Model$StyleClass,
-								$mdgriffith$elm_ui$Internal$Flag$padding,
-								A5(
-									$mdgriffith$elm_ui$Internal$Model$PaddingStyle,
-									A4($mdgriffith$elm_ui$Internal$Model$paddingNameFloat, newTop, r, newBottom, l),
-									newTop,
-									r,
-									newBottom,
-									l));
-							return _Utils_update(
-								els,
-								{
-									cover: A2($elm$core$List$cons, attr, els.cover),
-									input: A2(
-										$elm$core$List$cons,
-										newHeight,
-										A2($elm$core$List$cons, newLineHeight, els.input)),
-									parent: A2($elm$core$List$cons, reducedVerticalPadding, els.parent)
-								});
-						}
-					case 'BorderWidth':
-						var _v3 = attr.b;
-						return _Utils_update(
-							els,
-							{
-								cover: A2($elm$core$List$cons, attr, els.cover),
-								parent: A2($elm$core$List$cons, attr, els.parent)
-							});
-					case 'Transform':
-						return _Utils_update(
-							els,
-							{
-								cover: A2($elm$core$List$cons, attr, els.cover),
-								parent: A2($elm$core$List$cons, attr, els.parent)
-							});
-					case 'FontSize':
-						return _Utils_update(
-							els,
-							{
-								fullParent: A2($elm$core$List$cons, attr, els.fullParent)
-							});
-					case 'FontFamily':
-						var _v4 = attr.b;
-						return _Utils_update(
-							els,
-							{
-								fullParent: A2($elm$core$List$cons, attr, els.fullParent)
-							});
-					default:
-						var flag = attr.a;
-						var cls = attr.b;
-						return _Utils_update(
-							els,
-							{
-								parent: A2($elm$core$List$cons, attr, els.parent)
-							});
-				}
-			case 'NoAttribute':
-				return els;
-			case 'Attr':
-				var a = attr.a;
-				return _Utils_update(
-					els,
-					{
-						input: A2($elm$core$List$cons, attr, els.input)
-					});
-			case 'Describe':
-				return _Utils_update(
-					els,
-					{
-						input: A2($elm$core$List$cons, attr, els.input)
-					});
-			case 'Class':
-				return _Utils_update(
-					els,
-					{
-						parent: A2($elm$core$List$cons, attr, els.parent)
-					});
-			default:
-				return _Utils_update(
-					els,
-					{
-						input: A2($elm$core$List$cons, attr, els.input)
-					});
-		}
-	});
-var $mdgriffith$elm_ui$Element$Input$redistribute = F3(
-	function (isMultiline, stacked, attrs) {
-		return function (redist) {
-			return {
-				cover: $elm$core$List$reverse(redist.cover),
-				fullParent: $elm$core$List$reverse(redist.fullParent),
-				input: $elm$core$List$reverse(redist.input),
-				parent: $elm$core$List$reverse(redist.parent),
-				wrapper: $elm$core$List$reverse(redist.wrapper)
-			};
-		}(
-			A3(
-				$elm$core$List$foldl,
-				A2($mdgriffith$elm_ui$Element$Input$redistributeOver, isMultiline, stacked),
-				{cover: _List_Nil, fullParent: _List_Nil, input: _List_Nil, parent: _List_Nil, wrapper: _List_Nil},
-				attrs));
-	});
-var $mdgriffith$elm_ui$Element$Input$renderBox = function (_v0) {
-	var left = _v0.left;
-	var bottom = _v0.bottom;
-	var right = _v0.right;
-	var top = _v0.top;
-	return $elm$core$String$fromInt(top) + ('px ' + ($elm$core$String$fromInt(right) + ('px ' + ($elm$core$String$fromInt(bottom) + ('px ' + ($elm$core$String$fromInt(left) + 'px'))))));
-};
-var $mdgriffith$elm_ui$Element$alpha = function (o) {
-	var transparency = function (x) {
-		return 1 - x;
-	}(
-		A2(
-			$elm$core$Basics$min,
-			1.0,
-			A2($elm$core$Basics$max, 0.0, o)));
-	return A2(
-		$mdgriffith$elm_ui$Internal$Model$StyleClass,
-		$mdgriffith$elm_ui$Internal$Flag$transparency,
-		A2(
-			$mdgriffith$elm_ui$Internal$Model$Transparency,
-			'transparency-' + $mdgriffith$elm_ui$Internal$Model$floatClass(transparency),
-			transparency));
-};
-var $mdgriffith$elm_ui$Element$Input$charcoal = A3($mdgriffith$elm_ui$Element$rgb, 136 / 255, 138 / 255, 133 / 255);
-var $mdgriffith$elm_ui$Element$rgba = $mdgriffith$elm_ui$Internal$Model$Rgba;
-var $mdgriffith$elm_ui$Element$Input$renderPlaceholder = F3(
-	function (_v0, forPlaceholder, on) {
-		var placeholderAttrs = _v0.a;
-		var placeholderEl = _v0.b;
-		return A2(
-			$mdgriffith$elm_ui$Element$el,
-			_Utils_ap(
-				forPlaceholder,
-				_Utils_ap(
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$Font$color($mdgriffith$elm_ui$Element$Input$charcoal),
-							$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.noTextSelection + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.passPointerEvents)),
-							$mdgriffith$elm_ui$Element$clip,
-							$mdgriffith$elm_ui$Element$Border$color(
-							A4($mdgriffith$elm_ui$Element$rgba, 0, 0, 0, 0)),
-							$mdgriffith$elm_ui$Element$Background$color(
-							A4($mdgriffith$elm_ui$Element$rgba, 0, 0, 0, 0)),
-							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-							$mdgriffith$elm_ui$Element$alpha(
-							on ? 1 : 0)
-						]),
-					placeholderAttrs)),
-			placeholderEl);
-	});
-var $elm$html$Html$span = _VirtualDom_node('span');
-var $elm$html$Html$Attributes$spellcheck = $elm$html$Html$Attributes$boolProperty('spellcheck');
-var $mdgriffith$elm_ui$Element$Input$spellcheck = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Attr, $elm$html$Html$Attributes$spellcheck);
-var $mdgriffith$elm_ui$Element$Input$value = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Attr, $elm$html$Html$Attributes$value);
-var $mdgriffith$elm_ui$Element$Input$textHelper = F3(
-	function (textInput, attrs, textOptions) {
-		var withDefaults = _Utils_ap($mdgriffith$elm_ui$Element$Input$defaultTextBoxStyle, attrs);
-		var redistributed = A3(
-			$mdgriffith$elm_ui$Element$Input$redistribute,
-			_Utils_eq(textInput.type_, $mdgriffith$elm_ui$Element$Input$TextArea),
-			$mdgriffith$elm_ui$Element$Input$isStacked(textOptions.label),
-			withDefaults);
-		var onlySpacing = function (attr) {
-			if ((attr.$ === 'StyleClass') && (attr.b.$ === 'SpacingStyle')) {
-				var _v9 = attr.b;
-				return true;
-			} else {
-				return false;
-			}
-		};
-		var heightConstrained = function () {
-			var _v7 = textInput.type_;
-			if (_v7.$ === 'TextInputNode') {
-				var inputType = _v7.a;
-				return false;
-			} else {
-				return A2(
-					$elm$core$Maybe$withDefault,
-					false,
-					A2(
-						$elm$core$Maybe$map,
-						$mdgriffith$elm_ui$Element$Input$isConstrained,
-						$elm$core$List$head(
-							$elm$core$List$reverse(
-								A2($elm$core$List$filterMap, $mdgriffith$elm_ui$Element$Input$getHeight, withDefaults)))));
-			}
-		}();
-		var getPadding = function (attr) {
-			if ((attr.$ === 'StyleClass') && (attr.b.$ === 'PaddingStyle')) {
-				var cls = attr.a;
-				var _v6 = attr.b;
-				var pad = _v6.a;
-				var t = _v6.b;
-				var r = _v6.c;
-				var b = _v6.d;
-				var l = _v6.e;
-				return $elm$core$Maybe$Just(
-					{
-						bottom: A2(
-							$elm$core$Basics$max,
-							0,
-							$elm$core$Basics$floor(b - 3)),
-						left: A2(
-							$elm$core$Basics$max,
-							0,
-							$elm$core$Basics$floor(l - 3)),
-						right: A2(
-							$elm$core$Basics$max,
-							0,
-							$elm$core$Basics$floor(r - 3)),
-						top: A2(
-							$elm$core$Basics$max,
-							0,
-							$elm$core$Basics$floor(t - 3))
-					});
-			} else {
-				return $elm$core$Maybe$Nothing;
-			}
-		};
-		var parentPadding = A2(
-			$elm$core$Maybe$withDefault,
-			{bottom: 0, left: 0, right: 0, top: 0},
-			$elm$core$List$head(
-				$elm$core$List$reverse(
-					A2($elm$core$List$filterMap, getPadding, withDefaults))));
-		var inputElement = A4(
-			$mdgriffith$elm_ui$Internal$Model$element,
-			$mdgriffith$elm_ui$Internal$Model$asEl,
-			function () {
-				var _v3 = textInput.type_;
-				if (_v3.$ === 'TextInputNode') {
-					var inputType = _v3.a;
-					return $mdgriffith$elm_ui$Internal$Model$NodeName('input');
-				} else {
-					return $mdgriffith$elm_ui$Internal$Model$NodeName('textarea');
-				}
-			}(),
-			_Utils_ap(
-				function () {
-					var _v4 = textInput.type_;
-					if (_v4.$ === 'TextInputNode') {
-						var inputType = _v4.a;
-						return _List_fromArray(
-							[
-								$mdgriffith$elm_ui$Internal$Model$Attr(
-								$elm$html$Html$Attributes$type_(inputType)),
-								$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputText)
-							]);
-					} else {
-						return _List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$clip,
-								$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-								$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputMultiline),
-								$mdgriffith$elm_ui$Element$Input$calcMoveToCompensateForPadding(withDefaults),
-								$mdgriffith$elm_ui$Element$paddingEach(parentPadding),
-								$mdgriffith$elm_ui$Internal$Model$Attr(
-								A2(
-									$elm$html$Html$Attributes$style,
-									'margin',
-									$mdgriffith$elm_ui$Element$Input$renderBox(
-										$mdgriffith$elm_ui$Element$Input$negateBox(parentPadding)))),
-								$mdgriffith$elm_ui$Internal$Model$Attr(
-								A2($elm$html$Html$Attributes$style, 'box-sizing', 'content-box'))
-							]);
-					}
-				}(),
-				_Utils_ap(
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$Input$value(textOptions.text),
-							$mdgriffith$elm_ui$Internal$Model$Attr(
-							$elm$html$Html$Events$onInput(textOptions.onChange)),
-							$mdgriffith$elm_ui$Element$Input$hiddenLabelAttribute(textOptions.label),
-							$mdgriffith$elm_ui$Element$Input$spellcheck(textInput.spellchecked),
-							A2(
-							$elm$core$Maybe$withDefault,
-							$mdgriffith$elm_ui$Internal$Model$NoAttribute,
-							A2($elm$core$Maybe$map, $mdgriffith$elm_ui$Element$Input$autofill, textInput.autofill))
-						]),
-					redistributed.input)),
-			$mdgriffith$elm_ui$Internal$Model$Unkeyed(_List_Nil));
-		var wrappedInput = function () {
-			var _v0 = textInput.type_;
-			if (_v0.$ === 'TextArea') {
-				return A4(
-					$mdgriffith$elm_ui$Internal$Model$element,
-					$mdgriffith$elm_ui$Internal$Model$asEl,
-					$mdgriffith$elm_ui$Internal$Model$div,
-					_Utils_ap(
-						(heightConstrained ? $elm$core$List$cons($mdgriffith$elm_ui$Element$scrollbarY) : $elm$core$Basics$identity)(
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-									A2($elm$core$List$any, $mdgriffith$elm_ui$Element$Input$hasFocusStyle, withDefaults) ? $mdgriffith$elm_ui$Internal$Model$NoAttribute : $mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.focusedWithin),
-									$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputMultilineWrapper)
-								])),
-						redistributed.parent),
-					$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-						_List_fromArray(
-							[
-								A4(
-								$mdgriffith$elm_ui$Internal$Model$element,
-								$mdgriffith$elm_ui$Internal$Model$asParagraph,
-								$mdgriffith$elm_ui$Internal$Model$div,
-								A2(
-									$elm$core$List$cons,
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-									A2(
-										$elm$core$List$cons,
-										$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-										A2(
-											$elm$core$List$cons,
-											$mdgriffith$elm_ui$Element$inFront(inputElement),
-											A2(
-												$elm$core$List$cons,
-												$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.inputMultilineParent),
-												redistributed.wrapper)))),
-								$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-									function () {
-										if (textOptions.text === '') {
-											var _v1 = textOptions.placeholder;
-											if (_v1.$ === 'Nothing') {
-												return _List_fromArray(
-													[
-														$mdgriffith$elm_ui$Element$text('\u00A0')
-													]);
-											} else {
-												var place = _v1.a;
-												return _List_fromArray(
-													[
-														A3($mdgriffith$elm_ui$Element$Input$renderPlaceholder, place, _List_Nil, textOptions.text === '')
-													]);
-											}
-										} else {
-											return _List_fromArray(
-												[
-													$mdgriffith$elm_ui$Internal$Model$unstyled(
-													A2(
-														$elm$html$Html$span,
-														_List_fromArray(
-															[
-																$elm$html$Html$Attributes$class($mdgriffith$elm_ui$Internal$Style$classes.inputMultilineFiller)
-															]),
-														_List_fromArray(
-															[
-																$elm$html$Html$text(textOptions.text + '\u00A0')
-															])))
-												]);
-										}
-									}()))
-							])));
-			} else {
-				var inputType = _v0.a;
-				return A4(
-					$mdgriffith$elm_ui$Internal$Model$element,
-					$mdgriffith$elm_ui$Internal$Model$asEl,
-					$mdgriffith$elm_ui$Internal$Model$div,
-					A2(
-						$elm$core$List$cons,
-						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-						A2(
-							$elm$core$List$cons,
-							A2($elm$core$List$any, $mdgriffith$elm_ui$Element$Input$hasFocusStyle, withDefaults) ? $mdgriffith$elm_ui$Internal$Model$NoAttribute : $mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.focusedWithin),
-							$elm$core$List$concat(
-								_List_fromArray(
-									[
-										redistributed.parent,
-										function () {
-										var _v2 = textOptions.placeholder;
-										if (_v2.$ === 'Nothing') {
-											return _List_Nil;
-										} else {
-											var place = _v2.a;
-											return _List_fromArray(
-												[
-													$mdgriffith$elm_ui$Element$behindContent(
-													A3($mdgriffith$elm_ui$Element$Input$renderPlaceholder, place, redistributed.cover, textOptions.text === ''))
-												]);
-										}
-									}()
-									])))),
-					$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-						_List_fromArray(
-							[inputElement])));
-			}
-		}();
-		return A3(
-			$mdgriffith$elm_ui$Element$Input$applyLabel,
-			A2(
-				$elm$core$List$cons,
-				A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$cursor, $mdgriffith$elm_ui$Internal$Style$classes.cursorText),
-				A2(
-					$elm$core$List$cons,
-					$mdgriffith$elm_ui$Element$Input$isHiddenLabel(textOptions.label) ? $mdgriffith$elm_ui$Internal$Model$NoAttribute : $mdgriffith$elm_ui$Element$spacing(5),
-					A2($elm$core$List$cons, $mdgriffith$elm_ui$Element$Region$announce, redistributed.fullParent))),
-			textOptions.label,
-			wrappedInput);
-	});
-var $mdgriffith$elm_ui$Element$Input$currentPassword = F2(
-	function (attrs, pass) {
-		return A3(
-			$mdgriffith$elm_ui$Element$Input$textHelper,
-			{
-				autofill: $elm$core$Maybe$Just('current-password'),
-				spellchecked: false,
-				type_: $mdgriffith$elm_ui$Element$Input$TextInputNode(
-					pass.show ? 'text' : 'password')
-			},
-			attrs,
-			{label: pass.label, onChange: pass.onChange, placeholder: pass.placeholder, text: pass.text});
-	});
-var $mdgriffith$elm_ui$Element$Input$email = $mdgriffith$elm_ui$Element$Input$textHelper(
-	{
-		autofill: $elm$core$Maybe$Just('email'),
-		spellchecked: false,
-		type_: $mdgriffith$elm_ui$Element$Input$TextInputNode('email')
-	});
-var $author$project$OUI$Material$TextField$filterMaybe = $elm$core$List$filterMap($elm$core$Basics$identity);
-var $author$project$OUI$TextField$getColor = function (_v0) {
-	var props = _v0.a;
-	return props.color;
-};
-var $author$project$OUI$TextField$getDatatype = function (_v0) {
-	var props = _v0.a;
-	return props.datatype;
-};
-var $author$project$OUI$TextField$getErrorIcon = function (_v0) {
-	var props = _v0.a;
-	return props.errorIcon;
-};
-var $author$project$OUI$TextField$getHasFocus = function (_v0) {
-	var props = _v0.a;
-	return props.hasFocus;
-};
-var $author$project$OUI$TextField$getID = function (_v0) {
-	var id = _v0.a.id;
-	return id;
-};
-var $author$project$OUI$TextField$getLabel = function (_v0) {
-	var props = _v0.a;
-	return props.label;
-};
-var $author$project$OUI$TextField$getLeadingIcon = function (_v0) {
-	var props = _v0.a;
-	return props.leadingIcon;
-};
-var $author$project$OUI$TextField$getOnChange = function (_v0) {
-	var props = _v0.a;
-	return props.onChange;
-};
-var $author$project$OUI$TextField$getOnFocus = function (_v0) {
-	var props = _v0.a;
-	return props.onFocus;
-};
-var $author$project$OUI$TextField$getOnLoseFocus = function (_v0) {
-	var props = _v0.a;
-	return props.onLoseFocus;
-};
-var $author$project$OUI$TextField$getOnTrailingIconClick = function (_v0) {
-	var props = _v0.a;
-	return props.onTrailingIconClick;
-};
-var $author$project$OUI$TextField$getSpellcheck = function (_v0) {
-	var props = _v0.a;
-	return props.spellcheck;
-};
-var $author$project$OUI$TextField$getSupportingText = function (_v0) {
-	var props = _v0.a;
-	return props.supportingText;
-};
-var $author$project$OUI$TextField$getTrailingIcon = function (_v0) {
-	var props = _v0.a;
-	return props.trailingIcon;
-};
-var $author$project$OUI$TextField$getType = function (_v0) {
-	var props = _v0.a;
-	return props.type_;
-};
-var $author$project$OUI$TextField$getValue = function (_v0) {
-	var props = _v0.a;
-	return props.value;
-};
-var $author$project$OUI$Material$TextField$ifThenElse = F3(
-	function (value, ifTrue, ifFalse) {
-		return value ? ifTrue : ifFalse;
-	});
-var $mdgriffith$elm_ui$Element$Input$multiline = F2(
-	function (attrs, multi) {
-		return A3(
-			$mdgriffith$elm_ui$Element$Input$textHelper,
-			{autofill: $elm$core$Maybe$Nothing, spellchecked: multi.spellcheck, type_: $mdgriffith$elm_ui$Element$Input$TextArea},
-			attrs,
-			{label: multi.label, onChange: multi.onChange, placeholder: multi.placeholder, text: multi.text});
-	});
-var $mdgriffith$elm_ui$Element$Input$newPassword = F2(
-	function (attrs, pass) {
-		return A3(
-			$mdgriffith$elm_ui$Element$Input$textHelper,
-			{
-				autofill: $elm$core$Maybe$Just('new-password'),
-				spellchecked: false,
-				type_: $mdgriffith$elm_ui$Element$Input$TextInputNode(
-					pass.show ? 'text' : 'password')
-			},
-			attrs,
-			{label: pass.label, onChange: pass.onChange, placeholder: pass.placeholder, text: pass.text});
-	});
-var $elm$html$Html$Events$onFocus = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'focus',
-		$elm$json$Json$Decode$succeed(msg));
-};
-var $mdgriffith$elm_ui$Element$Events$onFocus = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Attr, $elm$html$Html$Events$onFocus);
-var $mdgriffith$elm_ui$Element$Input$search = $mdgriffith$elm_ui$Element$Input$textHelper(
-	{
-		autofill: $elm$core$Maybe$Nothing,
-		spellchecked: false,
-		type_: $mdgriffith$elm_ui$Element$Input$TextInputNode('search')
-	});
-var $mdgriffith$elm_ui$Element$Input$text = $mdgriffith$elm_ui$Element$Input$textHelper(
-	{
-		autofill: $elm$core$Maybe$Nothing,
-		spellchecked: false,
-		type_: $mdgriffith$elm_ui$Element$Input$TextInputNode('text')
-	});
-var $author$project$OUI$Material$TextField$transition = A2(
-	$elm$core$Basics$composeR,
-	$elm$html$Html$Attributes$style('transition'),
-	$mdgriffith$elm_ui$Element$htmlAttribute);
-var $mdgriffith$elm_ui$Element$Input$username = $mdgriffith$elm_ui$Element$Input$textHelper(
-	{
-		autofill: $elm$core$Maybe$Just('username'),
-		spellchecked: false,
-		type_: $mdgriffith$elm_ui$Element$Input$TextInputNode('text')
-	});
-var $author$project$OUI$Material$TextField$render = F6(
-	function (typescale, colorscheme, buttonTheme, theme, attrs, textfield) {
-		var p = {
-			color: $author$project$OUI$TextField$getColor(textfield),
-			datatype: $author$project$OUI$TextField$getDatatype(textfield),
-			errorIcon: $author$project$OUI$TextField$getErrorIcon(textfield),
-			hasFocus: $author$project$OUI$TextField$getHasFocus(textfield),
-			id: $author$project$OUI$TextField$getID(textfield),
-			label: $author$project$OUI$TextField$getLabel(textfield),
-			leadingIcon: $author$project$OUI$TextField$getLeadingIcon(textfield),
-			onChange: $author$project$OUI$TextField$getOnChange(textfield),
-			onFocus: $author$project$OUI$TextField$getOnFocus(textfield),
-			onLoseFocus: $author$project$OUI$TextField$getOnLoseFocus(textfield),
-			onTrailingIconClick: $author$project$OUI$TextField$getOnTrailingIconClick(textfield),
-			spellcheck: $author$project$OUI$TextField$getSpellcheck(textfield),
-			supportingText: $author$project$OUI$TextField$getSupportingText(textfield),
-			trailingIcon: $author$project$OUI$TextField$getTrailingIcon(textfield),
-			type_: $author$project$OUI$TextField$getType(textfield),
-			value: $author$project$OUI$TextField$getValue(textfield)
-		};
-		var isOutlined = _Utils_eq(p.type_, $author$project$OUI$TextField$Outlined);
-		var leftBorderWidth = isOutlined ? A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, 2, 1) : 0;
-		var rightBorderWidth = isOutlined ? A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, 2, 1) : 0;
-		var topBorderWidth = isOutlined ? A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, 2, 1) : 0;
-		var isMultiline = _Utils_eq(p.datatype, $author$project$OUI$TextField$Multiline);
-		var isFilled = _Utils_eq(p.type_, $author$project$OUI$TextField$Filled);
-		var isEmpty = p.value === '';
-		var labelHoldPlace = isEmpty && (!p.hasFocus);
-		var inputMoveDownBy = (isFilled && (!labelHoldPlace)) ? ((theme.height - theme.filled.topBottomPadding) - (((theme.height / 2) | 0) + ((typescale.body.large.lineHeight / 2) | 0))) : 0;
-		var heightAttr = isMultiline ? _List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$scrollbarY,
-				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
-			]) : _List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$height(
-				$mdgriffith$elm_ui$Element$px(theme.height))
-			]);
-		var hasLeadingIcon = !_Utils_eq(p.leadingIcon, $elm$core$Maybe$Nothing);
-		var hasError = $author$project$OUI$Material$Color$isError(p.color);
-		var labelElement = function () {
-			var labelColor = (hasError || p.hasFocus) ? A2($author$project$OUI$Material$Color$getElementColor, p.color, colorscheme) : $author$project$OUI$Material$Color$toElementColor(
-				A2($author$project$OUI$Material$Color$getOnSurfaceColor, p.color, colorscheme));
-			var staticAttrs = _List_fromArray(
-				[
-					$author$project$OUI$Material$TextField$transition('all 0.15s'),
-					$mdgriffith$elm_ui$Element$Font$color(labelColor),
-					$mdgriffith$elm_ui$Element$htmlAttribute(
-					A2($elm$html$Html$Attributes$style, 'pointer-events', 'none'))
-				]);
-			var label = p.label;
-			var inputLeftOffset = hasLeadingIcon ? ((theme.leftRightPaddingWithIcon + theme.iconSize) + theme.paddingBetweenIconAndText) : theme.leftRightPaddingWithoutIcon;
-			if (labelHoldPlace) {
-				return A2(
-					$mdgriffith$elm_ui$Element$el,
-					_Utils_ap(
-						staticAttrs,
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$moveDown((((theme.height / 2) | 0) - ((typescale.body.large.size / 2) | 0)) - topBorderWidth),
-								$mdgriffith$elm_ui$Element$moveRight(inputLeftOffset - leftBorderWidth)
-							])),
-					A4(
-						$author$project$OUI$Material$Typography$renderWithAttrs,
-						typescale,
-						colorscheme,
-						_List_fromArray(
-							[
-								$author$project$OUI$Material$TextField$transition('font-size 0.15s')
-							]),
-						$author$project$OUI$Text$bodyLarge(label)));
-			} else {
-				if (isOutlined) {
-					var topOffset = (typescale.body.small.size / 2) | 0;
-					return A2(
-						$mdgriffith$elm_ui$Element$el,
-						_Utils_ap(
-							staticAttrs,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$moveUp(topOffset),
-									$mdgriffith$elm_ui$Element$moveRight(theme.leftRightPaddingWithoutIcon - theme.outlined.labelLeftRightPadding),
-									A2($mdgriffith$elm_ui$Element$paddingXY, theme.outlined.labelLeftRightPadding, 0),
-									$mdgriffith$elm_ui$Element$htmlAttribute(
-									A2(
-										$elm$html$Html$Attributes$style,
-										'background',
-										'linear-gradient(to bottom, transparent 0 ' + ($elm$core$String$fromInt(topOffset) + ('px, ' + ($avh4$elm_color$Color$toCssString(
-											A2($author$project$OUI$Material$Color$getSurfaceColor, p.color, colorscheme)) + (' ' + ($elm$core$String$fromInt(topOffset) + 'px)')))))))
-								])),
-						A4(
-							$author$project$OUI$Material$Typography$renderWithAttrs,
-							typescale,
-							colorscheme,
-							_List_fromArray(
-								[
-									$author$project$OUI$Material$TextField$transition('font-size 0.15s')
-								]),
-							$author$project$OUI$Text$bodySmall(label)));
-				} else {
-					return A2(
-						$mdgriffith$elm_ui$Element$el,
-						_Utils_ap(
-							staticAttrs,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$moveDown(theme.filled.topBottomPadding + (((typescale.body.large.lineHeight - typescale.body.large.size) / 2) | 0)),
-									$mdgriffith$elm_ui$Element$moveRight(inputLeftOffset - leftBorderWidth)
-								])),
-						A4(
-							$author$project$OUI$Material$Typography$renderWithAttrs,
-							typescale,
-							colorscheme,
-							_List_fromArray(
-								[
-									$author$project$OUI$Material$TextField$transition('font-size 0.15s')
-								]),
-							$author$project$OUI$Text$bodySmall(label)));
-				}
-			}
-		}();
-		var trailingIcon = function () {
-			var _v5 = _Utils_Tuple2(hasError, p.errorIcon);
-			if (_v5.a && (_v5.b.$ === 'Just')) {
-				var icon = _v5.b.a;
-				return $elm$core$Maybe$Just(
-					A4($author$project$OUI$Material$Icon$renderWithSizeColor, 24, colorscheme.error, _List_Nil, icon));
-			} else {
-				return A2(
-					$elm$core$Maybe$map,
-					function (icon) {
-						var _v6 = p.onTrailingIconClick;
-						if (_v6.$ === 'Nothing') {
-							return A4(
-								$author$project$OUI$Material$Icon$renderWithSizeColor,
-								24,
-								A2($author$project$OUI$Material$Color$getOnSurfaceVariantColor, p.color, colorscheme),
-								_List_Nil,
-								icon);
-						} else {
-							var onClick = _v6.a;
-							return A6(
-								$author$project$OUI$Material$Button$render,
-								typescale,
-								colorscheme,
-								buttonTheme,
-								$elm$core$Maybe$Nothing,
-								_List_fromArray(
-									[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-								$author$project$OUI$Button$iconButton(
-									A2(
-										$author$project$OUI$Button$color,
-										A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, p.color, $author$project$OUI$Neutral),
-										A2(
-											$author$project$OUI$Button$onClick,
-											onClick,
-											A2(
-												$author$project$OUI$Button$withIcon,
-												icon,
-												$author$project$OUI$Button$new(p.label))))));
-						}
-					},
-					p.trailingIcon);
-			}
-		}();
-		var fontColorAttr = $mdgriffith$elm_ui$Element$Font$color(
-			$author$project$OUI$Material$Color$toElementColor(
-				A2($author$project$OUI$Material$Color$getOnSurfaceColor, p.color, colorscheme)));
-		var focusEvents = A2(
-			$elm$core$List$filterMap,
-			$elm$core$Basics$identity,
-			_List_fromArray(
-				[
-					A2($elm$core$Maybe$map, $mdgriffith$elm_ui$Element$Events$onFocus, p.onFocus),
-					A2($elm$core$Maybe$map, $mdgriffith$elm_ui$Element$Events$onLoseFocus, p.onLoseFocus)
-				]));
-		var bottomBorderWidth = A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, 2, 1);
-		var paddingAttrs = function () {
-			var hasTrailingIcon = !_Utils_eq(p.trailingIcon, $elm$core$Maybe$Nothing);
-			var hasClickableTrailingIcon = (!_Utils_eq(p.trailingIcon, $elm$core$Maybe$Nothing)) && (!_Utils_eq(p.onTrailingIconClick, $elm$core$Maybe$Nothing));
-			var trailingIconOffset = hasClickableTrailingIcon ? (((buttonTheme.icon.containerSize - buttonTheme.icon.iconSize) / 2) | 0) : 0;
-			var _v4 = p.type_;
-			if (_v4.$ === 'Filled') {
-				var baseverticalPadding = 0;
-				return _List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$paddingEach(
-						{
-							bottom: baseverticalPadding + A3($author$project$OUI$Material$TextField$ifThenElse, labelHoldPlace, 0, theme.filled.topBottomPadding - bottomBorderWidth),
-							left: A3($author$project$OUI$Material$TextField$ifThenElse, hasLeadingIcon, theme.leftRightPaddingWithIcon, theme.leftRightPaddingWithoutIcon),
-							right: A3($author$project$OUI$Material$TextField$ifThenElse, hasTrailingIcon, theme.leftRightPaddingWithIcon - trailingIconOffset, theme.leftRightPaddingWithoutIcon),
-							top: baseverticalPadding + A3($author$project$OUI$Material$TextField$ifThenElse, labelHoldPlace, bottomBorderWidth, theme.filled.topBottomPadding)
-						}),
-						$mdgriffith$elm_ui$Element$spacing(theme.paddingBetweenIconAndText)
-					]);
-			} else {
-				var basePadding = (((((theme.height / 2) | 0) - ((typescale.body.large.lineHeight / 2) | 0)) - 4) / 2) | 0;
-				return _List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$paddingEach(
-						{
-							bottom: basePadding + A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, 0, 1),
-							left: A3($author$project$OUI$Material$TextField$ifThenElse, hasLeadingIcon, theme.leftRightPaddingWithIcon - leftBorderWidth, theme.leftRightPaddingWithoutIcon - leftBorderWidth),
-							right: A3($author$project$OUI$Material$TextField$ifThenElse, hasTrailingIcon, (theme.leftRightPaddingWithIcon - rightBorderWidth) - trailingIconOffset, theme.leftRightPaddingWithoutIcon - rightBorderWidth),
-							top: basePadding + A3($author$project$OUI$Material$TextField$ifThenElse, p.hasFocus, 0, 1)
-						}),
-						$mdgriffith$elm_ui$Element$spacing(theme.paddingBetweenIconAndText)
-					]);
-			}
-		}();
-		var borderColor = (hasError || p.hasFocus) ? A2($author$project$OUI$Material$Color$getElementColor, p.color, colorscheme) : $author$project$OUI$Material$Color$toElementColor(
-			A2($author$project$OUI$Material$Color$getOnSurfaceVariantColor, p.color, colorscheme));
-		var borderAttrs = A2(
-			$elm$core$List$cons,
-			$author$project$OUI$Material$TextField$transition('color 0.15s'),
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Element$Border$color(borderColor),
-				function () {
-					var _v3 = p.type_;
-					if (_v3.$ === 'Filled') {
-						return _List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$Border$widthEach(
-								{bottom: bottomBorderWidth, left: 0, right: 0, top: 0})
-							]);
-					} else {
-						return _List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$Border$widthEach(
-								{bottom: bottomBorderWidth, left: leftBorderWidth, right: rightBorderWidth, top: topBorderWidth}),
-								$mdgriffith$elm_ui$Element$Border$rounded(theme.outlined.shape)
-							]);
-					}
-				}()));
-		var bgColorAttr = function () {
-			var _v2 = p.type_;
-			if (_v2.$ === 'Filled') {
-				return $mdgriffith$elm_ui$Element$Background$color(
-					$author$project$OUI$Material$Color$toElementColor(
-						A2($author$project$OUI$Material$Color$getSurfaceContainerHighestColor, p.color, colorscheme)));
-			} else {
-				return $mdgriffith$elm_ui$Element$Background$color(
-					$author$project$OUI$Material$Color$toElementColor(
-						A2($author$project$OUI$Material$Color$getSurfaceColor, p.color, colorscheme)));
-			}
-		}();
-		var input_attrs = A2(
-			$elm$core$List$cons,
-			bgColorAttr,
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Element$Border$width(0),
-				A2(
-					$elm$core$List$cons,
-					A2($mdgriffith$elm_ui$Element$paddingXY, 0, 12),
-					A2(
-						$elm$core$List$cons,
-						$mdgriffith$elm_ui$Element$moveDown(inputMoveDownBy),
-						A2(
-							$elm$core$List$cons,
-							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-							_Utils_ap(
-								focusEvents,
-								_Utils_ap(
-									A5($author$project$OUI$Material$Typography$attrs, $author$project$OUI$Text$Body, $author$project$OUI$Text$Large, $author$project$OUI$Text$NoColor, typescale, colorscheme),
-									_Utils_ap(
-										isMultiline ? _List_fromArray(
-											[
-												$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
-											]) : _List_Nil,
-										A2(
-											$elm$core$Maybe$withDefault,
-											_List_Nil,
-											A2(
-												$elm$core$Maybe$map,
-												A2(
-													$elm$core$Basics$composeL,
-													A2($elm$core$Basics$composeL, $elm$core$List$singleton, $mdgriffith$elm_ui$Element$htmlAttribute),
-													$elm$html$Html$Attributes$id),
-												p.id))))))))));
-		return A2(
-			$mdgriffith$elm_ui$Element$column,
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Element$spacing(theme.supportingTextTopPadding),
-				A2(
-					$elm$core$List$cons,
-					$mdgriffith$elm_ui$Element$inFront(labelElement),
-					_Utils_ap(
-						isMultiline ? _List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$height(
-								$mdgriffith$elm_ui$Element$px(theme.height * 3))
-							]) : _List_Nil,
-						attrs))),
-			A2(
-				$elm$core$List$cons,
-				A2(
-					$mdgriffith$elm_ui$Element$row,
-					A2(
-						$elm$core$List$cons,
-						bgColorAttr,
-						A2(
-							$elm$core$List$cons,
-							fontColorAttr,
-							A2(
-								$elm$core$List$cons,
-								$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-								_Utils_ap(
-									borderAttrs,
-									_Utils_ap(heightAttr, paddingAttrs))))),
-					$author$project$OUI$Material$TextField$filterMaybe(
-						_List_fromArray(
-							[
-								A2(
-								$elm$core$Maybe$map,
-								A3(
-									$author$project$OUI$Material$Icon$renderWithSizeColor,
-									24,
-									A2($author$project$OUI$Material$Color$getOnSurfaceVariantColor, p.color, colorscheme),
-									_List_Nil),
-								p.leadingIcon),
-								$elm$core$Maybe$Just(
-								function () {
-									var _v0 = p.datatype;
-									switch (_v0.$) {
-										case 'Text':
-											return A2(
-												$mdgriffith$elm_ui$Element$Input$text,
-												input_attrs,
-												{
-													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
-													onChange: p.onChange,
-													placeholder: $elm$core$Maybe$Nothing,
-													text: p.value
-												});
-										case 'Search':
-											return A2(
-												$mdgriffith$elm_ui$Element$Input$search,
-												input_attrs,
-												{
-													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
-													onChange: p.onChange,
-													placeholder: $elm$core$Maybe$Nothing,
-													text: p.value
-												});
-										case 'Username':
-											return A2(
-												$mdgriffith$elm_ui$Element$Input$username,
-												input_attrs,
-												{
-													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
-													onChange: p.onChange,
-													placeholder: $elm$core$Maybe$Nothing,
-													text: p.value
-												});
-										case 'Email':
-											return A2(
-												$mdgriffith$elm_ui$Element$Input$email,
-												input_attrs,
-												{
-													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
-													onChange: p.onChange,
-													placeholder: $elm$core$Maybe$Nothing,
-													text: p.value
-												});
-										case 'Password':
-											var show = _v0.a;
-											return A2(
-												$mdgriffith$elm_ui$Element$Input$currentPassword,
-												input_attrs,
-												{
-													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
-													onChange: p.onChange,
-													placeholder: $elm$core$Maybe$Nothing,
-													show: show,
-													text: p.value
-												});
-										case 'NewPassword':
-											var show = _v0.a;
-											return A2(
-												$mdgriffith$elm_ui$Element$Input$newPassword,
-												input_attrs,
-												{
-													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
-													onChange: p.onChange,
-													placeholder: $elm$core$Maybe$Nothing,
-													show: show,
-													text: p.value
-												});
-										default:
-											return A2(
-												$mdgriffith$elm_ui$Element$Input$multiline,
-												input_attrs,
-												{
-													label: $mdgriffith$elm_ui$Element$Input$labelHidden(p.label),
-													onChange: p.onChange,
-													placeholder: $elm$core$Maybe$Nothing,
-													spellcheck: p.spellcheck,
-													text: p.value
-												});
-									}
-								}()),
-								trailingIcon
-							]))),
-				function () {
-					var _v1 = p.supportingText;
-					if (_v1.$ === 'Just') {
-						var text = _v1.a;
-						var color = hasError ? colorscheme.error : A2($author$project$OUI$Material$Color$getOnSurfaceVariantColor, p.color, colorscheme);
-						return _List_fromArray(
-							[
-								A2(
-								$mdgriffith$elm_ui$Element$el,
-								_List_fromArray(
-									[
-										$mdgriffith$elm_ui$Element$Font$color(
-										$author$project$OUI$Material$Color$toElementColor(color)),
-										A2($mdgriffith$elm_ui$Element$paddingXY, theme.leftRightPaddingWithoutIcon, 0)
-									]),
-								A3(
-									$author$project$OUI$Material$Typography$render,
-									typescale,
-									colorscheme,
-									$author$project$OUI$Text$bodySmall(text)))
-							]);
-					} else {
-						return _List_Nil;
-					}
-				}()));
-	});
-var $author$project$OUI$Material$Theme$textfield = function (_v0) {
-	var t = _v0.a;
-	return t.textfield;
-};
-var $author$project$OUI$Material$textField = function (theme) {
-	return A4(
-		$author$project$OUI$Material$TextField$render,
-		$author$project$OUI$Material$Theme$typescale(theme),
-		$author$project$OUI$Material$Theme$colorscheme(theme),
-		$author$project$OUI$Material$Theme$button(theme),
-		$author$project$OUI$Material$Theme$textfield(theme));
-};
 var $author$project$OUI$TextField$withClickableTrailingIcon = F3(
 	function (msg, icon, _v0) {
 		var props = _v0.a;
@@ -25179,14 +25974,6 @@ var $author$project$OUI$TextField$withErrorIcon = F2(
 				{
 					errorIcon: $elm$core$Maybe$Just(value)
 				}));
-	});
-var $author$project$OUI$TextField$withFocused = F2(
-	function (hasFocus, _v0) {
-		var props = _v0.a;
-		return $author$project$OUI$TextField$TextField(
-			_Utils_update(
-				props,
-				{hasFocus: hasFocus}));
 	});
 var $author$project$OUI$TextField$withLeadingIcon = F2(
 	function (value, _v0) {
@@ -25217,14 +26004,6 @@ var $author$project$OUI$TextField$withTrailingIcon = F2(
 				{
 					trailingIcon: $elm$core$Maybe$Just(value)
 				}));
-	});
-var $author$project$OUI$TextField$withType = F2(
-	function (value, _v0) {
-		var props = _v0.a;
-		return $author$project$OUI$TextField$TextField(
-			_Utils_update(
-				props,
-				{type_: value}));
 	});
 var $author$project$OUI$Showcase$TextFields$textfields = F3(
 	function (_v0, _v1, model) {
@@ -26677,10 +27456,6 @@ var $elm$core$List$tail = function (list) {
 	} else {
 		return $elm$core$Maybe$Nothing;
 	}
-};
-var $elm$core$String$foldr = _String_foldr;
-var $elm$core$String$toList = function (string) {
-	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
 };
 var $rtfeldman$elm_hex$Hex$fromString = function (str) {
 	if ($elm$core$String$isEmpty(str)) {
@@ -270823,302 +271598,6 @@ var $author$project$OUI$Material$Color$Scheme = function (keyColors) {
 		};
 	};
 };
-var $elm$core$Char$toLower = _Char_toLower;
-var $author$project$OUI$Material$Color$Json$hexToInt = function (_char) {
-	var _v0 = $elm$core$Char$toLower(_char);
-	switch (_v0.valueOf()) {
-		case '0':
-			return $elm$core$Maybe$Just(0);
-		case '1':
-			return $elm$core$Maybe$Just(1);
-		case '2':
-			return $elm$core$Maybe$Just(2);
-		case '3':
-			return $elm$core$Maybe$Just(3);
-		case '4':
-			return $elm$core$Maybe$Just(4);
-		case '5':
-			return $elm$core$Maybe$Just(5);
-		case '6':
-			return $elm$core$Maybe$Just(6);
-		case '7':
-			return $elm$core$Maybe$Just(7);
-		case '8':
-			return $elm$core$Maybe$Just(8);
-		case '9':
-			return $elm$core$Maybe$Just(9);
-		case 'a':
-			return $elm$core$Maybe$Just(10);
-		case 'b':
-			return $elm$core$Maybe$Just(11);
-		case 'c':
-			return $elm$core$Maybe$Just(12);
-		case 'd':
-			return $elm$core$Maybe$Just(13);
-		case 'e':
-			return $elm$core$Maybe$Just(14);
-		case 'f':
-			return $elm$core$Maybe$Just(15);
-		default:
-			return $elm$core$Maybe$Nothing;
-	}
-};
-var $elm$core$Maybe$map2 = F3(
-	function (func, ma, mb) {
-		if (ma.$ === 'Nothing') {
-			return $elm$core$Maybe$Nothing;
-		} else {
-			var a = ma.a;
-			if (mb.$ === 'Nothing') {
-				return $elm$core$Maybe$Nothing;
-			} else {
-				var b = mb.a;
-				return $elm$core$Maybe$Just(
-					A2(func, a, b));
-			}
-		}
-	});
-var $author$project$OUI$Material$Color$Json$hex2ToInt = F2(
-	function (c1, c2) {
-		return A3(
-			$elm$core$Maybe$map2,
-			F2(
-				function (v1, v2) {
-					return (v1 << 4) + v2;
-				}),
-			$author$project$OUI$Material$Color$Json$hexToInt(c1),
-			$author$project$OUI$Material$Color$Json$hexToInt(c2));
-	});
-var $elm$core$Maybe$map4 = F5(
-	function (func, ma, mb, mc, md) {
-		if (ma.$ === 'Nothing') {
-			return $elm$core$Maybe$Nothing;
-		} else {
-			var a = ma.a;
-			if (mb.$ === 'Nothing') {
-				return $elm$core$Maybe$Nothing;
-			} else {
-				var b = mb.a;
-				if (mc.$ === 'Nothing') {
-					return $elm$core$Maybe$Nothing;
-				} else {
-					var c = mc.a;
-					if (md.$ === 'Nothing') {
-						return $elm$core$Maybe$Nothing;
-					} else {
-						var d = md.a;
-						return $elm$core$Maybe$Just(
-							A4(func, a, b, c, d));
-					}
-				}
-			}
-		}
-	});
-var $avh4$elm_color$Color$rgba = F4(
-	function (r, g, b, a) {
-		return A4($avh4$elm_color$Color$RgbaSpace, r, g, b, a);
-	});
-var $author$project$OUI$Material$Color$Json$fromHex8 = F4(
-	function (_v0, _v1, _v2, _v3) {
-		var r1 = _v0.a;
-		var r2 = _v0.b;
-		var g1 = _v1.a;
-		var g2 = _v1.b;
-		var b1 = _v2.a;
-		var b2 = _v2.b;
-		var a1 = _v3.a;
-		var a2 = _v3.b;
-		return A5(
-			$elm$core$Maybe$map4,
-			F4(
-				function (r, g, b, a) {
-					return A4($avh4$elm_color$Color$rgba, r / 255, g / 255, b / 255, a / 255);
-				}),
-			A2($author$project$OUI$Material$Color$Json$hex2ToInt, r1, r2),
-			A2($author$project$OUI$Material$Color$Json$hex2ToInt, g1, g2),
-			A2($author$project$OUI$Material$Color$Json$hex2ToInt, b1, b2),
-			A2($author$project$OUI$Material$Color$Json$hex2ToInt, a1, a2));
-	});
-var $author$project$OUI$Material$Color$Json$colorFromHex = function (hexString) {
-	var _v0 = $elm$core$String$toList(hexString);
-	_v0$8:
-	while (true) {
-		if ((_v0.b && _v0.b.b) && _v0.b.b.b) {
-			if (!_v0.b.b.b.b) {
-				var r = _v0.a;
-				var _v4 = _v0.b;
-				var g = _v4.a;
-				var _v5 = _v4.b;
-				var b = _v5.a;
-				return A4(
-					$author$project$OUI$Material$Color$Json$fromHex8,
-					_Utils_Tuple2(r, r),
-					_Utils_Tuple2(g, g),
-					_Utils_Tuple2(b, b),
-					_Utils_Tuple2(
-						_Utils_chr('f'),
-						_Utils_chr('f')));
-			} else {
-				if (!_v0.b.b.b.b.b) {
-					if ('#' === _v0.a.valueOf()) {
-						var _v1 = _v0.b;
-						var r = _v1.a;
-						var _v2 = _v1.b;
-						var g = _v2.a;
-						var _v3 = _v2.b;
-						var b = _v3.a;
-						return A4(
-							$author$project$OUI$Material$Color$Json$fromHex8,
-							_Utils_Tuple2(r, r),
-							_Utils_Tuple2(g, g),
-							_Utils_Tuple2(b, b),
-							_Utils_Tuple2(
-								_Utils_chr('f'),
-								_Utils_chr('f')));
-					} else {
-						var r = _v0.a;
-						var _v10 = _v0.b;
-						var g = _v10.a;
-						var _v11 = _v10.b;
-						var b = _v11.a;
-						var _v12 = _v11.b;
-						var a = _v12.a;
-						return A4(
-							$author$project$OUI$Material$Color$Json$fromHex8,
-							_Utils_Tuple2(r, r),
-							_Utils_Tuple2(g, g),
-							_Utils_Tuple2(b, b),
-							_Utils_Tuple2(a, a));
-					}
-				} else {
-					if (!_v0.b.b.b.b.b.b) {
-						if ('#' === _v0.a.valueOf()) {
-							var _v6 = _v0.b;
-							var r = _v6.a;
-							var _v7 = _v6.b;
-							var g = _v7.a;
-							var _v8 = _v7.b;
-							var b = _v8.a;
-							var _v9 = _v8.b;
-							var a = _v9.a;
-							return A4(
-								$author$project$OUI$Material$Color$Json$fromHex8,
-								_Utils_Tuple2(r, r),
-								_Utils_Tuple2(g, g),
-								_Utils_Tuple2(b, b),
-								_Utils_Tuple2(a, a));
-						} else {
-							break _v0$8;
-						}
-					} else {
-						if (!_v0.b.b.b.b.b.b.b) {
-							var r1 = _v0.a;
-							var _v19 = _v0.b;
-							var r2 = _v19.a;
-							var _v20 = _v19.b;
-							var g1 = _v20.a;
-							var _v21 = _v20.b;
-							var g2 = _v21.a;
-							var _v22 = _v21.b;
-							var b1 = _v22.a;
-							var _v23 = _v22.b;
-							var b2 = _v23.a;
-							return A4(
-								$author$project$OUI$Material$Color$Json$fromHex8,
-								_Utils_Tuple2(r1, r2),
-								_Utils_Tuple2(g1, g2),
-								_Utils_Tuple2(b1, b2),
-								_Utils_Tuple2(
-									_Utils_chr('f'),
-									_Utils_chr('f')));
-						} else {
-							if (!_v0.b.b.b.b.b.b.b.b) {
-								if ('#' === _v0.a.valueOf()) {
-									var _v13 = _v0.b;
-									var r1 = _v13.a;
-									var _v14 = _v13.b;
-									var r2 = _v14.a;
-									var _v15 = _v14.b;
-									var g1 = _v15.a;
-									var _v16 = _v15.b;
-									var g2 = _v16.a;
-									var _v17 = _v16.b;
-									var b1 = _v17.a;
-									var _v18 = _v17.b;
-									var b2 = _v18.a;
-									return A4(
-										$author$project$OUI$Material$Color$Json$fromHex8,
-										_Utils_Tuple2(r1, r2),
-										_Utils_Tuple2(g1, g2),
-										_Utils_Tuple2(b1, b2),
-										_Utils_Tuple2(
-											_Utils_chr('f'),
-											_Utils_chr('f')));
-								} else {
-									break _v0$8;
-								}
-							} else {
-								if (_v0.b.b.b.b.b.b.b.b.b) {
-									if (('#' === _v0.a.valueOf()) && (!_v0.b.b.b.b.b.b.b.b.b.b)) {
-										var _v24 = _v0.b;
-										var r1 = _v24.a;
-										var _v25 = _v24.b;
-										var r2 = _v25.a;
-										var _v26 = _v25.b;
-										var g1 = _v26.a;
-										var _v27 = _v26.b;
-										var g2 = _v27.a;
-										var _v28 = _v27.b;
-										var b1 = _v28.a;
-										var _v29 = _v28.b;
-										var b2 = _v29.a;
-										var _v30 = _v29.b;
-										var a1 = _v30.a;
-										var _v31 = _v30.b;
-										var a2 = _v31.a;
-										return A4(
-											$author$project$OUI$Material$Color$Json$fromHex8,
-											_Utils_Tuple2(r1, r2),
-											_Utils_Tuple2(g1, g2),
-											_Utils_Tuple2(b1, b2),
-											_Utils_Tuple2(a1, a2));
-									} else {
-										break _v0$8;
-									}
-								} else {
-									var r1 = _v0.a;
-									var _v32 = _v0.b;
-									var r2 = _v32.a;
-									var _v33 = _v32.b;
-									var g1 = _v33.a;
-									var _v34 = _v33.b;
-									var g2 = _v34.a;
-									var _v35 = _v34.b;
-									var b1 = _v35.a;
-									var _v36 = _v35.b;
-									var b2 = _v36.a;
-									var _v37 = _v36.b;
-									var a1 = _v37.a;
-									var _v38 = _v37.b;
-									var a2 = _v38.a;
-									return A4(
-										$author$project$OUI$Material$Color$Json$fromHex8,
-										_Utils_Tuple2(r1, r2),
-										_Utils_Tuple2(g1, g2),
-										_Utils_Tuple2(b1, b2),
-										_Utils_Tuple2(a1, a2));
-								}
-							}
-						}
-					}
-				}
-			}
-		} else {
-			break _v0$8;
-		}
-	}
-	return $elm$core$Maybe$Nothing;
-};
 var $author$project$OUI$Material$Color$Json$decodeColor = A2(
 	$elm$json$Json$Decode$andThen,
 	function (s) {
@@ -271603,189 +272082,6 @@ var $author$project$OUI$Navigation$withHeader = F2(
 					header: $elm$core$Maybe$Just(text)
 				}));
 	});
-var $author$project$OUI$Material$Color$Json$encodeColor = function (color) {
-	return $elm$json$Json$Encode$string(
-		function (_v0) {
-			var alpha = _v0.alpha;
-			var hex = _v0.hex;
-			return _Utils_ap(
-				hex,
-				$author$project$OUI$Material$Color$Json$int255ToHex(
-					$elm$core$Basics$round(alpha * 255)));
-		}(
-			$author$project$OUI$Material$Color$Json$toHex(color)));
-};
-var $author$project$OUI$Material$Color$Json$encodeKeyColors = function (keyColors) {
-	return $elm$json$Json$Encode$object(
-		_List_fromArray(
-			[
-				_Utils_Tuple2(
-				'primary',
-				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.primary)),
-				_Utils_Tuple2(
-				'secondary',
-				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.secondary)),
-				_Utils_Tuple2(
-				'tertiary',
-				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.tertiary)),
-				_Utils_Tuple2(
-				'error',
-				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.error)),
-				_Utils_Tuple2(
-				'neutral',
-				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.neutral)),
-				_Utils_Tuple2(
-				'neutralVariant',
-				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.neutralVariant))
-			]));
-};
-var $author$project$OUI$Material$Color$Json$encodeColorScheme = function (scheme) {
-	return $elm$json$Json$Encode$object(
-		_List_fromArray(
-			[
-				_Utils_Tuple2(
-				'keyColors',
-				$author$project$OUI$Material$Color$Json$encodeKeyColors(scheme.keyColors)),
-				_Utils_Tuple2(
-				'primary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.primary)),
-				_Utils_Tuple2(
-				'primaryContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.primaryContainer)),
-				_Utils_Tuple2(
-				'onPrimary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onPrimary)),
-				_Utils_Tuple2(
-				'onPrimaryContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onPrimaryContainer)),
-				_Utils_Tuple2(
-				'inversePrimary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inversePrimary)),
-				_Utils_Tuple2(
-				'secondary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.secondary)),
-				_Utils_Tuple2(
-				'secondaryContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.secondaryContainer)),
-				_Utils_Tuple2(
-				'onSecondary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSecondary)),
-				_Utils_Tuple2(
-				'onSecondaryContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSecondaryContainer)),
-				_Utils_Tuple2(
-				'tertiary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.tertiary)),
-				_Utils_Tuple2(
-				'tertiaryContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.tertiaryContainer)),
-				_Utils_Tuple2(
-				'onTertiary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onTertiary)),
-				_Utils_Tuple2(
-				'onTertiaryContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onTertiaryContainer)),
-				_Utils_Tuple2(
-				'surface',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surface)),
-				_Utils_Tuple2(
-				'surfaceDim',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceDim)),
-				_Utils_Tuple2(
-				'surfaceBright',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceBright)),
-				_Utils_Tuple2(
-				'surfaceContainerLowest',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerLowest)),
-				_Utils_Tuple2(
-				'surfaceContainerLow',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerLow)),
-				_Utils_Tuple2(
-				'surfaceContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainer)),
-				_Utils_Tuple2(
-				'surfaceContainerHigh',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerHigh)),
-				_Utils_Tuple2(
-				'surfaceContainerHighest',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerHighest)),
-				_Utils_Tuple2(
-				'surfaceVariant',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceVariant)),
-				_Utils_Tuple2(
-				'onSurface',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSurface)),
-				_Utils_Tuple2(
-				'onSurfaceVariant',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSurfaceVariant)),
-				_Utils_Tuple2(
-				'inverseSurface',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inverseSurface)),
-				_Utils_Tuple2(
-				'inverseOnSurface',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inverseOnSurface)),
-				_Utils_Tuple2(
-				'background',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.background)),
-				_Utils_Tuple2(
-				'onBackground',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onBackground)),
-				_Utils_Tuple2(
-				'error',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.error)),
-				_Utils_Tuple2(
-				'errorContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.errorContainer)),
-				_Utils_Tuple2(
-				'onError',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onError)),
-				_Utils_Tuple2(
-				'onErrorContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onErrorContainer)),
-				_Utils_Tuple2(
-				'outline',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.outline)),
-				_Utils_Tuple2(
-				'outlineVariant',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.outlineVariant)),
-				_Utils_Tuple2(
-				'shadow',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.shadow)),
-				_Utils_Tuple2(
-				'surfaceTint',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceTint)),
-				_Utils_Tuple2(
-				'scrim',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.scrim))
-			]));
-};
-var $author$project$OUI$Material$Color$Json$encodeColorTheme = function (theme) {
-	return $elm$json$Json$Encode$object(
-		_List_fromArray(
-			[
-				_Utils_Tuple2(
-				'name',
-				$elm$json$Json$Encode$string(theme.name)),
-				_Utils_Tuple2(
-				'description',
-				$elm$json$Json$Encode$string(theme.description)),
-				_Utils_Tuple2(
-				'keyColors',
-				$author$project$OUI$Material$Color$Json$encodeKeyColors(theme.keyColors)),
-				_Utils_Tuple2(
-				'schemes',
-				$elm$json$Json$Encode$object(
-					_List_fromArray(
-						[
-							_Utils_Tuple2(
-							'light',
-							$author$project$OUI$Material$Color$Json$encodeColorScheme(theme.schemes.light)),
-							_Utils_Tuple2(
-							'dark',
-							$author$project$OUI$Material$Color$Json$encodeColorScheme(theme.schemes.dark))
-						])))
-			]));
-};
 var $author$project$OUI$Explorer$encodeSettings = function (settings) {
 	return $elm$json$Json$Encode$object(
 		_List_fromArray(

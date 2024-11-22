@@ -1,4 +1,4 @@
-module OUI.Material.Color.Json exposing (decodeColorTheme, encodeColorTheme, toHex, toHexWithAlpha)
+module OUI.Material.Color.Json exposing (colorFromHex, decodeColorTheme, encodeColorTheme, toHex, toHexWithAlpha)
 
 import Bitwise
 import Color
