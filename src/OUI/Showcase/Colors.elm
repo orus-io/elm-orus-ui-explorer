@@ -1,13 +1,14 @@
 module OUI.Showcase.Colors exposing (Model, Msg, book)
 
 import Color exposing (Color)
-import ColorPicker
 import Effect exposing (Effect)
 import Element exposing (Element)
 import Element.Background as Background
 import Element.Border as Border
 import Element.Events as Events
 import Element.Font as Font
+import File.Download
+import Json.Encode
 import OUI
 import OUI.Button
 import OUI.Dialog
@@ -20,7 +21,7 @@ import OUI.Material.Theme
 import OUI.Material.Typography
 import OUI.Menu
 import OUI.MenuButton
-import OUI.Showcase.ColorPicker
+import OUI.Showcase.ColorPicker as ColorPicker
 import OUI.Showcase.IconsCat
 import OUI.Text
 
@@ -321,7 +322,7 @@ book =
                                 |> OUI.Material.dialogWithContent
                                     shared.theme
                                     []
-                                    (OUI.Showcase.ColorPicker.view cp.color cp.colorPicker
+                                    (ColorPicker.view shared.theme cp.color cp.colorPicker
                                         |> Element.map ColorPickerMsg
                                     )
                                 |> OUI.Element.Modal.map Explorer.bookMsg
@@ -381,6 +382,12 @@ book =
                                 |> OUI.Material.button shared.theme
                                     [ Element.centerX
                                     ]
+                    , OUI.Button.new "Export"
+                        |> OUI.Button.onClick ExportColor
+                        |> OUI.Material.button shared.theme
+                            [ Element.centerX
+                            ]
+                        |> Element.map Explorer.bookMsg
                     ]
             )
         |> Explorer.withStaticChapter
@@ -423,6 +430,7 @@ type Msg
     | ColorPickerMsg ColorPicker.Msg
     | AcceptColor
     | DismissColor
+    | ExportColor
 
 
 type alias Model =
@@ -529,6 +537,19 @@ update shared msg model =
                 Nothing ->
                     model
                         |> Effect.withNone
+
+        ExportColor ->
+            let
+                currentColorTheme =
+                    Explorer.getSelectedColorTheme shared |> .theme
+            in
+            model
+                |> Effect.withCmd
+                    (currentColorTheme
+                        |> OUI.Material.Color.Json.encodeColorTheme
+                        |> Json.Encode.encode 2
+                        |> File.Download.string (currentColorTheme.name ++ ".json") "application/json"
+                    )
 
 
 updateKeyColors : KeyColors -> OUI.Material.Color.Theme -> OUI.Material.Color.Theme
