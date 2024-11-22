@@ -16725,13 +16725,13 @@ var $author$project$OUI$Showcase$Colors$keyColorSetNeutral = F2(
 	function (c, kc) {
 		return _Utils_update(
 			kc,
-			{primary: c});
+			{neutral: c});
 	});
 var $author$project$OUI$Showcase$Colors$keyColorSetNeutralVariant = F2(
 	function (c, kc) {
 		return _Utils_update(
 			kc,
-			{primary: c});
+			{neutralVariant: c});
 	});
 var $author$project$OUI$Showcase$Colors$keyColorSetPrimary = F2(
 	function (c, kc) {
