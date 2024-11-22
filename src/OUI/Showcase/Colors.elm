@@ -19,6 +19,7 @@ import OUI.Material.Theme
 import OUI.Material.Typography
 import OUI.Menu
 import OUI.MenuButton
+import OUI.Showcase.IconsCat
 import OUI.Text
 
 
@@ -78,19 +79,39 @@ keyColorSetNeutralVariant c kc =
 
 
 showKeyColor :
-    OUI.Material.Color.Scheme
+    OUI.Material.Theme.Theme themeExt
     -> Bool
     -> String
     -> (KeyColors -> Color)
     -> (Color -> KeyColors -> KeyColors)
     -> KeyColors
     -> Element (Explorer.BookMsg Msg)
-showKeyColor scheme editable name getter setter keyColors =
+showKeyColor theme editable name getter setter keyColors =
+    let
+        scheme =
+            OUI.Material.Theme.colorscheme theme
+    in
     Element.column
         (Element.width Element.fill
             :: (if editable then
                     [ Events.onClick (keyColorEdit getter setter keyColors)
                     , Element.pointer
+                    , Element.inFront <|
+                        Element.el
+                            [ Element.width Element.fill
+                            , Element.height Element.fill
+                            , Element.transparent True
+                            , Background.color <| OUI.Material.Color.toElementColor scheme.shadow
+                            , Element.mouseOver
+                                [ Element.transparent False
+                                ]
+                            ]
+                            (OUI.Showcase.IconsCat.edit
+                                |> OUI.Material.icon theme
+                                    [ Element.centerX
+                                    , Element.centerY
+                                    ]
+                            )
                     ]
 
                 else
@@ -143,12 +164,12 @@ showKeyColors shared =
                 [ Element.paddingEach { bottom = 10, top = 0, left = 0, right = 0 }
                 ]
         , Element.row [ Element.spacing 5, Element.width Element.fill ]
-            [ showKeyColor scheme editable "Primary" .primary keyColorSetPrimary keyColors
-            , showKeyColor scheme editable "Secondary" .secondary keyColorSetSecondary keyColors
-            , showKeyColor scheme editable "Tertiary" .tertiary keyColorSetTertiary keyColors
-            , showKeyColor scheme editable "Error" .error keyColorSetError keyColors
-            , showKeyColor scheme editable "Neutral" .neutral keyColorSetNeutral keyColors
-            , showKeyColor scheme editable "Neutral Variant" .neutralVariant keyColorSetNeutralVariant keyColors
+            [ showKeyColor theme editable "Primary" .primary keyColorSetPrimary keyColors
+            , showKeyColor theme editable "Secondary" .secondary keyColorSetSecondary keyColors
+            , showKeyColor theme editable "Tertiary" .tertiary keyColorSetTertiary keyColors
+            , showKeyColor theme editable "Error" .error keyColorSetError keyColors
+            , showKeyColor theme editable "Neutral" .neutral keyColorSetNeutral keyColors
+            , showKeyColor theme editable "Neutral Variant" .neutralVariant keyColorSetNeutralVariant keyColors
             ]
         ]
         |> Element.el
