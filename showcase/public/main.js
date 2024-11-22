@@ -16452,8 +16452,10 @@ var $author$project$OUI$Dialog$onDismiss = F3(
 				}));
 	});
 var $author$project$OUI$Explorer$sharedMsg = $author$project$OUI$Explorer$SharedMsg;
-var $author$project$OUI$Showcase$Colors$colorCell = F4(
-	function (name, color, onColor, height) {
+var $mdgriffith$elm_ui$Internal$Model$Bottom = {$: 'Bottom'};
+var $mdgriffith$elm_ui$Element$alignBottom = $mdgriffith$elm_ui$Internal$Model$AlignY($mdgriffith$elm_ui$Internal$Model$Bottom);
+var $author$project$OUI$Showcase$Colors$colorCell = F5(
+	function (name, colorcode, color, onColor, height) {
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
@@ -16473,7 +16475,12 @@ var $author$project$OUI$Showcase$Colors$colorCell = F4(
 					$mdgriffith$elm_ui$Element$el,
 					_List_fromArray(
 						[$mdgriffith$elm_ui$Element$alignTop]),
-					$mdgriffith$elm_ui$Element$text(name))
+					$mdgriffith$elm_ui$Element$text(name)),
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$alignBottom, $mdgriffith$elm_ui$Element$alignRight]),
+					$mdgriffith$elm_ui$Element$text(colorcode))
 				]));
 	});
 var $author$project$OUI$Text$titleMedium = A2($author$project$OUI$Text$textTypeSize, $author$project$OUI$Text$Title, $author$project$OUI$Text$Medium);
@@ -16557,8 +16564,8 @@ var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
 											]),
 										_List_fromArray(
 											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Primary', scheme.primary, scheme.onPrimary, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Primary', scheme.onPrimary, scheme.primary, 40)
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'Primary', '', scheme.primary, scheme.onPrimary, 100),
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'On Primary', '', scheme.onPrimary, scheme.primary, 40)
 											])),
 										A2(
 										$mdgriffith$elm_ui$Element$column,
@@ -16568,8 +16575,8 @@ var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
 											]),
 										_List_fromArray(
 											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Primary Container', scheme.primaryContainer, scheme.onPrimaryContainer, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Primary Container', scheme.onPrimaryContainer, scheme.primaryContainer, 40)
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'Primary Container', '', scheme.primaryContainer, scheme.onPrimaryContainer, 100),
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'On Primary Container', '', scheme.onPrimaryContainer, scheme.primaryContainer, 40)
 											]))
 									])),
 								A2(
@@ -16589,8 +16596,8 @@ var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
 											]),
 										_List_fromArray(
 											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Secondary', scheme.secondary, scheme.onSecondary, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Secondary', scheme.onSecondary, scheme.secondary, 40)
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'Secondary', '', scheme.secondary, scheme.onSecondary, 100),
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'On Secondary', '', scheme.onSecondary, scheme.secondary, 40)
 											])),
 										A2(
 										$mdgriffith$elm_ui$Element$column,
@@ -16600,8 +16607,8 @@ var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
 											]),
 										_List_fromArray(
 											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Secondary Container', scheme.secondaryContainer, scheme.onSecondaryContainer, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Secondary Container', scheme.onSecondaryContainer, scheme.secondaryContainer, 40)
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'Secondary Container', '', scheme.secondaryContainer, scheme.onSecondaryContainer, 100),
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'On Secondary Container', '', scheme.onSecondaryContainer, scheme.secondaryContainer, 40)
 											]))
 									])),
 								A2(
@@ -16621,8 +16628,8 @@ var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
 											]),
 										_List_fromArray(
 											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Tertiary', scheme.tertiary, scheme.onTertiary, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Tertiary', scheme.onTertiary, scheme.tertiary, 40)
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'Tertiary', '', scheme.tertiary, scheme.onTertiary, 100),
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'On Tertiary', '', scheme.onTertiary, scheme.tertiary, 40)
 											])),
 										A2(
 										$mdgriffith$elm_ui$Element$column,
@@ -16632,8 +16639,8 @@ var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
 											]),
 										_List_fromArray(
 											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Tertiary Container', scheme.tertiaryContainer, scheme.onTertiaryContainer, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Tertiary Container', scheme.onTertiaryContainer, scheme.tertiaryContainer, 40)
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'Tertiary Container', '', scheme.tertiaryContainer, scheme.onTertiaryContainer, 100),
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'On Tertiary Container', '', scheme.onTertiaryContainer, scheme.tertiaryContainer, 40)
 											]))
 									])),
 								A2(
@@ -16655,8 +16662,8 @@ var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
 											]),
 										_List_fromArray(
 											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Error', scheme.error, scheme.onError, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Error', scheme.onError, scheme.error, 40)
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'Error', '', scheme.error, scheme.onError, 100),
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'On Error', '', scheme.onError, scheme.error, 40)
 											])),
 										A2(
 										$mdgriffith$elm_ui$Element$column,
@@ -16666,8 +16673,8 @@ var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
 											]),
 										_List_fromArray(
 											[
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'Error Container', scheme.errorContainer, scheme.onErrorContainer, 100),
-												A4($author$project$OUI$Showcase$Colors$colorCell, 'On Error Container', scheme.onErrorContainer, scheme.errorContainer, 40)
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'Error Container', '', scheme.errorContainer, scheme.onErrorContainer, 100),
+												A5($author$project$OUI$Showcase$Colors$colorCell, 'On Error Container', '', scheme.onErrorContainer, scheme.errorContainer, 40)
 											]))
 									]))
 							])),
@@ -16681,9 +16688,9 @@ var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
 							]),
 						_List_fromArray(
 							[
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Dim', scheme.surfaceDim, scheme.onSurface, 100),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface', scheme.surface, scheme.onSurface, 100),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Bright', scheme.surfaceBright, scheme.onSurface, 100)
+								A5($author$project$OUI$Showcase$Colors$colorCell, 'Surface Dim', '', scheme.surfaceDim, scheme.onSurface, 100),
+								A5($author$project$OUI$Showcase$Colors$colorCell, 'Surface', '', scheme.surface, scheme.onSurface, 100),
+								A5($author$project$OUI$Showcase$Colors$colorCell, 'Surface Bright', '', scheme.surfaceBright, scheme.onSurface, 100)
 							])),
 						A2(
 						$mdgriffith$elm_ui$Element$row,
@@ -16693,11 +16700,11 @@ var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
 							]),
 						_List_fromArray(
 							[
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container Lowest', scheme.surfaceContainerLowest, scheme.onSurface, 100),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container Low', scheme.surfaceContainerLow, scheme.onSurface, 100),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container', scheme.surfaceContainer, scheme.onSurface, 100),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container High', scheme.surfaceContainerHigh, scheme.onSurface, 100),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container Highest', scheme.surfaceContainerHighest, scheme.onSurface, 100)
+								A5($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container Lowest', '', scheme.surfaceContainerLowest, scheme.onSurface, 100),
+								A5($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container Low', '', scheme.surfaceContainerLow, scheme.onSurface, 100),
+								A5($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container', '', scheme.surfaceContainer, scheme.onSurface, 100),
+								A5($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container High', '', scheme.surfaceContainerHigh, scheme.onSurface, 100),
+								A5($author$project$OUI$Showcase$Colors$colorCell, 'Surface Container Highest', '', scheme.surfaceContainerHighest, scheme.onSurface, 100)
 							])),
 						A2(
 						$mdgriffith$elm_ui$Element$row,
@@ -16707,10 +16714,10 @@ var $author$project$OUI$Showcase$Colors$showColorScheme = F2(
 							]),
 						_List_fromArray(
 							[
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'On Surface', scheme.onSurface, scheme.surface, 40),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'On Surface Variant', scheme.onSurfaceVariant, scheme.surfaceVariant, 40),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Outline', scheme.outline, scheme.surface, 40),
-								A4($author$project$OUI$Showcase$Colors$colorCell, 'Outline Variant', scheme.outlineVariant, scheme.onSurface, 40)
+								A5($author$project$OUI$Showcase$Colors$colorCell, 'On Surface', '', scheme.onSurface, scheme.surface, 40),
+								A5($author$project$OUI$Showcase$Colors$colorCell, 'On Surface Variant', '', scheme.onSurfaceVariant, scheme.surfaceVariant, 40),
+								A5($author$project$OUI$Showcase$Colors$colorCell, 'Outline', '', scheme.outline, scheme.surface, 40),
+								A5($author$project$OUI$Showcase$Colors$colorCell, 'Outline Variant', '', scheme.outlineVariant, scheme.onSurface, 40)
 							]))
 					])));
 	});
@@ -16751,6 +16758,7 @@ var $author$project$OUI$Showcase$Colors$keyColorSetTertiary = F2(
 			kc,
 			{tertiary: c});
 	});
+var $avh4$elm_color$Color$black = A4($avh4$elm_color$Color$RgbaSpace, 0 / 255, 0 / 255, 0 / 255, 1.0);
 var $icidasset$elm_material_icons$Material$Icons$Types$Color = function (a) {
 	return {$: 'Color', a: a};
 };
@@ -16852,6 +16860,94 @@ var $author$project$OUI$Showcase$Colors$keyColorEdit = F3(
 						A2(setter, c, keyColors));
 				}));
 	});
+var $elm$core$String$cons = _String_cons;
+var $elm$core$Tuple$mapBoth = F3(
+	function (funcA, funcB, _v0) {
+		var x = _v0.a;
+		var y = _v0.b;
+		return _Utils_Tuple2(
+			funcA(x),
+			funcB(y));
+	});
+var $elm$core$Basics$modBy = _Basics_modBy;
+var $author$project$OUI$Material$Color$Json$unsafeInt255Digits = function (n) {
+	var digit1 = (n / 16) | 0;
+	var digit0 = (!(!digit1)) ? A2($elm$core$Basics$modBy, digit1 * 16, n) : n;
+	return _Utils_Tuple2(digit1, digit0);
+};
+var $author$project$OUI$Material$Color$Json$unsafeIntToChar = function (i) {
+	if (i < 10) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			_Utils_chr('0'),
+			A2(
+				$elm$core$Maybe$map,
+				$elm$core$Tuple$first,
+				$elm$core$String$uncons(
+					$elm$core$String$fromInt(i))));
+	} else {
+		switch (i) {
+			case 10:
+				return _Utils_chr('a');
+			case 11:
+				return _Utils_chr('b');
+			case 12:
+				return _Utils_chr('c');
+			case 13:
+				return _Utils_chr('d');
+			case 14:
+				return _Utils_chr('e');
+			case 15:
+				return _Utils_chr('f');
+			default:
+				return _Utils_chr('0');
+		}
+	}
+};
+var $author$project$OUI$Material$Color$Json$int255ToHex = function (n) {
+	return (n < 0) ? '00' : ((n > 255) ? 'ff' : function (_v0) {
+		var a = _v0.a;
+		var b = _v0.b;
+		return A2(
+			$elm$core$String$cons,
+			a,
+			A2($elm$core$String$cons, b, ''));
+	}(
+		A3(
+			$elm$core$Tuple$mapBoth,
+			$author$project$OUI$Material$Color$Json$unsafeIntToChar,
+			$author$project$OUI$Material$Color$Json$unsafeIntToChar,
+			$author$project$OUI$Material$Color$Json$unsafeInt255Digits(n))));
+};
+var $author$project$OUI$Material$Color$Json$toHex = function (c) {
+	var components = $avh4$elm_color$Color$toRgba(c);
+	return {
+		alpha: components.alpha,
+		hex: '#' + $elm$core$String$concat(
+			A2(
+				$elm$core$List$map,
+				$author$project$OUI$Material$Color$Json$int255ToHex,
+				A2(
+					$elm$core$List$map,
+					$elm$core$Basics$round,
+					A2(
+						$elm$core$List$map,
+						$elm$core$Basics$mul(255),
+						_List_fromArray(
+							[components.red, components.green, components.blue])))))
+	};
+};
+var $author$project$OUI$Material$Color$Json$toHexWithAlpha = function (c) {
+	return function (_v0) {
+		var hex = _v0.hex;
+		var alpha = _v0.alpha;
+		return _Utils_ap(
+			hex,
+			$author$project$OUI$Material$Color$Json$int255ToHex(
+				$elm$core$Basics$round(alpha * 255)));
+	}(
+		$author$project$OUI$Material$Color$Json$toHex(c));
+};
 var $avh4$elm_color$Color$white = A4($avh4$elm_color$Color$RgbaSpace, 255 / 255, 255 / 255, 255 / 255, 1.0);
 var $author$project$OUI$Showcase$Colors$showKeyColor = F6(
 	function (theme, editable, name, getter, setter, keyColors) {
@@ -16891,13 +16987,17 @@ var $author$project$OUI$Showcase$Colors$showKeyColor = F6(
 					]) : _List_Nil),
 			_List_fromArray(
 				[
-					A4($author$project$OUI$Showcase$Colors$colorCell, name, scheme.surfaceContainer, scheme.onSurface, 40),
-					A4(
-					$author$project$OUI$Showcase$Colors$colorCell,
-					'',
-					getter(keyColors),
-					$avh4$elm_color$Color$white,
-					70)
+					A5($author$project$OUI$Showcase$Colors$colorCell, name, '', scheme.surfaceContainer, scheme.onSurface, 40),
+					function () {
+					var c = getter(keyColors);
+					return A5(
+						$author$project$OUI$Showcase$Colors$colorCell,
+						'',
+						$author$project$OUI$Material$Color$Json$toHexWithAlpha(c),
+						c,
+						($avh4$elm_color$Color$toHsla(c).lightness < 0.5) ? $avh4$elm_color$Color$white : $avh4$elm_color$Color$black,
+						70);
+				}()
 				]));
 	});
 var $author$project$OUI$Showcase$Colors$showKeyColors = function (shared) {
@@ -18071,6 +18171,11 @@ var $simonh1000$elm_colorpicker$ColorPicker$view = F2(
 						]))
 				]));
 	});
+var $author$project$OUI$Showcase$ColorPicker$view = F2(
+	function (color, colorPicker) {
+		return $mdgriffith$elm_ui$Element$html(
+			A2($simonh1000$elm_colorpicker$ColorPicker$view, color, colorPicker));
+	});
 var $author$project$OUI$Material$Theme$Theme = function (a) {
 	return {$: 'Theme', a: a};
 };
@@ -18245,8 +18350,7 @@ var $author$project$OUI$Showcase$Colors$book = A2(
 											A2(
 												$mdgriffith$elm_ui$Element$map,
 												$author$project$OUI$Showcase$Colors$ColorPickerMsg,
-												$mdgriffith$elm_ui$Element$html(
-													A2($simonh1000$elm_colorpicker$ColorPicker$view, cp.color, cp.colorPicker))),
+												A2($author$project$OUI$Showcase$ColorPicker$view, cp.color, cp.colorPicker)),
 											A3(
 												$author$project$OUI$Dialog$onDismiss,
 												'Cancel',
@@ -23196,8 +23300,6 @@ var $author$project$OUI$Tabs$getType = function (_v0) {
 	var props = _v0.a;
 	return props.type_;
 };
-var $mdgriffith$elm_ui$Internal$Model$Bottom = {$: 'Bottom'};
-var $mdgriffith$elm_ui$Element$alignBottom = $mdgriffith$elm_ui$Internal$Model$AlignY($mdgriffith$elm_ui$Internal$Model$Bottom);
 var $author$project$OUI$Material$Tabs$renderPrimaryItem = F5(
 	function (typescale, colorscheme, btheme, theme, _v0) {
 		var color = _v0.color;
@@ -26407,7 +26509,6 @@ var $elm$core$Result$fromMaybe = F2(
 			return $elm$core$Result$Err(err);
 		}
 	});
-var $elm$core$String$cons = _String_cons;
 var $elm$core$String$fromChar = function (_char) {
 	return A2($elm$core$String$cons, _char, '');
 };
@@ -27504,7 +27605,6 @@ var $dillonkearns$elm_markdown$Markdown$Parser$indentedCodeBlock = A2(
 		$elm$parser$Parser$Advanced$ignorer,
 		$elm$parser$Parser$Advanced$getChompedString($dillonkearns$elm_markdown$Helpers$chompUntilLineEndOrEnd),
 		$dillonkearns$elm_markdown$Helpers$lineEndOrEnd));
-var $elm$core$Basics$modBy = _Basics_modBy;
 var $dillonkearns$elm_markdown$Markdown$Helpers$isEven = function (_int) {
 	return !A2($elm$core$Basics$modBy, 2, _int);
 };
@@ -271503,81 +271603,6 @@ var $author$project$OUI$Navigation$withHeader = F2(
 					header: $elm$core$Maybe$Just(text)
 				}));
 	});
-var $elm$core$Tuple$mapBoth = F3(
-	function (funcA, funcB, _v0) {
-		var x = _v0.a;
-		var y = _v0.b;
-		return _Utils_Tuple2(
-			funcA(x),
-			funcB(y));
-	});
-var $author$project$OUI$Material$Color$Json$unsafeInt255Digits = function (n) {
-	var digit1 = (n / 16) | 0;
-	var digit0 = (!(!digit1)) ? A2($elm$core$Basics$modBy, digit1 * 16, n) : n;
-	return _Utils_Tuple2(digit1, digit0);
-};
-var $author$project$OUI$Material$Color$Json$unsafeIntToChar = function (i) {
-	if (i < 10) {
-		return A2(
-			$elm$core$Maybe$withDefault,
-			_Utils_chr('0'),
-			A2(
-				$elm$core$Maybe$map,
-				$elm$core$Tuple$first,
-				$elm$core$String$uncons(
-					$elm$core$String$fromInt(i))));
-	} else {
-		switch (i) {
-			case 10:
-				return _Utils_chr('a');
-			case 11:
-				return _Utils_chr('b');
-			case 12:
-				return _Utils_chr('c');
-			case 13:
-				return _Utils_chr('d');
-			case 14:
-				return _Utils_chr('e');
-			case 15:
-				return _Utils_chr('f');
-			default:
-				return _Utils_chr('0');
-		}
-	}
-};
-var $author$project$OUI$Material$Color$Json$int255ToHex = function (n) {
-	return (n < 0) ? '00' : ((n > 255) ? 'ff' : function (_v0) {
-		var a = _v0.a;
-		var b = _v0.b;
-		return A2(
-			$elm$core$String$cons,
-			a,
-			A2($elm$core$String$cons, b, ''));
-	}(
-		A3(
-			$elm$core$Tuple$mapBoth,
-			$author$project$OUI$Material$Color$Json$unsafeIntToChar,
-			$author$project$OUI$Material$Color$Json$unsafeIntToChar,
-			$author$project$OUI$Material$Color$Json$unsafeInt255Digits(n))));
-};
-var $author$project$OUI$Material$Color$Json$toHex = function (c) {
-	var components = $avh4$elm_color$Color$toRgba(c);
-	return {
-		alpha: components.alpha,
-		hex: '#' + $elm$core$String$concat(
-			A2(
-				$elm$core$List$map,
-				$author$project$OUI$Material$Color$Json$int255ToHex,
-				A2(
-					$elm$core$List$map,
-					$elm$core$Basics$round,
-					A2(
-						$elm$core$List$map,
-						$elm$core$Basics$mul(255),
-						_List_fromArray(
-							[components.red, components.green, components.blue])))))
-	};
-};
 var $author$project$OUI$Material$Color$Json$encodeColor = function (color) {
 	return $elm$json$Json$Encode$string(
 		function (_v0) {
