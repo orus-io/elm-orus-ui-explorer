@@ -69,12 +69,12 @@ keyColorSetError c kc =
 
 keyColorSetNeutral : Color -> KeyColors -> KeyColors
 keyColorSetNeutral c kc =
-    { kc | primary = c }
+    { kc | neutral = c }
 
 
 keyColorSetNeutralVariant : Color -> KeyColors -> KeyColors
 keyColorSetNeutralVariant c kc =
-    { kc | primary = c }
+    { kc | neutralVariant = c }
 
 
 showKeyColor :
