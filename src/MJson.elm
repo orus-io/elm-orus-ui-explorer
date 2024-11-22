@@ -1,10 +1,26 @@
-module MJson exposing (decodeColorTheme)
+module MJson exposing (decodeColorTheme, encodeColorTheme)
 
 import Bitwise
 import Color
 import Json.Decode
 import Json.Decode.Pipeline exposing (required)
+import Json.Encode
 import OUI.Material.Color as Color
+
+
+encodeColorTheme : Color.Theme -> Json.Encode.Value
+encodeColorTheme theme =
+    Json.Encode.object
+        [ ( "name", Json.Encode.string theme.name )
+        , ( "description", Json.Encode.string theme.description )
+        , ( "keyColors", encodeKeyColors theme.keyColors )
+        , ( "schemes"
+          , Json.Encode.object
+                [ ( "light", encodeColorScheme theme.schemes.light )
+                , ( "dark", encodeColorScheme theme.schemes.dark )
+                ]
+          )
+        ]
 
 
 decodeColorTheme : Json.Decode.Decoder Color.Theme
@@ -26,6 +42,21 @@ decodeColorTheme =
         )
 
 
+encodeColor : Color.Color -> Json.Encode.Value
+encodeColor color =
+    color
+        |> toHex
+        |> (\{ hex, alpha } ->
+                hex
+                    ++ (alpha
+                            * 255
+                            |> round
+                            |> int255ToHex
+                       )
+           )
+        |> Json.Encode.string
+
+
 decodeColor : Json.Decode.Decoder Color.Color
 decodeColor =
     Json.Decode.string
@@ -40,6 +71,18 @@ decodeColor =
             )
 
 
+encodeKeyColors : Color.KeyColors -> Json.Encode.Value
+encodeKeyColors keyColors =
+    Json.Encode.object
+        [ ( "primary", encodeColor keyColors.primary )
+        , ( "secondary", encodeColor keyColors.secondary )
+        , ( "tertiary", encodeColor keyColors.tertiary )
+        , ( "error", encodeColor keyColors.error )
+        , ( "neutral", encodeColor keyColors.neutral )
+        , ( "neutralVariant", encodeColor keyColors.neutralVariant )
+        ]
+
+
 decodeKeyColors : Json.Decode.Decoder Color.KeyColors
 decodeKeyColors =
     Json.Decode.map6 Color.KeyColors
@@ -49,6 +92,50 @@ decodeKeyColors =
         (Json.Decode.field "error" decodeColor)
         (Json.Decode.field "neutral" decodeColor)
         (Json.Decode.field "neutralVariant" decodeColor)
+
+
+encodeColorScheme : Color.Scheme -> Json.Encode.Value
+encodeColorScheme scheme =
+    Json.Encode.object
+        [ ( "keyColors", encodeKeyColors scheme.keyColors )
+        , ( "primary", encodeColor scheme.primary )
+        , ( "primaryContainer", encodeColor scheme.primaryContainer )
+        , ( "onPrimary", encodeColor scheme.onPrimary )
+        , ( "onPrimaryContainer", encodeColor scheme.onPrimaryContainer )
+        , ( "inversePrimary", encodeColor scheme.inversePrimary )
+        , ( "secondary", encodeColor scheme.secondary )
+        , ( "secondaryContainer", encodeColor scheme.secondaryContainer )
+        , ( "onSecondary", encodeColor scheme.onSecondary )
+        , ( "onSecondaryContainer", encodeColor scheme.onSecondaryContainer )
+        , ( "tertiary", encodeColor scheme.tertiary )
+        , ( "tertiaryContainer", encodeColor scheme.tertiaryContainer )
+        , ( "onTertiary", encodeColor scheme.onTertiary )
+        , ( "onTertiaryContainer", encodeColor scheme.onTertiaryContainer )
+        , ( "surface", encodeColor scheme.surface )
+        , ( "surfaceDim", encodeColor scheme.surfaceDim )
+        , ( "surfaceBright", encodeColor scheme.surfaceBright )
+        , ( "surfaceContainerLowest", encodeColor scheme.surfaceContainerLowest )
+        , ( "surfaceContainerLow", encodeColor scheme.surfaceContainerLow )
+        , ( "surfaceContainer", encodeColor scheme.surfaceContainer )
+        , ( "surfaceContainerHigh", encodeColor scheme.surfaceContainerHigh )
+        , ( "surfaceContainerHighest", encodeColor scheme.surfaceContainerHighest )
+        , ( "surfaceVariant", encodeColor scheme.surfaceVariant )
+        , ( "onSurface", encodeColor scheme.onSurface )
+        , ( "onSurfaceVariant", encodeColor scheme.onSurfaceVariant )
+        , ( "inverseSurface", encodeColor scheme.inverseSurface )
+        , ( "inverseOnSurface", encodeColor scheme.inverseOnSurface )
+        , ( "background", encodeColor scheme.background )
+        , ( "onBackground", encodeColor scheme.onBackground )
+        , ( "error", encodeColor scheme.error )
+        , ( "errorContainer", encodeColor scheme.errorContainer )
+        , ( "onError", encodeColor scheme.onError )
+        , ( "onErrorContainer", encodeColor scheme.onErrorContainer )
+        , ( "outline", encodeColor scheme.outline )
+        , ( "outlineVariant", encodeColor scheme.outlineVariant )
+        , ( "shadow", encodeColor scheme.shadow )
+        , ( "surfaceTint", encodeColor scheme.surfaceTint )
+        , ( "scrim", encodeColor scheme.scrim )
+        ]
 
 
 decodeColorScheme : Json.Decode.Decoder Color.Scheme
@@ -74,7 +161,7 @@ decodeColorScheme =
         |> required "surfaceContainerLowest" decodeColor
         |> required "surfaceContainerLow" decodeColor
         |> required "surfaceContainer" decodeColor
-        |> required "surfaceContainerrHigh" decodeColor
+        |> required "surfaceContainerHigh" decodeColor
         |> required "surfaceContainerHighest" decodeColor
         |> required "surfaceVariant" decodeColor
         |> required "onSurface" decodeColor

@@ -206,6 +206,10 @@ book =
         }
         |> Explorer.withChapter
             (\shared model ->
+                let
+                    currentColorTheme =
+                        Explorer.getSelectedColorTheme shared
+                in
                 Element.row
                     [ Element.spacing 20
                     ]
@@ -218,11 +222,12 @@ book =
                                 (Tuple.second shared.selectedColorScheme)
                         )
                         (OUI.Button.new
-                            (Explorer.getSelectedColorTheme shared |> .name)
+                            currentColorTheme.theme.name
                         )
                         (OUI.Menu.new
                             (\i ->
                                 Explorer.getColorTheme i shared
+                                    |> .theme
                                     |> .name
                             )
                             |> OUI.Menu.addItems (List.range 0 (List.length shared.colorThemeList - 1))
@@ -232,8 +237,28 @@ book =
                             model.colorThemeButton
                             [ Element.centerX
                             ]
+                        |> Element.map Explorer.bookMsg
+                    , OUI.Button.new "Copy"
+                        |> OUI.Button.onClick CopyColorTheme
+                        |> OUI.Material.button shared.theme
+                            [ Element.centerX
+                            ]
+                        |> Element.map Explorer.bookMsg
+                    , case currentColorTheme.type_ of
+                        Explorer.BuiltinColorTheme ->
+                            Element.none
+
+                        Explorer.UserColorTheme ->
+                            OUI.Button.new "Delete"
+                                |> OUI.Button.onClick
+                                    (Tuple.first shared.selectedColorScheme
+                                        |> Explorer.deleteColorThemeMsg
+                                        |> Explorer.sharedMsg
+                                    )
+                                |> OUI.Material.button shared.theme
+                                    [ Element.centerX
+                                    ]
                     ]
-                    |> Element.map Explorer.bookMsg
             )
         |> Explorer.withStaticChapter
             (\shared ->
@@ -247,7 +272,7 @@ book =
                         (shared.colorThemeList
                             |> List.drop (shared.selectedColorScheme |> Tuple.first)
                             |> List.head
-                            |> Maybe.map (.schemes >> .light)
+                            |> Maybe.map (.theme >> .schemes >> .light)
                             |> Maybe.withDefault OUI.Material.Color.defaultLightScheme
                         )
                     |> showColorScheme "Light Scheme"
@@ -259,7 +284,7 @@ book =
                         (shared.colorThemeList
                             |> List.drop (shared.selectedColorScheme |> Tuple.first)
                             |> List.head
-                            |> Maybe.map (.schemes >> .dark)
+                            |> Maybe.map (.theme >> .schemes >> .dark)
                             |> Maybe.withDefault OUI.Material.Color.defaultDarkScheme
                         )
                     |> showColorScheme "Dark Scheme"
@@ -269,6 +294,7 @@ book =
 type Msg
     = ColorThemeButtonMsg (OUI.MenuButton.Msg Int Msg)
     | SelectColorScheme Int Explorer.ColorSchemeType
+    | CopyColorTheme
 
 
 type alias Model =
@@ -283,7 +309,7 @@ init shared =
 
 
 update : Explorer.Shared themeExt -> Msg -> Model -> ( Model, Effect Explorer.SharedMsg Msg )
-update _ msg model =
+update shared msg model =
     case msg of
         ColorThemeButtonMsg buttonMsg ->
             let
@@ -298,3 +324,14 @@ update _ msg model =
         SelectColorScheme i t ->
             model
                 |> Effect.withShared (Explorer.selectColorScheme i t)
+
+        CopyColorTheme ->
+            let
+                currentColorTheme =
+                    Explorer.getSelectedColorTheme shared |> .theme
+            in
+            model
+                |> Effect.withShared
+                    (Explorer.addColorThemeMsg
+                        { currentColorTheme | name = currentColorTheme.name ++ " (copy)" }
+                    )

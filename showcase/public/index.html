@@ -10,14 +10,20 @@
 
     <body>
         <script>
-            const settings = localStorage.getItem("settings");
+            const settings = function() {
+                try {
+                    return JSON.parse(localStorage.getItem("settings"));
+                } catch {
+                    return null
+                }
+            }();
             let app = Elm.Main.init({flags: {
                 dark_mode: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
                 settings: settings
             }});
 
             app.ports.saveSettings.subscribe(function(value) {
-                localStorage.setItem("settings", value);
+                localStorage.setItem("settings", JSON.stringify(value));
             });
         </script>
     </body>
