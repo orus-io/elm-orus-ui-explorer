@@ -16751,6 +16751,80 @@ var $author$project$OUI$Showcase$Colors$keyColorSetTertiary = F2(
 			kc,
 			{tertiary: c});
 	});
+var $icidasset$elm_material_icons$Material$Icons$Types$Color = function (a) {
+	return {$: 'Color', a: a};
+};
+var $icidasset$elm_material_icons$Material$Icons$Internal$f = $elm$svg$Svg$Attributes$fill;
+var $icidasset$elm_material_icons$Material$Icons$Internal$icon = F4(
+	function (attributes, nodes, size, coloring) {
+		var sizeAsString = $elm$core$String$fromInt(size);
+		return A2(
+			$elm$svg$Svg$svg,
+			_Utils_ap(
+				attributes,
+				_List_fromArray(
+					[
+						$elm$svg$Svg$Attributes$height(sizeAsString),
+						$elm$svg$Svg$Attributes$width(sizeAsString)
+					])),
+			_List_fromArray(
+				[
+					A2(
+					$elm$svg$Svg$g,
+					_List_fromArray(
+						[
+							function () {
+							if (coloring.$ === 'Color') {
+								var color = coloring.a;
+								return $elm$svg$Svg$Attributes$fill(
+									$avh4$elm_color$Color$toCssString(color));
+							} else {
+								return $elm$svg$Svg$Attributes$fill('currentColor');
+							}
+						}()
+						]),
+					nodes)
+				]));
+	});
+var $icidasset$elm_material_icons$Material$Icons$Internal$p = $elm$svg$Svg$path;
+var $icidasset$elm_material_icons$Material$Icons$Internal$v = $elm$svg$Svg$Attributes$viewBox;
+var $icidasset$elm_material_icons$Material$Icons$Outlined$edit = A2(
+	$icidasset$elm_material_icons$Material$Icons$Internal$icon,
+	_List_fromArray(
+		[
+			$icidasset$elm_material_icons$Material$Icons$Internal$v('0 0 24 24')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$icidasset$elm_material_icons$Material$Icons$Internal$p,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$d('M0 0h24v24H0V0z'),
+					$icidasset$elm_material_icons$Material$Icons$Internal$f('none')
+				]),
+			_List_Nil),
+			A2(
+			$icidasset$elm_material_icons$Material$Icons$Internal$p,
+			_List_fromArray(
+				[
+					$elm$svg$Svg$Attributes$d('M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z')
+				]),
+			_List_Nil)
+		]));
+var $author$project$OUI$Icon$elmMaterialIcons = F2(
+	function (wrapper, fun) {
+		return $author$project$OUI$Icon$fromRenderer(
+			$author$project$OUI$Icon$Html(
+				F2(
+					function (size, color) {
+						return A2(
+							fun,
+							size,
+							wrapper(color));
+					})));
+	});
+var $author$project$OUI$Showcase$IconsCat$edit = A2($author$project$OUI$Icon$elmMaterialIcons, $icidasset$elm_material_icons$Material$Icons$Types$Color, $icidasset$elm_material_icons$Material$Icons$Outlined$edit);
 var $author$project$OUI$Showcase$Colors$EditColor = F2(
 	function (a, b) {
 		return {$: 'EditColor', a: a, b: b};
@@ -16780,7 +16854,8 @@ var $author$project$OUI$Showcase$Colors$keyColorEdit = F3(
 	});
 var $avh4$elm_color$Color$white = A4($avh4$elm_color$Color$RgbaSpace, 255 / 255, 255 / 255, 255 / 255, 1.0);
 var $author$project$OUI$Showcase$Colors$showKeyColor = F6(
-	function (scheme, editable, name, getter, setter, keyColors) {
+	function (theme, editable, name, getter, setter, keyColors) {
+		var scheme = $author$project$OUI$Material$Theme$colorscheme(theme);
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			A2(
@@ -16790,7 +16865,29 @@ var $author$project$OUI$Showcase$Colors$showKeyColor = F6(
 					[
 						$mdgriffith$elm_ui$Element$Events$onClick(
 						A3($author$project$OUI$Showcase$Colors$keyColorEdit, getter, setter, keyColors)),
-						$mdgriffith$elm_ui$Element$pointer
+						$mdgriffith$elm_ui$Element$pointer,
+						$mdgriffith$elm_ui$Element$inFront(
+						A2(
+							$mdgriffith$elm_ui$Element$el,
+							_List_fromArray(
+								[
+									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+									$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+									$mdgriffith$elm_ui$Element$transparent(true),
+									$mdgriffith$elm_ui$Element$Background$color(
+									$author$project$OUI$Material$Color$toElementColor(scheme.shadow)),
+									$mdgriffith$elm_ui$Element$mouseOver(
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$transparent(false)
+										]))
+								]),
+							A3(
+								$author$project$OUI$Material$icon,
+								theme,
+								_List_fromArray(
+									[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
+								$author$project$OUI$Showcase$IconsCat$edit)))
 					]) : _List_Nil),
 			_List_fromArray(
 				[
@@ -16858,7 +16955,7 @@ var $author$project$OUI$Showcase$Colors$showKeyColors = function (shared) {
 						[
 							A6(
 							$author$project$OUI$Showcase$Colors$showKeyColor,
-							scheme,
+							theme,
 							editable,
 							'Primary',
 							function ($) {
@@ -16868,7 +16965,7 @@ var $author$project$OUI$Showcase$Colors$showKeyColors = function (shared) {
 							keyColors),
 							A6(
 							$author$project$OUI$Showcase$Colors$showKeyColor,
-							scheme,
+							theme,
 							editable,
 							'Secondary',
 							function ($) {
@@ -16878,7 +16975,7 @@ var $author$project$OUI$Showcase$Colors$showKeyColors = function (shared) {
 							keyColors),
 							A6(
 							$author$project$OUI$Showcase$Colors$showKeyColor,
-							scheme,
+							theme,
 							editable,
 							'Tertiary',
 							function ($) {
@@ -16888,7 +16985,7 @@ var $author$project$OUI$Showcase$Colors$showKeyColors = function (shared) {
 							keyColors),
 							A6(
 							$author$project$OUI$Showcase$Colors$showKeyColor,
-							scheme,
+							theme,
 							editable,
 							'Error',
 							function ($) {
@@ -16898,7 +16995,7 @@ var $author$project$OUI$Showcase$Colors$showKeyColors = function (shared) {
 							keyColors),
 							A6(
 							$author$project$OUI$Showcase$Colors$showKeyColor,
-							scheme,
+							theme,
 							editable,
 							'Neutral',
 							function ($) {
@@ -16908,7 +17005,7 @@ var $author$project$OUI$Showcase$Colors$showKeyColors = function (shared) {
 							keyColors),
 							A6(
 							$author$project$OUI$Showcase$Colors$showKeyColor,
-							scheme,
+							theme,
 							editable,
 							'Neutral Variant',
 							function ($) {
@@ -34945,44 +35042,7 @@ var $author$project$ColorThemes$autumnKeyColors = {
 	tertiary: A3($avh4$elm_color$Color$rgb255, 165, 143, 68)
 };
 var $author$project$ColorThemes$autumn = A3($author$project$OUI$Material$Color$makeTheme, 'autumn', 'Autumn colors', $author$project$ColorThemes$autumnKeyColors);
-var $icidasset$elm_material_icons$Material$Icons$Types$Color = function (a) {
-	return {$: 'Color', a: a};
-};
 var $icidasset$elm_material_icons$Material$Icons$Internal$b = $elm$svg$Svg$Attributes$enableBackground;
-var $icidasset$elm_material_icons$Material$Icons$Internal$f = $elm$svg$Svg$Attributes$fill;
-var $icidasset$elm_material_icons$Material$Icons$Internal$icon = F4(
-	function (attributes, nodes, size, coloring) {
-		var sizeAsString = $elm$core$String$fromInt(size);
-		return A2(
-			$elm$svg$Svg$svg,
-			_Utils_ap(
-				attributes,
-				_List_fromArray(
-					[
-						$elm$svg$Svg$Attributes$height(sizeAsString),
-						$elm$svg$Svg$Attributes$width(sizeAsString)
-					])),
-			_List_fromArray(
-				[
-					A2(
-					$elm$svg$Svg$g,
-					_List_fromArray(
-						[
-							function () {
-							if (coloring.$ === 'Color') {
-								var color = coloring.a;
-								return $elm$svg$Svg$Attributes$fill(
-									$avh4$elm_color$Color$toCssString(color));
-							} else {
-								return $elm$svg$Svg$Attributes$fill('currentColor');
-							}
-						}()
-						]),
-					nodes)
-				]));
-	});
-var $icidasset$elm_material_icons$Material$Icons$Internal$p = $elm$svg$Svg$path;
-var $icidasset$elm_material_icons$Material$Icons$Internal$v = $elm$svg$Svg$Attributes$viewBox;
 var $icidasset$elm_material_icons$Material$Icons$Outlined$abc = A2(
 	$icidasset$elm_material_icons$Material$Icons$Internal$icon,
 	_List_fromArray(
@@ -54417,30 +54477,6 @@ var $icidasset$elm_material_icons$Material$Icons$Outlined$edgesensor_low = A2(
 						]))
 				]))
 		]));
-var $icidasset$elm_material_icons$Material$Icons$Outlined$edit = A2(
-	$icidasset$elm_material_icons$Material$Icons$Internal$icon,
-	_List_fromArray(
-		[
-			$icidasset$elm_material_icons$Material$Icons$Internal$v('0 0 24 24')
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$icidasset$elm_material_icons$Material$Icons$Internal$p,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$d('M0 0h24v24H0V0z'),
-					$icidasset$elm_material_icons$Material$Icons$Internal$f('none')
-				]),
-			_List_Nil),
-			A2(
-			$icidasset$elm_material_icons$Material$Icons$Internal$p,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$d('M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z')
-				]),
-			_List_Nil)
-		]));
 var $icidasset$elm_material_icons$Material$Icons$Outlined$edit_attributes = A2(
 	$icidasset$elm_material_icons$Material$Icons$Internal$icon,
 	_List_fromArray(
@@ -55790,18 +55826,6 @@ var $icidasset$elm_material_icons$Material$Icons$Outlined$eleven_mp = A2(
 						]))
 				]))
 		]));
-var $author$project$OUI$Icon$elmMaterialIcons = F2(
-	function (wrapper, fun) {
-		return $author$project$OUI$Icon$fromRenderer(
-			$author$project$OUI$Icon$Html(
-				F2(
-					function (size, color) {
-						return A2(
-							fun,
-							size,
-							wrapper(color));
-					})));
-	});
 var $icidasset$elm_material_icons$Material$Icons$Outlined$email = A2(
 	$icidasset$elm_material_icons$Material$Icons$Internal$icon,
 	_List_fromArray(
