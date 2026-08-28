@@ -47,7 +47,6 @@ import Element.Background as Background
 import Element.Font as Font
 import Html.Attributes
 import Json.Decode
-import Json.Encode
 import Markdown.Parser
 import Markdown.Renderer
 import OUI.Button as Button

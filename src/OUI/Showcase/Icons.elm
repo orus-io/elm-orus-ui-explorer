@@ -42,7 +42,7 @@ iconChapter title iconList shared model =
             String.contains model.filter title
     in
     Element.column [ Element.spacing 20, Element.paddingXY 20 0, Element.width <| Element.maximum 1200 <| Element.fill ] <|
-        if List.length filteredIconList == 0 && not filterTitle then
+        if List.isEmpty filteredIconList && not filterTitle then
             Element.none
                 |> List.singleton
 

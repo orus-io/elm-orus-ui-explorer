@@ -10,7 +10,7 @@ import OUI
 import OUI.Button
 import OUI.Explorer as Explorer
 import OUI.Material
-import OUI.Material.Color exposing (KeyColors)
+import OUI.Material.Color
 import OUI.Material.Theme
 import OUI.Material.Typography
 import OUI.Menu
@@ -277,7 +277,7 @@ type alias Model =
 
 
 init : Explorer.Shared themeExt -> ( Model, Effect Explorer.SharedMsg Msg )
-init shared =
+init _ =
     { colorThemeButton = OUI.MenuButton.init "color-page-color-theme-button" }
         |> Effect.withNone
 
