@@ -1,0 +1,31 @@
+[tools]
+elm = "0.19.2"
+"github:avh4/elm-format" = "0.8.8"
+"github:zwilias/elm-json" = "latest"
+"npm:elm-go" = "5.0.20"
+"npm:elm-review" = "2.13.5"
+
+[tasks.build]
+description = "Build the library"
+run = "elm make"
+
+[tasks.build-showcase]
+description = "Build the showcase"
+dir = "showcase"
+run = "elm make src/Main.elm --optimize --output public/main.js"
+
+[tasks.showcase]
+dir = "showcase"
+run = "elm-go -d public -- src/Main.elm --output public/main.js"
+
+[tasks.review]
+description = "Run elm-review"
+run = "elm-review"
+
+[tasks.format-validate]
+description = "Run elm-format --validate"
+run = "elm-format --validate src"
+
+[tasks.lint]
+description = "Run all linters"
+depends = ["format-validate", "review"]
