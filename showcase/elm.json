@@ -21,7 +21,8 @@
             "icidasset/elm-material-icons": "11.0.0",
             "mdgriffith/elm-ui": "1.1.8",
             "noahzgordon/elm-color-extra": "1.0.2",
-            "orus-io/elm-spa": "3.0.1"
+            "orus-io/elm-spa": "3.0.1",
+            "pablohirafuji/elm-syntax-highlight": "3.7.1"
         },
         "indirect": {
             "elm/parser": "1.1.0",

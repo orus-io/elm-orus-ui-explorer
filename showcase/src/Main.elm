@@ -2,54 +2,17 @@ module Main exposing (..)
 
 import Browser
 import ColorThemes
+import GetStarted
 import IcidassetMaterialIcons.Outlined as Outlined
 import IcidassetMaterialIcons.Regular as Regular
 import IcidassetMaterialIcons.Round as Round
+import Landing
 import Material.Icons.Types exposing (Coloring(..))
 import OUI.Explorer as Explorer
 import OUI.Material.Color
 import OUI.Material.Theme as Theme exposing (Theme)
 import OUI.Material.Typography
 import OUI.Showcase as Showcase
-
-
-intro : String
-intro =
-    """
-Elm Orus UI is a toolkit for building user interfaces. It provides an elegant*
-API to create and configure components and a rendering module named 'Material'.
-
-The design is based on [Material Design 3](https://m3.material.io/), and is
-fully customizable with a 'Theme' type that holds all the layout key values for
-each component, and a colorscheme.
-
-The colorscheme can be generated from a few key colors as specified in
-Material design.
-
-This UI Explorer demonstrate all the components provided by Elm Orus UI. It can
-also be extended with your own components and themes.
-
-The package is available on [Elm Packages](https://package.elm-lang.org/packages/orus-io/elm-orus-ui/latest/),
-but the source code is [available on Github](https://github.com/orus-io/elm-orus-ui).
-
-*This is of course our feeling about it, and we hope you make it yours
-"""
-
-
-get_started : String
-get_started =
-    """
-
-Add Elm Orus UI to your project:
-
-```
-elm install orus-io/elm-orus-ui
-```
-
-Have a look at the
-[documentation](https://package.elm-lang.org/packages/orus-io/elm-orus-ui/latest/)
-for code snippets.
-"""
 
 
 main =
@@ -61,10 +24,10 @@ main =
         |> Explorer.addColorTheme ColorThemes.sky
         |> Explorer.setTheme theme
         |> Explorer.addBook
-            (Explorer.book "Introduction" |> Explorer.withMarkdownChapter intro)
+            (Explorer.book "Elm Orus UI" |> Explorer.withStaticChapter Landing.view)
         |> Explorer.addBook
             (Explorer.book "Get Started"
-                |> Explorer.withMarkdownChapter get_started
+                |> Explorer.withStaticChapter GetStarted.view
             )
         |> Showcase.addPages
         |> Explorer.category "Material Icons"
