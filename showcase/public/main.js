@@ -14229,6 +14229,17 @@ var $author$project$OUI$Material$Button$renderProps = F6(
 				_Utils_eq(props.action, $author$project$OUI$Button$Disabled));
 			var size = _v29.a;
 			var color = _v29.b;
+			var iconColor = function (icon) {
+				return A2(
+					$elm$core$Maybe$withDefault,
+					color,
+					A2(
+						$elm$core$Maybe$map,
+						function (c) {
+							return A2($author$project$OUI$Material$Color$getColor, c, colorscheme);
+						},
+						$author$project$OUI$Icon$getColor(icon)));
+			};
 			var _v30 = _Utils_Tuple3(
 				$author$project$OUI$Material$Button$iconOnly(props.type_),
 				props.icon,
@@ -14252,7 +14263,7 @@ var $author$project$OUI$Material$Button$renderProps = F6(
 								return A4(
 									$author$project$OUI$Material$Icon$renderWithSizeColor,
 									size,
-									color,
+									iconColor(icon),
 									_List_fromArray(
 										[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
 									icon);
@@ -14277,23 +14288,29 @@ var $author$project$OUI$Material$Button$renderProps = F6(
 										[
 											A2(
 											$elm$core$Maybe$map,
-											A3(
-												$author$project$OUI$Material$Icon$renderWithSizeColor,
-												size,
-												color,
-												_List_fromArray(
-													[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY])),
+											function (i) {
+												return A4(
+													$author$project$OUI$Material$Icon$renderWithSizeColor,
+													size,
+													iconColor(i),
+													_List_fromArray(
+														[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
+													i);
+											},
 											icon),
 											$elm$core$Maybe$Just(
 											$mdgriffith$elm_ui$Element$text(props.text)),
 											A2(
 											$elm$core$Maybe$map,
-											A3(
-												$author$project$OUI$Material$Icon$renderWithSizeColor,
-												size,
-												color,
-												_List_fromArray(
-													[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY])),
+											function (i) {
+												return A4(
+													$author$project$OUI$Material$Icon$renderWithSizeColor,
+													size,
+													iconColor(i),
+													_List_fromArray(
+														[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
+													i);
+											},
 											rIcon)
 										])));
 						}
@@ -14303,7 +14320,7 @@ var $author$project$OUI$Material$Button$renderProps = F6(
 				return A4(
 					$author$project$OUI$Material$Icon$renderWithSizeColor,
 					size,
-					color,
+					iconColor(icon),
 					_List_fromArray(
 						[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
 					icon);
@@ -15514,6 +15531,14 @@ var $author$project$OUI$Showcase$Colors$ColorThemeButtonMsg = function (a) {
 var $author$project$OUI$Showcase$Colors$CopyColorTheme = {$: 'CopyColorTheme'};
 var $author$project$OUI$Showcase$Colors$DismissColor = {$: 'DismissColor'};
 var $author$project$OUI$Showcase$Colors$ExportColor = {$: 'ExportColor'};
+var $author$project$OUI$Showcase$Colors$OnNameChange = function (a) {
+	return {$: 'OnNameChange', a: a};
+};
+var $author$project$OUI$Showcase$Colors$OnNameFocus = function (a) {
+	return {$: 'OnNameFocus', a: a};
+};
+var $author$project$OUI$Showcase$Colors$OnNameValidate = {$: 'OnNameValidate'};
+var $author$project$OUI$TextField$Outlined = {$: 'Outlined'};
 var $author$project$OUI$Showcase$Colors$SelectColorScheme = F2(
 	function (a, b) {
 		return {$: 'SelectColorScheme', a: a, b: b};
@@ -16138,14 +16163,28 @@ var $author$project$OUI$Explorer$getColorTheme = F2(
 var $author$project$OUI$Explorer$getSelectedColorTheme = function (shared) {
 	return A2($author$project$OUI$Explorer$getColorTheme, shared.selectedColorScheme.a, shared);
 };
+var $author$project$OUI$Custom = function (a) {
+	return {$: 'Custom', a: a};
+};
+var $author$project$OUI$Showcase$Colors$green = $author$project$OUI$Custom(
+	{
+		color: A3($avh4$elm_color$Color$rgb255, 95, 152, 26),
+		onColor: A3($avh4$elm_color$Color$rgb255, 0, 0, 0),
+		onSurface: A3($avh4$elm_color$Color$rgb255, 0, 0, 0),
+		surface: A3($avh4$elm_color$Color$rgb255, 255, 255, 255)
+	});
 var $author$project$OUI$MenuButton$init = function (id) {
 	return {highlighted: -1, id: id, opened: false};
 };
-var $author$project$OUI$Showcase$Colors$init = function (_v0) {
+var $author$project$OUI$Showcase$Colors$init = function (shared) {
 	return $orus_io$elm_spa$Effect$withNone(
 		{
 			colorSelector: $elm$core$Maybe$Nothing,
-			colorThemeButton: $author$project$OUI$MenuButton$init('color-page-color-theme-button')
+			colorThemeButton: $author$project$OUI$MenuButton$init('color-page-color-theme-button'),
+			nameField: {
+				focused: false,
+				value: $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme.name
+			}
 		});
 };
 var $author$project$OUI$Material$Theme$menu = function (_v0) {
@@ -16608,6 +16647,16 @@ var $author$project$OUI$MenuButton$new = F4(
 				openCloseIcons: $elm$core$Maybe$Nothing
 			});
 	});
+var $author$project$OUI$TextField$Filled = {$: 'Filled'};
+var $author$project$OUI$TextField$Text = {$: 'Text'};
+var $author$project$OUI$TextField$TextField = function (a) {
+	return {$: 'TextField', a: a};
+};
+var $author$project$OUI$TextField$new = F3(
+	function (label, onChange, value) {
+		return $author$project$OUI$TextField$TextField(
+			{color: $author$project$OUI$Primary, datatype: $author$project$OUI$TextField$Text, errorIcon: $elm$core$Maybe$Nothing, hasFocus: false, id: $elm$core$Maybe$Nothing, label: label, leadingIcon: $elm$core$Maybe$Nothing, onChange: onChange, onFocus: $elm$core$Maybe$Nothing, onLoseFocus: $elm$core$Maybe$Nothing, onTrailingIconClick: $elm$core$Maybe$Nothing, spellcheck: false, supportingText: $elm$core$Maybe$Nothing, trailingIcon: $elm$core$Maybe$Nothing, type_: $author$project$OUI$TextField$Filled, value: value});
+	});
 var $author$project$OUI$Dialog$onAccept = F3(
 	function (label, msg, _v0) {
 		var dialog = _v0.a;
@@ -16628,6 +16677,17 @@ var $author$project$OUI$Dialog$onDismiss = F3(
 				{
 					dismiss: $elm$core$Maybe$Just(
 						_Utils_Tuple2(label, msg))
+				}));
+	});
+var $author$project$OUI$TextField$onFocusBlur = F3(
+	function (onFocus, onLoseFocus, _v0) {
+		var props = _v0.a;
+		return $author$project$OUI$TextField$TextField(
+			_Utils_update(
+				props,
+				{
+					onFocus: $elm$core$Maybe$Just(onFocus),
+					onLoseFocus: $elm$core$Maybe$Just(onLoseFocus)
 				}));
 	});
 var $author$project$OUI$Explorer$sharedMsg = $author$project$OUI$Explorer$SharedMsg;
@@ -17295,1124 +17355,6 @@ var $author$project$OUI$Showcase$Colors$showKeyColors = function (shared) {
 						]))
 				])));
 };
-var $author$project$OUI$Explorer$AddColorTheme = function (a) {
-	return {$: 'AddColorTheme', a: a};
-};
-var $author$project$OUI$Explorer$addColorThemeMsg = $author$project$OUI$Explorer$AddColorTheme;
-var $simonh1000$elm_colorpicker$ColorPicker$State = function (a) {
-	return {$: 'State', a: a};
-};
-var $simonh1000$elm_colorpicker$ColorPicker$Unpressed = {$: 'Unpressed'};
-var $simonh1000$elm_colorpicker$ColorPicker$blankModel = {hue: $elm$core$Maybe$Nothing, mouseTarget: $simonh1000$elm_colorpicker$ColorPicker$Unpressed};
-var $simonh1000$elm_colorpicker$ColorPicker$empty = $simonh1000$elm_colorpicker$ColorPicker$State($simonh1000$elm_colorpicker$ColorPicker$blankModel);
-var $author$project$OUI$Showcase$ColorPicker$empty = {colorPicker: $simonh1000$elm_colorpicker$ColorPicker$empty, text: '', textFocused: false};
-var $author$project$OUI$Material$Color$Json$encodeColor = function (color) {
-	return $elm$json$Json$Encode$string(
-		function (_v0) {
-			var alpha = _v0.alpha;
-			var hex = _v0.hex;
-			return _Utils_ap(
-				hex,
-				$author$project$OUI$Material$Color$Json$int255ToHex(
-					$elm$core$Basics$round(alpha * 255)));
-		}(
-			$author$project$OUI$Material$Color$Json$toHex(color)));
-};
-var $author$project$OUI$Material$Color$Json$encodeKeyColors = function (keyColors) {
-	return $elm$json$Json$Encode$object(
-		_List_fromArray(
-			[
-				_Utils_Tuple2(
-				'primary',
-				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.primary)),
-				_Utils_Tuple2(
-				'secondary',
-				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.secondary)),
-				_Utils_Tuple2(
-				'tertiary',
-				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.tertiary)),
-				_Utils_Tuple2(
-				'error',
-				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.error)),
-				_Utils_Tuple2(
-				'neutral',
-				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.neutral)),
-				_Utils_Tuple2(
-				'neutralVariant',
-				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.neutralVariant))
-			]));
-};
-var $author$project$OUI$Material$Color$Json$encodeColorScheme = function (scheme) {
-	return $elm$json$Json$Encode$object(
-		_List_fromArray(
-			[
-				_Utils_Tuple2(
-				'keyColors',
-				$author$project$OUI$Material$Color$Json$encodeKeyColors(scheme.keyColors)),
-				_Utils_Tuple2(
-				'primary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.primary)),
-				_Utils_Tuple2(
-				'primaryContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.primaryContainer)),
-				_Utils_Tuple2(
-				'onPrimary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onPrimary)),
-				_Utils_Tuple2(
-				'onPrimaryContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onPrimaryContainer)),
-				_Utils_Tuple2(
-				'inversePrimary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inversePrimary)),
-				_Utils_Tuple2(
-				'secondary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.secondary)),
-				_Utils_Tuple2(
-				'secondaryContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.secondaryContainer)),
-				_Utils_Tuple2(
-				'onSecondary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSecondary)),
-				_Utils_Tuple2(
-				'onSecondaryContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSecondaryContainer)),
-				_Utils_Tuple2(
-				'tertiary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.tertiary)),
-				_Utils_Tuple2(
-				'tertiaryContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.tertiaryContainer)),
-				_Utils_Tuple2(
-				'onTertiary',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onTertiary)),
-				_Utils_Tuple2(
-				'onTertiaryContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onTertiaryContainer)),
-				_Utils_Tuple2(
-				'surface',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surface)),
-				_Utils_Tuple2(
-				'surfaceDim',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceDim)),
-				_Utils_Tuple2(
-				'surfaceBright',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceBright)),
-				_Utils_Tuple2(
-				'surfaceContainerLowest',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerLowest)),
-				_Utils_Tuple2(
-				'surfaceContainerLow',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerLow)),
-				_Utils_Tuple2(
-				'surfaceContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainer)),
-				_Utils_Tuple2(
-				'surfaceContainerHigh',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerHigh)),
-				_Utils_Tuple2(
-				'surfaceContainerHighest',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerHighest)),
-				_Utils_Tuple2(
-				'surfaceVariant',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceVariant)),
-				_Utils_Tuple2(
-				'onSurface',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSurface)),
-				_Utils_Tuple2(
-				'onSurfaceVariant',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSurfaceVariant)),
-				_Utils_Tuple2(
-				'inverseSurface',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inverseSurface)),
-				_Utils_Tuple2(
-				'inverseOnSurface',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inverseOnSurface)),
-				_Utils_Tuple2(
-				'background',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.background)),
-				_Utils_Tuple2(
-				'onBackground',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onBackground)),
-				_Utils_Tuple2(
-				'error',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.error)),
-				_Utils_Tuple2(
-				'errorContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.errorContainer)),
-				_Utils_Tuple2(
-				'onError',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onError)),
-				_Utils_Tuple2(
-				'onErrorContainer',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onErrorContainer)),
-				_Utils_Tuple2(
-				'outline',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.outline)),
-				_Utils_Tuple2(
-				'outlineVariant',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.outlineVariant)),
-				_Utils_Tuple2(
-				'shadow',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.shadow)),
-				_Utils_Tuple2(
-				'surfaceTint',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceTint)),
-				_Utils_Tuple2(
-				'scrim',
-				$author$project$OUI$Material$Color$Json$encodeColor(scheme.scrim))
-			]));
-};
-var $author$project$OUI$Material$Color$Json$encodeColorTheme = function (theme) {
-	return $elm$json$Json$Encode$object(
-		_List_fromArray(
-			[
-				_Utils_Tuple2(
-				'name',
-				$elm$json$Json$Encode$string(theme.name)),
-				_Utils_Tuple2(
-				'description',
-				$elm$json$Json$Encode$string(theme.description)),
-				_Utils_Tuple2(
-				'keyColors',
-				$author$project$OUI$Material$Color$Json$encodeKeyColors(theme.keyColors)),
-				_Utils_Tuple2(
-				'schemes',
-				$elm$json$Json$Encode$object(
-					_List_fromArray(
-						[
-							_Utils_Tuple2(
-							'light',
-							$author$project$OUI$Material$Color$Json$encodeColorScheme(theme.schemes.light)),
-							_Utils_Tuple2(
-							'dark',
-							$author$project$OUI$Material$Color$Json$encodeColorScheme(theme.schemes.dark))
-						])))
-			]));
-};
-var $author$project$OUI$Explorer$SelectColorScheme = F2(
-	function (a, b) {
-		return {$: 'SelectColorScheme', a: a, b: b};
-	});
-var $author$project$OUI$Explorer$selectColorScheme = F2(
-	function (i, t) {
-		return A2($author$project$OUI$Explorer$SelectColorScheme, i, t);
-	});
-var $elm$time$Time$Posix = function (a) {
-	return {$: 'Posix', a: a};
-};
-var $elm$time$Time$millisToPosix = $elm$time$Time$Posix;
-var $elm$core$Task$Perform = function (a) {
-	return {$: 'Perform', a: a};
-};
-var $elm$core$Task$succeed = _Scheduler_succeed;
-var $elm$core$Task$init = $elm$core$Task$succeed(_Utils_Tuple0);
-var $elm$core$Task$andThen = _Scheduler_andThen;
-var $elm$core$Task$map = F2(
-	function (func, taskA) {
-		return A2(
-			$elm$core$Task$andThen,
-			function (a) {
-				return $elm$core$Task$succeed(
-					func(a));
-			},
-			taskA);
-	});
-var $elm$core$Task$map2 = F3(
-	function (func, taskA, taskB) {
-		return A2(
-			$elm$core$Task$andThen,
-			function (a) {
-				return A2(
-					$elm$core$Task$andThen,
-					function (b) {
-						return $elm$core$Task$succeed(
-							A2(func, a, b));
-					},
-					taskB);
-			},
-			taskA);
-	});
-var $elm$core$Task$sequence = function (tasks) {
-	return A3(
-		$elm$core$List$foldr,
-		$elm$core$Task$map2($elm$core$List$cons),
-		$elm$core$Task$succeed(_List_Nil),
-		tasks);
-};
-var $elm$core$Platform$sendToApp = _Platform_sendToApp;
-var $elm$core$Task$spawnCmd = F2(
-	function (router, _v0) {
-		var task = _v0.a;
-		return _Scheduler_spawn(
-			A2(
-				$elm$core$Task$andThen,
-				$elm$core$Platform$sendToApp(router),
-				task));
-	});
-var $elm$core$Task$onEffects = F3(
-	function (router, commands, state) {
-		return A2(
-			$elm$core$Task$map,
-			function (_v0) {
-				return _Utils_Tuple0;
-			},
-			$elm$core$Task$sequence(
-				A2(
-					$elm$core$List$map,
-					$elm$core$Task$spawnCmd(router),
-					commands)));
-	});
-var $elm$core$Task$onSelfMsg = F3(
-	function (_v0, _v1, _v2) {
-		return $elm$core$Task$succeed(_Utils_Tuple0);
-	});
-var $elm$core$Task$cmdMap = F2(
-	function (tagger, _v0) {
-		var task = _v0.a;
-		return $elm$core$Task$Perform(
-			A2($elm$core$Task$map, tagger, task));
-	});
-_Platform_effectManagers['Task'] = _Platform_createManager($elm$core$Task$init, $elm$core$Task$onEffects, $elm$core$Task$onSelfMsg, $elm$core$Task$cmdMap);
-var $elm$core$Task$command = _Platform_leaf('Task');
-var $elm$core$Task$perform = F2(
-	function (toMessage, task) {
-		return $elm$core$Task$command(
-			$elm$core$Task$Perform(
-				A2($elm$core$Task$map, toMessage, task)));
-	});
-var $elm$file$File$Download$string = F3(
-	function (name, mime, content) {
-		return A2(
-			$elm$core$Task$perform,
-			$elm$core$Basics$never,
-			A3(_File_download, name, mime, content));
-	});
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$OUI$MenuButton$performEffect = function (_v0) {
-	var msg = _v0.a;
-	return A2(
-		$elm$core$Task$perform,
-		$elm$core$Basics$identity,
-		$elm$core$Task$succeed(msg));
-};
-var $author$project$OUI$MenuButton$Loopback = function (a) {
-	return {$: 'Loopback', a: a};
-};
-var $elm$core$Maybe$andThen = F2(
-	function (callback, maybeValue) {
-		if (maybeValue.$ === 'Just') {
-			var value = maybeValue.a;
-			return callback(value);
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
-var $author$project$OUI$MenuButton$getAtIndex = function (index) {
-	return A2(
-		$elm$core$Basics$composeR,
-		$elm$core$List$drop(index),
-		A2(
-			$elm$core$Basics$composeR,
-			$elm$core$List$head,
-			$elm$core$Maybe$andThen(
-				function (menuitem) {
-					if (menuitem.$ === 'Item') {
-						var item = menuitem.a;
-						return $elm$core$Maybe$Just(item);
-					} else {
-						return $elm$core$Maybe$Nothing;
-					}
-				})));
-};
-var $author$project$OUI$Menu$Divider = {$: 'Divider'};
-var $author$project$OUI$MenuButton$hasItems = A2(
-	$elm$core$List$foldl,
-	F2(
-		function (item, r) {
-			if (item.$ === 'Item') {
-				return true;
-			} else {
-				return r;
-			}
-		}),
-	false);
-var $author$project$OUI$MenuButton$nextIndex = F2(
-	function (items, index) {
-		nextIndex:
-		while (true) {
-			if ($author$project$OUI$MenuButton$hasItems(items)) {
-				var newIndex = (_Utils_cmp(
-					index,
-					$elm$core$List$length(items) - 1) > -1) ? 0 : (index + 1);
-				var item = $elm$core$List$head(
-					A2($elm$core$List$drop, newIndex, items));
-				if (_Utils_eq(
-					item,
-					$elm$core$Maybe$Just($author$project$OUI$Menu$Divider))) {
-					var $temp$items = items,
-						$temp$index = newIndex;
-					items = $temp$items;
-					index = $temp$index;
-					continue nextIndex;
-				} else {
-					return newIndex;
-				}
-			} else {
-				return -1;
-			}
-		}
-	});
-var $author$project$OUI$MenuButton$prevIndex = F2(
-	function (items, index) {
-		prevIndex:
-		while (true) {
-			if ($author$project$OUI$MenuButton$hasItems(items)) {
-				var newIndex = (index <= 0) ? ($elm$core$List$length(items) - 1) : (index - 1);
-				var item = $elm$core$List$head(
-					A2($elm$core$List$drop, newIndex, items));
-				if (_Utils_eq(
-					item,
-					$elm$core$Maybe$Just($author$project$OUI$Menu$Divider))) {
-					var $temp$items = items,
-						$temp$index = newIndex;
-					items = $temp$items;
-					index = $temp$index;
-					continue prevIndex;
-				} else {
-					return newIndex;
-				}
-			} else {
-				return -1;
-			}
-		}
-	});
-var $author$project$OUI$MenuButton$updateWithoutPerform = F2(
-	function (msg, state) {
-		switch (msg.$) {
-			case 'OnClickOutside':
-				return _Utils_Tuple2(
-					_Utils_update(
-						state,
-						{highlighted: -1, opened: false}),
-					$elm$core$Maybe$Nothing);
-			case 'OnClickButton':
-				return _Utils_Tuple2(
-					_Utils_update(
-						state,
-						{opened: !state.opened}),
-					$elm$core$Maybe$Nothing);
-			case 'OnClickItem':
-				var selectMsg = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						state,
-						{highlighted: -1, opened: false}),
-					$elm$core$Maybe$Just(
-						$author$project$OUI$MenuButton$Loopback(selectMsg)));
-			case 'OnBlur':
-				return _Utils_Tuple2(
-					_Utils_update(
-						state,
-						{highlighted: -1, opened: false}),
-					$elm$core$Maybe$Nothing);
-			default:
-				switch (msg.c.$) {
-					case 'ArrowUp':
-						var items = msg.b;
-						var _v1 = msg.c;
-						return _Utils_Tuple2(
-							_Utils_update(
-								state,
-								{
-									highlighted: A2($author$project$OUI$MenuButton$prevIndex, items, state.highlighted)
-								}),
-							$elm$core$Maybe$Nothing);
-					case 'ArrowDown':
-						var items = msg.b;
-						var _v2 = msg.c;
-						return _Utils_Tuple2(
-							_Utils_update(
-								state,
-								{
-									highlighted: A2($author$project$OUI$MenuButton$nextIndex, items, state.highlighted),
-									opened: true
-								}),
-							$elm$core$Maybe$Nothing);
-					case 'Enter':
-						var onClick = msg.a;
-						var items = msg.b;
-						var _v3 = msg.c;
-						return _Utils_Tuple2(
-							_Utils_update(
-								state,
-								{highlighted: -1, opened: false}),
-							A2(
-								$elm$core$Maybe$map,
-								A2($elm$core$Basics$composeR, onClick, $author$project$OUI$MenuButton$Loopback),
-								A2($author$project$OUI$MenuButton$getAtIndex, state.highlighted, items)));
-					default:
-						var _v4 = msg.c;
-						return _Utils_Tuple2(
-							_Utils_update(
-								state,
-								{highlighted: -1, opened: false}),
-							$elm$core$Maybe$Nothing);
-				}
-		}
-	});
-var $author$project$OUI$MenuButton$update = F2(
-	function (msg, state) {
-		return A2(
-			$elm$core$Tuple$mapSecond,
-			A2(
-				$elm$core$Basics$composeR,
-				$elm$core$Maybe$map($author$project$OUI$MenuButton$performEffect),
-				$elm$core$Maybe$withDefault($elm$core$Platform$Cmd$none)),
-			A2($author$project$OUI$MenuButton$updateWithoutPerform, msg, state));
-	});
-var $elm$core$Char$toLower = _Char_toLower;
-var $author$project$OUI$Material$Color$Json$hexToInt = function (_char) {
-	var _v0 = $elm$core$Char$toLower(_char);
-	switch (_v0.valueOf()) {
-		case '0':
-			return $elm$core$Maybe$Just(0);
-		case '1':
-			return $elm$core$Maybe$Just(1);
-		case '2':
-			return $elm$core$Maybe$Just(2);
-		case '3':
-			return $elm$core$Maybe$Just(3);
-		case '4':
-			return $elm$core$Maybe$Just(4);
-		case '5':
-			return $elm$core$Maybe$Just(5);
-		case '6':
-			return $elm$core$Maybe$Just(6);
-		case '7':
-			return $elm$core$Maybe$Just(7);
-		case '8':
-			return $elm$core$Maybe$Just(8);
-		case '9':
-			return $elm$core$Maybe$Just(9);
-		case 'a':
-			return $elm$core$Maybe$Just(10);
-		case 'b':
-			return $elm$core$Maybe$Just(11);
-		case 'c':
-			return $elm$core$Maybe$Just(12);
-		case 'd':
-			return $elm$core$Maybe$Just(13);
-		case 'e':
-			return $elm$core$Maybe$Just(14);
-		case 'f':
-			return $elm$core$Maybe$Just(15);
-		default:
-			return $elm$core$Maybe$Nothing;
-	}
-};
-var $elm$core$Maybe$map2 = F3(
-	function (func, ma, mb) {
-		if (ma.$ === 'Nothing') {
-			return $elm$core$Maybe$Nothing;
-		} else {
-			var a = ma.a;
-			if (mb.$ === 'Nothing') {
-				return $elm$core$Maybe$Nothing;
-			} else {
-				var b = mb.a;
-				return $elm$core$Maybe$Just(
-					A2(func, a, b));
-			}
-		}
-	});
-var $author$project$OUI$Material$Color$Json$hex2ToInt = F2(
-	function (c1, c2) {
-		return A3(
-			$elm$core$Maybe$map2,
-			F2(
-				function (v1, v2) {
-					return (v1 << 4) + v2;
-				}),
-			$author$project$OUI$Material$Color$Json$hexToInt(c1),
-			$author$project$OUI$Material$Color$Json$hexToInt(c2));
-	});
-var $elm$core$Maybe$map4 = F5(
-	function (func, ma, mb, mc, md) {
-		if (ma.$ === 'Nothing') {
-			return $elm$core$Maybe$Nothing;
-		} else {
-			var a = ma.a;
-			if (mb.$ === 'Nothing') {
-				return $elm$core$Maybe$Nothing;
-			} else {
-				var b = mb.a;
-				if (mc.$ === 'Nothing') {
-					return $elm$core$Maybe$Nothing;
-				} else {
-					var c = mc.a;
-					if (md.$ === 'Nothing') {
-						return $elm$core$Maybe$Nothing;
-					} else {
-						var d = md.a;
-						return $elm$core$Maybe$Just(
-							A4(func, a, b, c, d));
-					}
-				}
-			}
-		}
-	});
-var $avh4$elm_color$Color$rgba = F4(
-	function (r, g, b, a) {
-		return A4($avh4$elm_color$Color$RgbaSpace, r, g, b, a);
-	});
-var $author$project$OUI$Material$Color$Json$fromHex8 = F4(
-	function (_v0, _v1, _v2, _v3) {
-		var r1 = _v0.a;
-		var r2 = _v0.b;
-		var g1 = _v1.a;
-		var g2 = _v1.b;
-		var b1 = _v2.a;
-		var b2 = _v2.b;
-		var a1 = _v3.a;
-		var a2 = _v3.b;
-		return A5(
-			$elm$core$Maybe$map4,
-			F4(
-				function (r, g, b, a) {
-					return A4($avh4$elm_color$Color$rgba, r / 255, g / 255, b / 255, a / 255);
-				}),
-			A2($author$project$OUI$Material$Color$Json$hex2ToInt, r1, r2),
-			A2($author$project$OUI$Material$Color$Json$hex2ToInt, g1, g2),
-			A2($author$project$OUI$Material$Color$Json$hex2ToInt, b1, b2),
-			A2($author$project$OUI$Material$Color$Json$hex2ToInt, a1, a2));
-	});
-var $elm$core$String$foldr = _String_foldr;
-var $elm$core$String$toList = function (string) {
-	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
-};
-var $author$project$OUI$Material$Color$Json$colorFromHex = function (hexString) {
-	var _v0 = $elm$core$String$toList(hexString);
-	_v0$8:
-	while (true) {
-		if ((_v0.b && _v0.b.b) && _v0.b.b.b) {
-			if (!_v0.b.b.b.b) {
-				var r = _v0.a;
-				var _v4 = _v0.b;
-				var g = _v4.a;
-				var _v5 = _v4.b;
-				var b = _v5.a;
-				return A4(
-					$author$project$OUI$Material$Color$Json$fromHex8,
-					_Utils_Tuple2(r, r),
-					_Utils_Tuple2(g, g),
-					_Utils_Tuple2(b, b),
-					_Utils_Tuple2(
-						_Utils_chr('f'),
-						_Utils_chr('f')));
-			} else {
-				if (!_v0.b.b.b.b.b) {
-					if ('#' === _v0.a.valueOf()) {
-						var _v1 = _v0.b;
-						var r = _v1.a;
-						var _v2 = _v1.b;
-						var g = _v2.a;
-						var _v3 = _v2.b;
-						var b = _v3.a;
-						return A4(
-							$author$project$OUI$Material$Color$Json$fromHex8,
-							_Utils_Tuple2(r, r),
-							_Utils_Tuple2(g, g),
-							_Utils_Tuple2(b, b),
-							_Utils_Tuple2(
-								_Utils_chr('f'),
-								_Utils_chr('f')));
-					} else {
-						var r = _v0.a;
-						var _v10 = _v0.b;
-						var g = _v10.a;
-						var _v11 = _v10.b;
-						var b = _v11.a;
-						var _v12 = _v11.b;
-						var a = _v12.a;
-						return A4(
-							$author$project$OUI$Material$Color$Json$fromHex8,
-							_Utils_Tuple2(r, r),
-							_Utils_Tuple2(g, g),
-							_Utils_Tuple2(b, b),
-							_Utils_Tuple2(a, a));
-					}
-				} else {
-					if (!_v0.b.b.b.b.b.b) {
-						if ('#' === _v0.a.valueOf()) {
-							var _v6 = _v0.b;
-							var r = _v6.a;
-							var _v7 = _v6.b;
-							var g = _v7.a;
-							var _v8 = _v7.b;
-							var b = _v8.a;
-							var _v9 = _v8.b;
-							var a = _v9.a;
-							return A4(
-								$author$project$OUI$Material$Color$Json$fromHex8,
-								_Utils_Tuple2(r, r),
-								_Utils_Tuple2(g, g),
-								_Utils_Tuple2(b, b),
-								_Utils_Tuple2(a, a));
-						} else {
-							break _v0$8;
-						}
-					} else {
-						if (!_v0.b.b.b.b.b.b.b) {
-							var r1 = _v0.a;
-							var _v19 = _v0.b;
-							var r2 = _v19.a;
-							var _v20 = _v19.b;
-							var g1 = _v20.a;
-							var _v21 = _v20.b;
-							var g2 = _v21.a;
-							var _v22 = _v21.b;
-							var b1 = _v22.a;
-							var _v23 = _v22.b;
-							var b2 = _v23.a;
-							return A4(
-								$author$project$OUI$Material$Color$Json$fromHex8,
-								_Utils_Tuple2(r1, r2),
-								_Utils_Tuple2(g1, g2),
-								_Utils_Tuple2(b1, b2),
-								_Utils_Tuple2(
-									_Utils_chr('f'),
-									_Utils_chr('f')));
-						} else {
-							if (!_v0.b.b.b.b.b.b.b.b) {
-								if ('#' === _v0.a.valueOf()) {
-									var _v13 = _v0.b;
-									var r1 = _v13.a;
-									var _v14 = _v13.b;
-									var r2 = _v14.a;
-									var _v15 = _v14.b;
-									var g1 = _v15.a;
-									var _v16 = _v15.b;
-									var g2 = _v16.a;
-									var _v17 = _v16.b;
-									var b1 = _v17.a;
-									var _v18 = _v17.b;
-									var b2 = _v18.a;
-									return A4(
-										$author$project$OUI$Material$Color$Json$fromHex8,
-										_Utils_Tuple2(r1, r2),
-										_Utils_Tuple2(g1, g2),
-										_Utils_Tuple2(b1, b2),
-										_Utils_Tuple2(
-											_Utils_chr('f'),
-											_Utils_chr('f')));
-								} else {
-									break _v0$8;
-								}
-							} else {
-								if (_v0.b.b.b.b.b.b.b.b.b) {
-									if (('#' === _v0.a.valueOf()) && (!_v0.b.b.b.b.b.b.b.b.b.b)) {
-										var _v24 = _v0.b;
-										var r1 = _v24.a;
-										var _v25 = _v24.b;
-										var r2 = _v25.a;
-										var _v26 = _v25.b;
-										var g1 = _v26.a;
-										var _v27 = _v26.b;
-										var g2 = _v27.a;
-										var _v28 = _v27.b;
-										var b1 = _v28.a;
-										var _v29 = _v28.b;
-										var b2 = _v29.a;
-										var _v30 = _v29.b;
-										var a1 = _v30.a;
-										var _v31 = _v30.b;
-										var a2 = _v31.a;
-										return A4(
-											$author$project$OUI$Material$Color$Json$fromHex8,
-											_Utils_Tuple2(r1, r2),
-											_Utils_Tuple2(g1, g2),
-											_Utils_Tuple2(b1, b2),
-											_Utils_Tuple2(a1, a2));
-									} else {
-										break _v0$8;
-									}
-								} else {
-									var r1 = _v0.a;
-									var _v32 = _v0.b;
-									var r2 = _v32.a;
-									var _v33 = _v32.b;
-									var g1 = _v33.a;
-									var _v34 = _v33.b;
-									var g2 = _v34.a;
-									var _v35 = _v34.b;
-									var b1 = _v35.a;
-									var _v36 = _v35.b;
-									var b2 = _v36.a;
-									var _v37 = _v36.b;
-									var a1 = _v37.a;
-									var _v38 = _v37.b;
-									var a2 = _v38.a;
-									return A4(
-										$author$project$OUI$Material$Color$Json$fromHex8,
-										_Utils_Tuple2(r1, r2),
-										_Utils_Tuple2(g1, g2),
-										_Utils_Tuple2(b1, b2),
-										_Utils_Tuple2(a1, a2));
-								}
-							}
-						}
-					}
-				}
-			}
-		} else {
-			break _v0$8;
-		}
-	}
-	return $elm$core$Maybe$Nothing;
-};
-var $simonh1000$elm_colorpicker$ColorPicker$widgetWidth = 200;
-var $simonh1000$elm_colorpicker$ColorPicker$calcHue = F2(
-	function (col, _v0) {
-		var mousePressed = _v0.mousePressed;
-		var x = _v0.x;
-		var hue = x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth;
-		var hsla = $avh4$elm_color$Color$toHsla(col);
-		var alpha = hsla.alpha;
-		var lightness = hsla.lightness;
-		var saturation = hsla.saturation;
-		var newCol = ((!saturation) && (lightness < 0.02)) ? _Utils_update(
-			hsla,
-			{hue: hue, lightness: 0.5, saturation: 0.5}) : _Utils_update(
-			hsla,
-			{hue: hue});
-		return $avh4$elm_color$Color$fromHsla(newCol);
-	});
-var $simonh1000$elm_colorpicker$ColorPicker$calcOpacity = F3(
-	function (col, _v0, _v1) {
-		var mousePressed = _v1.mousePressed;
-		var x = _v1.x;
-		var hsla = $avh4$elm_color$Color$toHsla(col);
-		return $avh4$elm_color$Color$fromHsla(
-			_Utils_update(
-				hsla,
-				{
-					alpha: A3($elm$core$Basics$clamp, 0, $simonh1000$elm_colorpicker$ColorPicker$widgetWidth, x) / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth
-				}));
-	});
-var $simonh1000$elm_colorpicker$ColorPicker$widgetHeight = 150;
-var $simonh1000$elm_colorpicker$ColorPicker$calcSatLight = F3(
-	function (col, currHue, _v0) {
-		var mousePressed = _v0.mousePressed;
-		var y = _v0.y;
-		var x = _v0.x;
-		var hsla = $avh4$elm_color$Color$toHsla(col);
-		return $avh4$elm_color$Color$fromHsla(
-			_Utils_update(
-				hsla,
-				{hue: currHue, lightness: 1 - (y / $simonh1000$elm_colorpicker$ColorPicker$widgetHeight), saturation: x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth}));
-	});
-var $simonh1000$elm_colorpicker$ColorPicker$setHue = F3(
-	function (mouseTarget, mouseInfo, model) {
-		switch (mouseTarget.$) {
-			case 'SatLight':
-				var hue = mouseTarget.a;
-				return _Utils_update(
-					model,
-					{
-						hue: $elm$core$Maybe$Just(
-							A2($elm$core$Maybe$withDefault, hue, model.hue))
-					});
-			case 'HueSlider':
-				return _Utils_update(
-					model,
-					{
-						hue: $elm$core$Maybe$Just(mouseInfo.x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth)
-					});
-			case 'OpacitySlider':
-				var hue = mouseTarget.a;
-				return _Utils_update(
-					model,
-					{
-						hue: $elm$core$Maybe$Just(
-							A2($elm$core$Maybe$withDefault, hue, model.hue))
-					});
-			default:
-				return model;
-		}
-	});
-var $simonh1000$elm_colorpicker$ColorPicker$setMouseTarget = F2(
-	function (mouseTarget, model) {
-		return _Utils_update(
-			model,
-			{mouseTarget: mouseTarget});
-	});
-var $simonh1000$elm_colorpicker$ColorPicker$update_ = F3(
-	function (message, col, model) {
-		var calcNewColour = function (mouseTarget) {
-			switch (mouseTarget.$) {
-				case 'SatLight':
-					var hue = mouseTarget.a;
-					return A2(
-						$elm$core$Basics$composeL,
-						$elm$core$Maybe$Just,
-						A2(
-							$simonh1000$elm_colorpicker$ColorPicker$calcSatLight,
-							col,
-							A2($elm$core$Maybe$withDefault, hue, model.hue)));
-				case 'HueSlider':
-					return A2(
-						$elm$core$Basics$composeL,
-						$elm$core$Maybe$Just,
-						$simonh1000$elm_colorpicker$ColorPicker$calcHue(col));
-				case 'OpacitySlider':
-					var hue = mouseTarget.a;
-					return A2(
-						$elm$core$Basics$composeL,
-						$elm$core$Maybe$Just,
-						A2(
-							$simonh1000$elm_colorpicker$ColorPicker$calcOpacity,
-							col,
-							A2($elm$core$Maybe$withDefault, hue, model.hue)));
-				default:
-					return function (_v2) {
-						return $elm$core$Maybe$Nothing;
-					};
-			}
-		};
-		var handleMouseMove = F2(
-			function (mouseTarget, mouseInfo) {
-				return (mouseInfo.mousePressed && _Utils_eq(model.mouseTarget, mouseTarget)) ? _Utils_Tuple2(
-					A3($simonh1000$elm_colorpicker$ColorPicker$setHue, mouseTarget, mouseInfo, model),
-					A2(calcNewColour, mouseTarget, mouseInfo)) : (((!mouseInfo.mousePressed) && _Utils_eq(model.mouseTarget, mouseTarget)) ? _Utils_Tuple2(
-					A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, $simonh1000$elm_colorpicker$ColorPicker$Unpressed, model),
-					$elm$core$Maybe$Nothing) : _Utils_Tuple2(model, $elm$core$Maybe$Nothing));
-			});
-		switch (message.$) {
-			case 'OnMouseDown':
-				var mouseTarget = message.a;
-				var mouseInfo = message.b;
-				return _Utils_Tuple2(
-					A3(
-						$simonh1000$elm_colorpicker$ColorPicker$setHue,
-						mouseTarget,
-						mouseInfo,
-						A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, mouseTarget, model)),
-					A2(calcNewColour, mouseTarget, mouseInfo));
-			case 'OnMouseMove':
-				var mouseTarget = message.a;
-				var mouseInfo = message.b;
-				return A2(handleMouseMove, mouseTarget, mouseInfo);
-			case 'OnClick':
-				var mouseTarget = message.a;
-				var mouseInfo = message.b;
-				return _Utils_Tuple2(
-					A3($simonh1000$elm_colorpicker$ColorPicker$setHue, mouseTarget, mouseInfo, model),
-					A2(calcNewColour, mouseTarget, mouseInfo));
-			case 'OnMouseUp':
-				return _Utils_Tuple2(
-					A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, $simonh1000$elm_colorpicker$ColorPicker$Unpressed, model),
-					$elm$core$Maybe$Nothing);
-			default:
-				return _Utils_Tuple2(model, $elm$core$Maybe$Nothing);
-		}
-	});
-var $simonh1000$elm_colorpicker$ColorPicker$update = F3(
-	function (message, col, _v0) {
-		var model = _v0.a;
-		return A2(
-			$elm$core$Tuple$mapFirst,
-			$simonh1000$elm_colorpicker$ColorPicker$State,
-			A3($simonh1000$elm_colorpicker$ColorPicker$update_, message, col, model));
-	});
-var $author$project$OUI$Showcase$ColorPicker$update = F3(
-	function (msg, color, model) {
-		switch (msg.$) {
-			case 'ColorPickerMsg':
-				var subMsg = msg.a;
-				var _v1 = A3($simonh1000$elm_colorpicker$ColorPicker$update, subMsg, color, model.colorPicker);
-				var p = _v1.a;
-				var nextColor = _v1.b;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{colorPicker: p}),
-					nextColor);
-			case 'TextChange':
-				var value = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{text: value}),
-					$elm$core$Maybe$Just(
-						A2(
-							$elm$core$Maybe$withDefault,
-							color,
-							$author$project$OUI$Material$Color$Json$colorFromHex(value))));
-			default:
-				var value = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							text: value ? $author$project$OUI$Material$Color$Json$toHexWithAlpha(color) : model.text,
-							textFocused: value
-						}),
-					value ? $elm$core$Maybe$Just(color) : $author$project$OUI$Material$Color$Json$colorFromHex(model.text));
-		}
-	});
-var $author$project$OUI$Explorer$UpdateColorTheme = F2(
-	function (a, b) {
-		return {$: 'UpdateColorTheme', a: a, b: b};
-	});
-var $author$project$OUI$Explorer$updateColorThemeMsg = $author$project$OUI$Explorer$UpdateColorTheme;
-var $orus_io$elm_spa$Effect$fromCmd = $orus_io$elm_spa$Effect$Cmd;
-var $orus_io$elm_spa$Effect$withCmd = F2(
-	function (cmd, model) {
-		return _Utils_Tuple2(
-			model,
-			$orus_io$elm_spa$Effect$fromCmd(cmd));
-	});
-var $orus_io$elm_spa$Effect$withShared = F2(
-	function (shared, model) {
-		return _Utils_Tuple2(
-			model,
-			$orus_io$elm_spa$Effect$fromShared(shared));
-	});
-var $author$project$OUI$Showcase$Colors$update = F3(
-	function (shared, msg, model) {
-		switch (msg.$) {
-			case 'ColorThemeButtonMsg':
-				var buttonMsg = msg.a;
-				var _v1 = A2($author$project$OUI$MenuButton$update, buttonMsg, model.colorThemeButton);
-				var state = _v1.a;
-				var cmd = _v1.b;
-				return A2(
-					$orus_io$elm_spa$Effect$withCmd,
-					cmd,
-					_Utils_update(
-						model,
-						{colorThemeButton: state}));
-			case 'SelectColorScheme':
-				var i = msg.a;
-				var t = msg.b;
-				return A2(
-					$orus_io$elm_spa$Effect$withShared,
-					A2($author$project$OUI$Explorer$selectColorScheme, i, t),
-					model);
-			case 'CopyColorTheme':
-				var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme;
-				return A2(
-					$orus_io$elm_spa$Effect$withShared,
-					$author$project$OUI$Explorer$addColorThemeMsg(
-						_Utils_update(
-							currentColorTheme,
-							{name: currentColorTheme.name + ' (copy)'})),
-					model);
-			case 'ColorPickerMsg':
-				var colorPickerMsg = msg.a;
-				return $orus_io$elm_spa$Effect$withNone(
-					function () {
-						var _v2 = model.colorSelector;
-						if (_v2.$ === 'Just') {
-							var colorSelector = _v2.a;
-							var _v3 = A3($author$project$OUI$Showcase$ColorPicker$update, colorPickerMsg, colorSelector.color, colorSelector.colorPicker);
-							var m = _v3.a;
-							var color = _v3.b;
-							return _Utils_update(
-								model,
-								{
-									colorSelector: $elm$core$Maybe$Just(
-										_Utils_update(
-											colorSelector,
-											{
-												color: A2($elm$core$Maybe$withDefault, colorSelector.color, color),
-												colorPicker: m
-											}))
-								});
-						} else {
-							return model;
-						}
-					}());
-			case 'EditColor':
-				var color = msg.a;
-				var setter = msg.b;
-				return $orus_io$elm_spa$Effect$withNone(
-					_Utils_update(
-						model,
-						{
-							colorSelector: $elm$core$Maybe$Just(
-								{color: color, colorPicker: $author$project$OUI$Showcase$ColorPicker$empty, setter: setter})
-						}));
-			case 'DismissColor':
-				return $orus_io$elm_spa$Effect$withNone(
-					_Utils_update(
-						model,
-						{colorSelector: $elm$core$Maybe$Nothing}));
-			case 'AcceptColor':
-				var _v4 = model.colorSelector;
-				if (_v4.$ === 'Just') {
-					var colorSelector = _v4.a;
-					var theme = $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme;
-					var currentThemeIndex = shared.selectedColorScheme.a;
-					return A2(
-						$orus_io$elm_spa$Effect$withShared,
-						A2(
-							$author$project$OUI$Explorer$updateColorThemeMsg,
-							currentThemeIndex,
-							A2(colorSelector.setter, colorSelector.color, theme)),
-						_Utils_update(
-							model,
-							{colorSelector: $elm$core$Maybe$Nothing}));
-				} else {
-					return $orus_io$elm_spa$Effect$withNone(model);
-				}
-			default:
-				var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme;
-				return A2(
-					$orus_io$elm_spa$Effect$withCmd,
-					A3(
-						$elm$file$File$Download$string,
-						currentColorTheme.name + '.json',
-						'application/json',
-						A2(
-							$elm$json$Json$Encode$encode,
-							2,
-							$author$project$OUI$Material$Color$Json$encodeColorTheme(currentColorTheme))),
-					model);
-		}
-	});
-var $author$project$OUI$Showcase$ColorPicker$ColorPickerMsg = function (a) {
-	return {$: 'ColorPickerMsg', a: a};
-};
-var $author$project$OUI$TextField$Outlined = {$: 'Outlined'};
-var $author$project$OUI$Showcase$ColorPicker$TextChange = function (a) {
-	return {$: 'TextChange', a: a};
-};
-var $author$project$OUI$Showcase$ColorPicker$TextFocus = function (a) {
-	return {$: 'TextFocus', a: a};
-};
-var $author$project$OUI$TextField$Filled = {$: 'Filled'};
-var $author$project$OUI$TextField$Text = {$: 'Text'};
-var $author$project$OUI$TextField$TextField = function (a) {
-	return {$: 'TextField', a: a};
-};
-var $author$project$OUI$TextField$new = F3(
-	function (label, onChange, value) {
-		return $author$project$OUI$TextField$TextField(
-			{color: $author$project$OUI$Primary, datatype: $author$project$OUI$TextField$Text, errorIcon: $elm$core$Maybe$Nothing, hasFocus: false, id: $elm$core$Maybe$Nothing, label: label, leadingIcon: $elm$core$Maybe$Nothing, onChange: onChange, onFocus: $elm$core$Maybe$Nothing, onLoseFocus: $elm$core$Maybe$Nothing, onTrailingIconClick: $elm$core$Maybe$Nothing, spellcheck: false, supportingText: $elm$core$Maybe$Nothing, trailingIcon: $elm$core$Maybe$Nothing, type_: $author$project$OUI$TextField$Filled, value: value});
-	});
-var $author$project$OUI$TextField$onFocusBlur = F3(
-	function (onFocus, onLoseFocus, _v0) {
-		var props = _v0.a;
-		return $author$project$OUI$TextField$TextField(
-			_Utils_update(
-				props,
-				{
-					onFocus: $elm$core$Maybe$Just(onFocus),
-					onLoseFocus: $elm$core$Maybe$Just(onLoseFocus)
-				}));
-	});
 var $author$project$OUI$TextField$Multiline = {$: 'Multiline'};
 var $author$project$OUI$Text$bodySmall = A2($author$project$OUI$Text$textTypeSize, $author$project$OUI$Text$Body, $author$project$OUI$Text$Small);
 var $mdgriffith$elm_ui$Element$Input$TextInputNode = function (a) {
@@ -19850,6 +18792,1145 @@ var $author$project$OUI$Material$textField = function (theme) {
 		$author$project$OUI$Material$Theme$button(theme),
 		$author$project$OUI$Material$Theme$textfield(theme));
 };
+var $author$project$OUI$Explorer$AddColorTheme = function (a) {
+	return {$: 'AddColorTheme', a: a};
+};
+var $author$project$OUI$Explorer$addColorThemeMsg = $author$project$OUI$Explorer$AddColorTheme;
+var $simonh1000$elm_colorpicker$ColorPicker$State = function (a) {
+	return {$: 'State', a: a};
+};
+var $simonh1000$elm_colorpicker$ColorPicker$Unpressed = {$: 'Unpressed'};
+var $simonh1000$elm_colorpicker$ColorPicker$blankModel = {hue: $elm$core$Maybe$Nothing, mouseTarget: $simonh1000$elm_colorpicker$ColorPicker$Unpressed};
+var $simonh1000$elm_colorpicker$ColorPicker$empty = $simonh1000$elm_colorpicker$ColorPicker$State($simonh1000$elm_colorpicker$ColorPicker$blankModel);
+var $author$project$OUI$Showcase$ColorPicker$empty = {colorPicker: $simonh1000$elm_colorpicker$ColorPicker$empty, text: '', textFocused: false};
+var $author$project$OUI$Material$Color$Json$encodeColor = function (color) {
+	return $elm$json$Json$Encode$string(
+		function (_v0) {
+			var alpha = _v0.alpha;
+			var hex = _v0.hex;
+			return _Utils_ap(
+				hex,
+				$author$project$OUI$Material$Color$Json$int255ToHex(
+					$elm$core$Basics$round(alpha * 255)));
+		}(
+			$author$project$OUI$Material$Color$Json$toHex(color)));
+};
+var $author$project$OUI$Material$Color$Json$encodeKeyColors = function (keyColors) {
+	return $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'primary',
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.primary)),
+				_Utils_Tuple2(
+				'secondary',
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.secondary)),
+				_Utils_Tuple2(
+				'tertiary',
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.tertiary)),
+				_Utils_Tuple2(
+				'error',
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.error)),
+				_Utils_Tuple2(
+				'neutral',
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.neutral)),
+				_Utils_Tuple2(
+				'neutralVariant',
+				$author$project$OUI$Material$Color$Json$encodeColor(keyColors.neutralVariant))
+			]));
+};
+var $author$project$OUI$Material$Color$Json$encodeColorScheme = function (scheme) {
+	return $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'keyColors',
+				$author$project$OUI$Material$Color$Json$encodeKeyColors(scheme.keyColors)),
+				_Utils_Tuple2(
+				'primary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.primary)),
+				_Utils_Tuple2(
+				'primaryContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.primaryContainer)),
+				_Utils_Tuple2(
+				'onPrimary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onPrimary)),
+				_Utils_Tuple2(
+				'onPrimaryContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onPrimaryContainer)),
+				_Utils_Tuple2(
+				'inversePrimary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inversePrimary)),
+				_Utils_Tuple2(
+				'secondary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.secondary)),
+				_Utils_Tuple2(
+				'secondaryContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.secondaryContainer)),
+				_Utils_Tuple2(
+				'onSecondary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSecondary)),
+				_Utils_Tuple2(
+				'onSecondaryContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSecondaryContainer)),
+				_Utils_Tuple2(
+				'tertiary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.tertiary)),
+				_Utils_Tuple2(
+				'tertiaryContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.tertiaryContainer)),
+				_Utils_Tuple2(
+				'onTertiary',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onTertiary)),
+				_Utils_Tuple2(
+				'onTertiaryContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onTertiaryContainer)),
+				_Utils_Tuple2(
+				'surface',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surface)),
+				_Utils_Tuple2(
+				'surfaceDim',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceDim)),
+				_Utils_Tuple2(
+				'surfaceBright',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceBright)),
+				_Utils_Tuple2(
+				'surfaceContainerLowest',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerLowest)),
+				_Utils_Tuple2(
+				'surfaceContainerLow',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerLow)),
+				_Utils_Tuple2(
+				'surfaceContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainer)),
+				_Utils_Tuple2(
+				'surfaceContainerHigh',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerHigh)),
+				_Utils_Tuple2(
+				'surfaceContainerHighest',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceContainerHighest)),
+				_Utils_Tuple2(
+				'surfaceVariant',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceVariant)),
+				_Utils_Tuple2(
+				'onSurface',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSurface)),
+				_Utils_Tuple2(
+				'onSurfaceVariant',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onSurfaceVariant)),
+				_Utils_Tuple2(
+				'inverseSurface',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inverseSurface)),
+				_Utils_Tuple2(
+				'inverseOnSurface',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.inverseOnSurface)),
+				_Utils_Tuple2(
+				'background',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.background)),
+				_Utils_Tuple2(
+				'onBackground',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onBackground)),
+				_Utils_Tuple2(
+				'error',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.error)),
+				_Utils_Tuple2(
+				'errorContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.errorContainer)),
+				_Utils_Tuple2(
+				'onError',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onError)),
+				_Utils_Tuple2(
+				'onErrorContainer',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.onErrorContainer)),
+				_Utils_Tuple2(
+				'outline',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.outline)),
+				_Utils_Tuple2(
+				'outlineVariant',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.outlineVariant)),
+				_Utils_Tuple2(
+				'shadow',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.shadow)),
+				_Utils_Tuple2(
+				'surfaceTint',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.surfaceTint)),
+				_Utils_Tuple2(
+				'scrim',
+				$author$project$OUI$Material$Color$Json$encodeColor(scheme.scrim))
+			]));
+};
+var $author$project$OUI$Material$Color$Json$encodeColorTheme = function (theme) {
+	return $elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'name',
+				$elm$json$Json$Encode$string(theme.name)),
+				_Utils_Tuple2(
+				'description',
+				$elm$json$Json$Encode$string(theme.description)),
+				_Utils_Tuple2(
+				'keyColors',
+				$author$project$OUI$Material$Color$Json$encodeKeyColors(theme.keyColors)),
+				_Utils_Tuple2(
+				'schemes',
+				$elm$json$Json$Encode$object(
+					_List_fromArray(
+						[
+							_Utils_Tuple2(
+							'light',
+							$author$project$OUI$Material$Color$Json$encodeColorScheme(theme.schemes.light)),
+							_Utils_Tuple2(
+							'dark',
+							$author$project$OUI$Material$Color$Json$encodeColorScheme(theme.schemes.dark))
+						])))
+			]));
+};
+var $author$project$OUI$Explorer$SelectColorScheme = F2(
+	function (a, b) {
+		return {$: 'SelectColorScheme', a: a, b: b};
+	});
+var $author$project$OUI$Explorer$selectColorScheme = F2(
+	function (i, t) {
+		return A2($author$project$OUI$Explorer$SelectColorScheme, i, t);
+	});
+var $elm$time$Time$Posix = function (a) {
+	return {$: 'Posix', a: a};
+};
+var $elm$time$Time$millisToPosix = $elm$time$Time$Posix;
+var $elm$core$Task$Perform = function (a) {
+	return {$: 'Perform', a: a};
+};
+var $elm$core$Task$succeed = _Scheduler_succeed;
+var $elm$core$Task$init = $elm$core$Task$succeed(_Utils_Tuple0);
+var $elm$core$Task$andThen = _Scheduler_andThen;
+var $elm$core$Task$map = F2(
+	function (func, taskA) {
+		return A2(
+			$elm$core$Task$andThen,
+			function (a) {
+				return $elm$core$Task$succeed(
+					func(a));
+			},
+			taskA);
+	});
+var $elm$core$Task$map2 = F3(
+	function (func, taskA, taskB) {
+		return A2(
+			$elm$core$Task$andThen,
+			function (a) {
+				return A2(
+					$elm$core$Task$andThen,
+					function (b) {
+						return $elm$core$Task$succeed(
+							A2(func, a, b));
+					},
+					taskB);
+			},
+			taskA);
+	});
+var $elm$core$Task$sequence = function (tasks) {
+	return A3(
+		$elm$core$List$foldr,
+		$elm$core$Task$map2($elm$core$List$cons),
+		$elm$core$Task$succeed(_List_Nil),
+		tasks);
+};
+var $elm$core$Platform$sendToApp = _Platform_sendToApp;
+var $elm$core$Task$spawnCmd = F2(
+	function (router, _v0) {
+		var task = _v0.a;
+		return _Scheduler_spawn(
+			A2(
+				$elm$core$Task$andThen,
+				$elm$core$Platform$sendToApp(router),
+				task));
+	});
+var $elm$core$Task$onEffects = F3(
+	function (router, commands, state) {
+		return A2(
+			$elm$core$Task$map,
+			function (_v0) {
+				return _Utils_Tuple0;
+			},
+			$elm$core$Task$sequence(
+				A2(
+					$elm$core$List$map,
+					$elm$core$Task$spawnCmd(router),
+					commands)));
+	});
+var $elm$core$Task$onSelfMsg = F3(
+	function (_v0, _v1, _v2) {
+		return $elm$core$Task$succeed(_Utils_Tuple0);
+	});
+var $elm$core$Task$cmdMap = F2(
+	function (tagger, _v0) {
+		var task = _v0.a;
+		return $elm$core$Task$Perform(
+			A2($elm$core$Task$map, tagger, task));
+	});
+_Platform_effectManagers['Task'] = _Platform_createManager($elm$core$Task$init, $elm$core$Task$onEffects, $elm$core$Task$onSelfMsg, $elm$core$Task$cmdMap);
+var $elm$core$Task$command = _Platform_leaf('Task');
+var $elm$core$Task$perform = F2(
+	function (toMessage, task) {
+		return $elm$core$Task$command(
+			$elm$core$Task$Perform(
+				A2($elm$core$Task$map, toMessage, task)));
+	});
+var $elm$file$File$Download$string = F3(
+	function (name, mime, content) {
+		return A2(
+			$elm$core$Task$perform,
+			$elm$core$Basics$never,
+			A3(_File_download, name, mime, content));
+	});
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $author$project$OUI$MenuButton$performEffect = function (_v0) {
+	var msg = _v0.a;
+	return A2(
+		$elm$core$Task$perform,
+		$elm$core$Basics$identity,
+		$elm$core$Task$succeed(msg));
+};
+var $author$project$OUI$MenuButton$Loopback = function (a) {
+	return {$: 'Loopback', a: a};
+};
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (maybeValue.$ === 'Just') {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $author$project$OUI$MenuButton$getAtIndex = function (index) {
+	return A2(
+		$elm$core$Basics$composeR,
+		$elm$core$List$drop(index),
+		A2(
+			$elm$core$Basics$composeR,
+			$elm$core$List$head,
+			$elm$core$Maybe$andThen(
+				function (menuitem) {
+					if (menuitem.$ === 'Item') {
+						var item = menuitem.a;
+						return $elm$core$Maybe$Just(item);
+					} else {
+						return $elm$core$Maybe$Nothing;
+					}
+				})));
+};
+var $author$project$OUI$Menu$Divider = {$: 'Divider'};
+var $author$project$OUI$MenuButton$hasItems = A2(
+	$elm$core$List$foldl,
+	F2(
+		function (item, r) {
+			if (item.$ === 'Item') {
+				return true;
+			} else {
+				return r;
+			}
+		}),
+	false);
+var $author$project$OUI$MenuButton$nextIndex = F2(
+	function (items, index) {
+		nextIndex:
+		while (true) {
+			if ($author$project$OUI$MenuButton$hasItems(items)) {
+				var newIndex = (_Utils_cmp(
+					index,
+					$elm$core$List$length(items) - 1) > -1) ? 0 : (index + 1);
+				var item = $elm$core$List$head(
+					A2($elm$core$List$drop, newIndex, items));
+				if (_Utils_eq(
+					item,
+					$elm$core$Maybe$Just($author$project$OUI$Menu$Divider))) {
+					var $temp$items = items,
+						$temp$index = newIndex;
+					items = $temp$items;
+					index = $temp$index;
+					continue nextIndex;
+				} else {
+					return newIndex;
+				}
+			} else {
+				return -1;
+			}
+		}
+	});
+var $author$project$OUI$MenuButton$prevIndex = F2(
+	function (items, index) {
+		prevIndex:
+		while (true) {
+			if ($author$project$OUI$MenuButton$hasItems(items)) {
+				var newIndex = (index <= 0) ? ($elm$core$List$length(items) - 1) : (index - 1);
+				var item = $elm$core$List$head(
+					A2($elm$core$List$drop, newIndex, items));
+				if (_Utils_eq(
+					item,
+					$elm$core$Maybe$Just($author$project$OUI$Menu$Divider))) {
+					var $temp$items = items,
+						$temp$index = newIndex;
+					items = $temp$items;
+					index = $temp$index;
+					continue prevIndex;
+				} else {
+					return newIndex;
+				}
+			} else {
+				return -1;
+			}
+		}
+	});
+var $author$project$OUI$MenuButton$updateWithoutPerform = F2(
+	function (msg, state) {
+		switch (msg.$) {
+			case 'OnClickOutside':
+				return _Utils_Tuple2(
+					_Utils_update(
+						state,
+						{highlighted: -1, opened: false}),
+					$elm$core$Maybe$Nothing);
+			case 'OnClickButton':
+				return _Utils_Tuple2(
+					_Utils_update(
+						state,
+						{opened: !state.opened}),
+					$elm$core$Maybe$Nothing);
+			case 'OnClickItem':
+				var selectMsg = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						state,
+						{highlighted: -1, opened: false}),
+					$elm$core$Maybe$Just(
+						$author$project$OUI$MenuButton$Loopback(selectMsg)));
+			case 'OnBlur':
+				return _Utils_Tuple2(
+					_Utils_update(
+						state,
+						{highlighted: -1, opened: false}),
+					$elm$core$Maybe$Nothing);
+			default:
+				switch (msg.c.$) {
+					case 'ArrowUp':
+						var items = msg.b;
+						var _v1 = msg.c;
+						return _Utils_Tuple2(
+							_Utils_update(
+								state,
+								{
+									highlighted: A2($author$project$OUI$MenuButton$prevIndex, items, state.highlighted)
+								}),
+							$elm$core$Maybe$Nothing);
+					case 'ArrowDown':
+						var items = msg.b;
+						var _v2 = msg.c;
+						return _Utils_Tuple2(
+							_Utils_update(
+								state,
+								{
+									highlighted: A2($author$project$OUI$MenuButton$nextIndex, items, state.highlighted),
+									opened: true
+								}),
+							$elm$core$Maybe$Nothing);
+					case 'Enter':
+						var onClick = msg.a;
+						var items = msg.b;
+						var _v3 = msg.c;
+						return _Utils_Tuple2(
+							_Utils_update(
+								state,
+								{highlighted: -1, opened: false}),
+							A2(
+								$elm$core$Maybe$map,
+								A2($elm$core$Basics$composeR, onClick, $author$project$OUI$MenuButton$Loopback),
+								A2($author$project$OUI$MenuButton$getAtIndex, state.highlighted, items)));
+					default:
+						var _v4 = msg.c;
+						return _Utils_Tuple2(
+							_Utils_update(
+								state,
+								{highlighted: -1, opened: false}),
+							$elm$core$Maybe$Nothing);
+				}
+		}
+	});
+var $author$project$OUI$MenuButton$update = F2(
+	function (msg, state) {
+		return A2(
+			$elm$core$Tuple$mapSecond,
+			A2(
+				$elm$core$Basics$composeR,
+				$elm$core$Maybe$map($author$project$OUI$MenuButton$performEffect),
+				$elm$core$Maybe$withDefault($elm$core$Platform$Cmd$none)),
+			A2($author$project$OUI$MenuButton$updateWithoutPerform, msg, state));
+	});
+var $elm$core$Char$toLower = _Char_toLower;
+var $author$project$OUI$Material$Color$Json$hexToInt = function (_char) {
+	var _v0 = $elm$core$Char$toLower(_char);
+	switch (_v0.valueOf()) {
+		case '0':
+			return $elm$core$Maybe$Just(0);
+		case '1':
+			return $elm$core$Maybe$Just(1);
+		case '2':
+			return $elm$core$Maybe$Just(2);
+		case '3':
+			return $elm$core$Maybe$Just(3);
+		case '4':
+			return $elm$core$Maybe$Just(4);
+		case '5':
+			return $elm$core$Maybe$Just(5);
+		case '6':
+			return $elm$core$Maybe$Just(6);
+		case '7':
+			return $elm$core$Maybe$Just(7);
+		case '8':
+			return $elm$core$Maybe$Just(8);
+		case '9':
+			return $elm$core$Maybe$Just(9);
+		case 'a':
+			return $elm$core$Maybe$Just(10);
+		case 'b':
+			return $elm$core$Maybe$Just(11);
+		case 'c':
+			return $elm$core$Maybe$Just(12);
+		case 'd':
+			return $elm$core$Maybe$Just(13);
+		case 'e':
+			return $elm$core$Maybe$Just(14);
+		case 'f':
+			return $elm$core$Maybe$Just(15);
+		default:
+			return $elm$core$Maybe$Nothing;
+	}
+};
+var $elm$core$Maybe$map2 = F3(
+	function (func, ma, mb) {
+		if (ma.$ === 'Nothing') {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var a = ma.a;
+			if (mb.$ === 'Nothing') {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var b = mb.a;
+				return $elm$core$Maybe$Just(
+					A2(func, a, b));
+			}
+		}
+	});
+var $author$project$OUI$Material$Color$Json$hex2ToInt = F2(
+	function (c1, c2) {
+		return A3(
+			$elm$core$Maybe$map2,
+			F2(
+				function (v1, v2) {
+					return (v1 << 4) + v2;
+				}),
+			$author$project$OUI$Material$Color$Json$hexToInt(c1),
+			$author$project$OUI$Material$Color$Json$hexToInt(c2));
+	});
+var $elm$core$Maybe$map4 = F5(
+	function (func, ma, mb, mc, md) {
+		if (ma.$ === 'Nothing') {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var a = ma.a;
+			if (mb.$ === 'Nothing') {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var b = mb.a;
+				if (mc.$ === 'Nothing') {
+					return $elm$core$Maybe$Nothing;
+				} else {
+					var c = mc.a;
+					if (md.$ === 'Nothing') {
+						return $elm$core$Maybe$Nothing;
+					} else {
+						var d = md.a;
+						return $elm$core$Maybe$Just(
+							A4(func, a, b, c, d));
+					}
+				}
+			}
+		}
+	});
+var $avh4$elm_color$Color$rgba = F4(
+	function (r, g, b, a) {
+		return A4($avh4$elm_color$Color$RgbaSpace, r, g, b, a);
+	});
+var $author$project$OUI$Material$Color$Json$fromHex8 = F4(
+	function (_v0, _v1, _v2, _v3) {
+		var r1 = _v0.a;
+		var r2 = _v0.b;
+		var g1 = _v1.a;
+		var g2 = _v1.b;
+		var b1 = _v2.a;
+		var b2 = _v2.b;
+		var a1 = _v3.a;
+		var a2 = _v3.b;
+		return A5(
+			$elm$core$Maybe$map4,
+			F4(
+				function (r, g, b, a) {
+					return A4($avh4$elm_color$Color$rgba, r / 255, g / 255, b / 255, a / 255);
+				}),
+			A2($author$project$OUI$Material$Color$Json$hex2ToInt, r1, r2),
+			A2($author$project$OUI$Material$Color$Json$hex2ToInt, g1, g2),
+			A2($author$project$OUI$Material$Color$Json$hex2ToInt, b1, b2),
+			A2($author$project$OUI$Material$Color$Json$hex2ToInt, a1, a2));
+	});
+var $elm$core$String$foldr = _String_foldr;
+var $elm$core$String$toList = function (string) {
+	return A3($elm$core$String$foldr, $elm$core$List$cons, _List_Nil, string);
+};
+var $author$project$OUI$Material$Color$Json$colorFromHex = function (hexString) {
+	var _v0 = $elm$core$String$toList(hexString);
+	_v0$8:
+	while (true) {
+		if ((_v0.b && _v0.b.b) && _v0.b.b.b) {
+			if (!_v0.b.b.b.b) {
+				var r = _v0.a;
+				var _v4 = _v0.b;
+				var g = _v4.a;
+				var _v5 = _v4.b;
+				var b = _v5.a;
+				return A4(
+					$author$project$OUI$Material$Color$Json$fromHex8,
+					_Utils_Tuple2(r, r),
+					_Utils_Tuple2(g, g),
+					_Utils_Tuple2(b, b),
+					_Utils_Tuple2(
+						_Utils_chr('f'),
+						_Utils_chr('f')));
+			} else {
+				if (!_v0.b.b.b.b.b) {
+					if ('#' === _v0.a.valueOf()) {
+						var _v1 = _v0.b;
+						var r = _v1.a;
+						var _v2 = _v1.b;
+						var g = _v2.a;
+						var _v3 = _v2.b;
+						var b = _v3.a;
+						return A4(
+							$author$project$OUI$Material$Color$Json$fromHex8,
+							_Utils_Tuple2(r, r),
+							_Utils_Tuple2(g, g),
+							_Utils_Tuple2(b, b),
+							_Utils_Tuple2(
+								_Utils_chr('f'),
+								_Utils_chr('f')));
+					} else {
+						var r = _v0.a;
+						var _v10 = _v0.b;
+						var g = _v10.a;
+						var _v11 = _v10.b;
+						var b = _v11.a;
+						var _v12 = _v11.b;
+						var a = _v12.a;
+						return A4(
+							$author$project$OUI$Material$Color$Json$fromHex8,
+							_Utils_Tuple2(r, r),
+							_Utils_Tuple2(g, g),
+							_Utils_Tuple2(b, b),
+							_Utils_Tuple2(a, a));
+					}
+				} else {
+					if (!_v0.b.b.b.b.b.b) {
+						if ('#' === _v0.a.valueOf()) {
+							var _v6 = _v0.b;
+							var r = _v6.a;
+							var _v7 = _v6.b;
+							var g = _v7.a;
+							var _v8 = _v7.b;
+							var b = _v8.a;
+							var _v9 = _v8.b;
+							var a = _v9.a;
+							return A4(
+								$author$project$OUI$Material$Color$Json$fromHex8,
+								_Utils_Tuple2(r, r),
+								_Utils_Tuple2(g, g),
+								_Utils_Tuple2(b, b),
+								_Utils_Tuple2(a, a));
+						} else {
+							break _v0$8;
+						}
+					} else {
+						if (!_v0.b.b.b.b.b.b.b) {
+							var r1 = _v0.a;
+							var _v19 = _v0.b;
+							var r2 = _v19.a;
+							var _v20 = _v19.b;
+							var g1 = _v20.a;
+							var _v21 = _v20.b;
+							var g2 = _v21.a;
+							var _v22 = _v21.b;
+							var b1 = _v22.a;
+							var _v23 = _v22.b;
+							var b2 = _v23.a;
+							return A4(
+								$author$project$OUI$Material$Color$Json$fromHex8,
+								_Utils_Tuple2(r1, r2),
+								_Utils_Tuple2(g1, g2),
+								_Utils_Tuple2(b1, b2),
+								_Utils_Tuple2(
+									_Utils_chr('f'),
+									_Utils_chr('f')));
+						} else {
+							if (!_v0.b.b.b.b.b.b.b.b) {
+								if ('#' === _v0.a.valueOf()) {
+									var _v13 = _v0.b;
+									var r1 = _v13.a;
+									var _v14 = _v13.b;
+									var r2 = _v14.a;
+									var _v15 = _v14.b;
+									var g1 = _v15.a;
+									var _v16 = _v15.b;
+									var g2 = _v16.a;
+									var _v17 = _v16.b;
+									var b1 = _v17.a;
+									var _v18 = _v17.b;
+									var b2 = _v18.a;
+									return A4(
+										$author$project$OUI$Material$Color$Json$fromHex8,
+										_Utils_Tuple2(r1, r2),
+										_Utils_Tuple2(g1, g2),
+										_Utils_Tuple2(b1, b2),
+										_Utils_Tuple2(
+											_Utils_chr('f'),
+											_Utils_chr('f')));
+								} else {
+									break _v0$8;
+								}
+							} else {
+								if (_v0.b.b.b.b.b.b.b.b.b) {
+									if (('#' === _v0.a.valueOf()) && (!_v0.b.b.b.b.b.b.b.b.b.b)) {
+										var _v24 = _v0.b;
+										var r1 = _v24.a;
+										var _v25 = _v24.b;
+										var r2 = _v25.a;
+										var _v26 = _v25.b;
+										var g1 = _v26.a;
+										var _v27 = _v26.b;
+										var g2 = _v27.a;
+										var _v28 = _v27.b;
+										var b1 = _v28.a;
+										var _v29 = _v28.b;
+										var b2 = _v29.a;
+										var _v30 = _v29.b;
+										var a1 = _v30.a;
+										var _v31 = _v30.b;
+										var a2 = _v31.a;
+										return A4(
+											$author$project$OUI$Material$Color$Json$fromHex8,
+											_Utils_Tuple2(r1, r2),
+											_Utils_Tuple2(g1, g2),
+											_Utils_Tuple2(b1, b2),
+											_Utils_Tuple2(a1, a2));
+									} else {
+										break _v0$8;
+									}
+								} else {
+									var r1 = _v0.a;
+									var _v32 = _v0.b;
+									var r2 = _v32.a;
+									var _v33 = _v32.b;
+									var g1 = _v33.a;
+									var _v34 = _v33.b;
+									var g2 = _v34.a;
+									var _v35 = _v34.b;
+									var b1 = _v35.a;
+									var _v36 = _v35.b;
+									var b2 = _v36.a;
+									var _v37 = _v36.b;
+									var a1 = _v37.a;
+									var _v38 = _v37.b;
+									var a2 = _v38.a;
+									return A4(
+										$author$project$OUI$Material$Color$Json$fromHex8,
+										_Utils_Tuple2(r1, r2),
+										_Utils_Tuple2(g1, g2),
+										_Utils_Tuple2(b1, b2),
+										_Utils_Tuple2(a1, a2));
+								}
+							}
+						}
+					}
+				}
+			}
+		} else {
+			break _v0$8;
+		}
+	}
+	return $elm$core$Maybe$Nothing;
+};
+var $simonh1000$elm_colorpicker$ColorPicker$widgetWidth = 200;
+var $simonh1000$elm_colorpicker$ColorPicker$calcHue = F2(
+	function (col, _v0) {
+		var mousePressed = _v0.mousePressed;
+		var x = _v0.x;
+		var hue = x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth;
+		var hsla = $avh4$elm_color$Color$toHsla(col);
+		var alpha = hsla.alpha;
+		var lightness = hsla.lightness;
+		var saturation = hsla.saturation;
+		var newCol = ((!saturation) && (lightness < 0.02)) ? _Utils_update(
+			hsla,
+			{hue: hue, lightness: 0.5, saturation: 0.5}) : _Utils_update(
+			hsla,
+			{hue: hue});
+		return $avh4$elm_color$Color$fromHsla(newCol);
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$calcOpacity = F3(
+	function (col, _v0, _v1) {
+		var mousePressed = _v1.mousePressed;
+		var x = _v1.x;
+		var hsla = $avh4$elm_color$Color$toHsla(col);
+		return $avh4$elm_color$Color$fromHsla(
+			_Utils_update(
+				hsla,
+				{
+					alpha: A3($elm$core$Basics$clamp, 0, $simonh1000$elm_colorpicker$ColorPicker$widgetWidth, x) / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth
+				}));
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$widgetHeight = 150;
+var $simonh1000$elm_colorpicker$ColorPicker$calcSatLight = F3(
+	function (col, currHue, _v0) {
+		var mousePressed = _v0.mousePressed;
+		var y = _v0.y;
+		var x = _v0.x;
+		var hsla = $avh4$elm_color$Color$toHsla(col);
+		return $avh4$elm_color$Color$fromHsla(
+			_Utils_update(
+				hsla,
+				{hue: currHue, lightness: 1 - (y / $simonh1000$elm_colorpicker$ColorPicker$widgetHeight), saturation: x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth}));
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$setHue = F3(
+	function (mouseTarget, mouseInfo, model) {
+		switch (mouseTarget.$) {
+			case 'SatLight':
+				var hue = mouseTarget.a;
+				return _Utils_update(
+					model,
+					{
+						hue: $elm$core$Maybe$Just(
+							A2($elm$core$Maybe$withDefault, hue, model.hue))
+					});
+			case 'HueSlider':
+				return _Utils_update(
+					model,
+					{
+						hue: $elm$core$Maybe$Just(mouseInfo.x / $simonh1000$elm_colorpicker$ColorPicker$widgetWidth)
+					});
+			case 'OpacitySlider':
+				var hue = mouseTarget.a;
+				return _Utils_update(
+					model,
+					{
+						hue: $elm$core$Maybe$Just(
+							A2($elm$core$Maybe$withDefault, hue, model.hue))
+					});
+			default:
+				return model;
+		}
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$setMouseTarget = F2(
+	function (mouseTarget, model) {
+		return _Utils_update(
+			model,
+			{mouseTarget: mouseTarget});
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$update_ = F3(
+	function (message, col, model) {
+		var calcNewColour = function (mouseTarget) {
+			switch (mouseTarget.$) {
+				case 'SatLight':
+					var hue = mouseTarget.a;
+					return A2(
+						$elm$core$Basics$composeL,
+						$elm$core$Maybe$Just,
+						A2(
+							$simonh1000$elm_colorpicker$ColorPicker$calcSatLight,
+							col,
+							A2($elm$core$Maybe$withDefault, hue, model.hue)));
+				case 'HueSlider':
+					return A2(
+						$elm$core$Basics$composeL,
+						$elm$core$Maybe$Just,
+						$simonh1000$elm_colorpicker$ColorPicker$calcHue(col));
+				case 'OpacitySlider':
+					var hue = mouseTarget.a;
+					return A2(
+						$elm$core$Basics$composeL,
+						$elm$core$Maybe$Just,
+						A2(
+							$simonh1000$elm_colorpicker$ColorPicker$calcOpacity,
+							col,
+							A2($elm$core$Maybe$withDefault, hue, model.hue)));
+				default:
+					return function (_v2) {
+						return $elm$core$Maybe$Nothing;
+					};
+			}
+		};
+		var handleMouseMove = F2(
+			function (mouseTarget, mouseInfo) {
+				return (mouseInfo.mousePressed && _Utils_eq(model.mouseTarget, mouseTarget)) ? _Utils_Tuple2(
+					A3($simonh1000$elm_colorpicker$ColorPicker$setHue, mouseTarget, mouseInfo, model),
+					A2(calcNewColour, mouseTarget, mouseInfo)) : (((!mouseInfo.mousePressed) && _Utils_eq(model.mouseTarget, mouseTarget)) ? _Utils_Tuple2(
+					A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, $simonh1000$elm_colorpicker$ColorPicker$Unpressed, model),
+					$elm$core$Maybe$Nothing) : _Utils_Tuple2(model, $elm$core$Maybe$Nothing));
+			});
+		switch (message.$) {
+			case 'OnMouseDown':
+				var mouseTarget = message.a;
+				var mouseInfo = message.b;
+				return _Utils_Tuple2(
+					A3(
+						$simonh1000$elm_colorpicker$ColorPicker$setHue,
+						mouseTarget,
+						mouseInfo,
+						A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, mouseTarget, model)),
+					A2(calcNewColour, mouseTarget, mouseInfo));
+			case 'OnMouseMove':
+				var mouseTarget = message.a;
+				var mouseInfo = message.b;
+				return A2(handleMouseMove, mouseTarget, mouseInfo);
+			case 'OnClick':
+				var mouseTarget = message.a;
+				var mouseInfo = message.b;
+				return _Utils_Tuple2(
+					A3($simonh1000$elm_colorpicker$ColorPicker$setHue, mouseTarget, mouseInfo, model),
+					A2(calcNewColour, mouseTarget, mouseInfo));
+			case 'OnMouseUp':
+				return _Utils_Tuple2(
+					A2($simonh1000$elm_colorpicker$ColorPicker$setMouseTarget, $simonh1000$elm_colorpicker$ColorPicker$Unpressed, model),
+					$elm$core$Maybe$Nothing);
+			default:
+				return _Utils_Tuple2(model, $elm$core$Maybe$Nothing);
+		}
+	});
+var $simonh1000$elm_colorpicker$ColorPicker$update = F3(
+	function (message, col, _v0) {
+		var model = _v0.a;
+		return A2(
+			$elm$core$Tuple$mapFirst,
+			$simonh1000$elm_colorpicker$ColorPicker$State,
+			A3($simonh1000$elm_colorpicker$ColorPicker$update_, message, col, model));
+	});
+var $author$project$OUI$Showcase$ColorPicker$update = F3(
+	function (msg, color, model) {
+		switch (msg.$) {
+			case 'ColorPickerMsg':
+				var subMsg = msg.a;
+				var _v1 = A3($simonh1000$elm_colorpicker$ColorPicker$update, subMsg, color, model.colorPicker);
+				var p = _v1.a;
+				var nextColor = _v1.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{colorPicker: p}),
+					nextColor);
+			case 'TextChange':
+				var value = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{text: value}),
+					$elm$core$Maybe$Just(
+						A2(
+							$elm$core$Maybe$withDefault,
+							color,
+							$author$project$OUI$Material$Color$Json$colorFromHex(value))));
+			default:
+				var value = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							text: value ? $author$project$OUI$Material$Color$Json$toHexWithAlpha(color) : model.text,
+							textFocused: value
+						}),
+					value ? $elm$core$Maybe$Just(color) : $author$project$OUI$Material$Color$Json$colorFromHex(model.text));
+		}
+	});
+var $author$project$OUI$Explorer$UpdateColorTheme = F2(
+	function (a, b) {
+		return {$: 'UpdateColorTheme', a: a, b: b};
+	});
+var $author$project$OUI$Explorer$updateColorThemeMsg = $author$project$OUI$Explorer$UpdateColorTheme;
+var $orus_io$elm_spa$Effect$fromCmd = $orus_io$elm_spa$Effect$Cmd;
+var $orus_io$elm_spa$Effect$withCmd = F2(
+	function (cmd, model) {
+		return _Utils_Tuple2(
+			model,
+			$orus_io$elm_spa$Effect$fromCmd(cmd));
+	});
+var $orus_io$elm_spa$Effect$withShared = F2(
+	function (shared, model) {
+		return _Utils_Tuple2(
+			model,
+			$orus_io$elm_spa$Effect$fromShared(shared));
+	});
+var $author$project$OUI$Showcase$Colors$update = F3(
+	function (shared, msg, model) {
+		switch (msg.$) {
+			case 'ColorThemeButtonMsg':
+				var buttonMsg = msg.a;
+				var _v1 = A2($author$project$OUI$MenuButton$update, buttonMsg, model.colorThemeButton);
+				var state = _v1.a;
+				var cmd = _v1.b;
+				return A2(
+					$orus_io$elm_spa$Effect$withCmd,
+					cmd,
+					_Utils_update(
+						model,
+						{colorThemeButton: state}));
+			case 'SelectColorScheme':
+				var i = msg.a;
+				var t = msg.b;
+				var nameField = model.nameField;
+				return A2(
+					$orus_io$elm_spa$Effect$withShared,
+					A2($author$project$OUI$Explorer$selectColorScheme, i, t),
+					_Utils_update(
+						model,
+						{
+							nameField: _Utils_update(
+								nameField,
+								{
+									value: A2($author$project$OUI$Explorer$getColorTheme, i, shared).theme.name
+								})
+						}));
+			case 'CopyColorTheme':
+				var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme;
+				return A2(
+					$orus_io$elm_spa$Effect$withShared,
+					$author$project$OUI$Explorer$addColorThemeMsg(
+						_Utils_update(
+							currentColorTheme,
+							{name: currentColorTheme.name + ' (copy)'})),
+					model);
+			case 'ColorPickerMsg':
+				var colorPickerMsg = msg.a;
+				return $orus_io$elm_spa$Effect$withNone(
+					function () {
+						var _v2 = model.colorSelector;
+						if (_v2.$ === 'Just') {
+							var colorSelector = _v2.a;
+							var _v3 = A3($author$project$OUI$Showcase$ColorPicker$update, colorPickerMsg, colorSelector.color, colorSelector.colorPicker);
+							var m = _v3.a;
+							var color = _v3.b;
+							return _Utils_update(
+								model,
+								{
+									colorSelector: $elm$core$Maybe$Just(
+										_Utils_update(
+											colorSelector,
+											{
+												color: A2($elm$core$Maybe$withDefault, colorSelector.color, color),
+												colorPicker: m
+											}))
+								});
+						} else {
+							return model;
+						}
+					}());
+			case 'EditColor':
+				var color = msg.a;
+				var setter = msg.b;
+				return $orus_io$elm_spa$Effect$withNone(
+					_Utils_update(
+						model,
+						{
+							colorSelector: $elm$core$Maybe$Just(
+								{color: color, colorPicker: $author$project$OUI$Showcase$ColorPicker$empty, setter: setter})
+						}));
+			case 'DismissColor':
+				return $orus_io$elm_spa$Effect$withNone(
+					_Utils_update(
+						model,
+						{colorSelector: $elm$core$Maybe$Nothing}));
+			case 'AcceptColor':
+				var _v4 = model.colorSelector;
+				if (_v4.$ === 'Just') {
+					var colorSelector = _v4.a;
+					var theme = $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme;
+					var currentThemeIndex = shared.selectedColorScheme.a;
+					return A2(
+						$orus_io$elm_spa$Effect$withShared,
+						A2(
+							$author$project$OUI$Explorer$updateColorThemeMsg,
+							currentThemeIndex,
+							A2(colorSelector.setter, colorSelector.color, theme)),
+						_Utils_update(
+							model,
+							{colorSelector: $elm$core$Maybe$Nothing}));
+				} else {
+					return $orus_io$elm_spa$Effect$withNone(model);
+				}
+			case 'ExportColor':
+				var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme;
+				return A2(
+					$orus_io$elm_spa$Effect$withCmd,
+					A3(
+						$elm$file$File$Download$string,
+						currentColorTheme.name + '.json',
+						'application/json',
+						A2(
+							$elm$json$Json$Encode$encode,
+							2,
+							$author$project$OUI$Material$Color$Json$encodeColorTheme(currentColorTheme))),
+					model);
+			case 'OnNameChange':
+				var value = msg.a;
+				var field = model.nameField;
+				return $orus_io$elm_spa$Effect$withNone(
+					_Utils_update(
+						model,
+						{
+							nameField: _Utils_update(
+								field,
+								{value: value})
+						}));
+			case 'OnNameFocus':
+				var focused = msg.a;
+				var field = model.nameField;
+				return $orus_io$elm_spa$Effect$withNone(
+					_Utils_update(
+						model,
+						{
+							nameField: _Utils_update(
+								field,
+								{focused: focused})
+						}));
+			default:
+				var currentThemeIndex = shared.selectedColorScheme.a;
+				var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared).theme;
+				return A2(
+					$orus_io$elm_spa$Effect$withShared,
+					A2(
+						$author$project$OUI$Explorer$updateColorThemeMsg,
+						currentThemeIndex,
+						_Utils_update(
+							currentColorTheme,
+							{name: model.nameField.value})),
+					model);
+		}
+	});
+var $author$project$OUI$Showcase$ColorPicker$ColorPickerMsg = function (a) {
+	return {$: 'ColorPickerMsg', a: a};
+};
+var $author$project$OUI$Showcase$ColorPicker$TextChange = function (a) {
+	return {$: 'TextChange', a: a};
+};
+var $author$project$OUI$Showcase$ColorPicker$TextFocus = function (a) {
+	return {$: 'TextFocus', a: a};
+};
 var $simonh1000$elm_colorpicker$ColorPicker$markerAttrs = _List_fromArray(
 	[
 		A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
@@ -20416,6 +20497,27 @@ var $author$project$OUI$Showcase$ColorPicker$view = F3(
 									colorPicker.textFocused ? colorPicker.text : $author$project$OUI$Material$Color$Json$toHexWithAlpha(color))))))
 				]));
 	});
+var $author$project$OUI$TextField$withClickableTrailingIcon = F3(
+	function (msg, icon, _v0) {
+		var props = _v0.a;
+		return $author$project$OUI$TextField$TextField(
+			_Utils_update(
+				props,
+				{
+					onTrailingIconClick: $elm$core$Maybe$Just(msg),
+					trailingIcon: $elm$core$Maybe$Just(icon)
+				}));
+	});
+var $author$project$OUI$Icon$withColor = F2(
+	function (value, _v0) {
+		var icon = _v0.a;
+		return $author$project$OUI$Icon$Icon(
+			_Utils_update(
+				icon,
+				{
+					color: $elm$core$Maybe$Just(value)
+				}));
+	});
 var $author$project$OUI$Material$Theme$Theme = function (a) {
 	return {$: 'Theme', a: a};
 };
@@ -20434,6 +20536,16 @@ var $author$project$OUI$Explorer$withDialog = F2(
 			{
 				dialog: $elm$core$Maybe$Just(dialog)
 			});
+	});
+var $author$project$OUI$TextField$withTrailingIcon = F2(
+	function (value, _v0) {
+		var props = _v0.a;
+		return $author$project$OUI$TextField$TextField(
+			_Utils_update(
+				props,
+				{
+					trailingIcon: $elm$core$Maybe$Just(value)
+				}));
 	});
 var $author$project$OUI$Showcase$Colors$book = A2(
 	$author$project$OUI$Explorer$withStaticChapter,
@@ -20504,7 +20616,7 @@ var $author$project$OUI$Showcase$Colors$book = A2(
 					function (shared, model) {
 						var currentColorTheme = $author$project$OUI$Explorer$getSelectedColorTheme(shared);
 						return A2(
-							$mdgriffith$elm_ui$Element$row,
+							$mdgriffith$elm_ui$Element$column,
 							_List_fromArray(
 								[
 									$mdgriffith$elm_ui$Element$spacing(20)
@@ -20512,77 +20624,128 @@ var $author$project$OUI$Showcase$Colors$book = A2(
 							_List_fromArray(
 								[
 									A2(
-									$author$project$OUI$Material$text,
-									shared.theme,
-									$author$project$OUI$Text$bodyLarge('Current color scheme: ')),
-									A2(
-									$mdgriffith$elm_ui$Element$map,
-									$author$project$OUI$Explorer$bookMsg,
-									A4(
-										$author$project$OUI$Material$menuButton,
-										shared.theme,
-										model.colorThemeButton,
-										_List_fromArray(
-											[$mdgriffith$elm_ui$Element$centerX]),
-										$author$project$OUI$MenuButton$alignBottom(
+									$mdgriffith$elm_ui$Element$row,
+									_List_fromArray(
+										[
+											$mdgriffith$elm_ui$Element$spacing(20)
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$author$project$OUI$Material$text,
+											shared.theme,
+											$author$project$OUI$Text$bodyLarge('Current color scheme: ')),
+											A2(
+											$mdgriffith$elm_ui$Element$map,
+											$author$project$OUI$Explorer$bookMsg,
 											A4(
-												$author$project$OUI$MenuButton$new,
-												$author$project$OUI$Showcase$Colors$ColorThemeButtonMsg,
-												function (i) {
-													return A2($author$project$OUI$Showcase$Colors$SelectColorScheme, i, shared.selectedColorScheme.b);
-												},
-												$author$project$OUI$Button$new(currentColorTheme.theme.name),
-												A2(
-													$author$project$OUI$Menu$addItems,
-													A2(
-														$elm$core$List$range,
-														0,
-														$elm$core$List$length(shared.colorThemeList) - 1),
-													$author$project$OUI$Menu$new(
+												$author$project$OUI$Material$menuButton,
+												shared.theme,
+												model.colorThemeButton,
+												_List_fromArray(
+													[$mdgriffith$elm_ui$Element$centerX]),
+												$author$project$OUI$MenuButton$alignBottom(
+													A4(
+														$author$project$OUI$MenuButton$new,
+														$author$project$OUI$Showcase$Colors$ColorThemeButtonMsg,
 														function (i) {
-															return A2($author$project$OUI$Explorer$getColorTheme, i, shared).theme.name;
-														})))))),
-									A2(
-									$mdgriffith$elm_ui$Element$map,
-									$author$project$OUI$Explorer$bookMsg,
-									A3(
-										$author$project$OUI$Material$button,
-										shared.theme,
-										_List_fromArray(
-											[$mdgriffith$elm_ui$Element$centerX]),
-										A2(
-											$author$project$OUI$Button$onClick,
-											$author$project$OUI$Showcase$Colors$CopyColorTheme,
-											$author$project$OUI$Button$new('Copy')))),
+															return A2($author$project$OUI$Showcase$Colors$SelectColorScheme, i, shared.selectedColorScheme.b);
+														},
+														$author$project$OUI$Button$new(currentColorTheme.theme.name),
+														A2(
+															$author$project$OUI$Menu$addItems,
+															A2(
+																$elm$core$List$range,
+																0,
+																$elm$core$List$length(shared.colorThemeList) - 1),
+															$author$project$OUI$Menu$new(
+																function (i) {
+																	return A2($author$project$OUI$Explorer$getColorTheme, i, shared).theme.name;
+																})))))),
+											A2(
+											$mdgriffith$elm_ui$Element$map,
+											$author$project$OUI$Explorer$bookMsg,
+											A3(
+												$author$project$OUI$Material$button,
+												shared.theme,
+												_List_fromArray(
+													[$mdgriffith$elm_ui$Element$centerX]),
+												A2(
+													$author$project$OUI$Button$onClick,
+													$author$project$OUI$Showcase$Colors$CopyColorTheme,
+													$author$project$OUI$Button$new('Copy')))),
+											function () {
+											var _v2 = currentColorTheme.type_;
+											if (_v2.$ === 'BuiltinColorTheme') {
+												return $mdgriffith$elm_ui$Element$none;
+											} else {
+												return A3(
+													$author$project$OUI$Material$button,
+													shared.theme,
+													_List_fromArray(
+														[$mdgriffith$elm_ui$Element$centerX]),
+													A2(
+														$author$project$OUI$Button$onClick,
+														$author$project$OUI$Explorer$sharedMsg(
+															$author$project$OUI$Explorer$deleteColorThemeMsg(shared.selectedColorScheme.a)),
+														$author$project$OUI$Button$new('Delete')));
+											}
+										}(),
+											A2(
+											$mdgriffith$elm_ui$Element$map,
+											$author$project$OUI$Explorer$bookMsg,
+											A3(
+												$author$project$OUI$Material$button,
+												shared.theme,
+												_List_fromArray(
+													[$mdgriffith$elm_ui$Element$centerX]),
+												A2(
+													$author$project$OUI$Button$onClick,
+													$author$project$OUI$Showcase$Colors$ExportColor,
+													$author$project$OUI$Button$new('Export'))))
+										])),
 									function () {
-									var _v2 = currentColorTheme.type_;
-									if (_v2.$ === 'BuiltinColorTheme') {
+									var _v3 = currentColorTheme.type_;
+									if (_v3.$ === 'BuiltinColorTheme') {
 										return $mdgriffith$elm_ui$Element$none;
 									} else {
-										return A3(
-											$author$project$OUI$Material$button,
-											shared.theme,
+										return A2(
+											$mdgriffith$elm_ui$Element$row,
+											_List_Nil,
 											_List_fromArray(
-												[$mdgriffith$elm_ui$Element$centerX]),
-											A2(
-												$author$project$OUI$Button$onClick,
-												$author$project$OUI$Explorer$sharedMsg(
-													$author$project$OUI$Explorer$deleteColorThemeMsg(shared.selectedColorScheme.a)),
-												$author$project$OUI$Button$new('Delete')));
+												[
+													A3(
+													$author$project$OUI$Material$textField,
+													shared.theme,
+													_List_fromArray(
+														[
+															$mdgriffith$elm_ui$Element$width(
+															$mdgriffith$elm_ui$Element$px(200))
+														]),
+													(_Utils_eq(currentColorTheme.theme.name, model.nameField.value) ? $author$project$OUI$TextField$withTrailingIcon($author$project$OUI$Icon$check) : A2(
+														$author$project$OUI$TextField$withClickableTrailingIcon,
+														$author$project$OUI$Explorer$bookMsg($author$project$OUI$Showcase$Colors$OnNameValidate),
+														A2($author$project$OUI$Icon$withColor, $author$project$OUI$Showcase$Colors$green, $author$project$OUI$Icon$check)))(
+														A3(
+															$author$project$OUI$TextField$onFocusBlur,
+															$author$project$OUI$Explorer$bookMsg(
+																$author$project$OUI$Showcase$Colors$OnNameFocus(true)),
+															$author$project$OUI$Explorer$bookMsg(
+																$author$project$OUI$Showcase$Colors$OnNameFocus(false)),
+															A2(
+																$author$project$OUI$TextField$withFocused,
+																model.nameField.focused,
+																A2(
+																	$author$project$OUI$TextField$withType,
+																	$author$project$OUI$TextField$Outlined,
+																	A3(
+																		$author$project$OUI$TextField$new,
+																		'Name',
+																		A2($elm$core$Basics$composeR, $author$project$OUI$Showcase$Colors$OnNameChange, $author$project$OUI$Explorer$bookMsg),
+																		model.nameField.value))))))
+												]));
 									}
-								}(),
-									A2(
-									$mdgriffith$elm_ui$Element$map,
-									$author$project$OUI$Explorer$bookMsg,
-									A3(
-										$author$project$OUI$Material$button,
-										shared.theme,
-										_List_fromArray(
-											[$mdgriffith$elm_ui$Element$centerX]),
-										A2(
-											$author$project$OUI$Button$onClick,
-											$author$project$OUI$Showcase$Colors$ExportColor,
-											$author$project$OUI$Button$new('Export'))))
+								}()
 								]));
 					}),
 				A2(
@@ -25946,17 +26109,6 @@ var $author$project$OUI$Showcase$TextFields$inputText = F2(
 			$author$project$OUI$Showcase$TextFields$newInputState,
 			A2($elm$core$Dict$get, name, inputs)).text;
 	});
-var $author$project$OUI$TextField$withClickableTrailingIcon = F3(
-	function (msg, icon, _v0) {
-		var props = _v0.a;
-		return $author$project$OUI$TextField$TextField(
-			_Utils_update(
-				props,
-				{
-					onTrailingIconClick: $elm$core$Maybe$Just(msg),
-					trailingIcon: $elm$core$Maybe$Just(icon)
-				}));
-	});
 var $author$project$OUI$TextField$withColor = F2(
 	function (value, _v0) {
 		var props = _v0.a;
@@ -25993,16 +26145,6 @@ var $author$project$OUI$TextField$withSupportingText = F2(
 				props,
 				{
 					supportingText: $elm$core$Maybe$Just(value)
-				}));
-	});
-var $author$project$OUI$TextField$withTrailingIcon = F2(
-	function (value, _v0) {
-		var props = _v0.a;
-		return $author$project$OUI$TextField$TextField(
-			_Utils_update(
-				props,
-				{
-					trailingIcon: $elm$core$Maybe$Just(value)
 				}));
 	});
 var $author$project$OUI$Showcase$TextFields$textfields = F3(

@@ -14,6 +14,7 @@ import OUI.Button
 import OUI.Dialog
 import OUI.Element.Modal
 import OUI.Explorer as Explorer
+import OUI.Icon
 import OUI.Material
 import OUI.Material.Color exposing (KeyColors)
 import OUI.Material.Color.Json
@@ -24,6 +25,17 @@ import OUI.MenuButton
 import OUI.Showcase.ColorPicker as ColorPicker
 import OUI.Showcase.IconsCat
 import OUI.Text
+import OUI.TextField
+
+
+green : OUI.Color
+green =
+    OUI.Custom
+        { color = Color.rgb255 95 152 26
+        , onColor = Color.rgb255 0 0 0
+        , surface = Color.rgb255 255 255 255
+        , onSurface = Color.rgb255 0 0 0
+        }
 
 
 colorCell : String -> String -> Color -> Color -> Int -> Element msg
@@ -334,60 +346,99 @@ book =
                     currentColorTheme =
                         Explorer.getSelectedColorTheme shared
                 in
-                Element.row
+                Element.column
                     [ Element.spacing 20
                     ]
-                    [ "Current color scheme: "
-                        |> OUI.Text.bodyLarge
-                        |> OUI.Material.text shared.theme
-                    , OUI.MenuButton.new ColorThemeButtonMsg
-                        (\i ->
-                            SelectColorScheme i
-                                (Tuple.second shared.selectedColorScheme)
-                        )
-                        (OUI.Button.new
-                            currentColorTheme.theme.name
-                        )
-                        (OUI.Menu.new
+                    [ Element.row
+                        [ Element.spacing 20
+                        ]
+                        [ "Current color scheme: "
+                            |> OUI.Text.bodyLarge
+                            |> OUI.Material.text shared.theme
+                        , OUI.MenuButton.new ColorThemeButtonMsg
                             (\i ->
-                                Explorer.getColorTheme i shared
-                                    |> .theme
-                                    |> .name
+                                SelectColorScheme i
+                                    (Tuple.second shared.selectedColorScheme)
                             )
-                            |> OUI.Menu.addItems (List.range 0 (List.length shared.colorThemeList - 1))
-                        )
-                        |> OUI.MenuButton.alignBottom
-                        |> OUI.Material.menuButton shared.theme
-                            model.colorThemeButton
-                            [ Element.centerX
-                            ]
-                        |> Element.map Explorer.bookMsg
-                    , OUI.Button.new "Copy"
-                        |> OUI.Button.onClick CopyColorTheme
-                        |> OUI.Material.button shared.theme
-                            [ Element.centerX
-                            ]
-                        |> Element.map Explorer.bookMsg
+                            (OUI.Button.new
+                                currentColorTheme.theme.name
+                            )
+                            (OUI.Menu.new
+                                (\i ->
+                                    Explorer.getColorTheme i shared
+                                        |> .theme
+                                        |> .name
+                                )
+                                |> OUI.Menu.addItems (List.range 0 (List.length shared.colorThemeList - 1))
+                            )
+                            |> OUI.MenuButton.alignBottom
+                            |> OUI.Material.menuButton shared.theme
+                                model.colorThemeButton
+                                [ Element.centerX
+                                ]
+                            |> Element.map Explorer.bookMsg
+                        , OUI.Button.new "Copy"
+                            |> OUI.Button.onClick CopyColorTheme
+                            |> OUI.Material.button shared.theme
+                                [ Element.centerX
+                                ]
+                            |> Element.map Explorer.bookMsg
+                        , case currentColorTheme.type_ of
+                            Explorer.BuiltinColorTheme ->
+                                Element.none
+
+                            Explorer.UserColorTheme ->
+                                OUI.Button.new "Delete"
+                                    |> OUI.Button.onClick
+                                        (Tuple.first shared.selectedColorScheme
+                                            |> Explorer.deleteColorThemeMsg
+                                            |> Explorer.sharedMsg
+                                        )
+                                    |> OUI.Material.button shared.theme
+                                        [ Element.centerX
+                                        ]
+                        , OUI.Button.new "Export"
+                            |> OUI.Button.onClick ExportColor
+                            |> OUI.Material.button shared.theme
+                                [ Element.centerX
+                                ]
+                            |> Element.map Explorer.bookMsg
+                        ]
                     , case currentColorTheme.type_ of
                         Explorer.BuiltinColorTheme ->
                             Element.none
 
                         Explorer.UserColorTheme ->
-                            OUI.Button.new "Delete"
-                                |> OUI.Button.onClick
-                                    (Tuple.first shared.selectedColorScheme
-                                        |> Explorer.deleteColorThemeMsg
-                                        |> Explorer.sharedMsg
+                            Element.row []
+                                [ OUI.TextField.new "Name"
+                                    (OnNameChange
+                                        >> Explorer.bookMsg
                                     )
-                                |> OUI.Material.button shared.theme
-                                    [ Element.centerX
-                                    ]
-                    , OUI.Button.new "Export"
-                        |> OUI.Button.onClick ExportColor
-                        |> OUI.Material.button shared.theme
-                            [ Element.centerX
-                            ]
-                        |> Element.map Explorer.bookMsg
+                                    model.nameField.value
+                                    |> OUI.TextField.withType OUI.TextField.Outlined
+                                    |> OUI.TextField.withFocused model.nameField.focused
+                                    |> OUI.TextField.onFocusBlur
+                                        (OnNameFocus True
+                                            |> Explorer.bookMsg
+                                        )
+                                        (OnNameFocus False
+                                            |> Explorer.bookMsg
+                                        )
+                                    |> (if currentColorTheme.theme.name == model.nameField.value then
+                                            OUI.TextField.withTrailingIcon
+                                                OUI.Icon.check
+
+                                        else
+                                            OUI.TextField.withClickableTrailingIcon
+                                                (OnNameValidate |> Explorer.bookMsg)
+                                                (OUI.Icon.check
+                                                    |> OUI.Icon.withColor green
+                                                )
+                                       )
+                                    |> OUI.Material.textField shared.theme
+                                        [ Element.width (Element.px 200)
+                                        ]
+                                ]
                     ]
             )
         |> Explorer.withStaticChapter
@@ -431,6 +482,15 @@ type Msg
     | AcceptColor
     | DismissColor
     | ExportColor
+    | OnNameChange String
+    | OnNameFocus Bool
+    | OnNameValidate
+
+
+type alias TextFieldState =
+    { value : String
+    , focused : Bool
+    }
 
 
 type alias Model =
@@ -441,13 +501,21 @@ type alias Model =
             , color : Color
             , colorPicker : ColorPicker.State
             }
+    , nameField : TextFieldState
     }
 
 
 init : Explorer.Shared themeExt -> ( Model, Effect Explorer.SharedMsg Msg )
-init _ =
+init shared =
     { colorThemeButton = OUI.MenuButton.init "color-page-color-theme-button"
     , colorSelector = Nothing
+    , nameField =
+        { value =
+            Explorer.getSelectedColorTheme shared
+                |> .theme
+                |> .name
+        , focused = False
+        }
     }
         |> Effect.withNone
 
@@ -466,7 +534,19 @@ update shared msg model =
                 |> Effect.withCmd cmd
 
         SelectColorScheme i t ->
-            model
+            let
+                nameField =
+                    model.nameField
+            in
+            { model
+                | nameField =
+                    { nameField
+                        | value =
+                            Explorer.getColorTheme i shared
+                                |> .theme
+                                |> .name
+                    }
+            }
                 |> Effect.withShared (Explorer.selectColorScheme i t)
 
         CopyColorTheme ->
@@ -549,6 +629,49 @@ update shared msg model =
                         |> OUI.Material.Color.Json.encodeColorTheme
                         |> Json.Encode.encode 2
                         |> File.Download.string (currentColorTheme.name ++ ".json") "application/json"
+                    )
+
+        OnNameChange value ->
+            let
+                field =
+                    model.nameField
+            in
+            { model
+                | nameField =
+                    { field
+                        | value = value
+                    }
+            }
+                |> Effect.withNone
+
+        OnNameFocus focused ->
+            let
+                field =
+                    model.nameField
+            in
+            { model
+                | nameField =
+                    { field
+                        | focused = focused
+                    }
+            }
+                |> Effect.withNone
+
+        OnNameValidate ->
+            let
+                currentThemeIndex =
+                    shared.selectedColorScheme |> Tuple.first
+
+                currentColorTheme =
+                    Explorer.getSelectedColorTheme shared |> .theme
+            in
+            model
+                |> Effect.withShared
+                    (Explorer.updateColorThemeMsg
+                        currentThemeIndex
+                        { currentColorTheme
+                            | name = model.nameField.value
+                        }
                     )
 
 
