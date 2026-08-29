@@ -7,7 +7,10 @@ import Element.Background as Background
 import Element.Border as Border
 import Element.Events as Events
 import Element.Font as Font
+import File exposing (File)
 import File.Download
+import File.Select
+import Json.Decode
 import Json.Encode
 import OUI
 import OUI.Button
@@ -403,6 +406,12 @@ book =
                                 [ Element.centerX
                                 ]
                             |> Element.map Explorer.bookMsg
+                        , OUI.Button.new "Import"
+                            |> OUI.Button.onClick ImportColor
+                            |> OUI.Material.button shared.theme
+                                [ Element.centerX
+                                ]
+                            |> Element.map Explorer.bookMsg
                         ]
                     , case currentColorTheme.type_ of
                         Explorer.BuiltinColorTheme ->
@@ -482,6 +491,9 @@ type Msg
     | AcceptColor
     | DismissColor
     | ExportColor
+    | ImportColor
+    | FileSelected File
+    | FileLoaded String
     | OnNameChange String
     | OnNameFocus Bool
     | OnNameValidate
@@ -630,6 +642,25 @@ update shared msg model =
                         |> Json.Encode.encode 2
                         |> File.Download.string (currentColorTheme.name ++ ".json") "application/json"
                     )
+
+        ImportColor ->
+            model
+                |> Effect.withCmd
+                    (File.Select.file [ "application/json" ] FileSelected)
+
+        FileSelected file ->
+            model
+                |> Effect.withPerform FileLoaded (File.toString file)
+
+        FileLoaded content ->
+            case Json.Decode.decodeString OUI.Material.Color.Json.decodeColorTheme content of
+                Ok theme ->
+                    model
+                        |> Effect.withShared (Explorer.addColorThemeMsg theme)
+
+                Err _ ->
+                    model
+                        |> Effect.withNone
 
         OnNameChange value ->
             let
