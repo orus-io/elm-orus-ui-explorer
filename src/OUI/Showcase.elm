@@ -70,7 +70,7 @@ addPages :
                                                         Checkbox.Model
                                                         (Spa.PageStack.Model
                                                             Spa.SetupError
-                                                            ()
+                                                            Buttons.Model
                                                             (Spa.PageStack.Model
                                                                 Spa.SetupError
                                                                 ()
@@ -100,58 +100,62 @@ addPages :
                     )
                 )
             )
-            (Explorer.BookMsg ())
+            (Explorer.BookMsg themeExt ())
             (Spa.PageStack.Msg
                 Explorer.Route
-                (Explorer.BookMsg Navigation.Msg)
+                (Explorer.BookMsg themeExt Navigation.Msg)
                 (Spa.PageStack.Msg
                     Explorer.Route
-                    (Explorer.BookMsg MenuButtons.Msg)
+                    (Explorer.BookMsg themeExt MenuButtons.Msg)
                     (Spa.PageStack.Msg
                         Explorer.Route
-                        (Explorer.BookMsg TextFields.Msg)
+                        (Explorer.BookMsg themeExt TextFields.Msg)
                         (Spa.PageStack.Msg
                             Explorer.Route
-                            (Explorer.BookMsg Tabs.Msg)
+                            (Explorer.BookMsg themeExt Tabs.Msg)
                             (Spa.PageStack.Msg
                                 Explorer.Route
-                                (Explorer.BookMsg Switches.Msg)
+                                (Explorer.BookMsg themeExt Switches.Msg)
                                 (Spa.PageStack.Msg
                                     Explorer.Route
-                                    (Explorer.BookMsg Slider.Msg)
+                                    (Explorer.BookMsg themeExt Slider.Msg)
                                     (Spa.PageStack.Msg
                                         Explorer.Route
-                                        (Explorer.BookMsg RadioButtons.Msg)
+                                        (Explorer.BookMsg themeExt RadioButtons.Msg)
                                         (Spa.PageStack.Msg
                                             Explorer.Route
-                                            (Explorer.BookMsg ())
+                                            (Explorer.BookMsg themeExt ())
                                             (Spa.PageStack.Msg
                                                 Explorer.Route
-                                                (Explorer.BookMsg ())
+                                                (Explorer.BookMsg themeExt ())
                                                 (Spa.PageStack.Msg
                                                     Explorer.Route
-                                                    (Explorer.BookMsg ())
+                                                    (Explorer.BookMsg themeExt ())
                                                     (Spa.PageStack.Msg
                                                         Explorer.Route
                                                         (Explorer.BookMsg
+                                                            themeExt
                                                             Checkbox.Msg
                                                         )
                                                         (Spa.PageStack.Msg
                                                             Explorer.Route
-                                                            (Explorer.BookMsg ())
+                                                            (Explorer.BookMsg themeExt Buttons.Msg)
                                                             (Spa.PageStack.Msg
                                                                 Explorer.Route
                                                                 (Explorer.BookMsg
+                                                                    themeExt
                                                                     ()
                                                                 )
                                                                 (Spa.PageStack.Msg
                                                                     Explorer.Route
                                                                     (Explorer.BookMsg
+                                                                        themeExt
                                                                         ()
                                                                     )
                                                                     (Spa.PageStack.Msg
                                                                         Explorer.Route
                                                                         (Explorer.BookMsg
+                                                                            themeExt
                                                                             Colors.Msg
                                                                         )
                                                                         (Spa.PageStack.Msg

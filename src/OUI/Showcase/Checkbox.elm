@@ -79,7 +79,7 @@ book =
         |> Explorer.withChapter checkbox
 
 
-checkbox : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg Msg)
+checkbox : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 checkbox { theme } model =
     let
         divider : Element msg

@@ -20,7 +20,7 @@ book =
         |> Explorer.withChapter chapter
 
 
-chapter : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg Msg)
+chapter : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 chapter shared model =
     Element.row [ Element.spacing 10 ]
         [ MenuButton.new (MenuButtonMsg "menu1")
@@ -79,7 +79,7 @@ type Msg
     | MenuButtonMsg String (MenuButton.Msg String Msg)
 
 
-init : Explorer.Shared themeExt -> ( Model, Effect Explorer.SharedMsg Msg )
+init : Explorer.Shared themeExt -> ( Model, Effect (Explorer.SharedMsg themeExt) Msg )
 init _ =
     ( { menu1State = MenuButton.init "menu1"
       , menu2State = MenuButton.init "menu2"
@@ -96,7 +96,7 @@ subscriptions _ model =
         ]
 
 
-update : Explorer.Shared themeExt -> Msg -> Model -> ( Model, Effect Explorer.SharedMsg Msg )
+update : Explorer.Shared themeExt -> Msg -> Model -> ( Model, Effect (Explorer.SharedMsg themeExt) Msg )
 update _ msg model =
     case msg of
         MenuButtonMsg id menuMsg ->

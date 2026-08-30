@@ -39,7 +39,7 @@ type Msg
     = SetSwitch String Bool
 
 
-checkbox : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg Msg)
+checkbox : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 checkbox { theme } { switches } =
     let
         divider : Element msg

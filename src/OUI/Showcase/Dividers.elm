@@ -16,7 +16,7 @@ book =
         |> Explorer.withStaticChapter commonDividers
 
 
-commonDividers : Explorer.Shared themeExt -> Element (Explorer.BookMsg ())
+commonDividers : Explorer.Shared themeExt -> Element (Explorer.BookMsg themeExt ())
 commonDividers { theme } =
     let
         colorscheme : OUI.Material.Color.Scheme

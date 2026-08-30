@@ -82,7 +82,7 @@ iconChapter title iconList shared model =
             ]
 
 
-filterChapter : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg Msg)
+filterChapter : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 filterChapter shared model =
     TextField.new "Search icon" (Explorer.bookMsg << FilterChange) model.filter
         |> TextField.onFocusBlur (Explorer.bookMsg <| FilterFocus True) (Explorer.bookMsg <| FilterFocus False)
@@ -116,7 +116,7 @@ type Msg
     | FilterFocus Bool
 
 
-init : Explorer.Shared themeExt -> ( Model, Effect Explorer.SharedMsg Msg )
+init : Explorer.Shared themeExt -> ( Model, Effect (Explorer.SharedMsg themeExt) Msg )
 init _ =
     { filter = ""
     , filterFocused = False
@@ -124,7 +124,7 @@ init _ =
         |> Effect.withNone
 
 
-update : Explorer.Shared themeExt -> Msg -> Model -> ( Model, Effect Explorer.SharedMsg Msg )
+update : Explorer.Shared themeExt -> Msg -> Model -> ( Model, Effect (Explorer.SharedMsg themeExt) Msg )
 update _ msg model =
     case msg of
         FilterFocus focused ->

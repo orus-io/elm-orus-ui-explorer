@@ -6,7 +6,7 @@ module OUI.Explorer exposing
     , withMarkdownChapter, withStaticChapter, withChapter, withDialog
     , Page, Route, Shared, SharedMsg
     , setTheme, category, logEvent, logEffect, finalize, finalizeWithOptions
-    , ColorTheme, ColorThemeType(..), addColorThemeMsg, deleteColorThemeMsg, updateColorThemeMsg
+    , ColorTheme, ColorThemeType(..), addColorThemeMsg, deleteColorThemeMsg, updateColorThemeMsg, updateCurrentThemeMsg
     )
 
 {-|
@@ -126,15 +126,16 @@ type alias InitialShared themeExt =
 
 {-| Shared state message
 -}
-type SharedMsg
+type SharedMsg themeExt
     = Event String
     | SelectColorScheme Int ColorSchemeType
-    | ColorThemeButtonMsg (MenuButton.Msg Int SharedMsg)
+    | ColorThemeButtonMsg (MenuButton.Msg Int (SharedMsg themeExt))
     | OnBookClick String
     | OnRouteChange String
     | AddColorTheme Color.Theme
     | DeleteColorTheme Int
     | UpdateColorTheme Int Color.Theme
+    | UpdateCurrentTheme (Theme themeExt -> Theme themeExt)
 
 
 defaultView : Page msg
@@ -159,7 +160,7 @@ mapView mapper abook =
 -}
 type Explorer themeExt current previous currentMsg previousMsg
     = Explorer
-        { app : Spa.Builder Route () (Shared themeExt) SharedMsg (Page (Spa.PageStack.Msg Route currentMsg previousMsg)) current previous currentMsg previousMsg
+        { app : Spa.Builder Route () (Shared themeExt) (SharedMsg themeExt) (Page (Spa.PageStack.Msg Route currentMsg previousMsg)) current previous currentMsg previousMsg
         , categories : List ( String, List String )
         , initialShared : InitialShared themeExt
         }
@@ -270,7 +271,7 @@ category name (Explorer expl) =
 addBook :
     Book themeExt model msg
     -> Explorer themeExt current previous currentMsg previousMsg
-    -> Explorer themeExt model (Spa.PageStack.Model Spa.SetupError current previous) (BookMsg msg) (Spa.PageStack.Msg Route currentMsg previousMsg)
+    -> Explorer themeExt model (Spa.PageStack.Model Spa.SetupError current previous) (BookMsg themeExt msg) (Spa.PageStack.Msg Route currentMsg previousMsg)
 addBook b (Explorer expl) =
     let
         cat : String
@@ -347,18 +348,18 @@ addBook b (Explorer expl) =
 -}
 type alias Book themeExt model msg =
     { title : String
-    , init : Shared themeExt -> ( model, Effect SharedMsg msg )
-    , update : Shared themeExt -> msg -> model -> ( model, Effect SharedMsg msg )
+    , init : Shared themeExt -> ( model, Effect (SharedMsg themeExt) msg )
+    , update : Shared themeExt -> msg -> model -> ( model, Effect (SharedMsg themeExt) msg )
     , subscriptions : Shared themeExt -> model -> Sub msg
-    , chapters : List (Shared themeExt -> model -> Element (BookMsg msg))
-    , dialog : Maybe (Shared themeExt -> model -> Maybe (OUI.Element.Modal.Modal (BookMsg msg)))
+    , chapters : List (Shared themeExt -> model -> Element (BookMsg themeExt msg))
+    , dialog : Maybe (Shared themeExt -> model -> Maybe (OUI.Element.Modal.Modal (BookMsg themeExt msg)))
     }
 
 
 {-| A stateless book message
 -}
-type BookMsg msg
-    = SharedMsg SharedMsg
+type BookMsg themeExt msg
+    = SharedMsg (SharedMsg themeExt)
     | BookMsg msg
 
 
@@ -367,7 +368,7 @@ type BookMsg msg
 The passed string will be logged in the log event window
 
 -}
-logEvent : String -> BookMsg msg
+logEvent : String -> BookMsg themeExt msg
 logEvent value =
     SharedMsg <| Event value
 
@@ -379,43 +380,48 @@ The passed string will be logged in the log event window
 Same as 'logEvent', but for update/init
 
 -}
-logEffect : String -> Effect SharedMsg msg
+logEffect : String -> Effect (SharedMsg themeExt) msg
 logEffect =
     Event >> Effect.fromShared
 
 
-{-| wrap a book msg into a `BookMsg msg`. This is needed in views.
+{-| wrap a book msg into a `BookMsg themeExt msg`. This is needed in views.
 -}
-bookMsg : msg -> BookMsg msg
+bookMsg : msg -> BookMsg themeExt msg
 bookMsg =
     BookMsg
 
 
-sharedMsg : SharedMsg -> BookMsg msg
+sharedMsg : SharedMsg themeExt -> BookMsg themeExt msg
 sharedMsg =
     SharedMsg
 
 
-{-| build a Explorer.SharedMsg that changes the currently selected color scheme
+{-| build a Explorer.(SharedMsg themeExt) that changes the currently selected color scheme
 -}
-selectColorScheme : Int -> ColorSchemeType -> SharedMsg
+selectColorScheme : Int -> ColorSchemeType -> SharedMsg themeExt
 selectColorScheme i t =
     SelectColorScheme i t
 
 
-addColorThemeMsg : Color.Theme -> SharedMsg
+addColorThemeMsg : Color.Theme -> SharedMsg themeExt
 addColorThemeMsg =
     AddColorTheme
 
 
-deleteColorThemeMsg : Int -> SharedMsg
+deleteColorThemeMsg : Int -> SharedMsg themeExt
 deleteColorThemeMsg =
     DeleteColorTheme
 
 
-updateColorThemeMsg : Int -> Color.Theme -> SharedMsg
+updateColorThemeMsg : Int -> Color.Theme -> SharedMsg themeExt
 updateColorThemeMsg =
     UpdateColorTheme
+
+
+updateCurrentThemeMsg : (Theme themeExt -> Theme themeExt) -> SharedMsg themeExt
+updateCurrentThemeMsg =
+    UpdateCurrentTheme
 
 
 {-| Creates a new static book
@@ -436,8 +442,8 @@ book title =
 statefulBook :
     String
     ->
-        { init : Shared themeExt -> ( model, Effect SharedMsg msg )
-        , update : Shared themeExt -> msg -> model -> ( model, Effect SharedMsg msg )
+        { init : Shared themeExt -> ( model, Effect (SharedMsg themeExt) msg )
+        , update : Shared themeExt -> msg -> model -> ( model, Effect (SharedMsg themeExt) msg )
         , subscriptions : Shared themeExt -> model -> Sub msg
         }
     -> Book themeExt model msg
@@ -477,7 +483,7 @@ withMarkdownChapter markdown b =
 
 {-| Add a static content chapter to a book
 -}
-withStaticChapter : (Shared themeExt -> Element (BookMsg msg)) -> Book themeExt model msg -> Book themeExt model msg
+withStaticChapter : (Shared themeExt -> Element (BookMsg themeExt msg)) -> Book themeExt model msg -> Book themeExt model msg
 withStaticChapter body b =
     { b
         | chapters = (\shared _ -> body shared) :: b.chapters
@@ -486,7 +492,7 @@ withStaticChapter body b =
 
 {-| Add a chapter to a book
 -}
-withChapter : (Shared themeExt -> model -> Element (BookMsg msg)) -> Book themeExt model msg -> Book themeExt model msg
+withChapter : (Shared themeExt -> model -> Element (BookMsg themeExt msg)) -> Book themeExt model msg -> Book themeExt model msg
 withChapter body b =
     { b
         | chapters = body :: b.chapters
@@ -496,7 +502,7 @@ withChapter body b =
 {-| set a Dialog
 -}
 withDialog :
-    (Shared themeExt -> model -> Maybe (OUI.Element.Modal.Modal (BookMsg msg)))
+    (Shared themeExt -> model -> Maybe (OUI.Element.Modal.Modal (BookMsg themeExt msg)))
     -> Book themeExt model msg
     -> Book themeExt model msg
 withDialog dialog b =
@@ -622,7 +628,7 @@ changeColorScheme index type_ shared =
 -}
 finalize :
     Explorer themeExt current previous currentMsg previousMsg
-    -> Spa.Application Json.Decode.Value (Shared themeExt) SharedMsg String current previous currentMsg previousMsg
+    -> Spa.Application Json.Decode.Value (Shared themeExt) (SharedMsg themeExt) String current previous currentMsg previousMsg
 finalize =
     finalizeWithOptions
         { saveSettingsPort = Nothing
@@ -630,17 +636,17 @@ finalize =
 
 
 withSaveSettings :
-    { saveSettingsPort : Maybe (Json.Encode.Value -> Cmd SharedMsg) }
+    { saveSettingsPort : Maybe (Json.Encode.Value -> Cmd (SharedMsg themeExt)) }
     -> Shared themeExt
-    -> ( Shared themeExt, Cmd SharedMsg )
+    -> ( Shared themeExt, Cmd (SharedMsg themeExt) )
 withSaveSettings options shared =
     ( shared, buildSaveSettingsMsg options shared )
 
 
 buildSaveSettingsMsg :
-    { saveSettingsPort : Maybe (Json.Encode.Value -> Cmd SharedMsg) }
+    { saveSettingsPort : Maybe (Json.Encode.Value -> Cmd (SharedMsg themeExt)) }
     -> Shared themeExt
-    -> Cmd SharedMsg
+    -> Cmd (SharedMsg themeExt)
 buildSaveSettingsMsg options shared =
     case options.saveSettingsPort of
         Nothing ->
@@ -666,9 +672,9 @@ buildSaveSettingsMsg options shared =
 {-| Finalize a explorer and returns Program
 -}
 finalizeWithOptions :
-    { saveSettingsPort : Maybe (Json.Encode.Value -> Cmd SharedMsg) }
+    { saveSettingsPort : Maybe (Json.Encode.Value -> Cmd (SharedMsg themeExt)) }
     -> Explorer themeExt current previous currentMsg previousMsg
-    -> Spa.Application Json.Decode.Value (Shared themeExt) SharedMsg String current previous currentMsg previousMsg
+    -> Spa.Application Json.Decode.Value (Shared themeExt) (SharedMsg themeExt) String current previous currentMsg previousMsg
 finalizeWithOptions options (Explorer expl) =
     let
         categories : List ( String, List String )
@@ -831,6 +837,13 @@ finalizeWithOptions options (Explorer expl) =
                                     (Tuple.first shared.selectedColorScheme)
                                     (Tuple.second shared.selectedColorScheme)
                                 |> withSaveSettings options
+
+                        UpdateCurrentTheme apply ->
+                            ( { shared
+                                | theme = apply shared.theme
+                              }
+                            , Cmd.none
+                            )
 
                         OnBookClick path ->
                             ( shared

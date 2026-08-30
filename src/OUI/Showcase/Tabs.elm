@@ -47,7 +47,7 @@ book =
         |> withChapter tabs
 
 
-tabs : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg Msg)
+tabs : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 tabs { theme } model =
     let
         primary : OUI.Tabs.Tabs Int Entry Msg

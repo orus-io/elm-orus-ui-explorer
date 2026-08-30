@@ -126,7 +126,7 @@ update _ msg model =
                 |> Effect.withNone
 
 
-tabs : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg Msg)
+tabs : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 tabs shared model =
     Element.column [ Element.width Element.fill, Element.spacing 2 ]
         [ OUI.Tabs.new identity (Explorer.bookMsg << SelectTab)
@@ -168,7 +168,7 @@ tabs shared model =
         ]
 
 
-textfields : ( String, TextField (Explorer.BookMsg Msg) -> TextField (Explorer.BookMsg Msg) ) -> Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg Msg)
+textfields : ( String, TextField (Explorer.BookMsg themeExt Msg) -> TextField (Explorer.BookMsg themeExt Msg) ) -> Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 textfields ( datatype, setDatatype ) { theme } model =
     let
         colorscheme : OUI.Material.Color.Scheme
@@ -179,7 +179,7 @@ textfields ( datatype, setDatatype ) { theme } model =
         key name =
             name ++ "-" ++ datatype
 
-        textField : String -> String -> TextField (Explorer.BookMsg Msg)
+        textField : String -> String -> TextField (Explorer.BookMsg themeExt Msg)
         textField label name =
             TextField.new label
                 (Explorer.bookMsg << (OnChange <| key name))
@@ -189,7 +189,7 @@ textfields ( datatype, setDatatype ) { theme } model =
                     (Explorer.bookMsg <| OnLoseFocus <| key name)
                 |> TextField.withFocused (inputHasFocus (key name) model)
 
-        render : TextField (Explorer.BookMsg Msg) -> Element (Explorer.BookMsg Msg)
+        render : TextField (Explorer.BookMsg themeExt Msg) -> Element (Explorer.BookMsg themeExt Msg)
         render =
             setDatatype
                 >> Material.textField theme

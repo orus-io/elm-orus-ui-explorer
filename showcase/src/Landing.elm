@@ -17,7 +17,7 @@ import OUI.Material.Theme as Theme exposing (Theme)
 import OUI.Text as Text
 
 
-view : Explorer.Shared themeExt -> Element (Explorer.BookMsg ())
+view : Explorer.Shared themeExt -> Element (Explorer.BookMsg themeExt ())
 view { theme } =
     let
         colorscheme : OUI.Material.Color.Scheme
@@ -37,7 +37,7 @@ view { theme } =
         ]
 
 
-hero : Theme themeExt -> OUI.Material.Color.Scheme -> Element (Explorer.BookMsg ())
+hero : Theme themeExt -> OUI.Material.Color.Scheme -> Element (Explorer.BookMsg themeExt ())
 hero theme colorscheme =
     Element.column
         [ Element.width Element.fill
@@ -81,10 +81,10 @@ hero theme colorscheme =
         ]
 
 
-features : Theme themeExt -> OUI.Material.Color.Scheme -> Element (Explorer.BookMsg ())
+features : Theme themeExt -> OUI.Material.Color.Scheme -> Element (Explorer.BookMsg themeExt ())
 features theme colorscheme =
     let
-        card : String -> String -> Icon.Icon -> Element (Explorer.BookMsg ())
+        card : String -> String -> Icon.Icon -> Element (Explorer.BookMsg themeExt ())
         card title description icon =
             Element.column
                 [ Element.spacing 12
@@ -118,7 +118,7 @@ features theme colorscheme =
         |> Element.el [ Element.paddingXY 0 20 ]
 
 
-exploreStrip : Theme themeExt -> Element (Explorer.BookMsg ())
+exploreStrip : Theme themeExt -> Element (Explorer.BookMsg themeExt ())
 exploreStrip theme =
     Element.column
         [ Element.spacing 16
@@ -136,7 +136,7 @@ exploreStrip theme =
         ]
 
 
-footer : Theme themeExt -> Element (Explorer.BookMsg ())
+footer : Theme themeExt -> Element (Explorer.BookMsg themeExt ())
 footer theme =
     Element.column [ Element.spacing 12, Element.width Element.fill ]
         [ Element.row [ Element.spacing 16, Element.width Element.fill ]
@@ -205,4 +205,3 @@ darkModeIcon : Icon.Icon
 darkModeIcon =
     Icon.elmMaterialIcons Color Material.Icons.dark_mode
         |> Icon.withSize 40
-

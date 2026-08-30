@@ -13,7 +13,7 @@ book =
         |> Explorer.withChapter chapter
 
 
-chapter : Explorer.Shared themeExt -> () -> Element (Explorer.BookMsg msg)
+chapter : Explorer.Shared themeExt -> () -> Element (Explorer.BookMsg themeExt msg)
 chapter shared _ =
     Element.wrappedRow [ Element.spacing 50 ]
         [ Menu.new identity

@@ -17,7 +17,7 @@ book =
         |> Explorer.withStaticChapter fullscreenDemo
 
 
-demo : Explorer.Shared themeExt -> Element (Explorer.BookMsg ())
+demo : Explorer.Shared themeExt -> Element (Explorer.BookMsg themeExt ())
 demo shared =
     Element.el
         ([ Element.width Element.fill
@@ -34,7 +34,7 @@ demo shared =
         (Element.text "Some content")
 
 
-iconDemo : Explorer.Shared themeExt -> Element (Explorer.BookMsg ())
+iconDemo : Explorer.Shared themeExt -> Element (Explorer.BookMsg themeExt ())
 iconDemo shared =
     Element.el
         ([ Element.width Element.fill
@@ -54,7 +54,7 @@ iconDemo shared =
         (Element.text "Some content")
 
 
-longTextDemo : Explorer.Shared themeExt -> Element (Explorer.BookMsg ())
+longTextDemo : Explorer.Shared themeExt -> Element (Explorer.BookMsg themeExt ())
 longTextDemo shared =
     Element.el
         ([ Element.width Element.fill
@@ -72,7 +72,7 @@ longTextDemo shared =
         (Element.text "Some content")
 
 
-fullscreenDemo : Explorer.Shared themeExt -> Element (Explorer.BookMsg ())
+fullscreenDemo : Explorer.Shared themeExt -> Element (Explorer.BookMsg themeExt ())
 fullscreenDemo shared =
     Element.el
         ([ Element.width <| Element.px 250

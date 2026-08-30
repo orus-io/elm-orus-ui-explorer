@@ -60,13 +60,13 @@ addEntries =
         >> Navigation.addEntry "folder2" "Folder" OUI.Icon.light_mode
 
 
-nav : Navigation btnC String (Explorer.BookMsg msg)
+nav : Navigation btnC String (Explorer.BookMsg themeExt msg)
 nav =
     Navigation.new Explorer.logEvent
         |> addEntries
 
 
-drawer : Explorer.Shared themeExt -> Element (Explorer.BookMsg Msg)
+drawer : Explorer.Shared themeExt -> Element (Explorer.BookMsg themeExt Msg)
 drawer { theme } =
     let
         divider : Element msg
@@ -84,7 +84,7 @@ drawer { theme } =
         ]
 
 
-rail : Explorer.Shared themeExt -> Element (Explorer.BookMsg Msg)
+rail : Explorer.Shared themeExt -> Element (Explorer.BookMsg themeExt Msg)
 rail { theme } =
     let
         divider : Element msg
@@ -105,7 +105,7 @@ rail { theme } =
         ]
 
 
-modal : Explorer.Shared themeExt -> Element (Explorer.BookMsg Msg)
+modal : Explorer.Shared themeExt -> Element (Explorer.BookMsg themeExt Msg)
 modal { theme } =
     let
         divider : Element msg
@@ -126,7 +126,7 @@ modal { theme } =
         ]
 
 
-dynamic : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg Msg)
+dynamic : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 dynamic { theme } { expanded } =
     let
         divider : Element msg

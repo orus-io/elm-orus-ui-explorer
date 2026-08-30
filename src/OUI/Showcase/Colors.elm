@@ -59,7 +59,7 @@ keyColorEdit :
     (KeyColors -> Color)
     -> (Color -> KeyColors -> KeyColors)
     -> KeyColors
-    -> Explorer.BookMsg Msg
+    -> Explorer.BookMsg themeExt Msg
 keyColorEdit getter setter keyColors =
     EditColor
         (getter keyColors)
@@ -104,7 +104,7 @@ showKeyColor :
     -> (KeyColors -> Color)
     -> (Color -> KeyColors -> KeyColors)
     -> KeyColors
-    -> Element (Explorer.BookMsg Msg)
+    -> Element (Explorer.BookMsg themeExt Msg)
 showKeyColor theme editable name getter setter keyColors =
     let
         scheme =
@@ -155,7 +155,7 @@ showKeyColor theme editable name getter setter keyColors =
         ]
 
 
-showKeyColors : Explorer.Shared themeExt -> Element (Explorer.BookMsg Msg)
+showKeyColors : Explorer.Shared themeExt -> Element (Explorer.BookMsg themeExt Msg)
 showKeyColors shared =
     let
         theme : OUI.Material.Theme.Theme themeExt
@@ -517,7 +517,7 @@ type alias Model =
     }
 
 
-init : Explorer.Shared themeExt -> ( Model, Effect Explorer.SharedMsg Msg )
+init : Explorer.Shared themeExt -> ( Model, Effect (Explorer.SharedMsg themeExt) Msg )
 init shared =
     { colorThemeButton = OUI.MenuButton.init "color-page-color-theme-button"
     , colorSelector = Nothing
@@ -532,7 +532,7 @@ init shared =
         |> Effect.withNone
 
 
-update : Explorer.Shared themeExt -> Msg -> Model -> ( Model, Effect Explorer.SharedMsg Msg )
+update : Explorer.Shared themeExt -> Msg -> Model -> ( Model, Effect (Explorer.SharedMsg themeExt) Msg )
 update shared msg model =
     case msg of
         ColorThemeButtonMsg buttonMsg ->

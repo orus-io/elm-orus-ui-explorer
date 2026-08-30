@@ -47,10 +47,10 @@ book =
         |> Explorer.withChapter slider
 
 
-slider : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg Msg)
+slider : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 slider { theme } { sliders } =
     let
-        add : String -> Slider.Slider (Explorer.BookMsg Msg)
+        add : String -> Slider.Slider (Explorer.BookMsg themeExt Msg)
         add name =
             Slider.new (Dict.get name sliders |> Maybe.withDefault 30)
                 |> Slider.onChange (Explorer.bookMsg << SetValue name)

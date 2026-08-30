@@ -64,7 +64,7 @@ book =
         |> Explorer.withChapter radiobuttons
 
 
-radiobuttons : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg Msg)
+radiobuttons : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 radiobuttons { theme } model =
     let
         divider : Element msg

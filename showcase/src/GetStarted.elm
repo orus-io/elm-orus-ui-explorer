@@ -19,7 +19,7 @@ import OUI.Text as Text
 import SyntaxHighlight
 
 
-view : Explorer.Shared themeExt -> Element (Explorer.BookMsg ())
+view : Explorer.Shared themeExt -> Element (Explorer.BookMsg themeExt ())
 view { theme } =
     let
         colorscheme : OUI.Material.Color.Scheme
@@ -39,7 +39,7 @@ view { theme } =
         ]
 
 
-hero : Theme themeExt -> OUI.Material.Color.Scheme -> Element (Explorer.BookMsg ())
+hero : Theme themeExt -> OUI.Material.Color.Scheme -> Element (Explorer.BookMsg themeExt ())
 hero theme colorscheme =
     Element.column
         [ Element.width Element.fill
@@ -72,7 +72,7 @@ hero theme colorscheme =
         ]
 
 
-steps : Theme themeExt -> OUI.Material.Color.Scheme -> Element (Explorer.BookMsg ())
+steps : Theme themeExt -> OUI.Material.Color.Scheme -> Element (Explorer.BookMsg themeExt ())
 steps theme colorscheme =
     Element.column [ Element.spacing 24, Element.width Element.fill ]
         [ step theme
@@ -103,7 +103,7 @@ step :
     -> String
     -> String
     -> String
-    -> Element (Explorer.BookMsg ())
+    -> Element (Explorer.BookMsg themeExt ())
 step theme colorscheme title description label code =
     Element.column
         [ Element.spacing 16
@@ -195,7 +195,7 @@ dot color =
         Element.none
 
 
-exploreStrip : Theme themeExt -> Element (Explorer.BookMsg ())
+exploreStrip : Theme themeExt -> Element (Explorer.BookMsg themeExt ())
 exploreStrip theme =
     Element.column [ Element.spacing 16, Element.width Element.fill ]
         [ Text.titleLarge "Explore the components" |> Material.text theme
@@ -209,7 +209,7 @@ exploreStrip theme =
         ]
 
 
-footer : Theme themeExt -> Element (Explorer.BookMsg ())
+footer : Theme themeExt -> Element (Explorer.BookMsg themeExt ())
 footer theme =
     Element.column [ Element.spacing 12, Element.width Element.fill ]
         [ Element.row [ Element.spacing 16, Element.width Element.fill ]
