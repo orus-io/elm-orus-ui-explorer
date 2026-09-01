@@ -61,7 +61,7 @@ editorChapter { theme } _ =
                 )
             )
             "Active Indicator Thickness"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat progressTheme.activeIndicator.thickness)
         , ThemeEditor.slider theme
             (updateProgressMsg
@@ -70,7 +70,7 @@ editorChapter { theme } _ =
                 )
             )
             "Track Indicator Thickness"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat progressTheme.trackIndicator.thickness)
         , ThemeEditor.slider theme
             (updateProgressMsg
@@ -79,7 +79,7 @@ editorChapter { theme } _ =
                 )
             )
             "Circular Size"
-            ( 0, 200 )
+            ( 0, 200, 1 )
             (toFloat progressTheme.circularSize)
         , divider
         ]

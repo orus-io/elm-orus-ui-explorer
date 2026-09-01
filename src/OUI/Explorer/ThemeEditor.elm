@@ -1,4 +1,9 @@
-module OUI.Explorer.ThemeEditor exposing (slider, textSize, textType)
+module OUI.Explorer.ThemeEditor exposing
+    ( discreteSlider
+    , slider
+    , textSize
+    , textType
+    )
 
 import Element exposing (Element)
 import OUI.Explorer as Explorer
@@ -12,16 +17,43 @@ slider :
     Theme themeExt
     -> (Float -> Explorer.BookMsg themeExt msg)
     -> String
-    -> ( Float, Float )
+    -> ( Float, Float, Float )
     -> Float
     -> Element (Explorer.BookMsg themeExt msg)
-slider theme toMsg title ( min, max ) value =
+slider theme toMsg title ( min, max, step ) value =
     Element.row [ Element.spacing 30, Element.width Element.fill ]
         [ Text.titleSmall title
             |> Material.text theme
             |> Element.el [ Element.width (Element.px 100) ]
         , Slider.new value
-            |> Slider.withStep 1
+            |> Slider.withStep step
+            |> Slider.withMinMax min max
+            |> Slider.onChange toMsg
+            |> Material.slider theme
+                [ Element.centerY
+                , Element.width <| Element.px 250
+                ]
+            |> Element.el [ Element.width <| Element.px 250 ]
+        , String.fromFloat value
+            |> Text.bodyLarge
+            |> Material.text theme
+        ]
+
+
+discreteSlider :
+    Theme themeExt
+    -> (Float -> Explorer.BookMsg themeExt msg)
+    -> String
+    -> ( Float, Float, Float )
+    -> Float
+    -> Element (Explorer.BookMsg themeExt msg)
+discreteSlider theme toMsg title ( min, max, step ) value =
+    Element.row [ Element.spacing 30, Element.width Element.fill ]
+        [ Text.titleSmall title
+            |> Material.text theme
+            |> Element.el [ Element.width (Element.px 100) ]
+        , Slider.new value
+            |> Slider.withDiscreteStep step
             |> Slider.withMinMax min max
             |> Slider.onChange toMsg
             |> Material.slider theme

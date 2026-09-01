@@ -91,7 +91,7 @@ editorChapter { theme } _ =
                 )
             )
             "Height"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat switchTheme.track.height)
         , ThemeEditor.slider theme
             (updateSwitchMsg
@@ -105,7 +105,7 @@ editorChapter { theme } _ =
                 )
             )
             "Width"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat switchTheme.track.width)
         , ThemeEditor.slider theme
             (updateSwitchMsg
@@ -119,7 +119,7 @@ editorChapter { theme } _ =
                 )
             )
             "Outline Width"
-            ( 0, 20 )
+            ( 0, 20, 1 )
             (toFloat switchTheme.track.outlineWidth)
         , ThemeEditor.slider theme
             (updateSwitchMsg
@@ -133,7 +133,7 @@ editorChapter { theme } _ =
                 )
             )
             "Corner"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat switchTheme.track.corner)
         , divider
         , Text.titleLarge "Thumb" |> Material.text theme
@@ -153,7 +153,7 @@ editorChapter { theme } _ =
                 )
             )
             "Size Unselected"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat switchTheme.thumb.size.unselected)
         , ThemeEditor.slider theme
             (updateSwitchMsg
@@ -171,7 +171,7 @@ editorChapter { theme } _ =
                 )
             )
             "Size With Icon"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat switchTheme.thumb.size.withIcon)
         , ThemeEditor.slider theme
             (updateSwitchMsg
@@ -189,7 +189,7 @@ editorChapter { theme } _ =
                 )
             )
             "Size Selected"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat switchTheme.thumb.size.selected)
         , ThemeEditor.slider theme
             (updateSwitchMsg
@@ -207,7 +207,7 @@ editorChapter { theme } _ =
                 )
             )
             "Size Pressed"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat switchTheme.thumb.size.pressed)
         , divider
         , Text.titleLarge "State Layer" |> Material.text theme
@@ -218,7 +218,7 @@ editorChapter { theme } _ =
                 )
             )
             "Size"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat switchTheme.stateLayer.size)
         , divider
         , Text.titleLarge "Icon" |> Material.text theme
@@ -234,7 +234,7 @@ editorChapter { theme } _ =
                 )
             )
             "Size Unselected"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat switchTheme.icon.sizeUnselected)
         , ThemeEditor.slider theme
             (updateSwitchMsg
@@ -248,7 +248,7 @@ editorChapter { theme } _ =
                 )
             )
             "Size Selected"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat switchTheme.icon.sizeSelected)
         , divider
         ]

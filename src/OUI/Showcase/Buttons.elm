@@ -179,7 +179,7 @@ fabSection theme title layout toMsg =
             )
         )
         "Container Height"
-        ( 0, 200 )
+        ( 0, 200, 1 )
         (toFloat layout.containerHeight)
     , ThemeEditor.slider theme
         (toMsg
@@ -188,7 +188,7 @@ fabSection theme title layout toMsg =
             )
         )
         "Container Shape"
-        ( 0, toFloat layout.containerHeight / 2 )
+        ( 0, toFloat layout.containerHeight / 2, 1 )
         (toFloat layout.containerShape)
     , ThemeEditor.slider theme
         (toMsg
@@ -197,7 +197,7 @@ fabSection theme title layout toMsg =
             )
         )
         "Container Width"
-        ( 0, 200 )
+        ( 0, 200, 1 )
         (toFloat layout.containerWidth)
     , ThemeEditor.slider theme
         (toMsg
@@ -206,7 +206,7 @@ fabSection theme title layout toMsg =
             )
         )
         "Icon Size"
-        ( 0, toFloat layout.containerHeight )
+        ( 0, toFloat layout.containerHeight, 1 )
         (toFloat layout.iconSize)
     ]
 
@@ -232,7 +232,7 @@ editorChapter { theme } _ =
                 )
             )
             "Container Height"
-            ( 0, 200 )
+            ( 0, 200, 1 )
             (toFloat buttonTheme.common.containerHeight)
          , ThemeEditor.slider theme
             (updateButtonCommonMsg
@@ -241,7 +241,7 @@ editorChapter { theme } _ =
                 )
             )
             "Container Radius"
-            ( 0, buttonTheme.common.containerHeight // 2 |> toFloat )
+            ( 0, buttonTheme.common.containerHeight // 2 |> toFloat, 1 )
             (toFloat buttonTheme.common.containerRadius)
          , ThemeEditor.slider theme
             (updateButtonCommonMsg
@@ -250,7 +250,7 @@ editorChapter { theme } _ =
                 )
             )
             "Icon Size"
-            ( 0, buttonTheme.common.containerHeight |> toFloat )
+            ( 0, buttonTheme.common.containerHeight |> toFloat, 1 )
             (toFloat buttonTheme.common.iconSize)
          , ThemeEditor.slider theme
             (updateButtonCommonMsg
@@ -259,7 +259,7 @@ editorChapter { theme } _ =
                 )
             )
             "Left/right Padding"
-            ( 0, buttonTheme.common.containerHeight |> toFloat )
+            ( 0, buttonTheme.common.containerHeight |> toFloat, 1 )
             (toFloat buttonTheme.common.leftRightPadding)
          , ThemeEditor.slider theme
             (updateButtonCommonMsg
@@ -268,7 +268,7 @@ editorChapter { theme } _ =
                 )
             )
             "Left pad. w. Icon"
-            ( 0, buttonTheme.common.containerHeight |> toFloat )
+            ( 0, buttonTheme.common.containerHeight |> toFloat, 1 )
             (toFloat buttonTheme.common.leftPaddingWithIcon)
          , ThemeEditor.slider theme
             (updateButtonCommonMsg
@@ -277,7 +277,7 @@ editorChapter { theme } _ =
                 )
             )
             "Right pad. w. Icon"
-            ( 0, buttonTheme.common.containerHeight |> toFloat )
+            ( 0, buttonTheme.common.containerHeight |> toFloat, 1 )
             (toFloat buttonTheme.common.rightPaddingWithIcon)
          , ThemeEditor.slider theme
             (updateButtonCommonMsg
@@ -286,7 +286,7 @@ editorChapter { theme } _ =
                 )
             )
             "Pad. bw. Elements"
-            ( 0, buttonTheme.common.containerHeight |> toFloat )
+            ( 0, buttonTheme.common.containerHeight |> toFloat, 1 )
             (toFloat buttonTheme.common.paddingBetweenElements)
          , ThemeEditor.textType theme
             (updateButtonCommonMsg
@@ -317,7 +317,7 @@ editorChapter { theme } _ =
                         )
                     )
                     "Container Height"
-                    ( 0, 200 )
+                    ( 0, 200, 1 )
                     (toFloat buttonTheme.fab.extended.containerHeight)
                , ThemeEditor.slider theme
                     (updateButtonExtendedMsg
@@ -326,7 +326,7 @@ editorChapter { theme } _ =
                         )
                     )
                     "Container Radius"
-                    ( 0, buttonTheme.fab.extended.containerHeight // 2 |> toFloat )
+                    ( 0, buttonTheme.fab.extended.containerHeight // 2 |> toFloat, 1 )
                     (toFloat buttonTheme.fab.extended.containerRadius)
                , ThemeEditor.slider theme
                     (updateButtonExtendedMsg
@@ -335,7 +335,7 @@ editorChapter { theme } _ =
                         )
                     )
                     "Icon Size"
-                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat )
+                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat, 1 )
                     (toFloat buttonTheme.fab.extended.iconSize)
                , ThemeEditor.slider theme
                     (updateButtonExtendedMsg
@@ -344,7 +344,7 @@ editorChapter { theme } _ =
                         )
                     )
                     "Left/right Padding"
-                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat )
+                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat, 1 )
                     (toFloat buttonTheme.fab.extended.leftRightPadding)
                , ThemeEditor.slider theme
                     (updateButtonExtendedMsg
@@ -353,7 +353,7 @@ editorChapter { theme } _ =
                         )
                     )
                     "Left pad. w. Icon"
-                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat )
+                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat, 1 )
                     (toFloat buttonTheme.fab.extended.leftPaddingWithIcon)
                , ThemeEditor.slider theme
                     (updateButtonExtendedMsg
@@ -362,7 +362,7 @@ editorChapter { theme } _ =
                         )
                     )
                     "Right pad. w. Icon"
-                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat )
+                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat, 1 )
                     (toFloat buttonTheme.fab.extended.rightPaddingWithIcon)
                , ThemeEditor.slider theme
                     (updateButtonExtendedMsg
@@ -371,7 +371,7 @@ editorChapter { theme } _ =
                         )
                     )
                     "Pad. bw. Elements"
-                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat )
+                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat, 1 )
                     (toFloat buttonTheme.fab.extended.paddingBetweenElements)
                , ThemeEditor.textType theme
                     (updateButtonExtendedMsg
@@ -398,7 +398,7 @@ editorChapter { theme } _ =
                         )
                     )
                     "Icon Size"
-                    ( 0, toFloat buttonTheme.icon.containerSize )
+                    ( 0, toFloat buttonTheme.icon.containerSize, 1 )
                     (toFloat buttonTheme.icon.iconSize)
                , ThemeEditor.slider theme
                     (updateButtonIconMsg
@@ -407,7 +407,7 @@ editorChapter { theme } _ =
                         )
                     )
                     "Container Size"
-                    ( 0, 200 )
+                    ( 0, 200, 1 )
                     (toFloat buttonTheme.icon.containerSize)
                , divider
                ]

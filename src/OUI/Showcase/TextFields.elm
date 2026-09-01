@@ -174,7 +174,7 @@ editorChapter { theme } _ =
                 )
             )
             "Height"
-            ( 0, 150 )
+            ( 0, 150, 1 )
             (toFloat textfieldTheme.height)
         , ThemeEditor.slider theme
             (updateTextfieldMsg
@@ -183,7 +183,7 @@ editorChapter { theme } _ =
                 )
             )
             "Left/Right Padding Without Icon"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat textfieldTheme.leftRightPaddingWithoutIcon)
         , ThemeEditor.slider theme
             (updateTextfieldMsg
@@ -192,7 +192,7 @@ editorChapter { theme } _ =
                 )
             )
             "Left/Right Padding With Icon"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat textfieldTheme.leftRightPaddingWithIcon)
         , ThemeEditor.slider theme
             (updateTextfieldMsg
@@ -201,7 +201,7 @@ editorChapter { theme } _ =
                 )
             )
             "Between Icon And Text"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat textfieldTheme.paddingBetweenIconAndText)
         , ThemeEditor.slider theme
             (updateTextfieldMsg
@@ -210,7 +210,7 @@ editorChapter { theme } _ =
                 )
             )
             "Supporting Text Top Padding"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat textfieldTheme.supportingTextTopPadding)
         , ThemeEditor.slider theme
             (updateTextfieldMsg
@@ -219,7 +219,7 @@ editorChapter { theme } _ =
                 )
             )
             "Between Supporting Text And Character Counter"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat textfieldTheme.paddingBetweenSupportingTextAndCharacterCounter)
         , ThemeEditor.slider theme
             (updateTextfieldMsg
@@ -228,7 +228,7 @@ editorChapter { theme } _ =
                 )
             )
             "Icon Size"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat textfieldTheme.iconSize)
         , divider
         , Text.titleLarge "Filled" |> Material.text theme
@@ -239,7 +239,7 @@ editorChapter { theme } _ =
                 )
             )
             "Top/Bottom Padding"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat textfieldTheme.filled.topBottomPadding)
         , divider
         , Text.titleLarge "Outlined" |> Material.text theme
@@ -255,7 +255,7 @@ editorChapter { theme } _ =
                 )
             )
             "Label Left/Right Padding"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat textfieldTheme.outlined.labelLeftRightPadding)
         , ThemeEditor.slider theme
             (updateTextfieldMsg
@@ -269,7 +269,7 @@ editorChapter { theme } _ =
                 )
             )
             "Label Bottom"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat textfieldTheme.outlined.labelBottom)
         , ThemeEditor.slider theme
             (updateTextfieldMsg
@@ -283,7 +283,7 @@ editorChapter { theme } _ =
                 )
             )
             "Shape"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat textfieldTheme.outlined.shape)
         , divider
         ]

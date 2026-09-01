@@ -62,7 +62,7 @@ editorChapter { theme } _ =
                 )
             )
             "Radius"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat menuTheme.radius)
         , ThemeEditor.slider theme
             (updateMenuMsg
@@ -71,7 +71,7 @@ editorChapter { theme } _ =
                 )
             )
             "Top/Bottom Padding"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat menuTheme.topBottomPadding)
         , ThemeEditor.slider theme
             (updateMenuMsg
@@ -80,7 +80,7 @@ editorChapter { theme } _ =
                 )
             )
             "Left/Right Padding"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat menuTheme.leftRightPadding)
         , ThemeEditor.slider theme
             (updateMenuMsg
@@ -89,7 +89,7 @@ editorChapter { theme } _ =
                 )
             )
             "Padding Within Item"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat menuTheme.paddingWithinItem)
         , ThemeEditor.slider theme
             (updateMenuMsg
@@ -98,7 +98,7 @@ editorChapter { theme } _ =
                 )
             )
             "Item Height"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat menuTheme.itemHeight)
         , ThemeEditor.slider theme
             (updateMenuMsg
@@ -107,7 +107,7 @@ editorChapter { theme } _ =
                 )
             )
             "Icon Size"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat menuTheme.iconSize)
         , ThemeEditor.slider theme
             (updateMenuMsg
@@ -116,7 +116,7 @@ editorChapter { theme } _ =
                 )
             )
             "Min Width"
-            ( 0, 300 )
+            ( 0, 300, 1 )
             (toFloat menuTheme.minWidth)
         , ThemeEditor.slider theme
             (updateMenuMsg
@@ -125,7 +125,7 @@ editorChapter { theme } _ =
                 )
             )
             "Max Width"
-            ( 0, 500 )
+            ( 0, 500, 1 )
             (toFloat menuTheme.maxWidth)
         , divider
         ]

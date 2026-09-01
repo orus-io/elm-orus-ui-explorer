@@ -126,7 +126,7 @@ editorChapter { theme } _ =
                 )
             )
             "Container Width"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat checkboxTheme.containerWidth)
         , ThemeEditor.slider theme
             (updateCheckboxMsg
@@ -135,7 +135,7 @@ editorChapter { theme } _ =
                 )
             )
             "Container Height"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat checkboxTheme.containerHeight)
         , ThemeEditor.slider theme
             (updateCheckboxMsg
@@ -144,7 +144,7 @@ editorChapter { theme } _ =
                 )
             )
             "Container Shape"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat checkboxTheme.containerShape)
         , ThemeEditor.slider theme
             (updateCheckboxMsg
@@ -153,7 +153,7 @@ editorChapter { theme } _ =
                 )
             )
             "Icon Size"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat checkboxTheme.iconSize)
         , ThemeEditor.slider theme
             (updateCheckboxMsg
@@ -162,7 +162,7 @@ editorChapter { theme } _ =
                 )
             )
             "State Layer Size"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat checkboxTheme.stateLayerSize)
         , divider
         ]

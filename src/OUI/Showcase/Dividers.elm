@@ -62,7 +62,7 @@ editorChapter { theme } _ =
                 )
             )
             "Thickness"
-            ( 0, 20 )
+            ( 0, 20, 1 )
             (toFloat dividerTheme.thickness)
         , divider
         ]

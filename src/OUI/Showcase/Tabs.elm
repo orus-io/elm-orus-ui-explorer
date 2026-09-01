@@ -143,7 +143,7 @@ editorChapter { theme } _ =
                 )
             )
             "Container Height"
-            ( 0, 150 )
+            ( 0, 150, 1 )
             (toFloat tabsTheme.primary.containerHeight)
         , ThemeEditor.slider theme
             (updateTabsMsg
@@ -157,7 +157,7 @@ editorChapter { theme } _ =
                 )
             )
             "Active Indicator Height"
-            ( 0, 20 )
+            ( 0, 20, 1 )
             (toFloat tabsTheme.primary.activeIndicatorHeight)
         , ThemeEditor.slider theme
             (updateTabsMsg
@@ -171,7 +171,7 @@ editorChapter { theme } _ =
                 )
             )
             "Active Indicator Width"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat tabsTheme.primary.activeIndicatorWidth)
         , divider
         , Text.titleLarge "Secondary" |> Material.text theme
@@ -187,7 +187,7 @@ editorChapter { theme } _ =
                 )
             )
             "Container Height"
-            ( 0, 150 )
+            ( 0, 150, 1 )
             (toFloat tabsTheme.secondary.containerHeight)
         , ThemeEditor.slider theme
             (updateTabsMsg
@@ -201,7 +201,7 @@ editorChapter { theme } _ =
                 )
             )
             "Active Indicator Height"
-            ( 0, 20 )
+            ( 0, 20, 1 )
             (toFloat tabsTheme.secondary.activeIndicatorHeight)
         , divider
         , Text.titleLarge "Padding" |> Material.text theme
@@ -212,7 +212,7 @@ editorChapter { theme } _ =
                 )
             )
             "Between Icon And Text"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat tabsTheme.paddingBetweenIconAndText)
         , ThemeEditor.slider theme
             (updateTabsMsg
@@ -221,7 +221,7 @@ editorChapter { theme } _ =
                 )
             )
             "Between Inline Icon And Text"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat tabsTheme.paddingBetweenInlineIconAndText)
         , ThemeEditor.slider theme
             (updateTabsMsg
@@ -230,7 +230,7 @@ editorChapter { theme } _ =
                 )
             )
             "Between Inline Text And Badge"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat tabsTheme.paddingBetweenInlineTextAndBadge)
         , divider
         , Text.titleLarge "Text" |> Material.text theme

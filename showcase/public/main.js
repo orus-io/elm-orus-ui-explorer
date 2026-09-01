@@ -11955,6 +11955,10 @@ var $elm$core$List$singleton = function (value) {
 	return _List_fromArray(
 		[value]);
 };
+var $mdgriffith$elm_ui$Internal$Flag$fontWeight = $mdgriffith$elm_ui$Internal$Flag$flag(13);
+var $mdgriffith$elm_ui$Element$Font$bold = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.gT);
+var $mdgriffith$elm_ui$Element$Font$extraBold = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.iX);
+var $mdgriffith$elm_ui$Element$Font$extraLight = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.iY);
 var $mdgriffith$elm_ui$Internal$Model$FontFamily = F2(
 	function (a, b) {
 		return {$: 1, a: a, b: b};
@@ -12008,9 +12012,12 @@ var $mdgriffith$elm_ui$Element$Font$family = function (families) {
 			A3($elm$core$List$foldl, $mdgriffith$elm_ui$Internal$Model$renderFontClassName, 'ff-', families),
 			families));
 };
-var $mdgriffith$elm_ui$Internal$Flag$fontWeight = $mdgriffith$elm_ui$Internal$Flag$flag(13);
+var $mdgriffith$elm_ui$Element$Font$hairline = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.i5);
+var $mdgriffith$elm_ui$Element$Font$heavy = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.iZ);
+var $mdgriffith$elm_ui$Element$Font$light = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.i0);
 var $mdgriffith$elm_ui$Element$Font$medium = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.i1);
 var $mdgriffith$elm_ui$Element$Font$regular = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.i2);
+var $mdgriffith$elm_ui$Element$Font$semiBold = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.i4);
 var $mdgriffith$elm_ui$Internal$Model$FontSize = function (a) {
 	return {$: 2, a: a};
 };
@@ -12034,7 +12041,7 @@ var $author$project$OUI$Material$Typography$typographyAttrs = function (typograp
 					$mdgriffith$elm_ui$Element$Font$typeface(typography.y)
 				])),
 			$mdgriffith$elm_ui$Element$Font$size(typography.iD),
-			(typography.E === 500) ? $mdgriffith$elm_ui$Element$Font$medium : $mdgriffith$elm_ui$Element$Font$regular
+			(typography.E <= 150) ? $mdgriffith$elm_ui$Element$Font$hairline : ((typography.E <= 250) ? $mdgriffith$elm_ui$Element$Font$extraLight : ((typography.E <= 350) ? $mdgriffith$elm_ui$Element$Font$light : ((typography.E <= 450) ? $mdgriffith$elm_ui$Element$Font$regular : ((typography.E <= 550) ? $mdgriffith$elm_ui$Element$Font$medium : ((typography.E <= 650) ? $mdgriffith$elm_ui$Element$Font$semiBold : ((typography.E <= 750) ? $mdgriffith$elm_ui$Element$Font$bold : ((typography.E <= 850) ? $mdgriffith$elm_ui$Element$Font$extraBold : $mdgriffith$elm_ui$Element$Font$heavy)))))))
 		]);
 };
 var $author$project$OUI$Material$Typography$attrs = F5(
@@ -13958,6 +13965,7 @@ var $author$project$OUI$Explorer$ThemeEditor$slider = F5(
 	function (theme, toMsg, title, _v0, value) {
 		var min = _v0.a;
 		var max = _v0.b;
+		var step = _v0.c;
 		return A2(
 			$mdgriffith$elm_ui$Element$row,
 			_List_fromArray(
@@ -14003,7 +14011,7 @@ var $author$project$OUI$Explorer$ThemeEditor$slider = F5(
 								max,
 								A2(
 									$author$project$OUI$Slider$withStep,
-									1,
+									step,
 									$author$project$OUI$Slider$new(value)))))),
 					A2(
 					$author$project$OUI$Material$text,
@@ -14275,7 +14283,7 @@ var $author$project$OUI$Showcase$Badge$editorChapter = F2(
 									});
 							})),
 					'Shape',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					badgeTheme.bx.dv),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -14290,7 +14298,7 @@ var $author$project$OUI$Showcase$Badge$editorChapter = F2(
 									});
 							})),
 					'Size',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					badgeTheme.bx.iD),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -14309,7 +14317,7 @@ var $author$project$OUI$Showcase$Badge$editorChapter = F2(
 									});
 							})),
 					'Pos X',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					badgeTheme.bx.dm.a),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -14328,7 +14336,7 @@ var $author$project$OUI$Showcase$Badge$editorChapter = F2(
 									});
 							})),
 					'Pos Y',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					badgeTheme.bx.dm.b),
 					divider,
 					A2(
@@ -14348,7 +14356,7 @@ var $author$project$OUI$Showcase$Badge$editorChapter = F2(
 									});
 							})),
 					'Shape',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					badgeTheme.X.dv),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -14363,7 +14371,7 @@ var $author$project$OUI$Showcase$Badge$editorChapter = F2(
 									});
 							})),
 					'Size',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					badgeTheme.X.iD),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -14378,7 +14386,7 @@ var $author$project$OUI$Showcase$Badge$editorChapter = F2(
 									});
 							})),
 					'Padding',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					badgeTheme.X.ek),
 					A4(
 					$author$project$OUI$Explorer$ThemeEditor$textType,
@@ -14421,7 +14429,7 @@ var $author$project$OUI$Showcase$Badge$editorChapter = F2(
 									});
 							})),
 					'Pos X',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					badgeTheme.X.dm.a),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -14440,7 +14448,7 @@ var $author$project$OUI$Showcase$Badge$editorChapter = F2(
 									});
 							})),
 					'Pos Y',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					badgeTheme.X.dm.b),
 					divider
 				]));
@@ -16417,7 +16425,7 @@ var $author$project$OUI$Showcase$Buttons$fabSection = F4(
 								});
 						})),
 				'Container Height',
-				_Utils_Tuple2(0, 200),
+				_Utils_Tuple3(0, 200, 1),
 				layout.ak),
 				A5(
 				$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16432,7 +16440,7 @@ var $author$project$OUI$Showcase$Buttons$fabSection = F4(
 								});
 						})),
 				'Container Shape',
-				_Utils_Tuple2(0, layout.ak / 2),
+				_Utils_Tuple3(0, layout.ak / 2, 1),
 				layout.bW),
 				A5(
 				$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16447,7 +16455,7 @@ var $author$project$OUI$Showcase$Buttons$fabSection = F4(
 								});
 						})),
 				'Container Width',
-				_Utils_Tuple2(0, 200),
+				_Utils_Tuple3(0, 200, 1),
 				layout.bY),
 				A5(
 				$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16462,7 +16470,7 @@ var $author$project$OUI$Showcase$Buttons$fabSection = F4(
 								});
 						})),
 				'Icon Size',
-				_Utils_Tuple2(0, layout.ak),
+				_Utils_Tuple3(0, layout.ak, 1),
 				layout.s)
 			]);
 	});
@@ -16615,7 +16623,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 										});
 								})),
 						'Container Height',
-						_Utils_Tuple2(0, 200),
+						_Utils_Tuple3(0, 200, 1),
 						buttonTheme.e0.ak),
 						A5(
 						$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16630,7 +16638,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 										});
 								})),
 						'Container Radius',
-						_Utils_Tuple2(0, (buttonTheme.e0.ak / 2) | 0),
+						_Utils_Tuple3(0, (buttonTheme.e0.ak / 2) | 0, 1),
 						buttonTheme.e0.cX),
 						A5(
 						$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16645,7 +16653,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 										});
 								})),
 						'Icon Size',
-						_Utils_Tuple2(0, buttonTheme.e0.ak),
+						_Utils_Tuple3(0, buttonTheme.e0.ak, 1),
 						buttonTheme.e0.s),
 						A5(
 						$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16660,7 +16668,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 										});
 								})),
 						'Left/right Padding',
-						_Utils_Tuple2(0, buttonTheme.e0.ak),
+						_Utils_Tuple3(0, buttonTheme.e0.ak, 1),
 						buttonTheme.e0.da),
 						A5(
 						$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16675,7 +16683,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 										});
 								})),
 						'Left pad. w. Icon',
-						_Utils_Tuple2(0, buttonTheme.e0.ak),
+						_Utils_Tuple3(0, buttonTheme.e0.ak, 1),
 						buttonTheme.e0.c9),
 						A5(
 						$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16690,7 +16698,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 										});
 								})),
 						'Right pad. w. Icon',
-						_Utils_Tuple2(0, buttonTheme.e0.ak),
+						_Utils_Tuple3(0, buttonTheme.e0.ak, 1),
 						buttonTheme.e0.dr),
 						A5(
 						$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16705,7 +16713,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 										});
 								})),
 						'Pad. bw. Elements',
-						_Utils_Tuple2(0, buttonTheme.e0.ak),
+						_Utils_Tuple3(0, buttonTheme.e0.ak, 1),
 						buttonTheme.e0.dk),
 						A4(
 						$author$project$OUI$Explorer$ThemeEditor$textType,
@@ -16758,7 +16766,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 													});
 											})),
 									'Container Height',
-									_Utils_Tuple2(0, 200),
+									_Utils_Tuple3(0, 200, 1),
 									buttonTheme.T.c1.ak),
 									A5(
 									$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16773,7 +16781,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 													});
 											})),
 									'Container Radius',
-									_Utils_Tuple2(0, (buttonTheme.T.c1.ak / 2) | 0),
+									_Utils_Tuple3(0, (buttonTheme.T.c1.ak / 2) | 0, 1),
 									buttonTheme.T.c1.cX),
 									A5(
 									$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16788,7 +16796,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 													});
 											})),
 									'Icon Size',
-									_Utils_Tuple2(0, buttonTheme.T.c1.ak),
+									_Utils_Tuple3(0, buttonTheme.T.c1.ak, 1),
 									buttonTheme.T.c1.s),
 									A5(
 									$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16803,7 +16811,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 													});
 											})),
 									'Left/right Padding',
-									_Utils_Tuple2(0, buttonTheme.T.c1.ak),
+									_Utils_Tuple3(0, buttonTheme.T.c1.ak, 1),
 									buttonTheme.T.c1.da),
 									A5(
 									$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16818,7 +16826,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 													});
 											})),
 									'Left pad. w. Icon',
-									_Utils_Tuple2(0, buttonTheme.T.c1.ak),
+									_Utils_Tuple3(0, buttonTheme.T.c1.ak, 1),
 									buttonTheme.T.c1.c9),
 									A5(
 									$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16833,7 +16841,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 													});
 											})),
 									'Right pad. w. Icon',
-									_Utils_Tuple2(0, buttonTheme.T.c1.ak),
+									_Utils_Tuple3(0, buttonTheme.T.c1.ak, 1),
 									buttonTheme.T.c1.dr),
 									A5(
 									$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16848,7 +16856,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 													});
 											})),
 									'Pad. bw. Elements',
-									_Utils_Tuple2(0, buttonTheme.T.c1.ak),
+									_Utils_Tuple3(0, buttonTheme.T.c1.ak, 1),
 									buttonTheme.T.c1.dk),
 									A4(
 									$author$project$OUI$Explorer$ThemeEditor$textType,
@@ -16892,7 +16900,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 													});
 											})),
 									'Icon Size',
-									_Utils_Tuple2(0, buttonTheme.c4.bX),
+									_Utils_Tuple3(0, buttonTheme.c4.bX, 1),
 									buttonTheme.c4.s),
 									A5(
 									$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -16907,7 +16915,7 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 													});
 											})),
 									'Container Size',
-									_Utils_Tuple2(0, 200),
+									_Utils_Tuple3(0, 200, 1),
 									buttonTheme.c4.bX),
 									divider
 								]))))));
@@ -17456,7 +17464,7 @@ var $author$project$OUI$Showcase$Checkbox$editorChapter = F2(
 									});
 							})),
 					'Container Width',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					checkboxTheme.bY),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -17471,7 +17479,7 @@ var $author$project$OUI$Showcase$Checkbox$editorChapter = F2(
 									});
 							})),
 					'Container Height',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					checkboxTheme.ak),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -17486,7 +17494,7 @@ var $author$project$OUI$Showcase$Checkbox$editorChapter = F2(
 									});
 							})),
 					'Container Shape',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					checkboxTheme.bW),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -17501,7 +17509,7 @@ var $author$project$OUI$Showcase$Checkbox$editorChapter = F2(
 									});
 							})),
 					'Icon Size',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					checkboxTheme.s),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -17516,7 +17524,7 @@ var $author$project$OUI$Showcase$Checkbox$editorChapter = F2(
 									});
 							})),
 					'State Layer Size',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					checkboxTheme.cr),
 					divider
 				]));
@@ -23353,7 +23361,7 @@ var $author$project$OUI$Showcase$Dividers$editorChapter = F2(
 									});
 							})),
 					'Thickness',
-					_Utils_Tuple2(0, 20),
+					_Utils_Tuple3(0, 20, 1),
 					dividerTheme.eJ),
 					divider
 				]));
@@ -24395,7 +24403,7 @@ var $author$project$OUI$Showcase$Menus$editorChapter = F2(
 									});
 							})),
 					'Radius',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					menuTheme.ev),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -24410,7 +24418,7 @@ var $author$project$OUI$Showcase$Menus$editorChapter = F2(
 									});
 							})),
 					'Top/Bottom Padding',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					menuTheme.dC),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -24425,7 +24433,7 @@ var $author$project$OUI$Showcase$Menus$editorChapter = F2(
 									});
 							})),
 					'Left/Right Padding',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					menuTheme.da),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -24440,7 +24448,7 @@ var $author$project$OUI$Showcase$Menus$editorChapter = F2(
 									});
 							})),
 					'Padding Within Item',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					menuTheme.es),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -24455,7 +24463,7 @@ var $author$project$OUI$Showcase$Menus$editorChapter = F2(
 									});
 							})),
 					'Item Height',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					menuTheme.d1),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -24470,7 +24478,7 @@ var $author$project$OUI$Showcase$Menus$editorChapter = F2(
 									});
 							})),
 					'Icon Size',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					menuTheme.s),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -24485,7 +24493,7 @@ var $author$project$OUI$Showcase$Menus$editorChapter = F2(
 									});
 							})),
 					'Min Width',
-					_Utils_Tuple2(0, 300),
+					_Utils_Tuple3(0, 300, 1),
 					menuTheme.eb),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -24500,7 +24508,7 @@ var $author$project$OUI$Showcase$Menus$editorChapter = F2(
 									});
 							})),
 					'Max Width',
-					_Utils_Tuple2(0, 500),
+					_Utils_Tuple3(0, 500, 1),
 					menuTheme.d9),
 					divider
 				]));
@@ -25308,7 +25316,7 @@ var $author$project$OUI$Showcase$Progress$editorChapter = F2(
 									});
 							})),
 					'Active Indicator Thickness',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					progressTheme.P.eJ),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -25325,7 +25333,7 @@ var $author$project$OUI$Showcase$Progress$editorChapter = F2(
 									});
 							})),
 					'Track Indicator Thickness',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					progressTheme.r.eJ),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -25340,7 +25348,7 @@ var $author$project$OUI$Showcase$Progress$editorChapter = F2(
 									});
 							})),
 					'Circular Size',
-					_Utils_Tuple2(0, 200),
+					_Utils_Tuple3(0, 200, 1),
 					progressTheme.aH),
 					divider
 				]));
@@ -26003,7 +26011,7 @@ var $author$project$OUI$Showcase$RadioButtons$editorChapter = F2(
 									});
 							})),
 					'Container Width',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					radiobuttonTheme.bY),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -26018,7 +26026,7 @@ var $author$project$OUI$Showcase$RadioButtons$editorChapter = F2(
 									});
 							})),
 					'Container Height',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					radiobuttonTheme.ak),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -26033,7 +26041,7 @@ var $author$project$OUI$Showcase$RadioButtons$editorChapter = F2(
 									});
 							})),
 					'Container Shape',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					radiobuttonTheme.bW),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -26048,7 +26056,7 @@ var $author$project$OUI$Showcase$RadioButtons$editorChapter = F2(
 									});
 							})),
 					'Content Size',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					radiobuttonTheme.c$),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -26063,7 +26071,7 @@ var $author$project$OUI$Showcase$RadioButtons$editorChapter = F2(
 									});
 							})),
 					'State Layer Size',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					radiobuttonTheme.cr),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -26078,7 +26086,7 @@ var $author$project$OUI$Showcase$RadioButtons$editorChapter = F2(
 									});
 							})),
 					'Border Width',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					radiobuttonTheme.cP),
 					divider
 				]));
@@ -26533,7 +26541,7 @@ var $author$project$OUI$Showcase$Slider$editorChapter = F2(
 									});
 							})),
 					'Track Height',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					sliderTheme.G),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -26548,7 +26556,7 @@ var $author$project$OUI$Showcase$Slider$editorChapter = F2(
 									});
 							})),
 					'Label Container Height',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					sliderTheme.fu),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -26563,7 +26571,7 @@ var $author$project$OUI$Showcase$Slider$editorChapter = F2(
 									});
 							})),
 					'Label Container Width',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					sliderTheme.fv),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -26578,7 +26586,7 @@ var $author$project$OUI$Showcase$Slider$editorChapter = F2(
 									});
 							})),
 					'Handle Height',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					sliderTheme.bc),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -26593,7 +26601,7 @@ var $author$project$OUI$Showcase$Slider$editorChapter = F2(
 									});
 							})),
 					'Handle Width',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					sliderTheme.ab),
 					divider
 				]));
@@ -27410,7 +27418,7 @@ var $author$project$OUI$Showcase$Switches$editorChapter = F2(
 									});
 							})),
 					'Height',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					switchTheme.aD.ff),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -27430,7 +27438,7 @@ var $author$project$OUI$Showcase$Switches$editorChapter = F2(
 									});
 							})),
 					'Width',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					switchTheme.aD.eK),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -27450,7 +27458,7 @@ var $author$project$OUI$Showcase$Switches$editorChapter = F2(
 									});
 							})),
 					'Outline Width',
-					_Utils_Tuple2(0, 20),
+					_Utils_Tuple3(0, 20, 1),
 					switchTheme.aD.ej),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -27470,7 +27478,7 @@ var $author$project$OUI$Showcase$Switches$editorChapter = F2(
 									});
 							})),
 					'Corner',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					switchTheme.aD.e1),
 					divider,
 					A2(
@@ -27500,7 +27508,7 @@ var $author$project$OUI$Showcase$Switches$editorChapter = F2(
 									});
 							})),
 					'Size Unselected',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					switchTheme.i9.iD.gj),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -27525,7 +27533,7 @@ var $author$project$OUI$Showcase$Switches$editorChapter = F2(
 									});
 							})),
 					'Size With Icon',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					switchTheme.i9.iD.gq),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -27550,7 +27558,7 @@ var $author$project$OUI$Showcase$Switches$editorChapter = F2(
 									});
 							})),
 					'Size Selected',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					switchTheme.i9.iD.ex),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -27575,7 +27583,7 @@ var $author$project$OUI$Showcase$Switches$editorChapter = F2(
 									});
 							})),
 					'Size Pressed',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					switchTheme.i9.iD.bs),
 					divider,
 					A2(
@@ -27597,7 +27605,7 @@ var $author$project$OUI$Showcase$Switches$editorChapter = F2(
 									});
 							})),
 					'Size',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					switchTheme.bz.iD),
 					divider,
 					A2(
@@ -27622,7 +27630,7 @@ var $author$project$OUI$Showcase$Switches$editorChapter = F2(
 									});
 							})),
 					'Size Unselected',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					switchTheme.c4.f5),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -27642,7 +27650,7 @@ var $author$project$OUI$Showcase$Switches$editorChapter = F2(
 									});
 							})),
 					'Size Selected',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					switchTheme.c4.f4),
 					divider
 				]));
@@ -27739,7 +27747,7 @@ var $author$project$OUI$Showcase$Tabs$editorChapter = F2(
 									});
 							})),
 					'Container Height',
-					_Utils_Tuple2(0, 150),
+					_Utils_Tuple3(0, 150, 1),
 					tabsTheme.bt.ak),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -27759,7 +27767,7 @@ var $author$project$OUI$Showcase$Tabs$editorChapter = F2(
 									});
 							})),
 					'Active Indicator Height',
-					_Utils_Tuple2(0, 20),
+					_Utils_Tuple3(0, 20, 1),
 					tabsTheme.bt.Z),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -27779,7 +27787,7 @@ var $author$project$OUI$Showcase$Tabs$editorChapter = F2(
 									});
 							})),
 					'Active Indicator Width',
-					_Utils_Tuple2(0, 100),
+					_Utils_Tuple3(0, 100, 1),
 					tabsTheme.bt.Q),
 					divider,
 					A2(
@@ -27804,7 +27812,7 @@ var $author$project$OUI$Showcase$Tabs$editorChapter = F2(
 									});
 							})),
 					'Container Height',
-					_Utils_Tuple2(0, 150),
+					_Utils_Tuple3(0, 150, 1),
 					tabsTheme.bu.ak),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -27824,7 +27832,7 @@ var $author$project$OUI$Showcase$Tabs$editorChapter = F2(
 									});
 							})),
 					'Active Indicator Height',
-					_Utils_Tuple2(0, 20),
+					_Utils_Tuple3(0, 20, 1),
 					tabsTheme.bu.Z),
 					divider,
 					A2(
@@ -27844,7 +27852,7 @@ var $author$project$OUI$Showcase$Tabs$editorChapter = F2(
 									});
 							})),
 					'Between Icon And Text',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					tabsTheme.eo),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -27859,7 +27867,7 @@ var $author$project$OUI$Showcase$Tabs$editorChapter = F2(
 									});
 							})),
 					'Between Inline Icon And Text',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					tabsTheme.eq),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -27874,7 +27882,7 @@ var $author$project$OUI$Showcase$Tabs$editorChapter = F2(
 									});
 							})),
 					'Between Inline Text And Badge',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					tabsTheme.er),
 					divider,
 					A2(
@@ -28590,7 +28598,7 @@ var $author$project$OUI$Showcase$TextFields$editorChapter = F2(
 									});
 							})),
 					'Height',
-					_Utils_Tuple2(0, 150),
+					_Utils_Tuple3(0, 150, 1),
 					textfieldTheme.ff),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -28605,7 +28613,7 @@ var $author$project$OUI$Showcase$TextFields$editorChapter = F2(
 									});
 							})),
 					'Left/Right Padding Without Icon',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					textfieldTheme.an),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -28620,7 +28628,7 @@ var $author$project$OUI$Showcase$TextFields$editorChapter = F2(
 									});
 							})),
 					'Left/Right Padding With Icon',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					textfieldTheme.aS),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -28635,7 +28643,7 @@ var $author$project$OUI$Showcase$TextFields$editorChapter = F2(
 									});
 							})),
 					'Between Icon And Text',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					textfieldTheme.eo),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -28650,7 +28658,7 @@ var $author$project$OUI$Showcase$TextFields$editorChapter = F2(
 									});
 							})),
 					'Supporting Text Top Padding',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					textfieldTheme.eE),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -28665,7 +28673,7 @@ var $author$project$OUI$Showcase$TextFields$editorChapter = F2(
 									});
 							})),
 					'Between Supporting Text And Character Counter',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					textfieldTheme.fM),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -28680,7 +28688,7 @@ var $author$project$OUI$Showcase$TextFields$editorChapter = F2(
 									});
 							})),
 					'Icon Size',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					textfieldTheme.s),
 					divider,
 					A2(
@@ -28702,7 +28710,7 @@ var $author$project$OUI$Showcase$TextFields$editorChapter = F2(
 									});
 							})),
 					'Top/Bottom Padding',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					textfieldTheme.bb.dC),
 					divider,
 					A2(
@@ -28727,7 +28735,7 @@ var $author$project$OUI$Showcase$TextFields$editorChapter = F2(
 									});
 							})),
 					'Label Left/Right Padding',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					textfieldTheme.ck.d6),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -28747,7 +28755,7 @@ var $author$project$OUI$Showcase$TextFields$editorChapter = F2(
 									});
 							})),
 					'Label Bottom',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					textfieldTheme.ck.hR),
 					A5(
 					$author$project$OUI$Explorer$ThemeEditor$slider,
@@ -28767,7 +28775,7 @@ var $author$project$OUI$Showcase$TextFields$editorChapter = F2(
 									});
 							})),
 					'Shape',
-					_Utils_Tuple2(0, 50),
+					_Utils_Tuple3(0, 50, 1),
 					textfieldTheme.ck.dv),
 					divider
 				]));
@@ -29348,6 +29356,399 @@ var $author$project$OUI$Showcase$TextFields$book = A2(
 var $author$project$OUI$Text$displayLarge = A2($author$project$OUI$Text$textTypeSize, 0, 2);
 var $author$project$OUI$Text$displayMedium = A2($author$project$OUI$Text$textTypeSize, 0, 1);
 var $author$project$OUI$Text$displaySmall = A2($author$project$OUI$Text$textTypeSize, 0, 0);
+var $author$project$OUI$Explorer$ThemeEditor$discreteSlider = F5(
+	function (theme, toMsg, title, _v0, value) {
+		var min = _v0.a;
+		var max = _v0.b;
+		var step = _v0.c;
+		return A2(
+			$mdgriffith$elm_ui$Element$row,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30),
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$width(
+							$mdgriffith$elm_ui$Element$px(100))
+						]),
+					A2(
+						$author$project$OUI$Material$text,
+						theme,
+						$author$project$OUI$Text$titleSmall(title))),
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$width(
+							$mdgriffith$elm_ui$Element$px(250))
+						]),
+					A3(
+						$author$project$OUI$Material$slider,
+						theme,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$centerY,
+								$mdgriffith$elm_ui$Element$width(
+								$mdgriffith$elm_ui$Element$px(250))
+							]),
+						A2(
+							$author$project$OUI$Slider$onChange,
+							toMsg,
+							A3(
+								$author$project$OUI$Slider$withMinMax,
+								min,
+								max,
+								A2(
+									$author$project$OUI$Slider$withDiscreteStep,
+									step,
+									$author$project$OUI$Slider$new(value)))))),
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$bodyLarge(
+						$elm$core$String$fromFloat(value)))
+				]));
+	});
+var $author$project$OUI$Material$Theme$withTypescale = F2(
+	function (value, _v0) {
+		var t = _v0;
+		return _Utils_update(
+			t,
+			{cJ: value});
+	});
+var $author$project$OUI$Showcase$Typography$updateTypescaleTheme = F2(
+	function (fn, theme) {
+		return A2(
+			$author$project$OUI$Material$Theme$withTypescale,
+			fn(
+				$author$project$OUI$Material$Theme$typescale(theme)),
+			theme);
+	});
+var $author$project$OUI$Showcase$Typography$updateTypescaleMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Typography$updateTypescaleTheme(
+					fn(value))));
+	});
+var $author$project$OUI$Showcase$Typography$typographySection = F4(
+	function (theme, title, value, setter) {
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		return _List_fromArray(
+			[
+				divider,
+				A2(
+				$author$project$OUI$Material$text,
+				theme,
+				$author$project$OUI$Text$titleLarge(title)),
+				A5(
+				$author$project$OUI$Explorer$ThemeEditor$slider,
+				theme,
+				$author$project$OUI$Showcase$Typography$updateTypescaleMsg(
+					function (v) {
+						return setter(
+							function (typo) {
+								return _Utils_update(
+									typo,
+									{
+										iD: $elm$core$Basics$round(v)
+									});
+							});
+					}),
+				'Size',
+				_Utils_Tuple3(0, 100, 1),
+				value.iD),
+				A5(
+				$author$project$OUI$Explorer$ThemeEditor$discreteSlider,
+				theme,
+				$author$project$OUI$Showcase$Typography$updateTypescaleMsg(
+					function (v) {
+						return setter(
+							function (typo) {
+								return _Utils_update(
+									typo,
+									{
+										E: $elm$core$Basics$round(v)
+									});
+							});
+					}),
+				'Weight',
+				_Utils_Tuple3(100, 900, 100),
+				value.E)
+			]);
+	});
+var $author$project$OUI$Showcase$Typography$editorChapter = F2(
+	function (_v0, _v1) {
+		var theme = _v0.i8;
+		var typescale = $author$project$OUI$Material$Theme$typescale(theme);
+		var group = F5(
+			function (title, groupRecord, largeSetter, mediumSetter, smallSetter) {
+				return _Utils_ap(
+					A4($author$project$OUI$Showcase$Typography$typographySection, theme, title + ' Large', groupRecord.X, largeSetter),
+					_Utils_ap(
+						A4($author$project$OUI$Showcase$Typography$typographySection, theme, title + ' Medium', groupRecord.fw, mediumSetter),
+						A4($author$project$OUI$Showcase$Typography$typographySection, theme, title + ' Small', groupRecord.bx, smallSetter)));
+			});
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30)
+				]),
+			_Utils_ap(
+				_List_fromArray(
+					[
+						divider,
+						A2(
+						$author$project$OUI$Material$text,
+						theme,
+						$author$project$OUI$Text$titleLarge('Typography'))
+					]),
+				_Utils_ap(
+					A5(
+						group,
+						'Display',
+						typescale.e5,
+						F2(
+							function (fn, ts) {
+								var display = ts.e5;
+								var large = display.X;
+								return _Utils_update(
+									ts,
+									{
+										e5: _Utils_update(
+											display,
+											{
+												X: fn(large)
+											})
+									});
+							}),
+						F2(
+							function (fn, ts) {
+								var display = ts.e5;
+								var medium = display.fw;
+								return _Utils_update(
+									ts,
+									{
+										e5: _Utils_update(
+											display,
+											{
+												fw: fn(medium)
+											})
+									});
+							}),
+						F2(
+							function (fn, ts) {
+								var display = ts.e5;
+								var small = display.bx;
+								return _Utils_update(
+									ts,
+									{
+										e5: _Utils_update(
+											display,
+											{
+												bx: fn(small)
+											})
+									});
+							})),
+					_Utils_ap(
+						A5(
+							group,
+							'Headline',
+							typescale.fe,
+							F2(
+								function (fn, ts) {
+									var headline = ts.fe;
+									var large = headline.X;
+									return _Utils_update(
+										ts,
+										{
+											fe: _Utils_update(
+												headline,
+												{
+													X: fn(large)
+												})
+										});
+								}),
+							F2(
+								function (fn, ts) {
+									var headline = ts.fe;
+									var medium = headline.fw;
+									return _Utils_update(
+										ts,
+										{
+											fe: _Utils_update(
+												headline,
+												{
+													fw: fn(medium)
+												})
+										});
+								}),
+							F2(
+								function (fn, ts) {
+									var headline = ts.fe;
+									var small = headline.bx;
+									return _Utils_update(
+										ts,
+										{
+											fe: _Utils_update(
+												headline,
+												{
+													bx: fn(small)
+												})
+										});
+								})),
+						_Utils_ap(
+							A5(
+								group,
+								'Title',
+								typescale.gd,
+								F2(
+									function (fn, ts) {
+										var title = ts.gd;
+										var large = title.X;
+										return _Utils_update(
+											ts,
+											{
+												gd: _Utils_update(
+													title,
+													{
+														X: fn(large)
+													})
+											});
+									}),
+								F2(
+									function (fn, ts) {
+										var title = ts.gd;
+										var medium = title.fw;
+										return _Utils_update(
+											ts,
+											{
+												gd: _Utils_update(
+													title,
+													{
+														fw: fn(medium)
+													})
+											});
+									}),
+								F2(
+									function (fn, ts) {
+										var title = ts.gd;
+										var small = title.bx;
+										return _Utils_update(
+											ts,
+											{
+												gd: _Utils_update(
+													title,
+													{
+														bx: fn(small)
+													})
+											});
+									})),
+							_Utils_ap(
+								A5(
+									group,
+									'Label',
+									typescale.bg,
+									F2(
+										function (fn, ts) {
+											var label = ts.bg;
+											var large = label.X;
+											return _Utils_update(
+												ts,
+												{
+													bg: _Utils_update(
+														label,
+														{
+															X: fn(large)
+														})
+												});
+										}),
+									F2(
+										function (fn, ts) {
+											var label = ts.bg;
+											var medium = label.fw;
+											return _Utils_update(
+												ts,
+												{
+													bg: _Utils_update(
+														label,
+														{
+															fw: fn(medium)
+														})
+												});
+										}),
+									F2(
+										function (fn, ts) {
+											var label = ts.bg;
+											var small = label.bx;
+											return _Utils_update(
+												ts,
+												{
+													bg: _Utils_update(
+														label,
+														{
+															bx: fn(small)
+														})
+												});
+										})),
+								_Utils_ap(
+									A5(
+										group,
+										'Body',
+										typescale.gS,
+										F2(
+											function (fn, ts) {
+												var body = ts.gS;
+												var large = body.X;
+												return _Utils_update(
+													ts,
+													{
+														gS: _Utils_update(
+															body,
+															{
+																X: fn(large)
+															})
+													});
+											}),
+										F2(
+											function (fn, ts) {
+												var body = ts.gS;
+												var medium = body.fw;
+												return _Utils_update(
+													ts,
+													{
+														gS: _Utils_update(
+															body,
+															{
+																fw: fn(medium)
+															})
+													});
+											}),
+										F2(
+											function (fn, ts) {
+												var body = ts.gS;
+												var small = body.bx;
+												return _Utils_update(
+													ts,
+													{
+														gS: _Utils_update(
+															body,
+															{
+																bx: fn(small)
+															})
+													});
+											})),
+									_List_fromArray(
+										[divider]))))))));
+	});
 var $author$project$OUI$Text$headlineLarge = A2($author$project$OUI$Text$textTypeSize, 1, 2);
 var $author$project$OUI$Text$headlineMedium = A2($author$project$OUI$Text$textTypeSize, 1, 1);
 var $author$project$OUI$Text$labelSmall = A2($author$project$OUI$Text$textTypeSize, 3, 0);
@@ -38027,7 +38428,6 @@ var $dillonkearns$elm_markdown$Markdown$Renderer$render = F2(
 		return $dillonkearns$elm_markdown$Markdown$Renderer$combineResults(
 			A2($dillonkearns$elm_markdown$Markdown$Renderer$renderHelper, renderer, ast));
 	});
-var $mdgriffith$elm_ui$Element$Font$bold = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.gT);
 var $elm$html$Html$br = _VirtualDom_node('br');
 var $elm$html$Html$code = _VirtualDom_node('code');
 var $elm$html$Html$hr = _VirtualDom_node('hr');
@@ -38414,166 +38814,169 @@ var $author$project$OUI$Explorer$withMarkdownChapter = F2(
 			});
 	});
 var $author$project$OUI$Showcase$Typography$book = A2(
-	$author$project$OUI$Explorer$withStaticChapter,
-	function (_v1) {
-		var theme = _v1.i8;
-		return A2(
-			$mdgriffith$elm_ui$Element$column,
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$spacing(20)
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$mdgriffith$elm_ui$Element$row,
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$spacing(20)
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$mdgriffith$elm_ui$Element$column,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$spacing(10)
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$displayLarge('Display Large')),
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$displayMedium('Display Medium')),
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$displaySmall('Display Small'))
-								])),
-							A2(
-							$mdgriffith$elm_ui$Element$column,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$spacing(10)
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$headlineLarge('Headline Large')),
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$headlineMedium('Headline Medium')),
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$headlineSmall('Headline Small'))
-								]))
-						])),
-					A2(
-					$mdgriffith$elm_ui$Element$row,
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$spacing(20)
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$mdgriffith$elm_ui$Element$column,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$spacing(10)
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$titleLarge('Title Large')),
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$titleMedium('Title Medium')),
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$titleSmall('Title Small'))
-								])),
-							A2(
-							$mdgriffith$elm_ui$Element$column,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$spacing(10)
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$labelLarge('Label Large')),
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$labelMedium('Label Medium')),
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$labelSmall('Label Small'))
-								])),
-							A2(
-							$mdgriffith$elm_ui$Element$column,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$spacing(10)
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$bodyLarge('Body Large')),
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$bodyMedium('Body Medium')),
-									A2(
-									$author$project$OUI$Material$text,
-									theme,
-									$author$project$OUI$Text$bodySmall('Body Small'))
-								]))
-						]))
-				]));
-	},
+	$author$project$OUI$Explorer$withThemeEditor,
+	$author$project$OUI$Showcase$Typography$editorChapter,
 	A2(
 		$author$project$OUI$Explorer$withStaticChapter,
-		function (_v0) {
-			var theme = _v0.i8;
+		function (_v1) {
+			var theme = _v1.i8;
 			return A2(
-				$mdgriffith$elm_ui$Element$paragraph,
-				_List_Nil,
-				A2(
-					$elm$core$List$map,
-					$author$project$OUI$Material$text(theme),
-					_List_fromArray(
-						[
-							$author$project$OUI$Text$bodyLarge('Different text pieces can be assembled with Element.paragraph, '),
-							$author$project$OUI$Text$bodySmall('here with smaller text, '),
-							A2(
-							$author$project$OUI$Text$withColor,
-							$author$project$OUI$Primary,
-							$author$project$OUI$Text$bodyLarge(' or here in color.'))
-						])));
+				$mdgriffith$elm_ui$Element$column,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$spacing(20)
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$mdgriffith$elm_ui$Element$row,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$spacing(20)
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$mdgriffith$elm_ui$Element$column,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$spacing(10)
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$displayLarge('Display Large')),
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$displayMedium('Display Medium')),
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$displaySmall('Display Small'))
+									])),
+								A2(
+								$mdgriffith$elm_ui$Element$column,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$spacing(10)
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$headlineLarge('Headline Large')),
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$headlineMedium('Headline Medium')),
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$headlineSmall('Headline Small'))
+									]))
+							])),
+						A2(
+						$mdgriffith$elm_ui$Element$row,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$spacing(20)
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$mdgriffith$elm_ui$Element$column,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$spacing(10)
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$titleLarge('Title Large')),
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$titleMedium('Title Medium')),
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$titleSmall('Title Small'))
+									])),
+								A2(
+								$mdgriffith$elm_ui$Element$column,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$spacing(10)
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$labelLarge('Label Large')),
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$labelMedium('Label Medium')),
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$labelSmall('Label Small'))
+									])),
+								A2(
+								$mdgriffith$elm_ui$Element$column,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$spacing(10)
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$bodyLarge('Body Large')),
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$bodyMedium('Body Medium')),
+										A2(
+										$author$project$OUI$Material$text,
+										theme,
+										$author$project$OUI$Text$bodySmall('Body Small'))
+									]))
+							]))
+					]));
 		},
 		A2(
-			$author$project$OUI$Explorer$withMarkdownChapter,
-			'\u000AThe material typescale\u000A\u000AType styles include: display, headline, title, body, and label\u000A\u000AEach type comes in three sizes: large, medium, small\u000A\u000A\u000A',
-			$author$project$OUI$Explorer$book('Typography'))));
+			$author$project$OUI$Explorer$withStaticChapter,
+			function (_v0) {
+				var theme = _v0.i8;
+				return A2(
+					$mdgriffith$elm_ui$Element$paragraph,
+					_List_Nil,
+					A2(
+						$elm$core$List$map,
+						$author$project$OUI$Material$text(theme),
+						_List_fromArray(
+							[
+								$author$project$OUI$Text$bodyLarge('Different text pieces can be assembled with Element.paragraph, '),
+								$author$project$OUI$Text$bodySmall('here with smaller text, '),
+								A2(
+								$author$project$OUI$Text$withColor,
+								$author$project$OUI$Primary,
+								$author$project$OUI$Text$bodyLarge(' or here in color.'))
+							])));
+			},
+			A2(
+				$author$project$OUI$Explorer$withMarkdownChapter,
+				'\u000AThe material typescale\u000A\u000AType styles include: display, headline, title, body, and label\u000A\u000AEach type comes in three sizes: large, medium, small\u000A\u000A\u000A',
+				$author$project$OUI$Explorer$book('Typography')))));
 var $author$project$OUI$Explorer$category = F2(
 	function (name, _v0) {
 		var expl = _v0;
@@ -275084,13 +275487,6 @@ var $author$project$Main$typescale = function () {
 				})
 		});
 }();
-var $author$project$OUI$Material$Theme$withTypescale = F2(
-	function (value, _v0) {
-		var t = _v0;
-		return _Utils_update(
-			t,
-			{cJ: value});
-	});
 var $author$project$Main$theme = function () {
 	var base = $author$project$OUI$Material$Theme$defaultTheme;
 	var button = $author$project$OUI$Material$Theme$button(base);

@@ -94,7 +94,7 @@ editorChapter { theme } _ =
                 )
             )
             "Track Height"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat sliderTheme.trackHeight)
         , ThemeEditor.slider theme
             (updateSliderMsg
@@ -103,7 +103,7 @@ editorChapter { theme } _ =
                 )
             )
             "Label Container Height"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat sliderTheme.labelContainerHeight)
         , ThemeEditor.slider theme
             (updateSliderMsg
@@ -112,7 +112,7 @@ editorChapter { theme } _ =
                 )
             )
             "Label Container Width"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat sliderTheme.labelContainerWidth)
         , ThemeEditor.slider theme
             (updateSliderMsg
@@ -121,7 +121,7 @@ editorChapter { theme } _ =
                 )
             )
             "Handle Height"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat sliderTheme.handleHeight)
         , ThemeEditor.slider theme
             (updateSliderMsg
@@ -130,7 +130,7 @@ editorChapter { theme } _ =
                 )
             )
             "Handle Width"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat sliderTheme.handleWidth)
         , divider
         ]

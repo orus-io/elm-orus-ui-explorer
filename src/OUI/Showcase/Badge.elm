@@ -110,7 +110,7 @@ editorChapter { theme } _ =
                 )
             )
             "Shape"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat badgeTheme.small.shape)
         , ThemeEditor.slider theme
             (updateBadgeSmallMsg
@@ -119,7 +119,7 @@ editorChapter { theme } _ =
                 )
             )
             "Size"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat badgeTheme.small.size)
         , ThemeEditor.slider theme
             (updateBadgeSmallMsg
@@ -132,7 +132,7 @@ editorChapter { theme } _ =
                 )
             )
             "Pos X"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat (Tuple.first badgeTheme.small.pos))
         , ThemeEditor.slider theme
             (updateBadgeSmallMsg
@@ -145,7 +145,7 @@ editorChapter { theme } _ =
                 )
             )
             "Pos Y"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat (Tuple.second badgeTheme.small.pos))
         , divider
         , Text.titleLarge "Large Badge" |> Material.text theme
@@ -156,7 +156,7 @@ editorChapter { theme } _ =
                 )
             )
             "Shape"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat badgeTheme.large.shape)
         , ThemeEditor.slider theme
             (updateBadgeLargeMsg
@@ -165,7 +165,7 @@ editorChapter { theme } _ =
                 )
             )
             "Size"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat badgeTheme.large.size)
         , ThemeEditor.slider theme
             (updateBadgeLargeMsg
@@ -174,7 +174,7 @@ editorChapter { theme } _ =
                 )
             )
             "Padding"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat badgeTheme.large.padding)
         , ThemeEditor.textType theme
             (updateBadgeLargeMsg
@@ -203,7 +203,7 @@ editorChapter { theme } _ =
                 )
             )
             "Pos X"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat (Tuple.first badgeTheme.large.pos))
         , ThemeEditor.slider theme
             (updateBadgeLargeMsg
@@ -216,7 +216,7 @@ editorChapter { theme } _ =
                 )
             )
             "Pos Y"
-            ( 0, 50 )
+            ( 0, 50, 1 )
             (toFloat (Tuple.second badgeTheme.large.pos))
         , divider
         ]

@@ -111,7 +111,7 @@ editorChapter { theme } _ =
                 )
             )
             "Container Width"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat radiobuttonTheme.containerWidth)
         , ThemeEditor.slider theme
             (updateRadiobuttonMsg
@@ -120,7 +120,7 @@ editorChapter { theme } _ =
                 )
             )
             "Container Height"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat radiobuttonTheme.containerHeight)
         , ThemeEditor.slider theme
             (updateRadiobuttonMsg
@@ -129,7 +129,7 @@ editorChapter { theme } _ =
                 )
             )
             "Container Shape"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat radiobuttonTheme.containerShape)
         , ThemeEditor.slider theme
             (updateRadiobuttonMsg
@@ -138,7 +138,7 @@ editorChapter { theme } _ =
                 )
             )
             "Content Size"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat radiobuttonTheme.contentSize)
         , ThemeEditor.slider theme
             (updateRadiobuttonMsg
@@ -147,7 +147,7 @@ editorChapter { theme } _ =
                 )
             )
             "State Layer Size"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat radiobuttonTheme.stateLayerSize)
         , ThemeEditor.slider theme
             (updateRadiobuttonMsg
@@ -156,7 +156,7 @@ editorChapter { theme } _ =
                 )
             )
             "Border Width"
-            ( 0, 100 )
+            ( 0, 100, 1 )
             (toFloat radiobuttonTheme.borderWidth)
         , divider
         ]
