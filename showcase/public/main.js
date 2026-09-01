@@ -5761,12 +5761,28 @@ var $author$project$OUI$Explorer$bookPath = F2(
 			'_',
 			'/' + (((cat === '') ? '' : (A3($elm$core$String$replace, '/', '_', cat) + '/')) + A3($elm$core$String$replace, '/', '_', title)));
 	});
+var $mdgriffith$elm_ui$Internal$Model$Class = F2(
+	function (a, b) {
+		return {$: 3, a: a, b: b};
+	});
+var $mdgriffith$elm_ui$Internal$Style$classes = {gu: 'a', dH: 'atv', gx: 'ab', gy: 'cx', gz: 'cy', gA: 'acb', gB: 'accx', gC: 'accy', gD: 'acr', eR: 'al', eS: 'ar', gE: 'at', dI: 'ah', dJ: 'av', gH: 's', gM: 'bh', gN: 'b', gT: 'w7', gV: 'bd', gW: 'bdt', cO: 'bn', gX: 'bs', cQ: 'cpe', g1: 'cp', g2: 'cpx', g3: 'cpy', at: 'c', cW: 'ctr', cY: 'cb', cZ: 'ccx', au: 'ccy', bZ: 'cl', c_: 'cr', g8: 'ct', ha: 'cptr', hb: 'ctxt', ho: 'fcs', fb: 'focus-within', hr: 'fs', hu: 'g', dV: 'hbh', dW: 'hc', fg: 'he', dX: 'hf', fh: 'hfp', hz: 'hv', hD: 'ic', hG: 'fr', c5: 'lbl', hH: 'iml', hI: 'imlf', hJ: 'imlp', hK: 'implw', hL: 'it', hO: 'i', hZ: 'lnk', bl: 'nb', fB: 'notxt', h3: 'ol', h5: 'or', aV: 'oq', $8: 'oh', fN: 'pg', ig: 'p', ih: 'ppe', is: 'ui', it: 'r', ix: 'sb', iy: 'sbx', iz: 'sby', iA: 'sbt', iC: 'e', iE: 'cap', iF: 'sev', iJ: 'sk', eI: 't', iW: 'tc', iX: 'w8', iY: 'w2', iZ: 'w9', i_: 'tj', dz: 'tja', i$: 'tl', i0: 'w3', i1: 'w5', i2: 'w4', i3: 'tr', i4: 'w6', i5: 'w1', i6: 'tun', gh: 'ts', a2: 'clr', jd: 'u', eL: 'wc', go: 'we', eM: 'wf', gp: 'wfp', eO: 'wrp'};
+var $mdgriffith$elm_ui$Internal$Flag$Flag = function (a) {
+	return {$: 0, a: a};
+};
+var $mdgriffith$elm_ui$Internal$Flag$Second = function (a) {
+	return {$: 1, a: a};
+};
+var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
+var $mdgriffith$elm_ui$Internal$Flag$flag = function (i) {
+	return (i > 31) ? $mdgriffith$elm_ui$Internal$Flag$Second(1 << (i - 32)) : $mdgriffith$elm_ui$Internal$Flag$Flag(1 << i);
+};
+var $mdgriffith$elm_ui$Internal$Flag$overflow = $mdgriffith$elm_ui$Internal$Flag$flag(20);
+var $mdgriffith$elm_ui$Element$clipY = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.g3);
 var $mdgriffith$elm_ui$Internal$Model$Unkeyed = function (a) {
 	return {$: 0, a: a};
 };
 var $mdgriffith$elm_ui$Internal$Model$AsColumn = 1;
 var $mdgriffith$elm_ui$Internal$Model$asColumn = 1;
-var $mdgriffith$elm_ui$Internal$Style$classes = {gu: 'a', dH: 'atv', gx: 'ab', gy: 'cx', gz: 'cy', gA: 'acb', gB: 'accx', gC: 'accy', gD: 'acr', eR: 'al', eS: 'ar', gE: 'at', dI: 'ah', dJ: 'av', gH: 's', gM: 'bh', gN: 'b', gT: 'w7', gV: 'bd', gW: 'bdt', cO: 'bn', gX: 'bs', cQ: 'cpe', g1: 'cp', g2: 'cpx', g3: 'cpy', at: 'c', cW: 'ctr', cY: 'cb', cZ: 'ccx', au: 'ccy', bZ: 'cl', c_: 'cr', g8: 'ct', ha: 'cptr', hb: 'ctxt', ho: 'fcs', fb: 'focus-within', hr: 'fs', hu: 'g', dV: 'hbh', dW: 'hc', fg: 'he', dX: 'hf', fh: 'hfp', hz: 'hv', hD: 'ic', hG: 'fr', c5: 'lbl', hH: 'iml', hI: 'imlf', hJ: 'imlp', hK: 'implw', hL: 'it', hO: 'i', hZ: 'lnk', bl: 'nb', fB: 'notxt', h3: 'ol', h5: 'or', aV: 'oq', $8: 'oh', fN: 'pg', ig: 'p', ih: 'ppe', is: 'ui', it: 'r', ix: 'sb', iy: 'sbx', iz: 'sby', iA: 'sbt', iC: 'e', iE: 'cap', iF: 'sev', iJ: 'sk', eI: 't', iW: 'tc', iX: 'w8', iY: 'w2', iZ: 'w9', i_: 'tj', dz: 'tja', i$: 'tl', i0: 'w3', i1: 'w5', i2: 'w4', i3: 'tr', i4: 'w6', i5: 'w1', i6: 'tun', gh: 'ts', a2: 'clr', jd: 'u', eL: 'wc', go: 'we', eM: 'wf', gp: 'wfp', eO: 'wrp'};
 var $mdgriffith$elm_ui$Internal$Model$Generic = {$: 0};
 var $mdgriffith$elm_ui$Internal$Model$div = $mdgriffith$elm_ui$Internal$Model$Generic;
 var $mdgriffith$elm_ui$Internal$Model$NoNearbyChildren = {$: 0};
@@ -5870,16 +5886,6 @@ var $mdgriffith$elm_ui$Internal$Model$AsEl = 2;
 var $mdgriffith$elm_ui$Internal$Model$asEl = 2;
 var $mdgriffith$elm_ui$Internal$Model$AsParagraph = 4;
 var $mdgriffith$elm_ui$Internal$Model$asParagraph = 4;
-var $mdgriffith$elm_ui$Internal$Flag$Flag = function (a) {
-	return {$: 0, a: a};
-};
-var $mdgriffith$elm_ui$Internal$Flag$Second = function (a) {
-	return {$: 1, a: a};
-};
-var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
-var $mdgriffith$elm_ui$Internal$Flag$flag = function (i) {
-	return (i > 31) ? $mdgriffith$elm_ui$Internal$Flag$Second(1 << (i - 32)) : $mdgriffith$elm_ui$Internal$Flag$Flag(1 << i);
-};
 var $mdgriffith$elm_ui$Internal$Flag$alignBottom = $mdgriffith$elm_ui$Internal$Flag$flag(41);
 var $mdgriffith$elm_ui$Internal$Flag$alignRight = $mdgriffith$elm_ui$Internal$Flag$flag(40);
 var $mdgriffith$elm_ui$Internal$Flag$centerX = $mdgriffith$elm_ui$Internal$Flag$flag(42);
@@ -11512,6 +11518,7 @@ var $mdgriffith$elm_ui$Element$row = F2(
 						attrs))),
 			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
 	});
+var $mdgriffith$elm_ui$Element$scrollbarY = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.iz);
 var $mdgriffith$elm_ui$Internal$Model$SpacingStyle = F3(
 	function (a, b, c) {
 		return {$: 5, a: a, b: b, c: c};
@@ -11592,7 +11599,9 @@ var $author$project$OUI$Explorer$addBook = F2(
 											[
 												$mdgriffith$elm_ui$Element$spacing(20),
 												$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-												$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
+												$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+												$mdgriffith$elm_ui$Element$clipY,
+												$mdgriffith$elm_ui$Element$scrollbarY
 											]),
 										_List_fromArray(
 											[
@@ -11602,7 +11611,9 @@ var $author$project$OUI$Explorer$addBook = F2(
 													[
 														$mdgriffith$elm_ui$Element$spacing(20),
 														$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-														$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
+														$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+														$mdgriffith$elm_ui$Element$clipY,
+														$mdgriffith$elm_ui$Element$scrollbarY
 													]),
 												A2(
 													$elm$core$List$map,
@@ -11623,7 +11634,9 @@ var $author$project$OUI$Explorer$addBook = F2(
 																$mdgriffith$elm_ui$Element$spacing(20),
 																$mdgriffith$elm_ui$Element$width(
 																$mdgriffith$elm_ui$Element$px(500)),
-																$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
+																$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+																$mdgriffith$elm_ui$Element$clipY,
+																$mdgriffith$elm_ui$Element$scrollbarY
 															]),
 														A2(
 															$elm$core$List$map,
@@ -11995,10 +12008,6 @@ var $mdgriffith$elm_ui$Element$Font$family = function (families) {
 			A3($elm$core$List$foldl, $mdgriffith$elm_ui$Internal$Model$renderFontClassName, 'ff-', families),
 			families));
 };
-var $mdgriffith$elm_ui$Internal$Model$Class = F2(
-	function (a, b) {
-		return {$: 3, a: a, b: b};
-	});
 var $mdgriffith$elm_ui$Internal$Flag$fontWeight = $mdgriffith$elm_ui$Internal$Flag$flag(13);
 var $mdgriffith$elm_ui$Element$Font$medium = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.i1);
 var $mdgriffith$elm_ui$Element$Font$regular = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$fontWeight, $mdgriffith$elm_ui$Internal$Style$classes.i2);
@@ -15945,6 +15954,78 @@ var $author$project$OUI$Explorer$ThemeEditor$slider = F5(
 						$elm$core$String$fromFloat(value)))
 				]));
 	});
+var $author$project$OUI$Showcase$Buttons$fabSection = F4(
+	function (theme, title, layout, toMsg) {
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		return _List_fromArray(
+			[
+				divider,
+				A2(
+				$author$project$OUI$Material$text,
+				theme,
+				$author$project$OUI$Text$titleLarge(title)),
+				A5(
+				$author$project$OUI$Explorer$ThemeEditor$slider,
+				theme,
+				toMsg(
+					F2(
+						function (value, l) {
+							return _Utils_update(
+								l,
+								{
+									ak: $elm$core$Basics$round(value)
+								});
+						})),
+				'Container Height',
+				_Utils_Tuple2(0, 200),
+				layout.ak),
+				A5(
+				$author$project$OUI$Explorer$ThemeEditor$slider,
+				theme,
+				toMsg(
+					F2(
+						function (value, l) {
+							return _Utils_update(
+								l,
+								{
+									bW: $elm$core$Basics$round(value)
+								});
+						})),
+				'Container Shape',
+				_Utils_Tuple2(0, layout.ak / 2),
+				layout.bW),
+				A5(
+				$author$project$OUI$Explorer$ThemeEditor$slider,
+				theme,
+				toMsg(
+					F2(
+						function (value, l) {
+							return _Utils_update(
+								l,
+								{
+									bY: $elm$core$Basics$round(value)
+								});
+						})),
+				'Container Width',
+				_Utils_Tuple2(0, 200),
+				layout.bY),
+				A5(
+				$author$project$OUI$Explorer$ThemeEditor$slider,
+				theme,
+				toMsg(
+					F2(
+						function (value, l) {
+							return _Utils_update(
+								l,
+								{
+									s: $elm$core$Basics$round(value)
+								});
+						})),
+				'Icon Size',
+				_Utils_Tuple2(0, layout.ak),
+				layout.s)
+			]);
+	});
 var $author$project$OUI$Slider$withDiscreteStep = F2(
 	function (value, _v0) {
 		var slider = _v0;
@@ -16164,6 +16245,91 @@ var $author$project$OUI$Showcase$Buttons$updateButtonCommonMsg = F2(
 				$author$project$OUI$Showcase$Buttons$updateButtonCommon(
 					fn(value))));
 	});
+var $author$project$OUI$Showcase$Buttons$updateButtonExtendedMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Buttons$updateButtonTheme(
+					function (b) {
+						var fab = b.T;
+						return _Utils_update(
+							b,
+							{
+								T: _Utils_update(
+									fab,
+									{
+										c1: A2(fn, value, fab.c1)
+									})
+							});
+					})));
+	});
+var $author$project$OUI$Showcase$Buttons$updateButtonFABLargeMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Buttons$updateButtonTheme(
+					function (b) {
+						var fab = b.T;
+						return _Utils_update(
+							b,
+							{
+								T: _Utils_update(
+									fab,
+									{
+										X: A2(fn, value, fab.X)
+									})
+							});
+					})));
+	});
+var $author$project$OUI$Showcase$Buttons$updateButtonFABMediumMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Buttons$updateButtonTheme(
+					function (b) {
+						var fab = b.T;
+						return _Utils_update(
+							b,
+							{
+								T: _Utils_update(
+									fab,
+									{
+										fw: A2(fn, value, fab.fw)
+									})
+							});
+					})));
+	});
+var $author$project$OUI$Showcase$Buttons$updateButtonFABSmallMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Buttons$updateButtonTheme(
+					function (b) {
+						var fab = b.T;
+						return _Utils_update(
+							b,
+							{
+								T: _Utils_update(
+									fab,
+									{
+										bx: A2(fn, value, fab.bx)
+									})
+							});
+					})));
+	});
+var $author$project$OUI$Showcase$Buttons$updateButtonIconMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Buttons$updateButtonTheme(
+					function (b) {
+						return _Utils_update(
+							b,
+							{
+								c4: A2(fn, value, b.c4)
+							});
+					})));
+	});
 var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 	function (_v0, _v1) {
 		var theme = _v0.i8;
@@ -16175,144 +16341,323 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 				[
 					$mdgriffith$elm_ui$Element$spacing(30)
 				]),
-			_List_fromArray(
-				[
-					divider,
-					A2(
-					$author$project$OUI$Material$text,
-					theme,
-					$author$project$OUI$Text$titleLarge('Button Layout')),
-					A5(
-					$author$project$OUI$Explorer$ThemeEditor$slider,
-					theme,
-					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
-						F2(
-							function (value, layout) {
-								return _Utils_update(
-									layout,
-									{
-										ak: $elm$core$Basics$round(value)
-									});
-							})),
-					'Container Height',
-					_Utils_Tuple2(0, 200),
-					buttonTheme.e0.ak),
-					A5(
-					$author$project$OUI$Explorer$ThemeEditor$slider,
-					theme,
-					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
-						F2(
-							function (value, layout) {
-								return _Utils_update(
-									layout,
-									{
-										cX: $elm$core$Basics$round(value)
-									});
-							})),
-					'Container Radius',
-					_Utils_Tuple2(0, (buttonTheme.e0.ak / 2) | 0),
-					buttonTheme.e0.cX),
-					A5(
-					$author$project$OUI$Explorer$ThemeEditor$slider,
-					theme,
-					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
-						F2(
-							function (value, layout) {
-								return _Utils_update(
-									layout,
-									{
-										s: $elm$core$Basics$round(value)
-									});
-							})),
-					'Icon Size',
-					_Utils_Tuple2(0, buttonTheme.e0.ak),
-					buttonTheme.e0.s),
-					A5(
-					$author$project$OUI$Explorer$ThemeEditor$slider,
-					theme,
-					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
-						F2(
-							function (value, layout) {
-								return _Utils_update(
-									layout,
-									{
-										da: $elm$core$Basics$round(value)
-									});
-							})),
-					'Left/right Padding',
-					_Utils_Tuple2(0, buttonTheme.e0.ak),
-					buttonTheme.e0.da),
-					A5(
-					$author$project$OUI$Explorer$ThemeEditor$slider,
-					theme,
-					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
-						F2(
-							function (value, layout) {
-								return _Utils_update(
-									layout,
-									{
-										c9: $elm$core$Basics$round(value)
-									});
-							})),
-					'Left pad. w. Icon',
-					_Utils_Tuple2(0, buttonTheme.e0.ak),
-					buttonTheme.e0.c9),
-					A5(
-					$author$project$OUI$Explorer$ThemeEditor$slider,
-					theme,
-					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
-						F2(
-							function (value, layout) {
-								return _Utils_update(
-									layout,
-									{
-										dr: $elm$core$Basics$round(value)
-									});
-							})),
-					'Right pad. w. Icon',
-					_Utils_Tuple2(0, buttonTheme.e0.ak),
-					buttonTheme.e0.dr),
-					A5(
-					$author$project$OUI$Explorer$ThemeEditor$slider,
-					theme,
-					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
-						F2(
-							function (value, layout) {
-								return _Utils_update(
-									layout,
-									{
-										dk: $elm$core$Basics$round(value)
-									});
-							})),
-					'Pad. bw. Elements',
-					_Utils_Tuple2(0, buttonTheme.e0.ak),
-					buttonTheme.e0.dk),
-					A4(
-					$author$project$OUI$Explorer$ThemeEditor$textType,
-					theme,
-					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
-						F2(
-							function (type_, layout) {
-								return _Utils_update(
-									layout,
-									{gc: type_});
-							})),
-					'Text Type',
-					buttonTheme.e0.gc),
-					A4(
-					$author$project$OUI$Explorer$ThemeEditor$textSize,
-					theme,
-					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
-						F2(
-							function (size, layout) {
-								return _Utils_update(
-									layout,
-									{gb: size});
-							})),
-					'Text Size',
-					buttonTheme.e0.gb),
-					divider
-				]));
+			_Utils_ap(
+				_List_fromArray(
+					[
+						divider,
+						A2(
+						$author$project$OUI$Material$text,
+						theme,
+						$author$project$OUI$Text$titleLarge('Button Layout')),
+						A5(
+						$author$project$OUI$Explorer$ThemeEditor$slider,
+						theme,
+						$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+							F2(
+								function (value, layout) {
+									return _Utils_update(
+										layout,
+										{
+											ak: $elm$core$Basics$round(value)
+										});
+								})),
+						'Container Height',
+						_Utils_Tuple2(0, 200),
+						buttonTheme.e0.ak),
+						A5(
+						$author$project$OUI$Explorer$ThemeEditor$slider,
+						theme,
+						$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+							F2(
+								function (value, layout) {
+									return _Utils_update(
+										layout,
+										{
+											cX: $elm$core$Basics$round(value)
+										});
+								})),
+						'Container Radius',
+						_Utils_Tuple2(0, (buttonTheme.e0.ak / 2) | 0),
+						buttonTheme.e0.cX),
+						A5(
+						$author$project$OUI$Explorer$ThemeEditor$slider,
+						theme,
+						$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+							F2(
+								function (value, layout) {
+									return _Utils_update(
+										layout,
+										{
+											s: $elm$core$Basics$round(value)
+										});
+								})),
+						'Icon Size',
+						_Utils_Tuple2(0, buttonTheme.e0.ak),
+						buttonTheme.e0.s),
+						A5(
+						$author$project$OUI$Explorer$ThemeEditor$slider,
+						theme,
+						$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+							F2(
+								function (value, layout) {
+									return _Utils_update(
+										layout,
+										{
+											da: $elm$core$Basics$round(value)
+										});
+								})),
+						'Left/right Padding',
+						_Utils_Tuple2(0, buttonTheme.e0.ak),
+						buttonTheme.e0.da),
+						A5(
+						$author$project$OUI$Explorer$ThemeEditor$slider,
+						theme,
+						$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+							F2(
+								function (value, layout) {
+									return _Utils_update(
+										layout,
+										{
+											c9: $elm$core$Basics$round(value)
+										});
+								})),
+						'Left pad. w. Icon',
+						_Utils_Tuple2(0, buttonTheme.e0.ak),
+						buttonTheme.e0.c9),
+						A5(
+						$author$project$OUI$Explorer$ThemeEditor$slider,
+						theme,
+						$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+							F2(
+								function (value, layout) {
+									return _Utils_update(
+										layout,
+										{
+											dr: $elm$core$Basics$round(value)
+										});
+								})),
+						'Right pad. w. Icon',
+						_Utils_Tuple2(0, buttonTheme.e0.ak),
+						buttonTheme.e0.dr),
+						A5(
+						$author$project$OUI$Explorer$ThemeEditor$slider,
+						theme,
+						$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+							F2(
+								function (value, layout) {
+									return _Utils_update(
+										layout,
+										{
+											dk: $elm$core$Basics$round(value)
+										});
+								})),
+						'Pad. bw. Elements',
+						_Utils_Tuple2(0, buttonTheme.e0.ak),
+						buttonTheme.e0.dk),
+						A4(
+						$author$project$OUI$Explorer$ThemeEditor$textType,
+						theme,
+						$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+							F2(
+								function (type_, layout) {
+									return _Utils_update(
+										layout,
+										{gc: type_});
+								})),
+						'Text Type',
+						buttonTheme.e0.gc),
+						A4(
+						$author$project$OUI$Explorer$ThemeEditor$textSize,
+						theme,
+						$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+							F2(
+								function (size, layout) {
+									return _Utils_update(
+										layout,
+										{gb: size});
+								})),
+						'Text Size',
+						buttonTheme.e0.gb)
+					]),
+				_Utils_ap(
+					A4($author$project$OUI$Showcase$Buttons$fabSection, theme, 'FAB Small', buttonTheme.T.bx, $author$project$OUI$Showcase$Buttons$updateButtonFABSmallMsg),
+					_Utils_ap(
+						A4($author$project$OUI$Showcase$Buttons$fabSection, theme, 'FAB Medium', buttonTheme.T.fw, $author$project$OUI$Showcase$Buttons$updateButtonFABMediumMsg),
+						_Utils_ap(
+							A4($author$project$OUI$Showcase$Buttons$fabSection, theme, 'FAB Large', buttonTheme.T.X, $author$project$OUI$Showcase$Buttons$updateButtonFABLargeMsg),
+							_List_fromArray(
+								[
+									divider,
+									A2(
+									$author$project$OUI$Material$text,
+									theme,
+									$author$project$OUI$Text$titleLarge('FAB Extended')),
+									A5(
+									$author$project$OUI$Explorer$ThemeEditor$slider,
+									theme,
+									$author$project$OUI$Showcase$Buttons$updateButtonExtendedMsg(
+										F2(
+											function (value, layout) {
+												return _Utils_update(
+													layout,
+													{
+														ak: $elm$core$Basics$round(value)
+													});
+											})),
+									'Container Height',
+									_Utils_Tuple2(0, 200),
+									buttonTheme.T.c1.ak),
+									A5(
+									$author$project$OUI$Explorer$ThemeEditor$slider,
+									theme,
+									$author$project$OUI$Showcase$Buttons$updateButtonExtendedMsg(
+										F2(
+											function (value, layout) {
+												return _Utils_update(
+													layout,
+													{
+														cX: $elm$core$Basics$round(value)
+													});
+											})),
+									'Container Radius',
+									_Utils_Tuple2(0, (buttonTheme.T.c1.ak / 2) | 0),
+									buttonTheme.T.c1.cX),
+									A5(
+									$author$project$OUI$Explorer$ThemeEditor$slider,
+									theme,
+									$author$project$OUI$Showcase$Buttons$updateButtonExtendedMsg(
+										F2(
+											function (value, layout) {
+												return _Utils_update(
+													layout,
+													{
+														s: $elm$core$Basics$round(value)
+													});
+											})),
+									'Icon Size',
+									_Utils_Tuple2(0, buttonTheme.T.c1.ak),
+									buttonTheme.T.c1.s),
+									A5(
+									$author$project$OUI$Explorer$ThemeEditor$slider,
+									theme,
+									$author$project$OUI$Showcase$Buttons$updateButtonExtendedMsg(
+										F2(
+											function (value, layout) {
+												return _Utils_update(
+													layout,
+													{
+														da: $elm$core$Basics$round(value)
+													});
+											})),
+									'Left/right Padding',
+									_Utils_Tuple2(0, buttonTheme.T.c1.ak),
+									buttonTheme.T.c1.da),
+									A5(
+									$author$project$OUI$Explorer$ThemeEditor$slider,
+									theme,
+									$author$project$OUI$Showcase$Buttons$updateButtonExtendedMsg(
+										F2(
+											function (value, layout) {
+												return _Utils_update(
+													layout,
+													{
+														c9: $elm$core$Basics$round(value)
+													});
+											})),
+									'Left pad. w. Icon',
+									_Utils_Tuple2(0, buttonTheme.T.c1.ak),
+									buttonTheme.T.c1.c9),
+									A5(
+									$author$project$OUI$Explorer$ThemeEditor$slider,
+									theme,
+									$author$project$OUI$Showcase$Buttons$updateButtonExtendedMsg(
+										F2(
+											function (value, layout) {
+												return _Utils_update(
+													layout,
+													{
+														dr: $elm$core$Basics$round(value)
+													});
+											})),
+									'Right pad. w. Icon',
+									_Utils_Tuple2(0, buttonTheme.T.c1.ak),
+									buttonTheme.T.c1.dr),
+									A5(
+									$author$project$OUI$Explorer$ThemeEditor$slider,
+									theme,
+									$author$project$OUI$Showcase$Buttons$updateButtonExtendedMsg(
+										F2(
+											function (value, layout) {
+												return _Utils_update(
+													layout,
+													{
+														dk: $elm$core$Basics$round(value)
+													});
+											})),
+									'Pad. bw. Elements',
+									_Utils_Tuple2(0, buttonTheme.T.c1.ak),
+									buttonTheme.T.c1.dk),
+									A4(
+									$author$project$OUI$Explorer$ThemeEditor$textType,
+									theme,
+									$author$project$OUI$Showcase$Buttons$updateButtonExtendedMsg(
+										F2(
+											function (type_, layout) {
+												return _Utils_update(
+													layout,
+													{gc: type_});
+											})),
+									'Text Type',
+									buttonTheme.T.c1.gc),
+									A4(
+									$author$project$OUI$Explorer$ThemeEditor$textSize,
+									theme,
+									$author$project$OUI$Showcase$Buttons$updateButtonExtendedMsg(
+										F2(
+											function (size, layout) {
+												return _Utils_update(
+													layout,
+													{gb: size});
+											})),
+									'Text Size',
+									buttonTheme.T.c1.gb),
+									divider,
+									A2(
+									$author$project$OUI$Material$text,
+									theme,
+									$author$project$OUI$Text$titleLarge('Icon')),
+									A5(
+									$author$project$OUI$Explorer$ThemeEditor$slider,
+									theme,
+									$author$project$OUI$Showcase$Buttons$updateButtonIconMsg(
+										F2(
+											function (value, layout) {
+												return _Utils_update(
+													layout,
+													{
+														s: $elm$core$Basics$round(value)
+													});
+											})),
+									'Icon Size',
+									_Utils_Tuple2(0, buttonTheme.c4.bX),
+									buttonTheme.c4.s),
+									A5(
+									$author$project$OUI$Explorer$ThemeEditor$slider,
+									theme,
+									$author$project$OUI$Showcase$Buttons$updateButtonIconMsg(
+										F2(
+											function (value, layout) {
+												return _Utils_update(
+													layout,
+													{
+														bX: $elm$core$Basics$round(value)
+													});
+											})),
+									'Container Size',
+									_Utils_Tuple2(0, 200),
+									buttonTheme.c4.bX),
+									divider
+								]))))));
 	});
 var $author$project$OUI$Explorer$statefulBook = F2(
 	function (title, _v0) {
@@ -18705,7 +19050,6 @@ var $mdgriffith$elm_ui$Element$Input$calcMoveToCompensateForPadding = function (
 			$elm$core$Basics$floor(vSpace / 2));
 	}
 };
-var $mdgriffith$elm_ui$Internal$Flag$overflow = $mdgriffith$elm_ui$Internal$Flag$flag(20);
 var $mdgriffith$elm_ui$Element$clip = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.g1);
 var $mdgriffith$elm_ui$Element$rgb = F3(
 	function (r, g, b) {
@@ -19082,7 +19426,6 @@ var $mdgriffith$elm_ui$Element$Input$renderPlaceholder = F3(
 					placeholderAttrs)),
 			placeholderEl);
 	});
-var $mdgriffith$elm_ui$Element$scrollbarY = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.iz);
 var $elm$html$Html$span = _VirtualDom_node('span');
 var $elm$html$Html$Attributes$spellcheck = $elm$html$Html$Attributes$boolProperty('spellcheck');
 var $mdgriffith$elm_ui$Element$Input$spellcheck = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Attr, $elm$html$Html$Attributes$spellcheck);
@@ -272784,15 +273127,7 @@ var $author$project$OUI$Explorer$finalizeWithOptions = F2(
 																	$author$project$OUI$Material$text,
 																	shared.i8,
 																	$author$project$OUI$Text$displayLarge(b.gd))),
-																A2(
-																$mdgriffith$elm_ui$Element$el,
-																_List_fromArray(
-																	[
-																		$mdgriffith$elm_ui$Element$scrollbarY,
-																		$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-																		$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-																	]),
-																b.a6),
+																b.a6,
 																A2(
 																$mdgriffith$elm_ui$Element$column,
 																_List_fromArray(

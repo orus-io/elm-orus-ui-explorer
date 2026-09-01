@@ -68,6 +68,145 @@ updateButtonCommonMsg fn value =
         |> Explorer.sharedMsg
 
 
+updateButtonFABSmallMsg :
+    (data -> OUI.Material.Theme.ButtonFABLayout -> OUI.Material.Theme.ButtonFABLayout)
+    -> data
+    -> Explorer.BookMsg themeExt msg
+updateButtonFABSmallMsg fn value =
+    Explorer.updateCurrentThemeMsg
+        (updateButtonTheme
+            (\b ->
+                let
+                    fab =
+                        b.fab
+                in
+                { b | fab = { fab | small = fn value fab.small } }
+            )
+        )
+        |> Explorer.sharedMsg
+
+
+updateButtonFABMediumMsg :
+    (data -> OUI.Material.Theme.ButtonFABLayout -> OUI.Material.Theme.ButtonFABLayout)
+    -> data
+    -> Explorer.BookMsg themeExt msg
+updateButtonFABMediumMsg fn value =
+    Explorer.updateCurrentThemeMsg
+        (updateButtonTheme
+            (\b ->
+                let
+                    fab =
+                        b.fab
+                in
+                { b | fab = { fab | medium = fn value fab.medium } }
+            )
+        )
+        |> Explorer.sharedMsg
+
+
+updateButtonFABLargeMsg :
+    (data -> OUI.Material.Theme.ButtonFABLayout -> OUI.Material.Theme.ButtonFABLayout)
+    -> data
+    -> Explorer.BookMsg themeExt msg
+updateButtonFABLargeMsg fn value =
+    Explorer.updateCurrentThemeMsg
+        (updateButtonTheme
+            (\b ->
+                let
+                    fab =
+                        b.fab
+                in
+                { b | fab = { fab | large = fn value fab.large } }
+            )
+        )
+        |> Explorer.sharedMsg
+
+
+updateButtonExtendedMsg :
+    (data -> OUI.Material.Theme.ButtonLayout -> OUI.Material.Theme.ButtonLayout)
+    -> data
+    -> Explorer.BookMsg themeExt msg
+updateButtonExtendedMsg fn value =
+    Explorer.updateCurrentThemeMsg
+        (updateButtonTheme
+            (\b ->
+                let
+                    fab =
+                        b.fab
+                in
+                { b | fab = { fab | extended = fn value fab.extended } }
+            )
+        )
+        |> Explorer.sharedMsg
+
+
+updateButtonIconMsg :
+    (data -> OUI.Material.Theme.ButtonIconLayout -> OUI.Material.Theme.ButtonIconLayout)
+    -> data
+    -> Explorer.BookMsg themeExt msg
+updateButtonIconMsg fn value =
+    Explorer.updateCurrentThemeMsg
+        (updateButtonTheme
+            (\b ->
+                { b | icon = fn value b.icon }
+            )
+        )
+        |> Explorer.sharedMsg
+
+
+fabSection :
+    Theme themeExt
+    -> String
+    -> OUI.Material.Theme.ButtonFABLayout
+    -> ((Float -> OUI.Material.Theme.ButtonFABLayout -> OUI.Material.Theme.ButtonFABLayout) -> Float -> Explorer.BookMsg themeExt msg)
+    -> List (Element (Explorer.BookMsg themeExt msg))
+fabSection theme title layout toMsg =
+    let
+        divider : Element (Explorer.BookMsg themeExt msg)
+        divider =
+            Divider.new |> Material.divider theme []
+    in
+    [ divider
+    , Text.titleLarge title |> Material.text theme
+    , ThemeEditor.slider theme
+        (toMsg
+            (\value l ->
+                { l | containerHeight = round value }
+            )
+        )
+        "Container Height"
+        ( 0, 200 )
+        (toFloat layout.containerHeight)
+    , ThemeEditor.slider theme
+        (toMsg
+            (\value l ->
+                { l | containerShape = round value }
+            )
+        )
+        "Container Shape"
+        ( 0, toFloat layout.containerHeight / 2 )
+        (toFloat layout.containerShape)
+    , ThemeEditor.slider theme
+        (toMsg
+            (\value l ->
+                { l | containerWidth = round value }
+            )
+        )
+        "Container Width"
+        ( 0, 200 )
+        (toFloat layout.containerWidth)
+    , ThemeEditor.slider theme
+        (toMsg
+            (\value l ->
+                { l | iconSize = round value }
+            )
+        )
+        "Icon Size"
+        ( 0, toFloat layout.containerHeight )
+        (toFloat layout.iconSize)
+    ]
+
+
 editorChapter : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 editorChapter { theme } _ =
     let
@@ -80,9 +219,9 @@ editorChapter { theme } _ =
             Divider.new |> Material.divider theme []
     in
     Element.column [ Element.spacing 30 ]
-        [ divider
-        , Text.titleLarge "Button Layout" |> Material.text theme
-        , ThemeEditor.slider theme
+        ([ divider
+         , Text.titleLarge "Button Layout" |> Material.text theme
+         , ThemeEditor.slider theme
             (updateButtonCommonMsg
                 (\value layout ->
                     { layout | containerHeight = round value }
@@ -91,7 +230,7 @@ editorChapter { theme } _ =
             "Container Height"
             ( 0, 200 )
             (toFloat buttonTheme.common.containerHeight)
-        , ThemeEditor.slider theme
+         , ThemeEditor.slider theme
             (updateButtonCommonMsg
                 (\value layout ->
                     { layout | containerRadius = round value }
@@ -100,7 +239,7 @@ editorChapter { theme } _ =
             "Container Radius"
             ( 0, buttonTheme.common.containerHeight // 2 |> toFloat )
             (toFloat buttonTheme.common.containerRadius)
-        , ThemeEditor.slider theme
+         , ThemeEditor.slider theme
             (updateButtonCommonMsg
                 (\value layout ->
                     { layout | iconSize = round value }
@@ -109,7 +248,7 @@ editorChapter { theme } _ =
             "Icon Size"
             ( 0, buttonTheme.common.containerHeight |> toFloat )
             (toFloat buttonTheme.common.iconSize)
-        , ThemeEditor.slider theme
+         , ThemeEditor.slider theme
             (updateButtonCommonMsg
                 (\value layout ->
                     { layout | leftRightPadding = round value }
@@ -118,7 +257,7 @@ editorChapter { theme } _ =
             "Left/right Padding"
             ( 0, buttonTheme.common.containerHeight |> toFloat )
             (toFloat buttonTheme.common.leftRightPadding)
-        , ThemeEditor.slider theme
+         , ThemeEditor.slider theme
             (updateButtonCommonMsg
                 (\value layout ->
                     { layout | leftPaddingWithIcon = round value }
@@ -127,7 +266,7 @@ editorChapter { theme } _ =
             "Left pad. w. Icon"
             ( 0, buttonTheme.common.containerHeight |> toFloat )
             (toFloat buttonTheme.common.leftPaddingWithIcon)
-        , ThemeEditor.slider theme
+         , ThemeEditor.slider theme
             (updateButtonCommonMsg
                 (\value layout ->
                     { layout | rightPaddingWithIcon = round value }
@@ -136,7 +275,7 @@ editorChapter { theme } _ =
             "Right pad. w. Icon"
             ( 0, buttonTheme.common.containerHeight |> toFloat )
             (toFloat buttonTheme.common.rightPaddingWithIcon)
-        , ThemeEditor.slider theme
+         , ThemeEditor.slider theme
             (updateButtonCommonMsg
                 (\value layout ->
                     { layout | paddingBetweenElements = round value }
@@ -145,7 +284,7 @@ editorChapter { theme } _ =
             "Pad. bw. Elements"
             ( 0, buttonTheme.common.containerHeight |> toFloat )
             (toFloat buttonTheme.common.paddingBetweenElements)
-        , ThemeEditor.textType theme
+         , ThemeEditor.textType theme
             (updateButtonCommonMsg
                 (\type_ layout ->
                     { layout | textType = type_ }
@@ -153,7 +292,7 @@ editorChapter { theme } _ =
             )
             "Text Type"
             buttonTheme.common.textType
-        , ThemeEditor.textSize theme
+         , ThemeEditor.textSize theme
             (updateButtonCommonMsg
                 (\size layout ->
                     { layout | textSize = size }
@@ -161,8 +300,114 @@ editorChapter { theme } _ =
             )
             "Text Size"
             buttonTheme.common.textSize
-        , divider
-        ]
+         ]
+            ++ fabSection theme "FAB Small" buttonTheme.fab.small updateButtonFABSmallMsg
+            ++ fabSection theme "FAB Medium" buttonTheme.fab.medium updateButtonFABMediumMsg
+            ++ fabSection theme "FAB Large" buttonTheme.fab.large updateButtonFABLargeMsg
+            ++ [ divider
+               , Text.titleLarge "FAB Extended" |> Material.text theme
+               , ThemeEditor.slider theme
+                    (updateButtonExtendedMsg
+                        (\value layout ->
+                            { layout | containerHeight = round value }
+                        )
+                    )
+                    "Container Height"
+                    ( 0, 200 )
+                    (toFloat buttonTheme.fab.extended.containerHeight)
+               , ThemeEditor.slider theme
+                    (updateButtonExtendedMsg
+                        (\value layout ->
+                            { layout | containerRadius = round value }
+                        )
+                    )
+                    "Container Radius"
+                    ( 0, buttonTheme.fab.extended.containerHeight // 2 |> toFloat )
+                    (toFloat buttonTheme.fab.extended.containerRadius)
+               , ThemeEditor.slider theme
+                    (updateButtonExtendedMsg
+                        (\value layout ->
+                            { layout | iconSize = round value }
+                        )
+                    )
+                    "Icon Size"
+                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat )
+                    (toFloat buttonTheme.fab.extended.iconSize)
+               , ThemeEditor.slider theme
+                    (updateButtonExtendedMsg
+                        (\value layout ->
+                            { layout | leftRightPadding = round value }
+                        )
+                    )
+                    "Left/right Padding"
+                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat )
+                    (toFloat buttonTheme.fab.extended.leftRightPadding)
+               , ThemeEditor.slider theme
+                    (updateButtonExtendedMsg
+                        (\value layout ->
+                            { layout | leftPaddingWithIcon = round value }
+                        )
+                    )
+                    "Left pad. w. Icon"
+                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat )
+                    (toFloat buttonTheme.fab.extended.leftPaddingWithIcon)
+               , ThemeEditor.slider theme
+                    (updateButtonExtendedMsg
+                        (\value layout ->
+                            { layout | rightPaddingWithIcon = round value }
+                        )
+                    )
+                    "Right pad. w. Icon"
+                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat )
+                    (toFloat buttonTheme.fab.extended.rightPaddingWithIcon)
+               , ThemeEditor.slider theme
+                    (updateButtonExtendedMsg
+                        (\value layout ->
+                            { layout | paddingBetweenElements = round value }
+                        )
+                    )
+                    "Pad. bw. Elements"
+                    ( 0, buttonTheme.fab.extended.containerHeight |> toFloat )
+                    (toFloat buttonTheme.fab.extended.paddingBetweenElements)
+               , ThemeEditor.textType theme
+                    (updateButtonExtendedMsg
+                        (\type_ layout ->
+                            { layout | textType = type_ }
+                        )
+                    )
+                    "Text Type"
+                    buttonTheme.fab.extended.textType
+               , ThemeEditor.textSize theme
+                    (updateButtonExtendedMsg
+                        (\size layout ->
+                            { layout | textSize = size }
+                        )
+                    )
+                    "Text Size"
+                    buttonTheme.fab.extended.textSize
+               , divider
+               , Text.titleLarge "Icon" |> Material.text theme
+               , ThemeEditor.slider theme
+                    (updateButtonIconMsg
+                        (\value layout ->
+                            { layout | iconSize = round value }
+                        )
+                    )
+                    "Icon Size"
+                    ( 0, toFloat buttonTheme.icon.containerSize )
+                    (toFloat buttonTheme.icon.iconSize)
+               , ThemeEditor.slider theme
+                    (updateButtonIconMsg
+                        (\value layout ->
+                            { layout | containerSize = round value }
+                        )
+                    )
+                    "Container Size"
+                    ( 0, 200 )
+                    (toFloat buttonTheme.icon.containerSize)
+               , divider
+               ]
+        )
 
 
 {-| A common button with/without icon, as a link, disabled

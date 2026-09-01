@@ -321,6 +321,8 @@ addBook b (Explorer expl) =
                                             [ Element.spacing 20
                                             , Element.width Element.fill
                                             , Element.height Element.fill
+                                            , Element.clipY
+                                            , Element.scrollbarY
                                             ]
                                             [ b.chapters
                                                 |> List.reverse
@@ -329,6 +331,8 @@ addBook b (Explorer expl) =
                                                     [ Element.spacing 20
                                                     , Element.width Element.fill
                                                     , Element.height Element.fill
+                                                    , Element.clipY
+                                                    , Element.scrollbarY
                                                     ]
                                             , case b.themeEditors of
                                                 [] ->
@@ -342,6 +346,8 @@ addBook b (Explorer expl) =
                                                             [ Element.spacing 20
                                                             , Element.width (Element.px 500)
                                                             , Element.height Element.fill
+                                                            , Element.clipY
+                                                            , Element.scrollbarY
                                                             ]
                                             ]
                                     , dialog =
@@ -1019,11 +1025,6 @@ finalizeWithOptions options (Explorer expl) =
                                             [ Element.paddingXY 0 30
                                             ]
                                     , b.content
-                                        |> Element.el
-                                            [ Element.scrollbarY
-                                            , Element.height Element.fill
-                                            , Element.width Element.fill
-                                            ]
                                     , Element.column
                                         [ Element.height <| Element.shrink
                                         , Element.width Element.fill
