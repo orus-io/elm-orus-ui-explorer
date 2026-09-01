@@ -6,8 +6,10 @@ import OUI
 import OUI.Checkbox as Checkbox
 import OUI.Divider as Divider
 import OUI.Explorer as Explorer
+import OUI.Explorer.ThemeEditor as ThemeEditor
 import OUI.Icon exposing (clear)
 import OUI.Material as Material
+import OUI.Material.Theme exposing (Theme)
 import OUI.Text as Text
 
 
@@ -77,6 +79,93 @@ book =
         , subscriptions = \_ _ -> Sub.none
         }
         |> Explorer.withChapter checkbox
+        |> Explorer.withThemeEditor editorChapter
+
+
+updateCheckboxTheme :
+    (OUI.Material.Theme.CheckboxTheme -> OUI.Material.Theme.CheckboxTheme)
+    -> Theme themeExt
+    -> Theme themeExt
+updateCheckboxTheme fn theme =
+    theme
+        |> OUI.Material.Theme.withCheckbox
+            (theme
+                |> OUI.Material.Theme.checkbox
+                |> fn
+            )
+
+
+updateCheckboxMsg :
+    (data -> OUI.Material.Theme.CheckboxTheme -> OUI.Material.Theme.CheckboxTheme)
+    -> data
+    -> Explorer.BookMsg themeExt msg
+updateCheckboxMsg fn value =
+    Explorer.updateCurrentThemeMsg
+        (updateCheckboxTheme (fn value))
+        |> Explorer.sharedMsg
+
+
+editorChapter : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
+editorChapter { theme } _ =
+    let
+        checkboxTheme : OUI.Material.Theme.CheckboxTheme
+        checkboxTheme =
+            OUI.Material.Theme.checkbox theme
+
+        divider : Element msg
+        divider =
+            Divider.new |> Material.divider theme []
+    in
+    Element.column [ Element.spacing 30 ]
+        [ divider
+        , Text.titleLarge "Checkbox" |> Material.text theme
+        , ThemeEditor.slider theme
+            (updateCheckboxMsg
+                (\value c ->
+                    { c | containerWidth = round value }
+                )
+            )
+            "Container Width"
+            ( 0, 100 )
+            (toFloat checkboxTheme.containerWidth)
+        , ThemeEditor.slider theme
+            (updateCheckboxMsg
+                (\value c ->
+                    { c | containerHeight = round value }
+                )
+            )
+            "Container Height"
+            ( 0, 100 )
+            (toFloat checkboxTheme.containerHeight)
+        , ThemeEditor.slider theme
+            (updateCheckboxMsg
+                (\value c ->
+                    { c | containerShape = round value }
+                )
+            )
+            "Container Shape"
+            ( 0, 100 )
+            (toFloat checkboxTheme.containerShape)
+        , ThemeEditor.slider theme
+            (updateCheckboxMsg
+                (\value c ->
+                    { c | iconSize = round value }
+                )
+            )
+            "Icon Size"
+            ( 0, 100 )
+            (toFloat checkboxTheme.iconSize)
+        , ThemeEditor.slider theme
+            (updateCheckboxMsg
+                (\value c ->
+                    { c | stateLayerSize = round value }
+                )
+            )
+            "State Layer Size"
+            ( 0, 100 )
+            (toFloat checkboxTheme.stateLayerSize)
+        , divider
+        ]
 
 
 checkbox : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)

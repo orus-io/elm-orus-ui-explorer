@@ -1,4 +1,4 @@
-module OUI.Showcase.IconsCat exposing (..)
+module OUI.Showcase.IconsCat exposing (edit)
 
 import Material.Icons.Outlined
 import Material.Icons.Types exposing (Coloring(..))

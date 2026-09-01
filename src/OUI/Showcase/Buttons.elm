@@ -47,8 +47,8 @@ updateButtonTheme fn theme =
 
 updateButtonCommon :
     (OUI.Material.Theme.ButtonLayout -> OUI.Material.Theme.ButtonLayout)
-    -> OUI.Material.Theme.Theme themeExt
-    -> OUI.Material.Theme.Theme themeExt
+    -> Theme themeExt
+    -> Theme themeExt
 updateButtonCommon fn =
     updateButtonTheme
         (\b ->
@@ -77,6 +77,7 @@ updateButtonFABSmallMsg fn value =
         (updateButtonTheme
             (\b ->
                 let
+                    fab : { small : OUI.Material.Theme.ButtonFABLayout, medium : OUI.Material.Theme.ButtonFABLayout, large : OUI.Material.Theme.ButtonFABLayout, extended : OUI.Material.Theme.ButtonLayout }
                     fab =
                         b.fab
                 in
@@ -95,6 +96,7 @@ updateButtonFABMediumMsg fn value =
         (updateButtonTheme
             (\b ->
                 let
+                    fab : { small : OUI.Material.Theme.ButtonFABLayout, medium : OUI.Material.Theme.ButtonFABLayout, large : OUI.Material.Theme.ButtonFABLayout, extended : OUI.Material.Theme.ButtonLayout }
                     fab =
                         b.fab
                 in
@@ -113,6 +115,7 @@ updateButtonFABLargeMsg fn value =
         (updateButtonTheme
             (\b ->
                 let
+                    fab : { small : OUI.Material.Theme.ButtonFABLayout, medium : OUI.Material.Theme.ButtonFABLayout, large : OUI.Material.Theme.ButtonFABLayout, extended : OUI.Material.Theme.ButtonLayout }
                     fab =
                         b.fab
                 in
@@ -131,6 +134,7 @@ updateButtonExtendedMsg fn value =
         (updateButtonTheme
             (\b ->
                 let
+                    fab : { small : OUI.Material.Theme.ButtonFABLayout, medium : OUI.Material.Theme.ButtonFABLayout, large : OUI.Material.Theme.ButtonFABLayout, extended : OUI.Material.Theme.ButtonLayout }
                     fab =
                         b.fab
                 in
@@ -413,7 +417,7 @@ editorChapter { theme } _ =
 {-| A common button with/without icon, as a link, disabled
 -}
 commonButtonVariants :
-    OUI.Material.Theme.Theme themeExt
+    Theme themeExt
     -> String
     -> (Button { hasNoIcon : (), needOnClickOrDisabled : () } (Explorer.BookMsg themeExt msg) -> Button { hasNoIcon : (), needOnClickOrDisabled : () } (Explorer.BookMsg themeExt msg))
     -> List (Element (Explorer.BookMsg themeExt msg))

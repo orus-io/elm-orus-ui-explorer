@@ -4,9 +4,10 @@ import Element exposing (Element)
 import Element.Border
 import OUI.Divider as Divider
 import OUI.Explorer as Explorer
+import OUI.Explorer.ThemeEditor as ThemeEditor
 import OUI.Material as Material
 import OUI.Material.Color
-import OUI.Material.Theme as Theme
+import OUI.Material.Theme as Theme exposing (Theme)
 import OUI.Text as Text
 
 
@@ -14,6 +15,57 @@ book : Explorer.Book themeExt () ()
 book =
     Explorer.book "Dividers"
         |> Explorer.withStaticChapter commonDividers
+        |> Explorer.withThemeEditor editorChapter
+
+
+updateDividerTheme :
+    (Theme.DividerTheme -> Theme.DividerTheme)
+    -> Theme themeExt
+    -> Theme themeExt
+updateDividerTheme fn theme =
+    theme
+        |> Theme.withDivider
+            (theme
+                |> Theme.divider
+                |> fn
+            )
+
+
+updateDividerMsg :
+    (data -> Theme.DividerTheme -> Theme.DividerTheme)
+    -> data
+    -> Explorer.BookMsg themeExt msg
+updateDividerMsg fn value =
+    Explorer.updateCurrentThemeMsg
+        (updateDividerTheme (fn value))
+        |> Explorer.sharedMsg
+
+
+editorChapter : Explorer.Shared themeExt -> () -> Element (Explorer.BookMsg themeExt msg)
+editorChapter { theme } _ =
+    let
+        dividerTheme : Theme.DividerTheme
+        dividerTheme =
+            Theme.divider theme
+
+        divider : Element (Explorer.BookMsg themeExt msg)
+        divider =
+            Divider.new |> Material.divider theme []
+    in
+    Element.column [ Element.spacing 30 ]
+        [ divider
+        , Text.titleLarge "Divider" |> Material.text theme
+        , ThemeEditor.slider theme
+            (updateDividerMsg
+                (\value d ->
+                    { d | thickness = round value }
+                )
+            )
+            "Thickness"
+            ( 0, 20 )
+            (toFloat dividerTheme.thickness)
+        , divider
+        ]
 
 
 commonDividers : Explorer.Shared themeExt -> Element (Explorer.BookMsg themeExt ())

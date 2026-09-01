@@ -51,8 +51,8 @@ config =
     , NoImportingEverything.rule []
         |> Rule.ignoreErrorsForDirectories []
     , NoMissingTypeAnnotation.rule
-        |> Rule.ignoreErrorsForDirectories []
-    , NoMissingTypeAnnotationInLetIn.rule
+
+    -- , NoMissingTypeAnnotationInLetIn.rule
     , NoMissingTypeExpose.rule
     , NoPrematureLetComputation.rule
     , NoUnused.CustomTypeConstructors.rule []

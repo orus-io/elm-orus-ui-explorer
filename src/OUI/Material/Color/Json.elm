@@ -5,10 +5,10 @@ import Color
 import Json.Decode
 import Json.Decode.Pipeline exposing (required)
 import Json.Encode
-import OUI.Material.Color as Color
+import OUI.Material.Color as MColor
 
 
-encodeColorTheme : Color.Theme -> Json.Encode.Value
+encodeColorTheme : MColor.Theme -> Json.Encode.Value
 encodeColorTheme theme =
     Json.Encode.object
         [ ( "name", Json.Encode.string theme.name )
@@ -23,9 +23,9 @@ encodeColorTheme theme =
         ]
 
 
-decodeColorTheme : Json.Decode.Decoder Color.Theme
+decodeColorTheme : Json.Decode.Decoder MColor.Theme
 decodeColorTheme =
-    Json.Decode.map4 Color.Theme
+    Json.Decode.map4 MColor.Theme
         (Json.Decode.field "name" Json.Decode.string)
         (Json.Decode.field "description" Json.Decode.string)
         (Json.Decode.field "keyColors" decodeKeyColors)
@@ -71,7 +71,7 @@ decodeColor =
             )
 
 
-encodeKeyColors : Color.KeyColors -> Json.Encode.Value
+encodeKeyColors : MColor.KeyColors -> Json.Encode.Value
 encodeKeyColors keyColors =
     Json.Encode.object
         [ ( "primary", encodeColor keyColors.primary )
@@ -83,9 +83,9 @@ encodeKeyColors keyColors =
         ]
 
 
-decodeKeyColors : Json.Decode.Decoder Color.KeyColors
+decodeKeyColors : Json.Decode.Decoder MColor.KeyColors
 decodeKeyColors =
-    Json.Decode.map6 Color.KeyColors
+    Json.Decode.map6 MColor.KeyColors
         (Json.Decode.field "primary" decodeColor)
         (Json.Decode.field "secondary" decodeColor)
         (Json.Decode.field "tertiary" decodeColor)
@@ -94,7 +94,7 @@ decodeKeyColors =
         (Json.Decode.field "neutralVariant" decodeColor)
 
 
-encodeColorScheme : Color.Scheme -> Json.Encode.Value
+encodeColorScheme : MColor.Scheme -> Json.Encode.Value
 encodeColorScheme scheme =
     Json.Encode.object
         [ ( "keyColors", encodeKeyColors scheme.keyColors )
@@ -138,9 +138,9 @@ encodeColorScheme scheme =
         ]
 
 
-decodeColorScheme : Json.Decode.Decoder Color.Scheme
+decodeColorScheme : Json.Decode.Decoder MColor.Scheme
 decodeColorScheme =
-    Json.Decode.succeed Color.Scheme
+    Json.Decode.succeed MColor.Scheme
         |> required "keyColors" decodeKeyColors
         |> required "primary" decodeColor
         |> required "primaryContainer" decodeColor

@@ -3,9 +3,12 @@ module OUI.Showcase.Tabs exposing (Model, Msg, book)
 import Effect exposing (Effect)
 import Element exposing (Element)
 import OUI.Badge as Badge exposing (Badge)
+import OUI.Divider as Divider
 import OUI.Explorer as Explorer exposing (withChapter)
+import OUI.Explorer.ThemeEditor as ThemeEditor
 import OUI.Icon as Icon exposing (Icon)
 import OUI.Material as Material
+import OUI.Material.Theme exposing (Theme)
 import OUI.Tabs
 import OUI.Text as Text
 
@@ -45,6 +48,7 @@ book =
         , subscriptions = \_ _ -> Sub.none
         }
         |> withChapter tabs
+        |> Explorer.withThemeEditor editorChapter
 
 
 tabs : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
@@ -88,3 +92,173 @@ update _ msg model =
         OnClickSecondary key ->
             { model | secondarySelected = key }
                 |> Effect.withNone
+
+
+updateTabsTheme :
+    (OUI.Material.Theme.TabsTheme -> OUI.Material.Theme.TabsTheme)
+    -> Theme themeExt
+    -> Theme themeExt
+updateTabsTheme fn theme =
+    theme
+        |> OUI.Material.Theme.withTabs
+            (theme
+                |> OUI.Material.Theme.tabs
+                |> fn
+            )
+
+
+updateTabsMsg :
+    (data -> OUI.Material.Theme.TabsTheme -> OUI.Material.Theme.TabsTheme)
+    -> data
+    -> Explorer.BookMsg themeExt msg
+updateTabsMsg fn value =
+    Explorer.updateCurrentThemeMsg
+        (updateTabsTheme (fn value))
+        |> Explorer.sharedMsg
+
+
+editorChapter : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
+editorChapter { theme } _ =
+    let
+        tabsTheme : OUI.Material.Theme.TabsTheme
+        tabsTheme =
+            OUI.Material.Theme.tabs theme
+
+        divider : Element msg
+        divider =
+            Divider.new |> Material.divider theme []
+    in
+    Element.column [ Element.spacing 30 ]
+        [ divider
+        , Text.titleLarge "Primary" |> Material.text theme
+        , ThemeEditor.slider theme
+            (updateTabsMsg
+                (\value t ->
+                    let
+                        primary : { containerHeight : Int, activeIndicatorHeight : Int, activeIndicatorWidth : Int }
+                        primary =
+                            t.primary
+                    in
+                    { t | primary = { primary | containerHeight = round value } }
+                )
+            )
+            "Container Height"
+            ( 0, 150 )
+            (toFloat tabsTheme.primary.containerHeight)
+        , ThemeEditor.slider theme
+            (updateTabsMsg
+                (\value t ->
+                    let
+                        primary : { containerHeight : Int, activeIndicatorHeight : Int, activeIndicatorWidth : Int }
+                        primary =
+                            t.primary
+                    in
+                    { t | primary = { primary | activeIndicatorHeight = round value } }
+                )
+            )
+            "Active Indicator Height"
+            ( 0, 20 )
+            (toFloat tabsTheme.primary.activeIndicatorHeight)
+        , ThemeEditor.slider theme
+            (updateTabsMsg
+                (\value t ->
+                    let
+                        primary : { containerHeight : Int, activeIndicatorHeight : Int, activeIndicatorWidth : Int }
+                        primary =
+                            t.primary
+                    in
+                    { t | primary = { primary | activeIndicatorWidth = round value } }
+                )
+            )
+            "Active Indicator Width"
+            ( 0, 100 )
+            (toFloat tabsTheme.primary.activeIndicatorWidth)
+        , divider
+        , Text.titleLarge "Secondary" |> Material.text theme
+        , ThemeEditor.slider theme
+            (updateTabsMsg
+                (\value t ->
+                    let
+                        secondary : { containerHeight : Int, activeIndicatorHeight : Int }
+                        secondary =
+                            t.secondary
+                    in
+                    { t | secondary = { secondary | containerHeight = round value } }
+                )
+            )
+            "Container Height"
+            ( 0, 150 )
+            (toFloat tabsTheme.secondary.containerHeight)
+        , ThemeEditor.slider theme
+            (updateTabsMsg
+                (\value t ->
+                    let
+                        secondary : { containerHeight : Int, activeIndicatorHeight : Int }
+                        secondary =
+                            t.secondary
+                    in
+                    { t | secondary = { secondary | activeIndicatorHeight = round value } }
+                )
+            )
+            "Active Indicator Height"
+            ( 0, 20 )
+            (toFloat tabsTheme.secondary.activeIndicatorHeight)
+        , divider
+        , Text.titleLarge "Padding" |> Material.text theme
+        , ThemeEditor.slider theme
+            (updateTabsMsg
+                (\value t ->
+                    { t | paddingBetweenIconAndText = round value }
+                )
+            )
+            "Between Icon And Text"
+            ( 0, 50 )
+            (toFloat tabsTheme.paddingBetweenIconAndText)
+        , ThemeEditor.slider theme
+            (updateTabsMsg
+                (\value t ->
+                    { t | paddingBetweenInlineIconAndText = round value }
+                )
+            )
+            "Between Inline Icon And Text"
+            ( 0, 50 )
+            (toFloat tabsTheme.paddingBetweenInlineIconAndText)
+        , ThemeEditor.slider theme
+            (updateTabsMsg
+                (\value t ->
+                    { t | paddingBetweenInlineTextAndBadge = round value }
+                )
+            )
+            "Between Inline Text And Badge"
+            ( 0, 50 )
+            (toFloat tabsTheme.paddingBetweenInlineTextAndBadge)
+        , divider
+        , Text.titleLarge "Text" |> Material.text theme
+        , ThemeEditor.textSize theme
+            (updateTabsMsg
+                (\size t ->
+                    let
+                        text : { size : Text.Size, type_ : Text.Type }
+                        text =
+                            t.text
+                    in
+                    { t | text = { text | size = size } }
+                )
+            )
+            "Text Size"
+            tabsTheme.text.size
+        , ThemeEditor.textType theme
+            (updateTabsMsg
+                (\type_ t ->
+                    let
+                        text : { size : Text.Size, type_ : Text.Type }
+                        text =
+                            t.text
+                    in
+                    { t | text = { text | type_ = type_ } }
+                )
+            )
+            "Text Type"
+            tabsTheme.text.type_
+        , divider
+        ]

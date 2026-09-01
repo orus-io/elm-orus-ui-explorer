@@ -5,7 +5,9 @@ import Effect
 import Element exposing (Element)
 import OUI.Divider as Divider
 import OUI.Explorer as Explorer
+import OUI.Explorer.ThemeEditor as ThemeEditor
 import OUI.Material as Material
+import OUI.Material.Theme exposing (Theme)
 import OUI.Slider as Slider
 import OUI.Text as Text
 
@@ -45,6 +47,93 @@ book =
         , subscriptions = \_ _ -> Sub.none
         }
         |> Explorer.withChapter slider
+        |> Explorer.withThemeEditor editorChapter
+
+
+updateSliderTheme :
+    (OUI.Material.Theme.SliderTheme -> OUI.Material.Theme.SliderTheme)
+    -> Theme themeExt
+    -> Theme themeExt
+updateSliderTheme fn theme =
+    theme
+        |> OUI.Material.Theme.withSlider
+            (theme
+                |> OUI.Material.Theme.slider
+                |> fn
+            )
+
+
+updateSliderMsg :
+    (data -> OUI.Material.Theme.SliderTheme -> OUI.Material.Theme.SliderTheme)
+    -> data
+    -> Explorer.BookMsg themeExt msg
+updateSliderMsg fn value =
+    Explorer.updateCurrentThemeMsg
+        (updateSliderTheme (fn value))
+        |> Explorer.sharedMsg
+
+
+editorChapter : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
+editorChapter { theme } _ =
+    let
+        sliderTheme : OUI.Material.Theme.SliderTheme
+        sliderTheme =
+            OUI.Material.Theme.slider theme
+
+        divider : Element msg
+        divider =
+            Divider.new |> Material.divider theme []
+    in
+    Element.column [ Element.spacing 30 ]
+        [ divider
+        , Text.titleLarge "Slider" |> Material.text theme
+        , ThemeEditor.slider theme
+            (updateSliderMsg
+                (\value p ->
+                    { p | trackHeight = round value }
+                )
+            )
+            "Track Height"
+            ( 0, 100 )
+            (toFloat sliderTheme.trackHeight)
+        , ThemeEditor.slider theme
+            (updateSliderMsg
+                (\value p ->
+                    { p | labelContainerHeight = round value }
+                )
+            )
+            "Label Container Height"
+            ( 0, 100 )
+            (toFloat sliderTheme.labelContainerHeight)
+        , ThemeEditor.slider theme
+            (updateSliderMsg
+                (\value p ->
+                    { p | labelContainerWidth = round value }
+                )
+            )
+            "Label Container Width"
+            ( 0, 100 )
+            (toFloat sliderTheme.labelContainerWidth)
+        , ThemeEditor.slider theme
+            (updateSliderMsg
+                (\value p ->
+                    { p | handleHeight = round value }
+                )
+            )
+            "Handle Height"
+            ( 0, 100 )
+            (toFloat sliderTheme.handleHeight)
+        , ThemeEditor.slider theme
+            (updateSliderMsg
+                (\value p ->
+                    { p | handleWidth = round value }
+                )
+            )
+            "Handle Width"
+            ( 0, 100 )
+            (toFloat sliderTheme.handleWidth)
+        , divider
+        ]
 
 
 slider : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)

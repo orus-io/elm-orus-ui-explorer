@@ -1,4 +1,4 @@
-module OUI.Showcase.ColorPicker exposing (..)
+module OUI.Showcase.ColorPicker exposing (Msg(..), State, empty, update, view)
 
 import Color exposing (Color)
 import ColorPicker
@@ -22,6 +22,7 @@ type Msg
     | TextFocus Bool
 
 
+empty : State
 empty =
     { colorPicker = ColorPicker.empty
     , text = ""
@@ -29,6 +30,7 @@ empty =
     }
 
 
+update : Msg -> Color -> State -> ( State, Maybe Color )
 update msg color model =
     case msg of
         ColorPickerMsg subMsg ->

@@ -59,7 +59,6 @@ import List.Extra
 import Markdown.Parser
 import Markdown.Renderer
 import OUI.Button as Button
-import OUI.Dialog
 import OUI.Element.Modal
 import OUI.Icon as Icon
 import OUI.Material as Material
@@ -586,10 +585,7 @@ decodeFlags =
             , Json.Decode.succeed False
             ]
         )
-        (Json.Decode.oneOf
-            [ Json.Decode.field "settings" decodeSettings
-            ]
-        )
+        (Json.Decode.field "settings" decodeSettings)
 
 
 decodeSettings : Json.Decode.Decoder Settings
@@ -831,6 +827,7 @@ finalizeWithOptions options (Explorer expl) =
 
                         DeleteColorTheme index ->
                             let
+                                newList : List ColorTheme
                                 newList =
                                     shared.colorThemeList
                                         |> List.Extra.indexedFoldr

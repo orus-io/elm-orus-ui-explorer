@@ -1,4 +1,4 @@
-module OUI.Explorer.ThemeEditor exposing (..)
+module OUI.Explorer.ThemeEditor exposing (slider, textSize, textType)
 
 import Element exposing (Element)
 import OUI.Explorer as Explorer

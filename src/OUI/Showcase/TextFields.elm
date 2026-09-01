@@ -6,12 +6,15 @@ import Element exposing (Element)
 import Element.Background as Background
 import Element.Border as Border
 import OUI
+import OUI.Divider as Divider
 import OUI.Explorer as Explorer
+import OUI.Explorer.ThemeEditor as ThemeEditor
 import OUI.Icon exposing (check, clear)
 import OUI.Material as Material
 import OUI.Material.Color
-import OUI.Material.Theme as Theme
+import OUI.Material.Theme exposing (Theme)
 import OUI.Tabs
+import OUI.Text as Text
 import OUI.TextField as TextField exposing (TextField)
 
 
@@ -29,6 +32,7 @@ book =
         , subscriptions = \_ _ -> Sub.none
         }
         |> Explorer.withChapter tabs
+        |> Explorer.withThemeEditor editorChapter
 
 
 type alias InputState =
@@ -126,6 +130,165 @@ update _ msg model =
                 |> Effect.withNone
 
 
+updateTextfieldTheme :
+    (OUI.Material.Theme.TextFieldTheme -> OUI.Material.Theme.TextFieldTheme)
+    -> Theme themeExt
+    -> Theme themeExt
+updateTextfieldTheme fn theme =
+    theme
+        |> OUI.Material.Theme.withTextfield
+            (theme
+                |> OUI.Material.Theme.textfield
+                |> fn
+            )
+
+
+updateTextfieldMsg :
+    (data -> OUI.Material.Theme.TextFieldTheme -> OUI.Material.Theme.TextFieldTheme)
+    -> data
+    -> Explorer.BookMsg themeExt msg
+updateTextfieldMsg fn value =
+    Explorer.updateCurrentThemeMsg
+        (updateTextfieldTheme (fn value))
+        |> Explorer.sharedMsg
+
+
+editorChapter : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
+editorChapter { theme } _ =
+    let
+        textfieldTheme : OUI.Material.Theme.TextFieldTheme
+        textfieldTheme =
+            OUI.Material.Theme.textfield theme
+
+        divider : Element msg
+        divider =
+            Divider.new |> Material.divider theme []
+    in
+    Element.column [ Element.spacing 30 ]
+        [ divider
+        , Text.titleLarge "Layout" |> Material.text theme
+        , ThemeEditor.slider theme
+            (updateTextfieldMsg
+                (\value t ->
+                    { t | height = round value }
+                )
+            )
+            "Height"
+            ( 0, 150 )
+            (toFloat textfieldTheme.height)
+        , ThemeEditor.slider theme
+            (updateTextfieldMsg
+                (\value t ->
+                    { t | leftRightPaddingWithoutIcon = round value }
+                )
+            )
+            "Left/Right Padding Without Icon"
+            ( 0, 50 )
+            (toFloat textfieldTheme.leftRightPaddingWithoutIcon)
+        , ThemeEditor.slider theme
+            (updateTextfieldMsg
+                (\value t ->
+                    { t | leftRightPaddingWithIcon = round value }
+                )
+            )
+            "Left/Right Padding With Icon"
+            ( 0, 50 )
+            (toFloat textfieldTheme.leftRightPaddingWithIcon)
+        , ThemeEditor.slider theme
+            (updateTextfieldMsg
+                (\value t ->
+                    { t | paddingBetweenIconAndText = round value }
+                )
+            )
+            "Between Icon And Text"
+            ( 0, 50 )
+            (toFloat textfieldTheme.paddingBetweenIconAndText)
+        , ThemeEditor.slider theme
+            (updateTextfieldMsg
+                (\value t ->
+                    { t | supportingTextTopPadding = round value }
+                )
+            )
+            "Supporting Text Top Padding"
+            ( 0, 50 )
+            (toFloat textfieldTheme.supportingTextTopPadding)
+        , ThemeEditor.slider theme
+            (updateTextfieldMsg
+                (\value t ->
+                    { t | paddingBetweenSupportingTextAndCharacterCounter = round value }
+                )
+            )
+            "Between Supporting Text And Character Counter"
+            ( 0, 50 )
+            (toFloat textfieldTheme.paddingBetweenSupportingTextAndCharacterCounter)
+        , ThemeEditor.slider theme
+            (updateTextfieldMsg
+                (\value t ->
+                    { t | iconSize = round value }
+                )
+            )
+            "Icon Size"
+            ( 0, 50 )
+            (toFloat textfieldTheme.iconSize)
+        , divider
+        , Text.titleLarge "Filled" |> Material.text theme
+        , ThemeEditor.slider theme
+            (updateTextfieldMsg
+                (\value t ->
+                    { t | filled = { topBottomPadding = round value } }
+                )
+            )
+            "Top/Bottom Padding"
+            ( 0, 50 )
+            (toFloat textfieldTheme.filled.topBottomPadding)
+        , divider
+        , Text.titleLarge "Outlined" |> Material.text theme
+        , ThemeEditor.slider theme
+            (updateTextfieldMsg
+                (\value t ->
+                    let
+                        outlined : { labelLeftRightPadding : Int, labelBottom : Int, shape : Int }
+                        outlined =
+                            t.outlined
+                    in
+                    { t | outlined = { outlined | labelLeftRightPadding = round value } }
+                )
+            )
+            "Label Left/Right Padding"
+            ( 0, 50 )
+            (toFloat textfieldTheme.outlined.labelLeftRightPadding)
+        , ThemeEditor.slider theme
+            (updateTextfieldMsg
+                (\value t ->
+                    let
+                        outlined : { labelLeftRightPadding : Int, labelBottom : Int, shape : Int }
+                        outlined =
+                            t.outlined
+                    in
+                    { t | outlined = { outlined | labelBottom = round value } }
+                )
+            )
+            "Label Bottom"
+            ( 0, 50 )
+            (toFloat textfieldTheme.outlined.labelBottom)
+        , ThemeEditor.slider theme
+            (updateTextfieldMsg
+                (\value t ->
+                    let
+                        outlined : { labelLeftRightPadding : Int, labelBottom : Int, shape : Int }
+                        outlined =
+                            t.outlined
+                    in
+                    { t | outlined = { outlined | shape = round value } }
+                )
+            )
+            "Shape"
+            ( 0, 50 )
+            (toFloat textfieldTheme.outlined.shape)
+        , divider
+        ]
+
+
 tabs : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 tabs shared model =
     Element.column [ Element.width Element.fill, Element.spacing 2 ]
@@ -173,7 +336,7 @@ textfields ( datatype, setDatatype ) { theme } model =
     let
         colorscheme : OUI.Material.Color.Scheme
         colorscheme =
-            Theme.colorscheme theme
+            OUI.Material.Theme.colorscheme theme
 
         key : String -> String
         key name =

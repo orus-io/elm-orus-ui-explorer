@@ -174,7 +174,7 @@ showKeyColors shared =
         typescale =
             OUI.Material.Theme.typescale theme
 
-        keyColors : OUI.Material.Color.KeyColors
+        keyColors : KeyColors
         keyColors =
             colorTheme.theme.keyColors
 
@@ -563,6 +563,7 @@ update shared msg model =
 
         CopyColorTheme ->
             let
+                currentColorTheme : OUI.Material.Color.Theme
                 currentColorTheme =
                     Explorer.getSelectedColorTheme shared |> .theme
             in
@@ -632,6 +633,7 @@ update shared msg model =
 
         ExportColor ->
             let
+                currentColorTheme : OUI.Material.Color.Theme
                 currentColorTheme =
                     Explorer.getSelectedColorTheme shared |> .theme
             in
@@ -664,6 +666,7 @@ update shared msg model =
 
         OnNameChange value ->
             let
+                field : TextFieldState
                 field =
                     model.nameField
             in
@@ -677,6 +680,7 @@ update shared msg model =
 
         OnNameFocus focused ->
             let
+                field : TextFieldState
                 field =
                     model.nameField
             in
@@ -690,9 +694,11 @@ update shared msg model =
 
         OnNameValidate ->
             let
+                currentThemeIndex : Int
                 currentThemeIndex =
                     shared.selectedColorScheme |> Tuple.first
 
+                currentColorTheme : OUI.Material.Color.Theme
                 currentColorTheme =
                     Explorer.getSelectedColorTheme shared |> .theme
             in

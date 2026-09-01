@@ -3,7 +3,9 @@ module OUI.Showcase.Progress exposing (book)
 import Element exposing (Element)
 import OUI.Divider as Divider
 import OUI.Explorer as Explorer
+import OUI.Explorer.ThemeEditor as ThemeEditor
 import OUI.Material as Material
+import OUI.Material.Theme exposing (Theme)
 import OUI.Progress
 import OUI.Text
 
@@ -12,6 +14,75 @@ book : Explorer.Book themeExt () ()
 book =
     Explorer.book "Progress"
         |> Explorer.withStaticChapter progressChapter
+        |> Explorer.withThemeEditor editorChapter
+
+
+updateProgressTheme :
+    (OUI.Material.Theme.ProgressTheme -> OUI.Material.Theme.ProgressTheme)
+    -> Theme themeExt
+    -> Theme themeExt
+updateProgressTheme fn theme =
+    theme
+        |> OUI.Material.Theme.withProgress
+            (theme
+                |> OUI.Material.Theme.progress
+                |> fn
+            )
+
+
+updateProgressMsg :
+    (data -> OUI.Material.Theme.ProgressTheme -> OUI.Material.Theme.ProgressTheme)
+    -> data
+    -> Explorer.BookMsg themeExt msg
+updateProgressMsg fn value =
+    Explorer.updateCurrentThemeMsg
+        (updateProgressTheme (fn value))
+        |> Explorer.sharedMsg
+
+
+editorChapter : Explorer.Shared themeExt -> () -> Element (Explorer.BookMsg themeExt msg)
+editorChapter { theme } _ =
+    let
+        progressTheme : OUI.Material.Theme.ProgressTheme
+        progressTheme =
+            OUI.Material.Theme.progress theme
+
+        divider : Element (Explorer.BookMsg themeExt msg)
+        divider =
+            Divider.new |> Material.divider theme []
+    in
+    Element.column [ Element.spacing 30 ]
+        [ divider
+        , OUI.Text.titleLarge "Progress" |> Material.text theme
+        , ThemeEditor.slider theme
+            (updateProgressMsg
+                (\value p ->
+                    { p | activeIndicator = { thickness = round value } }
+                )
+            )
+            "Active Indicator Thickness"
+            ( 0, 50 )
+            (toFloat progressTheme.activeIndicator.thickness)
+        , ThemeEditor.slider theme
+            (updateProgressMsg
+                (\value p ->
+                    { p | trackIndicator = { thickness = round value } }
+                )
+            )
+            "Track Indicator Thickness"
+            ( 0, 50 )
+            (toFloat progressTheme.trackIndicator.thickness)
+        , ThemeEditor.slider theme
+            (updateProgressMsg
+                (\value p ->
+                    { p | circularSize = round value }
+                )
+            )
+            "Circular Size"
+            ( 0, 200 )
+            (toFloat progressTheme.circularSize)
+        , divider
+        ]
 
 
 progressChapter : Explorer.Shared themeExt -> Element msg

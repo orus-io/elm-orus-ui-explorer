@@ -13032,1957 +13032,7 @@ var $author$project$OUI$Explorer$book = function (title) {
 			})
 	};
 };
-var $author$project$OUI$Explorer$withStaticChapter = F2(
-	function (body, b) {
-		return _Utils_update(
-			b,
-			{
-				aa: A2(
-					$elm$core$List$cons,
-					F2(
-						function (shared, _v0) {
-							return body(shared);
-						}),
-					b.aa)
-			});
-	});
-var $author$project$OUI$Showcase$Badge$book = A2(
-	$author$project$OUI$Explorer$withStaticChapter,
-	$author$project$OUI$Showcase$Badge$badges,
-	$author$project$OUI$Explorer$book('Badge'));
-var $author$project$OUI$PrimaryContainer = {$: 1};
-var $author$project$OUI$SecondaryContainer = {$: 3};
-var $author$project$OUI$TertiaryContainer = {$: 5};
-var $author$project$OUI$Material$Theme$button = function (_v0) {
-	var t = _v0;
-	return t.eY;
-};
-var $author$project$OUI$Button$getAction = function (_v0) {
-	var props = _v0;
-	return props.aq;
-};
-var $author$project$OUI$Button$getColor = function (_v0) {
-	var props = _v0;
-	return props.g6;
-};
-var $author$project$OUI$Button$getIcon = function (_v0) {
-	var props = _v0;
-	return props.c4;
-};
-var $author$project$OUI$Button$getText = function (_v0) {
-	var props = _v0;
-	return props.eI;
-};
-var $author$project$OUI$Button$getType = function (_v0) {
-	var props = _v0;
-	return props.dE;
-};
-var $author$project$OUI$Button$Disabled = {$: 0};
-var $mdgriffith$elm_ui$Internal$Model$Button = {$: 8};
-var $elm$json$Json$Encode$bool = _Json_wrap;
-var $elm$html$Html$Attributes$boolProperty = F2(
-	function (key, bool) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$bool(bool));
-	});
-var $elm$html$Html$Attributes$disabled = $elm$html$Html$Attributes$boolProperty('disabled');
-var $mdgriffith$elm_ui$Element$Input$enter = 'Enter';
-var $mdgriffith$elm_ui$Element$Input$hasFocusStyle = function (attr) {
-	if (((attr.$ === 4) && (attr.b.$ === 11)) && (!attr.b.a)) {
-		var _v1 = attr.b;
-		var _v2 = _v1.a;
-		return true;
-	} else {
-		return false;
-	}
-};
-var $mdgriffith$elm_ui$Element$Input$focusDefault = function (attrs) {
-	return A2($elm$core$List$any, $mdgriffith$elm_ui$Element$Input$hasFocusStyle, attrs) ? $mdgriffith$elm_ui$Internal$Model$NoAttribute : $mdgriffith$elm_ui$Internal$Model$htmlClass('focusable');
-};
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
-var $mdgriffith$elm_ui$Element$Events$onClick = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Attr, $elm$html$Html$Events$onClick);
-var $elm$json$Json$Decode$andThen = _Json_andThen;
-var $elm$json$Json$Decode$fail = _Json_fail;
-var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$virtual_dom$VirtualDom$MayPreventDefault = function (a) {
-	return {$: 2, a: a};
-};
-var $elm$html$Html$Events$preventDefaultOn = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$MayPreventDefault(decoder));
-	});
-var $elm$json$Json$Decode$string = _Json_decodeString;
-var $mdgriffith$elm_ui$Element$Input$onKeyLookup = function (lookup) {
-	var decode = function (code) {
-		var _v0 = lookup(code);
-		if (_v0.$ === 1) {
-			return $elm$json$Json$Decode$fail('No key matched');
-		} else {
-			var msg = _v0.a;
-			return $elm$json$Json$Decode$succeed(msg);
-		}
-	};
-	var isKey = A2(
-		$elm$json$Json$Decode$andThen,
-		decode,
-		A2($elm$json$Json$Decode$field, 'key', $elm$json$Json$Decode$string));
-	return $mdgriffith$elm_ui$Internal$Model$Attr(
-		A2(
-			$elm$html$Html$Events$preventDefaultOn,
-			'keydown',
-			A2(
-				$elm$json$Json$Decode$map,
-				function (fired) {
-					return _Utils_Tuple2(fired, true);
-				},
-				isKey)));
-};
-var $mdgriffith$elm_ui$Internal$Flag$cursor = $mdgriffith$elm_ui$Internal$Flag$flag(21);
-var $mdgriffith$elm_ui$Element$pointer = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$cursor, $mdgriffith$elm_ui$Internal$Style$classes.ha);
-var $mdgriffith$elm_ui$Element$Input$space = ' ';
-var $elm$html$Html$Attributes$tabindex = function (n) {
-	return A2(
-		_VirtualDom_attribute,
-		'tabIndex',
-		$elm$core$String$fromInt(n));
-};
-var $mdgriffith$elm_ui$Element$Input$button = F2(
-	function (attrs, _v0) {
-		var label = _v0.bg;
-		var onPress = _v0.fI;
-		return A4(
-			$mdgriffith$elm_ui$Internal$Model$element,
-			$mdgriffith$elm_ui$Internal$Model$asEl,
-			$mdgriffith$elm_ui$Internal$Model$div,
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
-				A2(
-					$elm$core$List$cons,
-					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
-					A2(
-						$elm$core$List$cons,
-						$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.cZ + (' ' + ($mdgriffith$elm_ui$Internal$Style$classes.au + (' ' + ($mdgriffith$elm_ui$Internal$Style$classes.iA + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.fB)))))),
-						A2(
-							$elm$core$List$cons,
-							$mdgriffith$elm_ui$Element$pointer,
-							A2(
-								$elm$core$List$cons,
-								$mdgriffith$elm_ui$Element$Input$focusDefault(attrs),
-								A2(
-									$elm$core$List$cons,
-									$mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$Button),
-									A2(
-										$elm$core$List$cons,
-										$mdgriffith$elm_ui$Internal$Model$Attr(
-											$elm$html$Html$Attributes$tabindex(0)),
-										function () {
-											if (onPress.$ === 1) {
-												return A2(
-													$elm$core$List$cons,
-													$mdgriffith$elm_ui$Internal$Model$Attr(
-														$elm$html$Html$Attributes$disabled(true)),
-													attrs);
-											} else {
-												var msg = onPress.a;
-												return A2(
-													$elm$core$List$cons,
-													$mdgriffith$elm_ui$Element$Events$onClick(msg),
-													A2(
-														$elm$core$List$cons,
-														$mdgriffith$elm_ui$Element$Input$onKeyLookup(
-															function (code) {
-																return _Utils_eq(code, $mdgriffith$elm_ui$Element$Input$enter) ? $elm$core$Maybe$Just(msg) : (_Utils_eq(code, $mdgriffith$elm_ui$Element$Input$space) ? $elm$core$Maybe$Just(msg) : $elm$core$Maybe$Nothing);
-															}),
-														attrs));
-											}
-										}()))))))),
-			$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-				_List_fromArray(
-					[label])));
-	});
-var $elm$html$Html$Attributes$download = function (fileName) {
-	return A2($elm$html$Html$Attributes$stringProperty, 'download', fileName);
-};
-var $elm$html$Html$Attributes$href = function (url) {
-	return A2(
-		$elm$html$Html$Attributes$stringProperty,
-		'href',
-		_VirtualDom_noJavaScriptUri(url));
-};
-var $mdgriffith$elm_ui$Element$download = F2(
-	function (attrs, _v0) {
-		var label = _v0.bg;
-		var url = _v0.dF;
-		return A4(
-			$mdgriffith$elm_ui$Internal$Model$element,
-			$mdgriffith$elm_ui$Internal$Model$asEl,
-			$mdgriffith$elm_ui$Internal$Model$NodeName('a'),
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Internal$Model$Attr(
-					$elm$html$Html$Attributes$href(url)),
-				A2(
-					$elm$core$List$cons,
-					$mdgriffith$elm_ui$Internal$Model$Attr(
-						$elm$html$Html$Attributes$download('')),
-					A2(
-						$elm$core$List$cons,
-						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
-						A2(
-							$elm$core$List$cons,
-							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
-							A2(
-								$elm$core$List$cons,
-								$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.cZ),
-								A2(
-									$elm$core$List$cons,
-									$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.au),
-									attrs)))))),
-			$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-				_List_fromArray(
-					[label])));
-	});
-var $mdgriffith$elm_ui$Element$downloadAs = F2(
-	function (attrs, _v0) {
-		var label = _v0.bg;
-		var filename = _v0.hn;
-		var url = _v0.dF;
-		return A4(
-			$mdgriffith$elm_ui$Internal$Model$element,
-			$mdgriffith$elm_ui$Internal$Model$asEl,
-			$mdgriffith$elm_ui$Internal$Model$NodeName('a'),
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Internal$Model$Attr(
-					$elm$html$Html$Attributes$href(url)),
-				A2(
-					$elm$core$List$cons,
-					$mdgriffith$elm_ui$Internal$Model$Attr(
-						$elm$html$Html$Attributes$download(filename)),
-					A2(
-						$elm$core$List$cons,
-						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
-						A2(
-							$elm$core$List$cons,
-							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
-							A2(
-								$elm$core$List$cons,
-								$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.cZ),
-								A2(
-									$elm$core$List$cons,
-									$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.au),
-									attrs)))))),
-			$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-				_List_fromArray(
-					[label])));
-	});
-var $author$project$OUI$Button$Elevated = 0;
-var $author$project$OUI$Material$Color$getOnSurfaceColor = function (c) {
-	if (c.$ === 10) {
-		var onSurface = c.a.h6;
-		return $elm$core$Basics$always(onSurface);
-	} else {
-		return function ($) {
-			return $.h6;
-		};
-	}
-};
-var $author$project$OUI$Material$Color$getSurfaceContainerLowColor = function (c) {
-	if (c.$ === 10) {
-		var surface = c.a.iN;
-		return $elm$core$Basics$always(surface);
-	} else {
-		return function ($) {
-			return $.iP;
-		};
-	}
-};
-var $avh4$elm_color$Color$RgbaSpace = F4(
-	function (a, b, c, d) {
-		return {$: 0, a: a, b: b, c: c, d: d};
-	});
-var $avh4$elm_color$Color$fromRgba = function (components) {
-	return A4($avh4$elm_color$Color$RgbaSpace, components.im, components.hs, components.gP, components.dK);
-};
-var $author$project$OUI$Material$Color$setAlpha = F2(
-	function (value, color) {
-		var rgba = $avh4$elm_color$Color$toRgba(color);
-		return $avh4$elm_color$Color$fromRgba(
-			_Utils_update(
-				rgba,
-				{dK: value}));
-	});
-var $author$project$OUI$Material$Button$btnColors = F4(
-	function (colorscheme, type_, color, disabled) {
-		var _v0 = _Utils_Tuple2(type_, disabled);
-		if (_v0.b) {
-			return _Utils_Tuple2(
-				A2(
-					$author$project$OUI$Material$Color$setAlpha,
-					0.38,
-					A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme)),
-				A2(
-					$author$project$OUI$Material$Color$setAlpha,
-					0.12,
-					A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme)));
-		} else {
-			switch (_v0.a) {
-				case 0:
-					var _v1 = _v0.a;
-					return _Utils_Tuple2(
-						A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
-						A2($author$project$OUI$Material$Color$getSurfaceContainerLowColor, color, colorscheme));
-				case 1:
-					var _v2 = _v0.a;
-					return _Utils_Tuple2(
-						A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
-						A2($author$project$OUI$Material$Color$getColor, color, colorscheme));
-				case 8:
-					var _v3 = _v0.a;
-					return _Utils_Tuple2(
-						A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
-						A2($author$project$OUI$Material$Color$getColor, color, colorscheme));
-				case 4:
-					var _v4 = _v0.a;
-					return _Utils_Tuple2(
-						A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
-						A2($author$project$OUI$Material$Color$getColor, color, colorscheme));
-				case 5:
-					var _v5 = _v0.a;
-					return _Utils_Tuple2(
-						A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
-						A2($author$project$OUI$Material$Color$getColor, color, colorscheme));
-				case 6:
-					var _v6 = _v0.a;
-					return _Utils_Tuple2(
-						A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
-						A2($author$project$OUI$Material$Color$getColor, color, colorscheme));
-				case 7:
-					var _v7 = _v0.a;
-					return _Utils_Tuple2(
-						A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
-						A2($author$project$OUI$Material$Color$getColor, color, colorscheme));
-				default:
-					return _Utils_Tuple2(
-						A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
-						A2($author$project$OUI$Material$Color$getSurfaceContainerLowColor, color, colorscheme));
-			}
-		}
-	});
-var $author$project$OUI$Material$Color$focusStateLayerOpacity = 0.12;
-var $mdgriffith$elm_ui$Internal$Model$Focus = 0;
-var $mdgriffith$elm_ui$Internal$Flag$focus = $mdgriffith$elm_ui$Internal$Flag$flag(31);
-var $mdgriffith$elm_ui$Element$focused = function (decs) {
-	return A2(
-		$mdgriffith$elm_ui$Internal$Model$StyleClass,
-		$mdgriffith$elm_ui$Internal$Flag$focus,
-		A2(
-			$mdgriffith$elm_ui$Internal$Model$PseudoSelector,
-			0,
-			$mdgriffith$elm_ui$Internal$Model$unwrapDecorations(decs)));
-};
-var $author$project$OUI$Material$Color$hoverStateLayerOpacity = 0.08;
-var $mdgriffith$elm_ui$Internal$Model$Active = 2;
-var $mdgriffith$elm_ui$Internal$Flag$active = $mdgriffith$elm_ui$Internal$Flag$flag(32);
-var $mdgriffith$elm_ui$Element$mouseDown = function (decs) {
-	return A2(
-		$mdgriffith$elm_ui$Internal$Model$StyleClass,
-		$mdgriffith$elm_ui$Internal$Flag$active,
-		A2(
-			$mdgriffith$elm_ui$Internal$Model$PseudoSelector,
-			2,
-			$mdgriffith$elm_ui$Internal$Model$unwrapDecorations(decs)));
-};
-var $author$project$OUI$Material$Color$pressStateLayerOpacity = 0.12;
-var $mdgriffith$elm_ui$Internal$Model$boxShadowClass = function (shadow) {
-	return $elm$core$String$concat(
-		_List_fromArray(
-			[
-				shadow.fn ? 'box-inset' : 'box-',
-				$mdgriffith$elm_ui$Internal$Model$floatClass(shadow.h2.a) + 'px',
-				$mdgriffith$elm_ui$Internal$Model$floatClass(shadow.h2.b) + 'px',
-				$mdgriffith$elm_ui$Internal$Model$floatClass(shadow.gR) + 'px',
-				$mdgriffith$elm_ui$Internal$Model$floatClass(shadow.iD) + 'px',
-				$mdgriffith$elm_ui$Internal$Model$formatColorClass(shadow.g6)
-			]));
-};
-var $mdgriffith$elm_ui$Internal$Flag$shadows = $mdgriffith$elm_ui$Internal$Flag$flag(19);
-var $mdgriffith$elm_ui$Element$Border$shadow = function (almostShade) {
-	var shade = {gR: almostShade.gR, g6: almostShade.g6, fn: false, h2: almostShade.h2, iD: almostShade.iD};
-	return A2(
-		$mdgriffith$elm_ui$Internal$Model$StyleClass,
-		$mdgriffith$elm_ui$Internal$Flag$shadows,
-		A3(
-			$mdgriffith$elm_ui$Internal$Model$Single,
-			$mdgriffith$elm_ui$Internal$Model$boxShadowClass(shade),
-			'box-shadow',
-			$mdgriffith$elm_ui$Internal$Model$formatBoxShadow(shade)));
-};
-var $elm$core$Basics$cos = _Basics_cos;
-var $noahzgordon$elm_color_extra$Color$Convert$labToXyz = function (_v0) {
-	var b = _v0.eU;
-	var a = _v0.eP;
-	var l = _v0.aR;
-	var y = (l + 16) / 116;
-	var c = function (ch) {
-		var ch_ = (ch * ch) * ch;
-		return (ch_ > 8.856e-3) ? ch_ : ((ch - (16 / 116)) / 7.787);
-	};
-	return {
-		gr: c(y + (a / 500)) * 95.047,
-		gs: c(y) * 100,
-		cL: c(y - (b / 200)) * 108.883
-	};
-};
-var $elm$core$Basics$clamp = F3(
-	function (low, high, number) {
-		return (_Utils_cmp(number, low) < 0) ? low : ((_Utils_cmp(number, high) > 0) ? high : number);
-	});
-var $elm$core$Basics$pow = _Basics_pow;
-var $avh4$elm_color$Color$rgb = F3(
-	function (r, g, b) {
-		return A4($avh4$elm_color$Color$RgbaSpace, r, g, b, 1.0);
-	});
-var $noahzgordon$elm_color_extra$Color$Convert$xyzToColor = function (_v0) {
-	var z = _v0.cL;
-	var y = _v0.gs;
-	var x = _v0.gr;
-	var z_ = z / 100;
-	var y_ = y / 100;
-	var x_ = x / 100;
-	var r = ((x_ * 3.2404542) + (y_ * (-1.5371385))) + (z_ * (-0.4986));
-	var g = ((x_ * (-0.969266)) + (y_ * 1.8760108)) + (z_ * 4.1556e-2);
-	var c = function (ch) {
-		var ch_ = (ch > 3.1308e-3) ? ((1.055 * A2($elm$core$Basics$pow, ch, 1 / 2.4)) - 5.5e-2) : (12.92 * ch);
-		return A3($elm$core$Basics$clamp, 0, 1, ch_);
-	};
-	var b = ((x_ * 5.56434e-2) + (y_ * (-0.2040259))) + (z_ * 1.0572252);
-	return A3(
-		$avh4$elm_color$Color$rgb,
-		c(r),
-		c(g),
-		c(b));
-};
-var $noahzgordon$elm_color_extra$Color$Convert$labToColor = A2($elm$core$Basics$composeR, $noahzgordon$elm_color_extra$Color$Convert$labToXyz, $noahzgordon$elm_color_extra$Color$Convert$xyzToColor);
-var $elm$core$Basics$sin = _Basics_sin;
-var $author$project$OUI$Material$Color$fromCIELCH = A2(
-	$elm$core$Basics$composeR,
-	function (_v0) {
-		var h = _v0.b7;
-		var c = _v0.bP;
-		var l = _v0.aR;
-		return {
-			eP: c * $elm$core$Basics$cos(h),
-			eU: c * $elm$core$Basics$sin(h),
-			aR: l
-		};
-	},
-	$noahzgordon$elm_color_extra$Color$Convert$labToColor);
-var $elm$core$Basics$atan2 = _Basics_atan2;
-var $noahzgordon$elm_color_extra$Color$Convert$colorToXyz = function (cl) {
-	var c = function (ch) {
-		var ch_ = (ch > 4.045e-2) ? A2($elm$core$Basics$pow, (ch + 5.5e-2) / 1.055, 2.4) : (ch / 12.92);
-		return ch_ * 100;
-	};
-	var _v0 = $avh4$elm_color$Color$toRgba(cl);
-	var blue = _v0.gP;
-	var green = _v0.hs;
-	var red = _v0.im;
-	var b = c(blue);
-	var g = c(green);
-	var r = c(red);
-	return {gr: ((r * 0.4124) + (g * 0.3576)) + (b * 0.1805), gs: ((r * 0.2126) + (g * 0.7152)) + (b * 7.22e-2), cL: ((r * 1.93e-2) + (g * 0.1192)) + (b * 0.9505)};
-};
-var $noahzgordon$elm_color_extra$Color$Convert$xyzToLab = function (_v0) {
-	var z = _v0.cL;
-	var y = _v0.gs;
-	var x = _v0.gr;
-	var c = function (ch) {
-		return (ch > 8.856e-3) ? A2($elm$core$Basics$pow, ch, 1 / 3) : ((7.787 * ch) + (16 / 116));
-	};
-	var x_ = c(x / 95.047);
-	var y_ = c(y / 100);
-	var z_ = c(z / 108.883);
-	return {eP: 500 * (x_ - y_), eU: 200 * (y_ - z_), aR: (116 * y_) - 16};
-};
-var $noahzgordon$elm_color_extra$Color$Convert$colorToLab = A2($elm$core$Basics$composeR, $noahzgordon$elm_color_extra$Color$Convert$colorToXyz, $noahzgordon$elm_color_extra$Color$Convert$xyzToLab);
-var $elm$core$Basics$sqrt = _Basics_sqrt;
-var $author$project$OUI$Material$Color$toCIELCH = A2(
-	$elm$core$Basics$composeR,
-	$noahzgordon$elm_color_extra$Color$Convert$colorToLab,
-	function (_v0) {
-		var b = _v0.eU;
-		var a = _v0.eP;
-		var l = _v0.aR;
-		return {
-			bP: $elm$core$Basics$sqrt((a * a) + (b * b)),
-			b7: A2($elm$core$Basics$atan2, b, a),
-			aR: l
-		};
-	});
-var $author$project$OUI$Material$Color$withShade = F3(
-	function (c2, amount, c1) {
-		var fun = F2(
-			function (a, b) {
-				return {bP: (a.bP * (1 - amount)) + (b.bP * amount), b7: (a.b7 * (1 - amount)) + (b.b7 * amount), aR: (a.aR * (1 - amount)) + (b.aR * amount)};
-			});
-		var alpha = $avh4$elm_color$Color$toRgba(c1).dK;
-		return $avh4$elm_color$Color$fromRgba(
-			function (color) {
-				return _Utils_update(
-					color,
-					{dK: alpha});
-			}(
-				$avh4$elm_color$Color$toRgba(
-					$author$project$OUI$Material$Color$fromCIELCH(
-						A2(
-							fun,
-							$author$project$OUI$Material$Color$toCIELCH(c1),
-							$author$project$OUI$Material$Color$toCIELCH(c2))))));
-	});
-var $author$project$OUI$Material$Button$elevatedAttrs = F2(
-	function (colorscheme, color) {
-		var _v0 = A4($author$project$OUI$Material$Button$btnColors, colorscheme, 0, color, false);
-		var frontColor = _v0.a;
-		var backColor = _v0.b;
-		return _List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Border$shadow(
-				{
-					gR: 1,
-					g6: $author$project$OUI$Material$Color$toElementColor(colorscheme.iB),
-					h2: _Utils_Tuple2(1, 1),
-					iD: 1
-				}),
-				$mdgriffith$elm_ui$Element$Background$color(
-				$author$project$OUI$Material$Color$toElementColor(backColor)),
-				$mdgriffith$elm_ui$Element$Font$color(
-				$author$project$OUI$Material$Color$toElementColor(frontColor)),
-				$mdgriffith$elm_ui$Element$focused(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3(
-								$author$project$OUI$Material$Color$withShade,
-								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
-								$author$project$OUI$Material$Color$focusStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getSurfaceContainerLowColor, color, colorscheme))))
-					])),
-				$mdgriffith$elm_ui$Element$mouseDown(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3(
-								$author$project$OUI$Material$Color$withShade,
-								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
-								$author$project$OUI$Material$Color$pressStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getSurfaceContainerLowColor, color, colorscheme))))
-					])),
-				$mdgriffith$elm_ui$Element$mouseOver(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3(
-								$author$project$OUI$Material$Color$withShade,
-								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
-								$author$project$OUI$Material$Color$hoverStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getSurfaceContainerLowColor, color, colorscheme))))
-					]))
-			]);
-	});
-var $author$project$OUI$Material$Button$elevatedDisabledAttrs = F2(
-	function (colorscheme, color) {
-		var _v0 = A4($author$project$OUI$Material$Button$btnColors, colorscheme, 0, $author$project$OUI$Primary, true);
-		var frontColor = _v0.a;
-		var backColor = _v0.b;
-		return _List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Background$color(
-				$author$project$OUI$Material$Color$toElementColor(backColor)),
-				$mdgriffith$elm_ui$Element$Font$color(
-				$author$project$OUI$Material$Color$toElementColor(frontColor)),
-				$mdgriffith$elm_ui$Element$focused(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A2(
-								$author$project$OUI$Material$Color$setAlpha,
-								0.12 + $author$project$OUI$Material$Color$hoverStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme))))
-					]))
-			]);
-	});
-var $author$project$OUI$Button$SmallFAB = 4;
-var $author$project$OUI$Material$Button$fabColorsAttrs = F2(
-	function (colorscheme, color) {
-		var _v0 = A4($author$project$OUI$Material$Button$btnColors, colorscheme, 4, color, false);
-		var frontColor = _v0.a;
-		var bgColor = _v0.b;
-		var stateLayerColor = frontColor;
-		return _List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Border$shadow(
-				{
-					gR: 1,
-					g6: $author$project$OUI$Material$Color$toElementColor(colorscheme.iB),
-					h2: _Utils_Tuple2(1, 1),
-					iD: 1
-				}),
-				$mdgriffith$elm_ui$Element$Background$color(
-				$author$project$OUI$Material$Color$toElementColor(bgColor)),
-				$mdgriffith$elm_ui$Element$Font$color(
-				$author$project$OUI$Material$Color$toElementColor(frontColor)),
-				$mdgriffith$elm_ui$Element$focused(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3($author$project$OUI$Material$Color$withShade, stateLayerColor, $author$project$OUI$Material$Color$focusStateLayerOpacity, bgColor)))
-					])),
-				$mdgriffith$elm_ui$Element$mouseDown(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3($author$project$OUI$Material$Color$withShade, stateLayerColor, $author$project$OUI$Material$Color$pressStateLayerOpacity, bgColor)))
-					])),
-				$mdgriffith$elm_ui$Element$mouseOver(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3($author$project$OUI$Material$Color$withShade, stateLayerColor, $author$project$OUI$Material$Color$hoverStateLayerOpacity, bgColor)))
-					]))
-			]);
-	});
-var $author$project$OUI$Material$Button$fabLayoutAttrs = function (layout) {
-	return _List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$Border$rounded(layout.bW),
-			$mdgriffith$elm_ui$Element$height(
-			$mdgriffith$elm_ui$Element$px(layout.ak)),
-			$mdgriffith$elm_ui$Element$width(
-			$mdgriffith$elm_ui$Element$px(layout.bY))
-		]);
-};
-var $author$project$OUI$Button$Filled = 1;
-var $author$project$OUI$Material$Button$filledAttrs = F2(
-	function (colorscheme, color) {
-		var _v0 = A4($author$project$OUI$Material$Button$btnColors, colorscheme, 1, color, false);
-		var frontColor = _v0.a;
-		var backColor = _v0.b;
-		return _List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Background$color(
-				$author$project$OUI$Material$Color$toElementColor(backColor)),
-				$mdgriffith$elm_ui$Element$Font$color(
-				$author$project$OUI$Material$Color$toElementColor(frontColor)),
-				$mdgriffith$elm_ui$Element$focused(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3(
-								$author$project$OUI$Material$Color$withShade,
-								A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
-								$author$project$OUI$Material$Color$focusStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getColor, color, colorscheme))))
-					])),
-				$mdgriffith$elm_ui$Element$mouseDown(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3(
-								$author$project$OUI$Material$Color$withShade,
-								A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
-								$author$project$OUI$Material$Color$pressStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getColor, color, colorscheme))))
-					])),
-				$mdgriffith$elm_ui$Element$mouseOver(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3(
-								$author$project$OUI$Material$Color$withShade,
-								A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
-								$author$project$OUI$Material$Color$hoverStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getColor, color, colorscheme))))
-					]))
-			]);
-	});
-var $author$project$OUI$Material$Button$filledDisabledAttrs = F2(
-	function (colorscheme, color) {
-		var _v0 = A4($author$project$OUI$Material$Button$btnColors, colorscheme, 1, $author$project$OUI$Primary, true);
-		var frontColor = _v0.a;
-		var backColor = _v0.b;
-		return _List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Background$color(
-				$author$project$OUI$Material$Color$toElementColor(backColor)),
-				$mdgriffith$elm_ui$Element$Font$color(
-				$author$project$OUI$Material$Color$toElementColor(frontColor)),
-				$mdgriffith$elm_ui$Element$focused(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A2(
-								$author$project$OUI$Material$Color$setAlpha,
-								0.12 + $author$project$OUI$Material$Color$hoverStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme))))
-					]))
-			]);
-	});
-var $author$project$OUI$Material$Button$iconButtonAttrs = function (layout) {
-	return _List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$width(
-			$mdgriffith$elm_ui$Element$px(layout.bX)),
-			$mdgriffith$elm_ui$Element$height(
-			$mdgriffith$elm_ui$Element$px(layout.bX)),
-			$mdgriffith$elm_ui$Element$Border$rounded((layout.bX / 2) | 0)
-		]);
-};
-var $author$project$OUI$Material$Button$iconOnly = function (t) {
-	switch (t) {
-		case 10:
-			return true;
-		case 8:
-			return true;
-		case 9:
-			return true;
-		case 4:
-			return true;
-		case 5:
-			return true;
-		case 6:
-			return true;
-		default:
-			return false;
-	}
-};
-var $author$project$OUI$Material$Button$iconSizeColor = F5(
-	function (colorscheme, theme, type_, color, disabled) {
-		var _v0 = A4($author$project$OUI$Material$Button$btnColors, colorscheme, type_, color, disabled);
-		var frontColor = _v0.a;
-		switch (type_) {
-			case 4:
-				return _Utils_Tuple2(theme.T.bx.s, frontColor);
-			case 5:
-				return _Utils_Tuple2(theme.T.fw.s, frontColor);
-			case 6:
-				return _Utils_Tuple2(theme.T.X.s, frontColor);
-			case 7:
-				return _Utils_Tuple2(theme.T.c1.s, frontColor);
-			case 10:
-				return _Utils_Tuple2(theme.c4.s, frontColor);
-			case 8:
-				return _Utils_Tuple2(theme.c4.s, frontColor);
-			case 9:
-				return _Utils_Tuple2(theme.c4.s, frontColor);
-			default:
-				return _Utils_Tuple2(theme.e0.s, frontColor);
-		}
-	});
-var $mdgriffith$elm_ui$Internal$Model$paddingName = F4(
-	function (top, right, bottom, left) {
-		return 'pad-' + ($elm$core$String$fromInt(top) + ('-' + ($elm$core$String$fromInt(right) + ('-' + ($elm$core$String$fromInt(bottom) + ('-' + $elm$core$String$fromInt(left)))))));
-	});
-var $mdgriffith$elm_ui$Element$paddingEach = function (_v0) {
-	var left = _v0.hT;
-	var bottom = _v0.gY;
-	var right = _v0.ir;
-	var top = _v0.jc;
-	if (_Utils_eq(top, right) && (_Utils_eq(top, bottom) && _Utils_eq(top, left))) {
-		var topFloat = top;
-		return A2(
-			$mdgriffith$elm_ui$Internal$Model$StyleClass,
-			$mdgriffith$elm_ui$Internal$Flag$padding,
-			A5(
-				$mdgriffith$elm_ui$Internal$Model$PaddingStyle,
-				'p-' + $elm$core$String$fromInt(top),
-				topFloat,
-				topFloat,
-				topFloat,
-				topFloat));
-	} else {
-		return A2(
-			$mdgriffith$elm_ui$Internal$Model$StyleClass,
-			$mdgriffith$elm_ui$Internal$Flag$padding,
-			A5(
-				$mdgriffith$elm_ui$Internal$Model$PaddingStyle,
-				A4($mdgriffith$elm_ui$Internal$Model$paddingName, top, right, bottom, left),
-				top,
-				right,
-				bottom,
-				left));
-	}
-};
-var $author$project$OUI$Material$Button$layoutAttrs = F4(
-	function (typescale, colorscheme, layout, hasIcon) {
-		var padding = hasIcon ? $mdgriffith$elm_ui$Element$paddingEach(
-			{gY: 0, hT: layout.c9, ir: layout.dr, jc: 0}) : A2($mdgriffith$elm_ui$Element$paddingXY, layout.da, 0);
-		return A2(
-			$elm$core$List$cons,
-			$mdgriffith$elm_ui$Element$height(
-				$mdgriffith$elm_ui$Element$px(layout.ak)),
-			_Utils_ap(
-				A5($author$project$OUI$Material$Typography$attrs, layout.gc, layout.gb, $author$project$OUI$Text$NoColor, typescale, colorscheme),
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Border$rounded(layout.cX),
-						padding
-					])));
-	});
-var $elm$html$Html$Attributes$rel = _VirtualDom_attribute('rel');
-var $mdgriffith$elm_ui$Element$link = F2(
-	function (attrs, _v0) {
-		var label = _v0.bg;
-		var url = _v0.dF;
-		return A4(
-			$mdgriffith$elm_ui$Internal$Model$element,
-			$mdgriffith$elm_ui$Internal$Model$asEl,
-			$mdgriffith$elm_ui$Internal$Model$NodeName('a'),
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Internal$Model$Attr(
-					$elm$html$Html$Attributes$href(url)),
-				A2(
-					$elm$core$List$cons,
-					$mdgriffith$elm_ui$Internal$Model$Attr(
-						$elm$html$Html$Attributes$rel('noopener noreferrer')),
-					A2(
-						$elm$core$List$cons,
-						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
-						A2(
-							$elm$core$List$cons,
-							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
-							A2(
-								$elm$core$List$cons,
-								$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.cZ + (' ' + ($mdgriffith$elm_ui$Internal$Style$classes.au + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.hZ)))),
-								attrs))))),
-			$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-				_List_fromArray(
-					[label])));
-	});
-var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
-var $mdgriffith$elm_ui$Element$newTabLink = F2(
-	function (attrs, _v0) {
-		var label = _v0.bg;
-		var url = _v0.dF;
-		return A4(
-			$mdgriffith$elm_ui$Internal$Model$element,
-			$mdgriffith$elm_ui$Internal$Model$asEl,
-			$mdgriffith$elm_ui$Internal$Model$NodeName('a'),
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Internal$Model$Attr(
-					$elm$html$Html$Attributes$href(url)),
-				A2(
-					$elm$core$List$cons,
-					$mdgriffith$elm_ui$Internal$Model$Attr(
-						$elm$html$Html$Attributes$rel('noopener noreferrer')),
-					A2(
-						$elm$core$List$cons,
-						$mdgriffith$elm_ui$Internal$Model$Attr(
-							$elm$html$Html$Attributes$target('_blank')),
-						A2(
-							$elm$core$List$cons,
-							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
-							A2(
-								$elm$core$List$cons,
-								$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
-								A2(
-									$elm$core$List$cons,
-									$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.cZ + (' ' + ($mdgriffith$elm_ui$Internal$Style$classes.au + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.hZ)))),
-									attrs)))))),
-			$mdgriffith$elm_ui$Internal$Model$Unkeyed(
-				_List_fromArray(
-					[label])));
-	});
-var $mdgriffith$elm_ui$Internal$Flag$borderColor = $mdgriffith$elm_ui$Internal$Flag$flag(28);
-var $mdgriffith$elm_ui$Element$Border$color = function (clr) {
-	return A2(
-		$mdgriffith$elm_ui$Internal$Model$StyleClass,
-		$mdgriffith$elm_ui$Internal$Flag$borderColor,
-		A3(
-			$mdgriffith$elm_ui$Internal$Model$Colored,
-			'bc-' + $mdgriffith$elm_ui$Internal$Model$formatColorClass(clr),
-			'border-color',
-			clr));
-};
-var $author$project$OUI$Material$Color$getSurfaceColor = function (c) {
-	if (c.$ === 10) {
-		var surface = c.a.iN;
-		return $elm$core$Basics$always(surface);
-	} else {
-		return function ($) {
-			return $.iN;
-		};
-	}
-};
-var $mdgriffith$elm_ui$Internal$Model$BorderWidth = F5(
-	function (a, b, c, d, e) {
-		return {$: 6, a: a, b: b, c: c, d: d, e: e};
-	});
-var $mdgriffith$elm_ui$Element$Border$width = function (v) {
-	return A2(
-		$mdgriffith$elm_ui$Internal$Model$StyleClass,
-		$mdgriffith$elm_ui$Internal$Flag$borderWidth,
-		A5(
-			$mdgriffith$elm_ui$Internal$Model$BorderWidth,
-			'b-' + $elm$core$String$fromInt(v),
-			v,
-			v,
-			v,
-			v));
-};
-var $author$project$OUI$Material$Button$outlinedAttrs = F2(
-	function (colorscheme, color) {
-		return _List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$color(
-				$author$project$OUI$Material$Color$toElementColor(colorscheme.ie)),
-				$mdgriffith$elm_ui$Element$Font$color(
-				A2($author$project$OUI$Material$Color$getElementColor, color, colorscheme)),
-				$mdgriffith$elm_ui$Element$focused(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3(
-								$author$project$OUI$Material$Color$withShade,
-								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
-								$author$project$OUI$Material$Color$focusStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getSurfaceColor, color, colorscheme))))
-					])),
-				$mdgriffith$elm_ui$Element$mouseDown(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3(
-								$author$project$OUI$Material$Color$withShade,
-								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
-								$author$project$OUI$Material$Color$pressStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getSurfaceColor, color, colorscheme))))
-					])),
-				$mdgriffith$elm_ui$Element$mouseOver(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3(
-								$author$project$OUI$Material$Color$withShade,
-								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
-								$author$project$OUI$Material$Color$hoverStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getSurfaceColor, color, colorscheme))))
-					]))
-			]);
-	});
-var $author$project$OUI$Material$Button$outlinedDisabledAttrs = F2(
-	function (colorscheme, color) {
-		return _List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Border$width(1),
-				$mdgriffith$elm_ui$Element$Border$color(
-				$author$project$OUI$Material$Color$toElementColor(
-					A2(
-						$author$project$OUI$Material$Color$setAlpha,
-						0.12,
-						A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme)))),
-				$mdgriffith$elm_ui$Element$Font$color(
-				$author$project$OUI$Material$Color$toElementColor(
-					A2(
-						$author$project$OUI$Material$Color$setAlpha,
-						0.38,
-						A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme)))),
-				$mdgriffith$elm_ui$Element$focused(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A2(
-								$author$project$OUI$Material$Color$setAlpha,
-								$author$project$OUI$Material$Color$hoverStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme))))
-					]))
-			]);
-	});
-var $author$project$OUI$Utils$ARIA$RoleButton = {$: 0};
-var $author$project$OUI$Utils$ARIA$fromRole = function (role) {
-	return {bg: $elm$core$Maybe$Nothing, cn: role};
-};
-var $author$project$OUI$Utils$ARIA$roleButton = $author$project$OUI$Utils$ARIA$fromRole($author$project$OUI$Utils$ARIA$RoleButton);
-var $author$project$OUI$Material$Button$textAttrs = F2(
-	function (colorscheme, color) {
-		return _List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$color(
-				A2($author$project$OUI$Material$Color$getElementColor, color, colorscheme)),
-				$mdgriffith$elm_ui$Element$focused(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3(
-								$author$project$OUI$Material$Color$withShade,
-								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
-								$author$project$OUI$Material$Color$focusStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getSurfaceColor, color, colorscheme))))
-					])),
-				$mdgriffith$elm_ui$Element$mouseDown(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3(
-								$author$project$OUI$Material$Color$withShade,
-								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
-								$author$project$OUI$Material$Color$pressStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getSurfaceColor, color, colorscheme))))
-					])),
-				$mdgriffith$elm_ui$Element$mouseOver(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A3(
-								$author$project$OUI$Material$Color$withShade,
-								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
-								$author$project$OUI$Material$Color$hoverStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getSurfaceColor, color, colorscheme))))
-					]))
-			]);
-	});
-var $author$project$OUI$Material$Button$textDisabledAttrs = F2(
-	function (colorscheme, color) {
-		return _List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$Font$color(
-				$author$project$OUI$Material$Color$toElementColor(
-					A2(
-						$author$project$OUI$Material$Color$setAlpha,
-						0.38,
-						A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme)))),
-				$mdgriffith$elm_ui$Element$focused(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color(
-						$author$project$OUI$Material$Color$toElementColor(
-							A2(
-								$author$project$OUI$Material$Color$setAlpha,
-								$author$project$OUI$Material$Color$hoverStateLayerOpacity,
-								A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme))))
-					]))
-			]);
-	});
-var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
-var $mdgriffith$elm_ui$Element$htmlAttribute = $mdgriffith$elm_ui$Internal$Model$Attr;
-var $author$project$OUI$Utils$ARIA$ifThenElse = F3(
-	function (value, ifTrue, ifFalse) {
-		return value ? ifTrue : ifFalse;
-	});
-var $author$project$OUI$Utils$ARIA$checkedAttr = function (value) {
-	return $mdgriffith$elm_ui$Element$htmlAttribute(
-		A2(
-			$elm$html$Html$Attributes$attribute,
-			'aria-checked',
-			A3($author$project$OUI$Utils$ARIA$ifThenElse, value, 'true', 'false')));
-};
-var $author$project$OUI$Utils$ARIA$labelAttr = function (value) {
-	return $mdgriffith$elm_ui$Element$htmlAttribute(
-		A2($elm$html$Html$Attributes$attribute, 'aria-label', value));
-};
-var $author$project$OUI$Utils$ARIA$prependMaybe = A2(
-	$elm$core$Basics$composeR,
-	$elm$core$Maybe$map($elm$core$List$cons),
-	$elm$core$Maybe$withDefault($elm$core$Basics$identity));
-var $author$project$OUI$Utils$ARIA$pressedAttr = function (value) {
-	return $mdgriffith$elm_ui$Element$htmlAttribute(
-		A2(
-			$elm$html$Html$Attributes$attribute,
-			'aria-pressed',
-			A3($author$project$OUI$Utils$ARIA$ifThenElse, value, 'true', 'false')));
-};
-var $author$project$OUI$Utils$ARIA$roleAttr = function (role) {
-	return $mdgriffith$elm_ui$Element$htmlAttribute(
-		A2($elm$html$Html$Attributes$attribute, 'role', role));
-};
-var $author$project$OUI$Utils$ARIA$selectedAttr = function (value) {
-	return $mdgriffith$elm_ui$Element$htmlAttribute(
-		A2(
-			$elm$html$Html$Attributes$attribute,
-			'aria-selected',
-			A3($author$project$OUI$Utils$ARIA$ifThenElse, value, 'true', 'false')));
-};
-var $author$project$OUI$Utils$ARIA$toElementAttributes = function (_v0) {
-	var label = _v0.bg;
-	var role = _v0.cn;
-	return A2(
-		$author$project$OUI$Utils$ARIA$prependMaybe,
-		A2($elm$core$Maybe$map, $author$project$OUI$Utils$ARIA$labelAttr, label),
-		function () {
-			switch (role.$) {
-				case 0:
-					return _List_fromArray(
-						[
-							$author$project$OUI$Utils$ARIA$roleAttr('button')
-						]);
-				case 9:
-					var pressed = role.a;
-					return _List_fromArray(
-						[
-							$author$project$OUI$Utils$ARIA$roleAttr('button'),
-							$author$project$OUI$Utils$ARIA$pressedAttr(pressed)
-						]);
-				case 1:
-					var checked = role.a;
-					return _List_fromArray(
-						[
-							$author$project$OUI$Utils$ARIA$roleAttr('checkbox'),
-							$author$project$OUI$Utils$ARIA$checkedAttr(checked)
-						]);
-				case 2:
-					var checked = role.a;
-					return _List_fromArray(
-						[
-							$author$project$OUI$Utils$ARIA$roleAttr('radio'),
-							$author$project$OUI$Utils$ARIA$checkedAttr(checked)
-						]);
-				case 3:
-					var state = role.a;
-					return _List_fromArray(
-						[
-							$author$project$OUI$Utils$ARIA$roleAttr('switch'),
-							$author$project$OUI$Utils$ARIA$checkedAttr(state)
-						]);
-				case 4:
-					return _List_fromArray(
-						[
-							$author$project$OUI$Utils$ARIA$roleAttr('img')
-						]);
-				case 5:
-					return _List_fromArray(
-						[
-							$author$project$OUI$Utils$ARIA$roleAttr('presentation')
-						]);
-				case 6:
-					var checked = role.a;
-					return _List_fromArray(
-						[
-							$author$project$OUI$Utils$ARIA$roleAttr('radio'),
-							$author$project$OUI$Utils$ARIA$checkedAttr(checked)
-						]);
-				case 7:
-					return _List_fromArray(
-						[
-							$author$project$OUI$Utils$ARIA$roleAttr('radiogroup')
-						]);
-				default:
-					var selected = role.a;
-					return _List_fromArray(
-						[
-							$author$project$OUI$Utils$ARIA$roleAttr('tab'),
-							$author$project$OUI$Utils$ARIA$selectedAttr(selected)
-						]);
-			}
-		}());
-};
-var $author$project$OUI$Utils$ARIA$withLabel = F2(
-	function (label, semantics) {
-		return _Utils_update(
-			semantics,
-			{
-				bg: $elm$core$Maybe$Just(label)
-			});
-	});
-var $author$project$OUI$Material$Button$renderProps = F6(
-	function (typescale, colorscheme, theme, rightIcon, attrs, props) {
-		var label = function () {
-			var _v29 = A5(
-				$author$project$OUI$Material$Button$iconSizeColor,
-				colorscheme,
-				theme,
-				props.dE,
-				props.g6,
-				_Utils_eq(props.aq, $author$project$OUI$Button$Disabled));
-			var size = _v29.a;
-			var color = _v29.b;
-			var iconColor = function (icon) {
-				return A2(
-					$elm$core$Maybe$withDefault,
-					color,
-					A2(
-						$elm$core$Maybe$map,
-						function (c) {
-							return A2($author$project$OUI$Material$Color$getColor, c, colorscheme);
-						},
-						$author$project$OUI$Icon$getColor(icon)));
-			};
-			var _v30 = _Utils_Tuple3(
-				$author$project$OUI$Material$Button$iconOnly(props.dE),
-				props.c4,
-				rightIcon);
-			_v30$0:
-			while (true) {
-				_v30$1:
-				while (true) {
-					if (_v30.a) {
-						if (_v30.b.$ === 1) {
-							if (_v30.c.$ === 1) {
-								break _v30$0;
-							} else {
-								break _v30$1;
-							}
-						} else {
-							if (!_v30.c.$) {
-								break _v30$1;
-							} else {
-								var icon = _v30.b.a;
-								return A4(
-									$author$project$OUI$Material$Icon$renderWithSizeColor,
-									size,
-									iconColor(icon),
-									_List_fromArray(
-										[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-									icon);
-							}
-						}
-					} else {
-						if ((_v30.b.$ === 1) && (_v30.c.$ === 1)) {
-							break _v30$0;
-						} else {
-							var icon = _v30.b;
-							var rIcon = _v30.c;
-							return A2(
-								$mdgriffith$elm_ui$Element$row,
-								_List_fromArray(
-									[
-										$mdgriffith$elm_ui$Element$spacing(theme.e0.dk)
-									]),
-								A2(
-									$elm$core$List$filterMap,
-									$elm$core$Basics$identity,
-									_List_fromArray(
-										[
-											A2(
-											$elm$core$Maybe$map,
-											function (i) {
-												return A4(
-													$author$project$OUI$Material$Icon$renderWithSizeColor,
-													size,
-													iconColor(i),
-													_List_fromArray(
-														[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-													i);
-											},
-											icon),
-											$elm$core$Maybe$Just(
-											$mdgriffith$elm_ui$Element$text(props.eI)),
-											A2(
-											$elm$core$Maybe$map,
-											function (i) {
-												return A4(
-													$author$project$OUI$Material$Icon$renderWithSizeColor,
-													size,
-													iconColor(i),
-													_List_fromArray(
-														[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-													i);
-											},
-											rIcon)
-										])));
-						}
-					}
-				}
-				var icon = _v30.c.a;
-				return A4(
-					$author$project$OUI$Material$Icon$renderWithSizeColor,
-					size,
-					iconColor(icon),
-					_List_fromArray(
-						[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-					icon);
-			}
-			var _v31 = _v30.b;
-			var _v32 = _v30.c;
-			return A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-				$mdgriffith$elm_ui$Element$text(props.eI));
-		}();
-		var hasIcon = !_Utils_eq(props.c4, $elm$core$Maybe$Nothing);
-		var aria = $author$project$OUI$Utils$ARIA$toElementAttributes(
-			A2($author$project$OUI$Utils$ARIA$withLabel, props.eI, $author$project$OUI$Utils$ARIA$roleButton));
-		var all_attrs = _Utils_ap(
-			aria,
-			_Utils_ap(
-				attrs,
-				function () {
-					var _v1 = _Utils_Tuple2(props.dE, props.aq);
-					switch (_v1.a) {
-						case 0:
-							if (!_v1.b.$) {
-								var _v2 = _v1.a;
-								var _v3 = _v1.b;
-								return _Utils_ap(
-									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
-									A2($author$project$OUI$Material$Button$elevatedDisabledAttrs, colorscheme, props.g6));
-							} else {
-								var _v4 = _v1.a;
-								return _Utils_ap(
-									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
-									A2($author$project$OUI$Material$Button$elevatedAttrs, colorscheme, props.g6));
-							}
-						case 1:
-							if (!_v1.b.$) {
-								var _v5 = _v1.a;
-								var _v6 = _v1.b;
-								return _Utils_ap(
-									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
-									A2($author$project$OUI$Material$Button$filledDisabledAttrs, colorscheme, props.g6));
-							} else {
-								var _v7 = _v1.a;
-								return _Utils_ap(
-									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
-									A2($author$project$OUI$Material$Button$filledAttrs, colorscheme, props.g6));
-							}
-						case 8:
-							if (!_v1.b.$) {
-								var _v8 = _v1.a;
-								var _v9 = _v1.b;
-								return _Utils_ap(
-									$author$project$OUI$Material$Button$iconButtonAttrs(theme.c4),
-									A2($author$project$OUI$Material$Button$filledDisabledAttrs, colorscheme, props.g6));
-							} else {
-								var _v10 = _v1.a;
-								return _Utils_ap(
-									$author$project$OUI$Material$Button$iconButtonAttrs(theme.c4),
-									A2($author$project$OUI$Material$Button$filledAttrs, colorscheme, props.g6));
-							}
-						case 2:
-							if (!_v1.b.$) {
-								var _v11 = _v1.a;
-								var _v12 = _v1.b;
-								return _Utils_ap(
-									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
-									A2($author$project$OUI$Material$Button$outlinedDisabledAttrs, colorscheme, props.g6));
-							} else {
-								var _v13 = _v1.a;
-								return _Utils_ap(
-									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
-									A2($author$project$OUI$Material$Button$outlinedAttrs, colorscheme, props.g6));
-							}
-						case 9:
-							if (!_v1.b.$) {
-								var _v14 = _v1.a;
-								var _v15 = _v1.b;
-								return _Utils_ap(
-									$author$project$OUI$Material$Button$iconButtonAttrs(theme.c4),
-									A2($author$project$OUI$Material$Button$outlinedDisabledAttrs, colorscheme, props.g6));
-							} else {
-								var _v16 = _v1.a;
-								return _Utils_ap(
-									$author$project$OUI$Material$Button$iconButtonAttrs(theme.c4),
-									A2($author$project$OUI$Material$Button$outlinedAttrs, colorscheme, props.g6));
-							}
-						case 3:
-							if (!_v1.b.$) {
-								var _v17 = _v1.a;
-								var _v18 = _v1.b;
-								return _Utils_ap(
-									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
-									A2($author$project$OUI$Material$Button$textDisabledAttrs, colorscheme, props.g6));
-							} else {
-								var _v19 = _v1.a;
-								return _Utils_ap(
-									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
-									A2($author$project$OUI$Material$Button$textAttrs, colorscheme, props.g6));
-							}
-						case 10:
-							if (!_v1.b.$) {
-								var _v20 = _v1.a;
-								var _v21 = _v1.b;
-								return _Utils_ap(
-									$author$project$OUI$Material$Button$iconButtonAttrs(theme.c4),
-									A2($author$project$OUI$Material$Button$textDisabledAttrs, colorscheme, props.g6));
-							} else {
-								var _v22 = _v1.a;
-								return _Utils_ap(
-									$author$project$OUI$Material$Button$iconButtonAttrs(theme.c4),
-									A2($author$project$OUI$Material$Button$textAttrs, colorscheme, props.g6));
-							}
-						case 4:
-							var _v23 = _v1.a;
-							return _Utils_ap(
-								$author$project$OUI$Material$Button$fabLayoutAttrs(theme.T.bx),
-								A2($author$project$OUI$Material$Button$fabColorsAttrs, colorscheme, props.g6));
-						case 5:
-							var _v24 = _v1.a;
-							return _Utils_ap(
-								$author$project$OUI$Material$Button$fabLayoutAttrs(theme.T.fw),
-								A2($author$project$OUI$Material$Button$fabColorsAttrs, colorscheme, props.g6));
-						case 6:
-							var _v25 = _v1.a;
-							return _Utils_ap(
-								$author$project$OUI$Material$Button$fabLayoutAttrs(theme.T.X),
-								A2($author$project$OUI$Material$Button$fabColorsAttrs, colorscheme, props.g6));
-						default:
-							if (!_v1.b.$) {
-								var _v26 = _v1.a;
-								var _v27 = _v1.b;
-								return _Utils_ap(
-									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.T.c1, hasIcon),
-									A2($author$project$OUI$Material$Button$fabColorsAttrs, colorscheme, props.g6));
-							} else {
-								var _v28 = _v1.a;
-								return _Utils_ap(
-									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.T.c1, hasIcon),
-									A2($author$project$OUI$Material$Button$fabColorsAttrs, colorscheme, props.g6));
-							}
-					}
-				}()));
-		var _v0 = props.aq;
-		switch (_v0.$) {
-			case 2:
-				var url = _v0.a;
-				return A2(
-					$mdgriffith$elm_ui$Element$link,
-					all_attrs,
-					{bg: label, dF: url});
-			case 3:
-				var url = _v0.a;
-				return A2(
-					$mdgriffith$elm_ui$Element$newTabLink,
-					all_attrs,
-					{bg: label, dF: url});
-			case 4:
-				var url = _v0.a;
-				return A2(
-					$mdgriffith$elm_ui$Element$download,
-					all_attrs,
-					{bg: label, dF: url});
-			case 5:
-				var url = _v0.a;
-				var filename = _v0.b;
-				return A2(
-					$mdgriffith$elm_ui$Element$downloadAs,
-					all_attrs,
-					{hn: filename, bg: label, dF: url});
-			case 1:
-				var msg = _v0.a;
-				return A2(
-					$mdgriffith$elm_ui$Element$Input$button,
-					all_attrs,
-					{
-						bg: label,
-						fI: $elm$core$Maybe$Just(msg)
-					});
-			default:
-				return A2(
-					$mdgriffith$elm_ui$Element$Input$button,
-					all_attrs,
-					{bg: label, fI: $elm$core$Maybe$Nothing});
-		}
-	});
-var $author$project$OUI$Material$Button$render = F6(
-	function (typescale, colorscheme, theme, rightIcon, attrs, button) {
-		var props = {
-			aq: $author$project$OUI$Button$getAction(button),
-			g6: $author$project$OUI$Button$getColor(button),
-			c4: $author$project$OUI$Button$getIcon(button),
-			eI: $author$project$OUI$Button$getText(button),
-			dE: $author$project$OUI$Button$getType(button)
-		};
-		return A6($author$project$OUI$Material$Button$renderProps, typescale, colorscheme, theme, rightIcon, attrs, props);
-	});
-var $author$project$OUI$Material$button = function (theme) {
-	return A4(
-		$author$project$OUI$Material$Button$render,
-		$author$project$OUI$Material$Theme$typescale(theme),
-		$author$project$OUI$Material$Theme$colorscheme(theme),
-		$author$project$OUI$Material$Theme$button(theme),
-		$elm$core$Maybe$Nothing);
-};
-var $author$project$OUI$Icon$clear = $author$project$OUI$Icon$fromRenderer(
-	$author$project$OUI$Icon$Html(
-		F2(
-			function (size, color) {
-				var sizeAsString = $elm$core$String$fromInt(size);
-				return A2(
-					$elm$svg$Svg$svg,
-					_List_fromArray(
-						[
-							$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
-							$elm$svg$Svg$Attributes$height(sizeAsString),
-							$elm$svg$Svg$Attributes$width(sizeAsString)
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$elm$svg$Svg$g,
-							_List_fromArray(
-								[
-									$elm$svg$Svg$Attributes$fill(
-									$avh4$elm_color$Color$toCssString(color))
-								]),
-							_List_fromArray(
-								[
-									A2(
-									$elm$svg$Svg$path,
-									_List_fromArray(
-										[
-											$elm$svg$Svg$Attributes$d('M0 0h24v24H0V0z'),
-											$elm$svg$Svg$Attributes$fill('none')
-										]),
-									_List_Nil),
-									A2(
-									$elm$svg$Svg$path,
-									_List_fromArray(
-										[
-											$elm$svg$Svg$Attributes$d('M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z')
-										]),
-									_List_Nil)
-								]))
-						]));
-			})));
-var $author$project$OUI$Button$Button = $elm$core$Basics$identity;
-var $author$project$OUI$Button$color = F2(
-	function (value, _v0) {
-		var props = _v0;
-		return _Utils_update(
-			props,
-			{g6: value});
-	});
-var $author$project$OUI$Button$disabled = function (_v0) {
-	var props = _v0;
-	return props;
-};
-var $author$project$OUI$Button$Link = function (a) {
-	return {$: 2, a: a};
-};
-var $author$project$OUI$Button$link = F2(
-	function (url, _v0) {
-		var props = _v0;
-		return _Utils_update(
-			props,
-			{
-				aq: $author$project$OUI$Button$Link(url)
-			});
-	});
-var $author$project$OUI$Explorer$Event = function (a) {
-	return {$: 0, a: a};
-};
-var $author$project$OUI$Explorer$SharedMsg = function (a) {
-	return {$: 0, a: a};
-};
-var $author$project$OUI$Explorer$logEvent = function (value) {
-	return $author$project$OUI$Explorer$SharedMsg(
-		$author$project$OUI$Explorer$Event(value));
-};
-var $author$project$OUI$Button$new = function (label) {
-	return {aq: $author$project$OUI$Button$Disabled, g6: $author$project$OUI$Primary, c4: $elm$core$Maybe$Nothing, eI: label, dE: 0};
-};
-var $author$project$OUI$Button$OnClick = function (a) {
-	return {$: 1, a: a};
-};
-var $author$project$OUI$Button$onClick = F2(
-	function (msg, _v0) {
-		var props = _v0;
-		return _Utils_update(
-			props,
-			{
-				aq: $author$project$OUI$Button$OnClick(msg)
-			});
-	});
-var $author$project$OUI$Button$withIcon = F2(
-	function (value, _v0) {
-		var props = _v0;
-		return _Utils_update(
-			props,
-			{
-				c4: $elm$core$Maybe$Just(value)
-			});
-	});
-var $author$project$OUI$Showcase$Buttons$commonButtonVariants = F3(
-	function (theme, label, btnType) {
-		return _List_fromArray(
-			[
-				A3(
-				$author$project$OUI$Material$button,
-				theme,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$centerX]),
-				A2(
-					$author$project$OUI$Button$onClick,
-					$author$project$OUI$Explorer$logEvent('Clicked ' + label),
-					btnType(
-						$author$project$OUI$Button$new(label)))),
-				A3(
-				$author$project$OUI$Material$button,
-				theme,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$centerX]),
-				A2(
-					$author$project$OUI$Button$onClick,
-					$author$project$OUI$Explorer$logEvent('Clicked ' + (label + ' + icon')),
-					A2(
-						$author$project$OUI$Button$withIcon,
-						$author$project$OUI$Icon$clear,
-						btnType(
-							$author$project$OUI$Button$new('with Icon'))))),
-				A3(
-				$author$project$OUI$Material$button,
-				theme,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$centerX]),
-				A2(
-					$author$project$OUI$Button$link,
-					'#/Basics/Buttons',
-					btnType(
-						$author$project$OUI$Button$new('Link')))),
-				A3(
-				$author$project$OUI$Material$button,
-				theme,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$centerX]),
-				A2(
-					$author$project$OUI$Button$link,
-					'#/Basics/Buttons',
-					A2(
-						$author$project$OUI$Button$withIcon,
-						$author$project$OUI$Icon$clear,
-						btnType(
-							$author$project$OUI$Button$new('Link Icon'))))),
-				A3(
-				$author$project$OUI$Material$button,
-				theme,
-				_List_fromArray(
-					[$mdgriffith$elm_ui$Element$centerX]),
-				$author$project$OUI$Button$disabled(
-					A2(
-						$author$project$OUI$Button$withIcon,
-						$author$project$OUI$Icon$clear,
-						btnType(
-							$author$project$OUI$Button$new('Disabled')))))
-			]);
-	});
-var $author$project$OUI$Button$btntype = F2(
-	function (value, _v0) {
-		var props = _v0;
-		return _Utils_update(
-			props,
-			{dE: value});
-	});
-var $author$project$OUI$Button$elevatedButton = $author$project$OUI$Button$btntype(0);
-var $author$project$OUI$Button$ExtendedFAB = 7;
-var $author$project$OUI$Button$extendedFAB = $author$project$OUI$Button$btntype(7);
-var $author$project$OUI$Button$filledButton = $author$project$OUI$Button$btntype(1);
-var $author$project$OUI$Button$FilledIcon = 8;
-var $author$project$OUI$Button$filledIconButton = $author$project$OUI$Button$btntype(8);
-var $author$project$OUI$Button$Icon = 10;
-var $author$project$OUI$Button$iconButton = $author$project$OUI$Button$btntype(10);
-var $author$project$OUI$Button$LargeFAB = 6;
-var $author$project$OUI$Button$largeFAB = $author$project$OUI$Button$btntype(6);
-var $author$project$OUI$Button$MediumFAB = 5;
-var $author$project$OUI$Button$mediumFAB = $author$project$OUI$Button$btntype(5);
-var $author$project$OUI$Button$Outlined = 2;
-var $author$project$OUI$Button$outlinedButton = $author$project$OUI$Button$btntype(2);
-var $author$project$OUI$Button$OutlinedIcon = 9;
-var $author$project$OUI$Button$outlinedIconButton = $author$project$OUI$Button$btntype(9);
-var $author$project$OUI$Button$smallFAB = $author$project$OUI$Button$btntype(4);
-var $author$project$OUI$Button$Text = 3;
-var $author$project$OUI$Button$textButton = $author$project$OUI$Button$btntype(3);
 var $author$project$OUI$Text$Large = 2;
-var $author$project$OUI$Text$titleLarge = A2($author$project$OUI$Text$textTypeSize, 2, 2);
-var $author$project$OUI$Showcase$Buttons$commonButtons = function (_v0) {
-	var theme = _v0.i8;
-	var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
-	var btnRow = F2(
-		function (label, btnType) {
-			return A2(
-				$mdgriffith$elm_ui$Element$row,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$spacing(30)
-					]),
-				A2(
-					$elm$core$List$map,
-					$mdgriffith$elm_ui$Element$el(
-						_List_fromArray(
-							[
-								$mdgriffith$elm_ui$Element$width(
-								$mdgriffith$elm_ui$Element$px(100))
-							])),
-					A2(
-						$elm$core$List$cons,
-						A2(
-							$author$project$OUI$Material$text,
-							theme,
-							$author$project$OUI$Text$titleSmall(label)),
-						A3($author$project$OUI$Showcase$Buttons$commonButtonVariants, theme, label, btnType))));
-		});
-	return A2(
-		$mdgriffith$elm_ui$Element$column,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$spacing(30)
-			]),
-		_List_fromArray(
-			[
-				divider,
-				A2(
-				$author$project$OUI$Material$text,
-				theme,
-				$author$project$OUI$Text$titleLarge('Common buttons')),
-				A2(
-				$mdgriffith$elm_ui$Element$column,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$spacing(30)
-					]),
-				_List_fromArray(
-					[
-						A2(btnRow, 'Elevated', $author$project$OUI$Button$elevatedButton),
-						A2(btnRow, 'Filled', $author$project$OUI$Button$filledButton),
-						A2(btnRow, 'Outlined', $author$project$OUI$Button$outlinedButton),
-						A2(btnRow, 'Text', $author$project$OUI$Button$textButton)
-					])),
-				divider,
-				A2(
-				$author$project$OUI$Material$text,
-				theme,
-				$author$project$OUI$Text$titleLarge('FAB')),
-				A2(
-				$mdgriffith$elm_ui$Element$row,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$spacing(30)
-					]),
-				function () {
-					var btn = function (s) {
-						return A2(
-							$author$project$OUI$Button$withIcon,
-							$author$project$OUI$Icon$clear,
-							$author$project$OUI$Button$new(s + 'FAB'));
-					};
-					var clickBtn = function (s) {
-						return A2(
-							$author$project$OUI$Button$onClick,
-							$author$project$OUI$Explorer$logEvent('Clicked ' + (s + ' FAB')),
-							btn(s));
-					};
-					var linkBtn = function (s) {
-						return A2(
-							$author$project$OUI$Button$link,
-							'#/Basics/Buttons',
-							btn(s));
-					};
-					return _List_fromArray(
-						[
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							A2(
-								$author$project$OUI$Button$color,
-								$author$project$OUI$PrimaryContainer,
-								$author$project$OUI$Button$smallFAB(
-									clickBtn('Small')))),
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							A2(
-								$author$project$OUI$Button$color,
-								$author$project$OUI$PrimaryContainer,
-								$author$project$OUI$Button$smallFAB(
-									linkBtn('Small')))),
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							A2(
-								$author$project$OUI$Button$color,
-								$author$project$OUI$SecondaryContainer,
-								$author$project$OUI$Button$mediumFAB(
-									clickBtn('Medium')))),
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							A2(
-								$author$project$OUI$Button$color,
-								$author$project$OUI$SecondaryContainer,
-								$author$project$OUI$Button$mediumFAB(
-									linkBtn('Medium')))),
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							A2(
-								$author$project$OUI$Button$color,
-								$author$project$OUI$TertiaryContainer,
-								$author$project$OUI$Button$largeFAB(
-									clickBtn('Large')))),
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							A2(
-								$author$project$OUI$Button$color,
-								$author$project$OUI$TertiaryContainer,
-								$author$project$OUI$Button$largeFAB(
-									linkBtn('Large')))),
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							A2(
-								$author$project$OUI$Button$color,
-								$author$project$OUI$Primary,
-								$author$project$OUI$Button$extendedFAB(
-									clickBtn('Extended')))),
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							A2(
-								$author$project$OUI$Button$color,
-								$author$project$OUI$Primary,
-								$author$project$OUI$Button$extendedFAB(
-									linkBtn('Extended'))))
-						]);
-				}()),
-				divider,
-				A2(
-				$author$project$OUI$Material$text,
-				theme,
-				$author$project$OUI$Text$titleLarge('Icon buttons')),
-				A2(
-				$mdgriffith$elm_ui$Element$row,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$spacing(30)
-					]),
-				function () {
-					var btn = function (s) {
-						return A2(
-							$author$project$OUI$Button$withIcon,
-							$author$project$OUI$Icon$clear,
-							$author$project$OUI$Button$new(s + ' Icon'));
-					};
-					var clickBtn = function (s) {
-						return A2(
-							$author$project$OUI$Button$onClick,
-							$author$project$OUI$Explorer$logEvent('Clicked ' + (s + ' Icon')),
-							btn(s));
-					};
-					var linkBtn = function (s) {
-						return A2(
-							$author$project$OUI$Button$link,
-							'#/Basics/Buttons',
-							btn(s));
-					};
-					return _List_fromArray(
-						[
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							$author$project$OUI$Button$iconButton(
-								clickBtn('Standard'))),
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							$author$project$OUI$Button$iconButton(
-								linkBtn('Standard'))),
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							A2(
-								$author$project$OUI$Button$color,
-								$author$project$OUI$Primary,
-								$author$project$OUI$Button$filledIconButton(
-									clickBtn('Filled')))),
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							A2(
-								$author$project$OUI$Button$color,
-								$author$project$OUI$Primary,
-								$author$project$OUI$Button$filledIconButton(
-									linkBtn('Filled')))),
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							A2(
-								$author$project$OUI$Button$color,
-								$author$project$OUI$Primary,
-								$author$project$OUI$Button$outlinedIconButton(
-									clickBtn('Outlined')))),
-							A3(
-							$author$project$OUI$Material$button,
-							theme,
-							_List_fromArray(
-								[$mdgriffith$elm_ui$Element$centerX]),
-							A2(
-								$author$project$OUI$Button$color,
-								$author$project$OUI$Primary,
-								$author$project$OUI$Button$outlinedIconButton(
-									linkBtn('Outlined'))))
-						]);
-				}())
-			]));
-};
 var $author$project$OUI$Text$bodyLarge = A2($author$project$OUI$Text$textTypeSize, 4, 2);
 var $author$project$OUI$Slider$Slider = $elm$core$Basics$identity;
 var $author$project$OUI$Slider$new = function (value) {
@@ -15081,6 +13131,8 @@ var $mdgriffith$elm_ui$Element$Input$HiddenLabel = function (a) {
 	return {$: 1, a: a};
 };
 var $mdgriffith$elm_ui$Element$Input$labelHidden = $mdgriffith$elm_ui$Element$Input$HiddenLabel;
+var $mdgriffith$elm_ui$Internal$Flag$cursor = $mdgriffith$elm_ui$Internal$Flag$flag(21);
+var $mdgriffith$elm_ui$Element$pointer = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$cursor, $mdgriffith$elm_ui$Internal$Style$classes.ha);
 var $mdgriffith$elm_ui$Element$Border$roundEach = function (_v0) {
 	var bottomRight = _v0.eX;
 	var bottomLeft = _v0.eW;
@@ -15095,6 +13147,7 @@ var $mdgriffith$elm_ui$Element$Border$roundEach = function (_v0) {
 			'border-radius',
 			$elm$core$String$fromInt(topLeft) + ('px ' + ($elm$core$String$fromInt(topRight) + ('px ' + ($elm$core$String$fromInt(bottomRight) + ('px ' + ($elm$core$String$fromInt(bottomLeft) + 'px'))))))));
 };
+var $mdgriffith$elm_ui$Internal$Flag$active = $mdgriffith$elm_ui$Internal$Flag$flag(32);
 var $mdgriffith$elm_ui$Internal$Model$LivePolite = {$: 6};
 var $mdgriffith$elm_ui$Element$Region$announce = $mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$LivePolite);
 var $mdgriffith$elm_ui$Element$Input$applyLabel = F3(
@@ -15173,6 +13226,8 @@ var $mdgriffith$elm_ui$Element$Input$applyLabel = F3(
 			}
 		}
 	});
+var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
+var $mdgriffith$elm_ui$Internal$Flag$focus = $mdgriffith$elm_ui$Internal$Flag$flag(31);
 var $mdgriffith$elm_ui$Internal$Model$getHeight = function (attrs) {
 	return A3(
 		$elm$core$List$foldr,
@@ -15240,6 +13295,7 @@ var $elm$html$Html$Events$alwaysStop = function (x) {
 var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
 	return {$: 1, a: a};
 };
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
 var $elm$html$Html$Events$stopPropagationOn = F2(
 	function (event, decoder) {
 		return A2(
@@ -15247,10 +13303,12 @@ var $elm$html$Html$Events$stopPropagationOn = F2(
 			event,
 			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
 	});
+var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$at = F2(
 	function (fields, decoder) {
 		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
 	});
+var $elm$json$Json$Decode$string = _Json_decodeString;
 var $elm$html$Html$Events$targetValue = A2(
 	$elm$json$Json$Decode$at,
 	_List_fromArray(
@@ -15954,78 +14012,6 @@ var $author$project$OUI$Explorer$ThemeEditor$slider = F5(
 						$elm$core$String$fromFloat(value)))
 				]));
 	});
-var $author$project$OUI$Showcase$Buttons$fabSection = F4(
-	function (theme, title, layout, toMsg) {
-		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
-		return _List_fromArray(
-			[
-				divider,
-				A2(
-				$author$project$OUI$Material$text,
-				theme,
-				$author$project$OUI$Text$titleLarge(title)),
-				A5(
-				$author$project$OUI$Explorer$ThemeEditor$slider,
-				theme,
-				toMsg(
-					F2(
-						function (value, l) {
-							return _Utils_update(
-								l,
-								{
-									ak: $elm$core$Basics$round(value)
-								});
-						})),
-				'Container Height',
-				_Utils_Tuple2(0, 200),
-				layout.ak),
-				A5(
-				$author$project$OUI$Explorer$ThemeEditor$slider,
-				theme,
-				toMsg(
-					F2(
-						function (value, l) {
-							return _Utils_update(
-								l,
-								{
-									bW: $elm$core$Basics$round(value)
-								});
-						})),
-				'Container Shape',
-				_Utils_Tuple2(0, layout.ak / 2),
-				layout.bW),
-				A5(
-				$author$project$OUI$Explorer$ThemeEditor$slider,
-				theme,
-				toMsg(
-					F2(
-						function (value, l) {
-							return _Utils_update(
-								l,
-								{
-									bY: $elm$core$Basics$round(value)
-								});
-						})),
-				'Container Width',
-				_Utils_Tuple2(0, 200),
-				layout.bY),
-				A5(
-				$author$project$OUI$Explorer$ThemeEditor$slider,
-				theme,
-				toMsg(
-					F2(
-						function (value, l) {
-							return _Utils_update(
-								l,
-								{
-									s: $elm$core$Basics$round(value)
-								});
-						})),
-				'Icon Size',
-				_Utils_Tuple2(0, layout.ak),
-				layout.s)
-			]);
-	});
 var $author$project$OUI$Slider$withDiscreteStep = F2(
 	function (value, _v0) {
 		var slider = _v0;
@@ -16207,8 +14193,2279 @@ var $author$project$OUI$Explorer$ThemeEditor$textType = F4(
 						typeToString(value)))
 				]));
 	});
+var $author$project$OUI$Text$titleLarge = A2($author$project$OUI$Text$textTypeSize, 2, 2);
+var $author$project$OUI$Explorer$SharedMsg = function (a) {
+	return {$: 0, a: a};
+};
 var $author$project$OUI$Explorer$sharedMsg = $author$project$OUI$Explorer$SharedMsg;
 var $author$project$OUI$Material$Theme$Theme = $elm$core$Basics$identity;
+var $author$project$OUI$Material$Theme$withBadge = F2(
+	function (value, _v0) {
+		var t = _v0;
+		return _Utils_update(
+			t,
+			{gK: value});
+	});
+var $author$project$OUI$Showcase$Badge$updateBadgeTheme = F2(
+	function (fn, theme) {
+		return A2(
+			$author$project$OUI$Material$Theme$withBadge,
+			fn(
+				$author$project$OUI$Material$Theme$badge(theme)),
+			theme);
+	});
+var $author$project$OUI$Explorer$UpdateCurrentTheme = function (a) {
+	return {$: 8, a: a};
+};
+var $author$project$OUI$Explorer$updateCurrentThemeMsg = $author$project$OUI$Explorer$UpdateCurrentTheme;
+var $author$project$OUI$Showcase$Badge$updateBadgeLargeMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Badge$updateBadgeTheme(
+					function (b) {
+						return _Utils_update(
+							b,
+							{
+								X: A2(fn, value, b.X)
+							});
+					})));
+	});
+var $author$project$OUI$Showcase$Badge$updateBadgeSmallMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Badge$updateBadgeTheme(
+					function (b) {
+						return _Utils_update(
+							b,
+							{
+								bx: A2(fn, value, b.bx)
+							});
+					})));
+	});
+var $author$project$OUI$Showcase$Badge$editorChapter = F2(
+	function (_v0, _v1) {
+		var theme = _v0.i8;
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		var badgeTheme = $author$project$OUI$Material$Theme$badge(theme);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30)
+				]),
+			_List_fromArray(
+				[
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Small Badge')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Badge$updateBadgeSmallMsg(
+						F2(
+							function (value, small) {
+								return _Utils_update(
+									small,
+									{
+										dv: $elm$core$Basics$round(value)
+									});
+							})),
+					'Shape',
+					_Utils_Tuple2(0, 50),
+					badgeTheme.bx.dv),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Badge$updateBadgeSmallMsg(
+						F2(
+							function (value, small) {
+								return _Utils_update(
+									small,
+									{
+										iD: $elm$core$Basics$round(value)
+									});
+							})),
+					'Size',
+					_Utils_Tuple2(0, 50),
+					badgeTheme.bx.iD),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Badge$updateBadgeSmallMsg(
+						F2(
+							function (value, small) {
+								var _v2 = small.dm;
+								var y = _v2.b;
+								return _Utils_update(
+									small,
+									{
+										dm: _Utils_Tuple2(
+											$elm$core$Basics$round(value),
+											y)
+									});
+							})),
+					'Pos X',
+					_Utils_Tuple2(0, 50),
+					badgeTheme.bx.dm.a),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Badge$updateBadgeSmallMsg(
+						F2(
+							function (value, small) {
+								var _v3 = small.dm;
+								var x = _v3.a;
+								return _Utils_update(
+									small,
+									{
+										dm: _Utils_Tuple2(
+											x,
+											$elm$core$Basics$round(value))
+									});
+							})),
+					'Pos Y',
+					_Utils_Tuple2(0, 50),
+					badgeTheme.bx.dm.b),
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Large Badge')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Badge$updateBadgeLargeMsg(
+						F2(
+							function (value, large) {
+								return _Utils_update(
+									large,
+									{
+										dv: $elm$core$Basics$round(value)
+									});
+							})),
+					'Shape',
+					_Utils_Tuple2(0, 50),
+					badgeTheme.X.dv),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Badge$updateBadgeLargeMsg(
+						F2(
+							function (value, large) {
+								return _Utils_update(
+									large,
+									{
+										iD: $elm$core$Basics$round(value)
+									});
+							})),
+					'Size',
+					_Utils_Tuple2(0, 50),
+					badgeTheme.X.iD),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Badge$updateBadgeLargeMsg(
+						F2(
+							function (value, large) {
+								return _Utils_update(
+									large,
+									{
+										ek: $elm$core$Basics$round(value)
+									});
+							})),
+					'Padding',
+					_Utils_Tuple2(0, 50),
+					badgeTheme.X.ek),
+					A4(
+					$author$project$OUI$Explorer$ThemeEditor$textType,
+					theme,
+					$author$project$OUI$Showcase$Badge$updateBadgeLargeMsg(
+						F2(
+							function (type_, large) {
+								return _Utils_update(
+									large,
+									{gc: type_});
+							})),
+					'Text Type',
+					badgeTheme.X.gc),
+					A4(
+					$author$project$OUI$Explorer$ThemeEditor$textSize,
+					theme,
+					$author$project$OUI$Showcase$Badge$updateBadgeLargeMsg(
+						F2(
+							function (size, large) {
+								return _Utils_update(
+									large,
+									{gb: size});
+							})),
+					'Text Size',
+					badgeTheme.X.gb),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Badge$updateBadgeLargeMsg(
+						F2(
+							function (value, large) {
+								var _v4 = large.dm;
+								var y = _v4.b;
+								return _Utils_update(
+									large,
+									{
+										dm: _Utils_Tuple2(
+											$elm$core$Basics$round(value),
+											y)
+									});
+							})),
+					'Pos X',
+					_Utils_Tuple2(0, 50),
+					badgeTheme.X.dm.a),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Badge$updateBadgeLargeMsg(
+						F2(
+							function (value, large) {
+								var _v5 = large.dm;
+								var x = _v5.a;
+								return _Utils_update(
+									large,
+									{
+										dm: _Utils_Tuple2(
+											x,
+											$elm$core$Basics$round(value))
+									});
+							})),
+					'Pos Y',
+					_Utils_Tuple2(0, 50),
+					badgeTheme.X.dm.b),
+					divider
+				]));
+	});
+var $author$project$OUI$Explorer$withStaticChapter = F2(
+	function (body, b) {
+		return _Utils_update(
+			b,
+			{
+				aa: A2(
+					$elm$core$List$cons,
+					F2(
+						function (shared, _v0) {
+							return body(shared);
+						}),
+					b.aa)
+			});
+	});
+var $author$project$OUI$Explorer$withThemeEditor = F2(
+	function (body, b) {
+		return _Utils_update(
+			b,
+			{
+				bD: A2($elm$core$List$cons, body, b.bD)
+			});
+	});
+var $author$project$OUI$Showcase$Badge$book = A2(
+	$author$project$OUI$Explorer$withThemeEditor,
+	$author$project$OUI$Showcase$Badge$editorChapter,
+	A2(
+		$author$project$OUI$Explorer$withStaticChapter,
+		$author$project$OUI$Showcase$Badge$badges,
+		$author$project$OUI$Explorer$book('Badge')));
+var $author$project$OUI$PrimaryContainer = {$: 1};
+var $author$project$OUI$SecondaryContainer = {$: 3};
+var $author$project$OUI$TertiaryContainer = {$: 5};
+var $author$project$OUI$Material$Theme$button = function (_v0) {
+	var t = _v0;
+	return t.eY;
+};
+var $author$project$OUI$Button$getAction = function (_v0) {
+	var props = _v0;
+	return props.aq;
+};
+var $author$project$OUI$Button$getColor = function (_v0) {
+	var props = _v0;
+	return props.g6;
+};
+var $author$project$OUI$Button$getIcon = function (_v0) {
+	var props = _v0;
+	return props.c4;
+};
+var $author$project$OUI$Button$getText = function (_v0) {
+	var props = _v0;
+	return props.eI;
+};
+var $author$project$OUI$Button$getType = function (_v0) {
+	var props = _v0;
+	return props.dE;
+};
+var $author$project$OUI$Button$Disabled = {$: 0};
+var $mdgriffith$elm_ui$Internal$Model$Button = {$: 8};
+var $elm$json$Json$Encode$bool = _Json_wrap;
+var $elm$html$Html$Attributes$boolProperty = F2(
+	function (key, bool) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$bool(bool));
+	});
+var $elm$html$Html$Attributes$disabled = $elm$html$Html$Attributes$boolProperty('disabled');
+var $mdgriffith$elm_ui$Element$Input$enter = 'Enter';
+var $mdgriffith$elm_ui$Element$Input$hasFocusStyle = function (attr) {
+	if (((attr.$ === 4) && (attr.b.$ === 11)) && (!attr.b.a)) {
+		var _v1 = attr.b;
+		var _v2 = _v1.a;
+		return true;
+	} else {
+		return false;
+	}
+};
+var $mdgriffith$elm_ui$Element$Input$focusDefault = function (attrs) {
+	return A2($elm$core$List$any, $mdgriffith$elm_ui$Element$Input$hasFocusStyle, attrs) ? $mdgriffith$elm_ui$Internal$Model$NoAttribute : $mdgriffith$elm_ui$Internal$Model$htmlClass('focusable');
+};
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $mdgriffith$elm_ui$Element$Events$onClick = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Attr, $elm$html$Html$Events$onClick);
+var $elm$json$Json$Decode$andThen = _Json_andThen;
+var $elm$json$Json$Decode$fail = _Json_fail;
+var $elm$virtual_dom$VirtualDom$MayPreventDefault = function (a) {
+	return {$: 2, a: a};
+};
+var $elm$html$Html$Events$preventDefaultOn = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayPreventDefault(decoder));
+	});
+var $mdgriffith$elm_ui$Element$Input$onKeyLookup = function (lookup) {
+	var decode = function (code) {
+		var _v0 = lookup(code);
+		if (_v0.$ === 1) {
+			return $elm$json$Json$Decode$fail('No key matched');
+		} else {
+			var msg = _v0.a;
+			return $elm$json$Json$Decode$succeed(msg);
+		}
+	};
+	var isKey = A2(
+		$elm$json$Json$Decode$andThen,
+		decode,
+		A2($elm$json$Json$Decode$field, 'key', $elm$json$Json$Decode$string));
+	return $mdgriffith$elm_ui$Internal$Model$Attr(
+		A2(
+			$elm$html$Html$Events$preventDefaultOn,
+			'keydown',
+			A2(
+				$elm$json$Json$Decode$map,
+				function (fired) {
+					return _Utils_Tuple2(fired, true);
+				},
+				isKey)));
+};
+var $mdgriffith$elm_ui$Element$Input$space = ' ';
+var $elm$html$Html$Attributes$tabindex = function (n) {
+	return A2(
+		_VirtualDom_attribute,
+		'tabIndex',
+		$elm$core$String$fromInt(n));
+};
+var $mdgriffith$elm_ui$Element$Input$button = F2(
+	function (attrs, _v0) {
+		var label = _v0.bg;
+		var onPress = _v0.fI;
+		return A4(
+			$mdgriffith$elm_ui$Internal$Model$element,
+			$mdgriffith$elm_ui$Internal$Model$asEl,
+			$mdgriffith$elm_ui$Internal$Model$div,
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.cZ + (' ' + ($mdgriffith$elm_ui$Internal$Style$classes.au + (' ' + ($mdgriffith$elm_ui$Internal$Style$classes.iA + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.fB)))))),
+						A2(
+							$elm$core$List$cons,
+							$mdgriffith$elm_ui$Element$pointer,
+							A2(
+								$elm$core$List$cons,
+								$mdgriffith$elm_ui$Element$Input$focusDefault(attrs),
+								A2(
+									$elm$core$List$cons,
+									$mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$Button),
+									A2(
+										$elm$core$List$cons,
+										$mdgriffith$elm_ui$Internal$Model$Attr(
+											$elm$html$Html$Attributes$tabindex(0)),
+										function () {
+											if (onPress.$ === 1) {
+												return A2(
+													$elm$core$List$cons,
+													$mdgriffith$elm_ui$Internal$Model$Attr(
+														$elm$html$Html$Attributes$disabled(true)),
+													attrs);
+											} else {
+												var msg = onPress.a;
+												return A2(
+													$elm$core$List$cons,
+													$mdgriffith$elm_ui$Element$Events$onClick(msg),
+													A2(
+														$elm$core$List$cons,
+														$mdgriffith$elm_ui$Element$Input$onKeyLookup(
+															function (code) {
+																return _Utils_eq(code, $mdgriffith$elm_ui$Element$Input$enter) ? $elm$core$Maybe$Just(msg) : (_Utils_eq(code, $mdgriffith$elm_ui$Element$Input$space) ? $elm$core$Maybe$Just(msg) : $elm$core$Maybe$Nothing);
+															}),
+														attrs));
+											}
+										}()))))))),
+			$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+				_List_fromArray(
+					[label])));
+	});
+var $elm$html$Html$Attributes$download = function (fileName) {
+	return A2($elm$html$Html$Attributes$stringProperty, 'download', fileName);
+};
+var $elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
+var $mdgriffith$elm_ui$Element$download = F2(
+	function (attrs, _v0) {
+		var label = _v0.bg;
+		var url = _v0.dF;
+		return A4(
+			$mdgriffith$elm_ui$Internal$Model$element,
+			$mdgriffith$elm_ui$Internal$Model$asEl,
+			$mdgriffith$elm_ui$Internal$Model$NodeName('a'),
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Internal$Model$Attr(
+					$elm$html$Html$Attributes$href(url)),
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Internal$Model$Attr(
+						$elm$html$Html$Attributes$download('')),
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
+						A2(
+							$elm$core$List$cons,
+							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
+							A2(
+								$elm$core$List$cons,
+								$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.cZ),
+								A2(
+									$elm$core$List$cons,
+									$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.au),
+									attrs)))))),
+			$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+				_List_fromArray(
+					[label])));
+	});
+var $mdgriffith$elm_ui$Element$downloadAs = F2(
+	function (attrs, _v0) {
+		var label = _v0.bg;
+		var filename = _v0.hn;
+		var url = _v0.dF;
+		return A4(
+			$mdgriffith$elm_ui$Internal$Model$element,
+			$mdgriffith$elm_ui$Internal$Model$asEl,
+			$mdgriffith$elm_ui$Internal$Model$NodeName('a'),
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Internal$Model$Attr(
+					$elm$html$Html$Attributes$href(url)),
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Internal$Model$Attr(
+						$elm$html$Html$Attributes$download(filename)),
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
+						A2(
+							$elm$core$List$cons,
+							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
+							A2(
+								$elm$core$List$cons,
+								$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.cZ),
+								A2(
+									$elm$core$List$cons,
+									$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.au),
+									attrs)))))),
+			$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+				_List_fromArray(
+					[label])));
+	});
+var $author$project$OUI$Button$Elevated = 0;
+var $author$project$OUI$Material$Color$getOnSurfaceColor = function (c) {
+	if (c.$ === 10) {
+		var onSurface = c.a.h6;
+		return $elm$core$Basics$always(onSurface);
+	} else {
+		return function ($) {
+			return $.h6;
+		};
+	}
+};
+var $author$project$OUI$Material$Color$getSurfaceContainerLowColor = function (c) {
+	if (c.$ === 10) {
+		var surface = c.a.iN;
+		return $elm$core$Basics$always(surface);
+	} else {
+		return function ($) {
+			return $.iP;
+		};
+	}
+};
+var $avh4$elm_color$Color$RgbaSpace = F4(
+	function (a, b, c, d) {
+		return {$: 0, a: a, b: b, c: c, d: d};
+	});
+var $avh4$elm_color$Color$fromRgba = function (components) {
+	return A4($avh4$elm_color$Color$RgbaSpace, components.im, components.hs, components.gP, components.dK);
+};
+var $author$project$OUI$Material$Color$setAlpha = F2(
+	function (value, color) {
+		var rgba = $avh4$elm_color$Color$toRgba(color);
+		return $avh4$elm_color$Color$fromRgba(
+			_Utils_update(
+				rgba,
+				{dK: value}));
+	});
+var $author$project$OUI$Material$Button$btnColors = F4(
+	function (colorscheme, type_, color, disabled) {
+		var _v0 = _Utils_Tuple2(type_, disabled);
+		if (_v0.b) {
+			return _Utils_Tuple2(
+				A2(
+					$author$project$OUI$Material$Color$setAlpha,
+					0.38,
+					A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme)),
+				A2(
+					$author$project$OUI$Material$Color$setAlpha,
+					0.12,
+					A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme)));
+		} else {
+			switch (_v0.a) {
+				case 0:
+					var _v1 = _v0.a;
+					return _Utils_Tuple2(
+						A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
+						A2($author$project$OUI$Material$Color$getSurfaceContainerLowColor, color, colorscheme));
+				case 1:
+					var _v2 = _v0.a;
+					return _Utils_Tuple2(
+						A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
+						A2($author$project$OUI$Material$Color$getColor, color, colorscheme));
+				case 8:
+					var _v3 = _v0.a;
+					return _Utils_Tuple2(
+						A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
+						A2($author$project$OUI$Material$Color$getColor, color, colorscheme));
+				case 4:
+					var _v4 = _v0.a;
+					return _Utils_Tuple2(
+						A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
+						A2($author$project$OUI$Material$Color$getColor, color, colorscheme));
+				case 5:
+					var _v5 = _v0.a;
+					return _Utils_Tuple2(
+						A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
+						A2($author$project$OUI$Material$Color$getColor, color, colorscheme));
+				case 6:
+					var _v6 = _v0.a;
+					return _Utils_Tuple2(
+						A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
+						A2($author$project$OUI$Material$Color$getColor, color, colorscheme));
+				case 7:
+					var _v7 = _v0.a;
+					return _Utils_Tuple2(
+						A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
+						A2($author$project$OUI$Material$Color$getColor, color, colorscheme));
+				default:
+					return _Utils_Tuple2(
+						A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
+						A2($author$project$OUI$Material$Color$getSurfaceContainerLowColor, color, colorscheme));
+			}
+		}
+	});
+var $author$project$OUI$Material$Color$focusStateLayerOpacity = 0.12;
+var $mdgriffith$elm_ui$Internal$Model$Focus = 0;
+var $mdgriffith$elm_ui$Element$focused = function (decs) {
+	return A2(
+		$mdgriffith$elm_ui$Internal$Model$StyleClass,
+		$mdgriffith$elm_ui$Internal$Flag$focus,
+		A2(
+			$mdgriffith$elm_ui$Internal$Model$PseudoSelector,
+			0,
+			$mdgriffith$elm_ui$Internal$Model$unwrapDecorations(decs)));
+};
+var $author$project$OUI$Material$Color$hoverStateLayerOpacity = 0.08;
+var $mdgriffith$elm_ui$Internal$Model$Active = 2;
+var $mdgriffith$elm_ui$Element$mouseDown = function (decs) {
+	return A2(
+		$mdgriffith$elm_ui$Internal$Model$StyleClass,
+		$mdgriffith$elm_ui$Internal$Flag$active,
+		A2(
+			$mdgriffith$elm_ui$Internal$Model$PseudoSelector,
+			2,
+			$mdgriffith$elm_ui$Internal$Model$unwrapDecorations(decs)));
+};
+var $author$project$OUI$Material$Color$pressStateLayerOpacity = 0.12;
+var $mdgriffith$elm_ui$Internal$Model$boxShadowClass = function (shadow) {
+	return $elm$core$String$concat(
+		_List_fromArray(
+			[
+				shadow.fn ? 'box-inset' : 'box-',
+				$mdgriffith$elm_ui$Internal$Model$floatClass(shadow.h2.a) + 'px',
+				$mdgriffith$elm_ui$Internal$Model$floatClass(shadow.h2.b) + 'px',
+				$mdgriffith$elm_ui$Internal$Model$floatClass(shadow.gR) + 'px',
+				$mdgriffith$elm_ui$Internal$Model$floatClass(shadow.iD) + 'px',
+				$mdgriffith$elm_ui$Internal$Model$formatColorClass(shadow.g6)
+			]));
+};
+var $mdgriffith$elm_ui$Internal$Flag$shadows = $mdgriffith$elm_ui$Internal$Flag$flag(19);
+var $mdgriffith$elm_ui$Element$Border$shadow = function (almostShade) {
+	var shade = {gR: almostShade.gR, g6: almostShade.g6, fn: false, h2: almostShade.h2, iD: almostShade.iD};
+	return A2(
+		$mdgriffith$elm_ui$Internal$Model$StyleClass,
+		$mdgriffith$elm_ui$Internal$Flag$shadows,
+		A3(
+			$mdgriffith$elm_ui$Internal$Model$Single,
+			$mdgriffith$elm_ui$Internal$Model$boxShadowClass(shade),
+			'box-shadow',
+			$mdgriffith$elm_ui$Internal$Model$formatBoxShadow(shade)));
+};
+var $elm$core$Basics$cos = _Basics_cos;
+var $noahzgordon$elm_color_extra$Color$Convert$labToXyz = function (_v0) {
+	var b = _v0.eU;
+	var a = _v0.eP;
+	var l = _v0.aR;
+	var y = (l + 16) / 116;
+	var c = function (ch) {
+		var ch_ = (ch * ch) * ch;
+		return (ch_ > 8.856e-3) ? ch_ : ((ch - (16 / 116)) / 7.787);
+	};
+	return {
+		gr: c(y + (a / 500)) * 95.047,
+		gs: c(y) * 100,
+		cL: c(y - (b / 200)) * 108.883
+	};
+};
+var $elm$core$Basics$clamp = F3(
+	function (low, high, number) {
+		return (_Utils_cmp(number, low) < 0) ? low : ((_Utils_cmp(number, high) > 0) ? high : number);
+	});
+var $elm$core$Basics$pow = _Basics_pow;
+var $avh4$elm_color$Color$rgb = F3(
+	function (r, g, b) {
+		return A4($avh4$elm_color$Color$RgbaSpace, r, g, b, 1.0);
+	});
+var $noahzgordon$elm_color_extra$Color$Convert$xyzToColor = function (_v0) {
+	var z = _v0.cL;
+	var y = _v0.gs;
+	var x = _v0.gr;
+	var z_ = z / 100;
+	var y_ = y / 100;
+	var x_ = x / 100;
+	var r = ((x_ * 3.2404542) + (y_ * (-1.5371385))) + (z_ * (-0.4986));
+	var g = ((x_ * (-0.969266)) + (y_ * 1.8760108)) + (z_ * 4.1556e-2);
+	var c = function (ch) {
+		var ch_ = (ch > 3.1308e-3) ? ((1.055 * A2($elm$core$Basics$pow, ch, 1 / 2.4)) - 5.5e-2) : (12.92 * ch);
+		return A3($elm$core$Basics$clamp, 0, 1, ch_);
+	};
+	var b = ((x_ * 5.56434e-2) + (y_ * (-0.2040259))) + (z_ * 1.0572252);
+	return A3(
+		$avh4$elm_color$Color$rgb,
+		c(r),
+		c(g),
+		c(b));
+};
+var $noahzgordon$elm_color_extra$Color$Convert$labToColor = A2($elm$core$Basics$composeR, $noahzgordon$elm_color_extra$Color$Convert$labToXyz, $noahzgordon$elm_color_extra$Color$Convert$xyzToColor);
+var $elm$core$Basics$sin = _Basics_sin;
+var $author$project$OUI$Material$Color$fromCIELCH = A2(
+	$elm$core$Basics$composeR,
+	function (_v0) {
+		var h = _v0.b7;
+		var c = _v0.bP;
+		var l = _v0.aR;
+		return {
+			eP: c * $elm$core$Basics$cos(h),
+			eU: c * $elm$core$Basics$sin(h),
+			aR: l
+		};
+	},
+	$noahzgordon$elm_color_extra$Color$Convert$labToColor);
+var $elm$core$Basics$atan2 = _Basics_atan2;
+var $noahzgordon$elm_color_extra$Color$Convert$colorToXyz = function (cl) {
+	var c = function (ch) {
+		var ch_ = (ch > 4.045e-2) ? A2($elm$core$Basics$pow, (ch + 5.5e-2) / 1.055, 2.4) : (ch / 12.92);
+		return ch_ * 100;
+	};
+	var _v0 = $avh4$elm_color$Color$toRgba(cl);
+	var blue = _v0.gP;
+	var green = _v0.hs;
+	var red = _v0.im;
+	var b = c(blue);
+	var g = c(green);
+	var r = c(red);
+	return {gr: ((r * 0.4124) + (g * 0.3576)) + (b * 0.1805), gs: ((r * 0.2126) + (g * 0.7152)) + (b * 7.22e-2), cL: ((r * 1.93e-2) + (g * 0.1192)) + (b * 0.9505)};
+};
+var $noahzgordon$elm_color_extra$Color$Convert$xyzToLab = function (_v0) {
+	var z = _v0.cL;
+	var y = _v0.gs;
+	var x = _v0.gr;
+	var c = function (ch) {
+		return (ch > 8.856e-3) ? A2($elm$core$Basics$pow, ch, 1 / 3) : ((7.787 * ch) + (16 / 116));
+	};
+	var x_ = c(x / 95.047);
+	var y_ = c(y / 100);
+	var z_ = c(z / 108.883);
+	return {eP: 500 * (x_ - y_), eU: 200 * (y_ - z_), aR: (116 * y_) - 16};
+};
+var $noahzgordon$elm_color_extra$Color$Convert$colorToLab = A2($elm$core$Basics$composeR, $noahzgordon$elm_color_extra$Color$Convert$colorToXyz, $noahzgordon$elm_color_extra$Color$Convert$xyzToLab);
+var $elm$core$Basics$sqrt = _Basics_sqrt;
+var $author$project$OUI$Material$Color$toCIELCH = A2(
+	$elm$core$Basics$composeR,
+	$noahzgordon$elm_color_extra$Color$Convert$colorToLab,
+	function (_v0) {
+		var b = _v0.eU;
+		var a = _v0.eP;
+		var l = _v0.aR;
+		return {
+			bP: $elm$core$Basics$sqrt((a * a) + (b * b)),
+			b7: A2($elm$core$Basics$atan2, b, a),
+			aR: l
+		};
+	});
+var $author$project$OUI$Material$Color$withShade = F3(
+	function (c2, amount, c1) {
+		var fun = F2(
+			function (a, b) {
+				return {bP: (a.bP * (1 - amount)) + (b.bP * amount), b7: (a.b7 * (1 - amount)) + (b.b7 * amount), aR: (a.aR * (1 - amount)) + (b.aR * amount)};
+			});
+		var alpha = $avh4$elm_color$Color$toRgba(c1).dK;
+		return $avh4$elm_color$Color$fromRgba(
+			function (color) {
+				return _Utils_update(
+					color,
+					{dK: alpha});
+			}(
+				$avh4$elm_color$Color$toRgba(
+					$author$project$OUI$Material$Color$fromCIELCH(
+						A2(
+							fun,
+							$author$project$OUI$Material$Color$toCIELCH(c1),
+							$author$project$OUI$Material$Color$toCIELCH(c2))))));
+	});
+var $author$project$OUI$Material$Button$elevatedAttrs = F2(
+	function (colorscheme, color) {
+		var _v0 = A4($author$project$OUI$Material$Button$btnColors, colorscheme, 0, color, false);
+		var frontColor = _v0.a;
+		var backColor = _v0.b;
+		return _List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Border$shadow(
+				{
+					gR: 1,
+					g6: $author$project$OUI$Material$Color$toElementColor(colorscheme.iB),
+					h2: _Utils_Tuple2(1, 1),
+					iD: 1
+				}),
+				$mdgriffith$elm_ui$Element$Background$color(
+				$author$project$OUI$Material$Color$toElementColor(backColor)),
+				$mdgriffith$elm_ui$Element$Font$color(
+				$author$project$OUI$Material$Color$toElementColor(frontColor)),
+				$mdgriffith$elm_ui$Element$focused(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3(
+								$author$project$OUI$Material$Color$withShade,
+								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
+								$author$project$OUI$Material$Color$focusStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getSurfaceContainerLowColor, color, colorscheme))))
+					])),
+				$mdgriffith$elm_ui$Element$mouseDown(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3(
+								$author$project$OUI$Material$Color$withShade,
+								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
+								$author$project$OUI$Material$Color$pressStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getSurfaceContainerLowColor, color, colorscheme))))
+					])),
+				$mdgriffith$elm_ui$Element$mouseOver(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3(
+								$author$project$OUI$Material$Color$withShade,
+								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
+								$author$project$OUI$Material$Color$hoverStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getSurfaceContainerLowColor, color, colorscheme))))
+					]))
+			]);
+	});
+var $author$project$OUI$Material$Button$elevatedDisabledAttrs = F2(
+	function (colorscheme, color) {
+		var _v0 = A4($author$project$OUI$Material$Button$btnColors, colorscheme, 0, $author$project$OUI$Primary, true);
+		var frontColor = _v0.a;
+		var backColor = _v0.b;
+		return _List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Background$color(
+				$author$project$OUI$Material$Color$toElementColor(backColor)),
+				$mdgriffith$elm_ui$Element$Font$color(
+				$author$project$OUI$Material$Color$toElementColor(frontColor)),
+				$mdgriffith$elm_ui$Element$focused(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A2(
+								$author$project$OUI$Material$Color$setAlpha,
+								0.12 + $author$project$OUI$Material$Color$hoverStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme))))
+					]))
+			]);
+	});
+var $author$project$OUI$Button$SmallFAB = 4;
+var $author$project$OUI$Material$Button$fabColorsAttrs = F2(
+	function (colorscheme, color) {
+		var _v0 = A4($author$project$OUI$Material$Button$btnColors, colorscheme, 4, color, false);
+		var frontColor = _v0.a;
+		var bgColor = _v0.b;
+		var stateLayerColor = frontColor;
+		return _List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Border$shadow(
+				{
+					gR: 1,
+					g6: $author$project$OUI$Material$Color$toElementColor(colorscheme.iB),
+					h2: _Utils_Tuple2(1, 1),
+					iD: 1
+				}),
+				$mdgriffith$elm_ui$Element$Background$color(
+				$author$project$OUI$Material$Color$toElementColor(bgColor)),
+				$mdgriffith$elm_ui$Element$Font$color(
+				$author$project$OUI$Material$Color$toElementColor(frontColor)),
+				$mdgriffith$elm_ui$Element$focused(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3($author$project$OUI$Material$Color$withShade, stateLayerColor, $author$project$OUI$Material$Color$focusStateLayerOpacity, bgColor)))
+					])),
+				$mdgriffith$elm_ui$Element$mouseDown(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3($author$project$OUI$Material$Color$withShade, stateLayerColor, $author$project$OUI$Material$Color$pressStateLayerOpacity, bgColor)))
+					])),
+				$mdgriffith$elm_ui$Element$mouseOver(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3($author$project$OUI$Material$Color$withShade, stateLayerColor, $author$project$OUI$Material$Color$hoverStateLayerOpacity, bgColor)))
+					]))
+			]);
+	});
+var $author$project$OUI$Material$Button$fabLayoutAttrs = function (layout) {
+	return _List_fromArray(
+		[
+			$mdgriffith$elm_ui$Element$Border$rounded(layout.bW),
+			$mdgriffith$elm_ui$Element$height(
+			$mdgriffith$elm_ui$Element$px(layout.ak)),
+			$mdgriffith$elm_ui$Element$width(
+			$mdgriffith$elm_ui$Element$px(layout.bY))
+		]);
+};
+var $author$project$OUI$Button$Filled = 1;
+var $author$project$OUI$Material$Button$filledAttrs = F2(
+	function (colorscheme, color) {
+		var _v0 = A4($author$project$OUI$Material$Button$btnColors, colorscheme, 1, color, false);
+		var frontColor = _v0.a;
+		var backColor = _v0.b;
+		return _List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Background$color(
+				$author$project$OUI$Material$Color$toElementColor(backColor)),
+				$mdgriffith$elm_ui$Element$Font$color(
+				$author$project$OUI$Material$Color$toElementColor(frontColor)),
+				$mdgriffith$elm_ui$Element$focused(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3(
+								$author$project$OUI$Material$Color$withShade,
+								A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
+								$author$project$OUI$Material$Color$focusStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getColor, color, colorscheme))))
+					])),
+				$mdgriffith$elm_ui$Element$mouseDown(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3(
+								$author$project$OUI$Material$Color$withShade,
+								A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
+								$author$project$OUI$Material$Color$pressStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getColor, color, colorscheme))))
+					])),
+				$mdgriffith$elm_ui$Element$mouseOver(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3(
+								$author$project$OUI$Material$Color$withShade,
+								A2($author$project$OUI$Material$Color$getOnColor, color, colorscheme),
+								$author$project$OUI$Material$Color$hoverStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getColor, color, colorscheme))))
+					]))
+			]);
+	});
+var $author$project$OUI$Material$Button$filledDisabledAttrs = F2(
+	function (colorscheme, color) {
+		var _v0 = A4($author$project$OUI$Material$Button$btnColors, colorscheme, 1, $author$project$OUI$Primary, true);
+		var frontColor = _v0.a;
+		var backColor = _v0.b;
+		return _List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Background$color(
+				$author$project$OUI$Material$Color$toElementColor(backColor)),
+				$mdgriffith$elm_ui$Element$Font$color(
+				$author$project$OUI$Material$Color$toElementColor(frontColor)),
+				$mdgriffith$elm_ui$Element$focused(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A2(
+								$author$project$OUI$Material$Color$setAlpha,
+								0.12 + $author$project$OUI$Material$Color$hoverStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme))))
+					]))
+			]);
+	});
+var $author$project$OUI$Material$Button$iconButtonAttrs = function (layout) {
+	return _List_fromArray(
+		[
+			$mdgriffith$elm_ui$Element$width(
+			$mdgriffith$elm_ui$Element$px(layout.bX)),
+			$mdgriffith$elm_ui$Element$height(
+			$mdgriffith$elm_ui$Element$px(layout.bX)),
+			$mdgriffith$elm_ui$Element$Border$rounded((layout.bX / 2) | 0)
+		]);
+};
+var $author$project$OUI$Material$Button$iconOnly = function (t) {
+	switch (t) {
+		case 10:
+			return true;
+		case 8:
+			return true;
+		case 9:
+			return true;
+		case 4:
+			return true;
+		case 5:
+			return true;
+		case 6:
+			return true;
+		default:
+			return false;
+	}
+};
+var $author$project$OUI$Material$Button$iconSizeColor = F5(
+	function (colorscheme, theme, type_, color, disabled) {
+		var _v0 = A4($author$project$OUI$Material$Button$btnColors, colorscheme, type_, color, disabled);
+		var frontColor = _v0.a;
+		switch (type_) {
+			case 4:
+				return _Utils_Tuple2(theme.T.bx.s, frontColor);
+			case 5:
+				return _Utils_Tuple2(theme.T.fw.s, frontColor);
+			case 6:
+				return _Utils_Tuple2(theme.T.X.s, frontColor);
+			case 7:
+				return _Utils_Tuple2(theme.T.c1.s, frontColor);
+			case 10:
+				return _Utils_Tuple2(theme.c4.s, frontColor);
+			case 8:
+				return _Utils_Tuple2(theme.c4.s, frontColor);
+			case 9:
+				return _Utils_Tuple2(theme.c4.s, frontColor);
+			default:
+				return _Utils_Tuple2(theme.e0.s, frontColor);
+		}
+	});
+var $mdgriffith$elm_ui$Internal$Model$paddingName = F4(
+	function (top, right, bottom, left) {
+		return 'pad-' + ($elm$core$String$fromInt(top) + ('-' + ($elm$core$String$fromInt(right) + ('-' + ($elm$core$String$fromInt(bottom) + ('-' + $elm$core$String$fromInt(left)))))));
+	});
+var $mdgriffith$elm_ui$Element$paddingEach = function (_v0) {
+	var left = _v0.hT;
+	var bottom = _v0.gY;
+	var right = _v0.ir;
+	var top = _v0.jc;
+	if (_Utils_eq(top, right) && (_Utils_eq(top, bottom) && _Utils_eq(top, left))) {
+		var topFloat = top;
+		return A2(
+			$mdgriffith$elm_ui$Internal$Model$StyleClass,
+			$mdgriffith$elm_ui$Internal$Flag$padding,
+			A5(
+				$mdgriffith$elm_ui$Internal$Model$PaddingStyle,
+				'p-' + $elm$core$String$fromInt(top),
+				topFloat,
+				topFloat,
+				topFloat,
+				topFloat));
+	} else {
+		return A2(
+			$mdgriffith$elm_ui$Internal$Model$StyleClass,
+			$mdgriffith$elm_ui$Internal$Flag$padding,
+			A5(
+				$mdgriffith$elm_ui$Internal$Model$PaddingStyle,
+				A4($mdgriffith$elm_ui$Internal$Model$paddingName, top, right, bottom, left),
+				top,
+				right,
+				bottom,
+				left));
+	}
+};
+var $author$project$OUI$Material$Button$layoutAttrs = F4(
+	function (typescale, colorscheme, layout, hasIcon) {
+		var padding = hasIcon ? $mdgriffith$elm_ui$Element$paddingEach(
+			{gY: 0, hT: layout.c9, ir: layout.dr, jc: 0}) : A2($mdgriffith$elm_ui$Element$paddingXY, layout.da, 0);
+		return A2(
+			$elm$core$List$cons,
+			$mdgriffith$elm_ui$Element$height(
+				$mdgriffith$elm_ui$Element$px(layout.ak)),
+			_Utils_ap(
+				A5($author$project$OUI$Material$Typography$attrs, layout.gc, layout.gb, $author$project$OUI$Text$NoColor, typescale, colorscheme),
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Border$rounded(layout.cX),
+						padding
+					])));
+	});
+var $elm$html$Html$Attributes$rel = _VirtualDom_attribute('rel');
+var $mdgriffith$elm_ui$Element$link = F2(
+	function (attrs, _v0) {
+		var label = _v0.bg;
+		var url = _v0.dF;
+		return A4(
+			$mdgriffith$elm_ui$Internal$Model$element,
+			$mdgriffith$elm_ui$Internal$Model$asEl,
+			$mdgriffith$elm_ui$Internal$Model$NodeName('a'),
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Internal$Model$Attr(
+					$elm$html$Html$Attributes$href(url)),
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Internal$Model$Attr(
+						$elm$html$Html$Attributes$rel('noopener noreferrer')),
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
+						A2(
+							$elm$core$List$cons,
+							$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
+							A2(
+								$elm$core$List$cons,
+								$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.cZ + (' ' + ($mdgriffith$elm_ui$Internal$Style$classes.au + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.hZ)))),
+								attrs))))),
+			$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+				_List_fromArray(
+					[label])));
+	});
+var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
+var $mdgriffith$elm_ui$Element$newTabLink = F2(
+	function (attrs, _v0) {
+		var label = _v0.bg;
+		var url = _v0.dF;
+		return A4(
+			$mdgriffith$elm_ui$Internal$Model$element,
+			$mdgriffith$elm_ui$Internal$Model$asEl,
+			$mdgriffith$elm_ui$Internal$Model$NodeName('a'),
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Internal$Model$Attr(
+					$elm$html$Html$Attributes$href(url)),
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Internal$Model$Attr(
+						$elm$html$Html$Attributes$rel('noopener noreferrer')),
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Internal$Model$Attr(
+							$elm$html$Html$Attributes$target('_blank')),
+						A2(
+							$elm$core$List$cons,
+							$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
+							A2(
+								$elm$core$List$cons,
+								$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
+								A2(
+									$elm$core$List$cons,
+									$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.cZ + (' ' + ($mdgriffith$elm_ui$Internal$Style$classes.au + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.hZ)))),
+									attrs)))))),
+			$mdgriffith$elm_ui$Internal$Model$Unkeyed(
+				_List_fromArray(
+					[label])));
+	});
+var $mdgriffith$elm_ui$Internal$Flag$borderColor = $mdgriffith$elm_ui$Internal$Flag$flag(28);
+var $mdgriffith$elm_ui$Element$Border$color = function (clr) {
+	return A2(
+		$mdgriffith$elm_ui$Internal$Model$StyleClass,
+		$mdgriffith$elm_ui$Internal$Flag$borderColor,
+		A3(
+			$mdgriffith$elm_ui$Internal$Model$Colored,
+			'bc-' + $mdgriffith$elm_ui$Internal$Model$formatColorClass(clr),
+			'border-color',
+			clr));
+};
+var $author$project$OUI$Material$Color$getSurfaceColor = function (c) {
+	if (c.$ === 10) {
+		var surface = c.a.iN;
+		return $elm$core$Basics$always(surface);
+	} else {
+		return function ($) {
+			return $.iN;
+		};
+	}
+};
+var $mdgriffith$elm_ui$Internal$Model$BorderWidth = F5(
+	function (a, b, c, d, e) {
+		return {$: 6, a: a, b: b, c: c, d: d, e: e};
+	});
+var $mdgriffith$elm_ui$Element$Border$width = function (v) {
+	return A2(
+		$mdgriffith$elm_ui$Internal$Model$StyleClass,
+		$mdgriffith$elm_ui$Internal$Flag$borderWidth,
+		A5(
+			$mdgriffith$elm_ui$Internal$Model$BorderWidth,
+			'b-' + $elm$core$String$fromInt(v),
+			v,
+			v,
+			v,
+			v));
+};
+var $author$project$OUI$Material$Button$outlinedAttrs = F2(
+	function (colorscheme, color) {
+		return _List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Border$width(1),
+				$mdgriffith$elm_ui$Element$Border$color(
+				$author$project$OUI$Material$Color$toElementColor(colorscheme.ie)),
+				$mdgriffith$elm_ui$Element$Font$color(
+				A2($author$project$OUI$Material$Color$getElementColor, color, colorscheme)),
+				$mdgriffith$elm_ui$Element$focused(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3(
+								$author$project$OUI$Material$Color$withShade,
+								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
+								$author$project$OUI$Material$Color$focusStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getSurfaceColor, color, colorscheme))))
+					])),
+				$mdgriffith$elm_ui$Element$mouseDown(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3(
+								$author$project$OUI$Material$Color$withShade,
+								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
+								$author$project$OUI$Material$Color$pressStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getSurfaceColor, color, colorscheme))))
+					])),
+				$mdgriffith$elm_ui$Element$mouseOver(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3(
+								$author$project$OUI$Material$Color$withShade,
+								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
+								$author$project$OUI$Material$Color$hoverStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getSurfaceColor, color, colorscheme))))
+					]))
+			]);
+	});
+var $author$project$OUI$Material$Button$outlinedDisabledAttrs = F2(
+	function (colorscheme, color) {
+		return _List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Border$width(1),
+				$mdgriffith$elm_ui$Element$Border$color(
+				$author$project$OUI$Material$Color$toElementColor(
+					A2(
+						$author$project$OUI$Material$Color$setAlpha,
+						0.12,
+						A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme)))),
+				$mdgriffith$elm_ui$Element$Font$color(
+				$author$project$OUI$Material$Color$toElementColor(
+					A2(
+						$author$project$OUI$Material$Color$setAlpha,
+						0.38,
+						A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme)))),
+				$mdgriffith$elm_ui$Element$focused(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A2(
+								$author$project$OUI$Material$Color$setAlpha,
+								$author$project$OUI$Material$Color$hoverStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme))))
+					]))
+			]);
+	});
+var $author$project$OUI$Utils$ARIA$RoleButton = {$: 0};
+var $author$project$OUI$Utils$ARIA$fromRole = function (role) {
+	return {bg: $elm$core$Maybe$Nothing, cn: role};
+};
+var $author$project$OUI$Utils$ARIA$roleButton = $author$project$OUI$Utils$ARIA$fromRole($author$project$OUI$Utils$ARIA$RoleButton);
+var $author$project$OUI$Material$Button$textAttrs = F2(
+	function (colorscheme, color) {
+		return _List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Font$color(
+				A2($author$project$OUI$Material$Color$getElementColor, color, colorscheme)),
+				$mdgriffith$elm_ui$Element$focused(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3(
+								$author$project$OUI$Material$Color$withShade,
+								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
+								$author$project$OUI$Material$Color$focusStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getSurfaceColor, color, colorscheme))))
+					])),
+				$mdgriffith$elm_ui$Element$mouseDown(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3(
+								$author$project$OUI$Material$Color$withShade,
+								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
+								$author$project$OUI$Material$Color$pressStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getSurfaceColor, color, colorscheme))))
+					])),
+				$mdgriffith$elm_ui$Element$mouseOver(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A3(
+								$author$project$OUI$Material$Color$withShade,
+								A2($author$project$OUI$Material$Color$getColor, color, colorscheme),
+								$author$project$OUI$Material$Color$hoverStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getSurfaceColor, color, colorscheme))))
+					]))
+			]);
+	});
+var $author$project$OUI$Material$Button$textDisabledAttrs = F2(
+	function (colorscheme, color) {
+		return _List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Font$color(
+				$author$project$OUI$Material$Color$toElementColor(
+					A2(
+						$author$project$OUI$Material$Color$setAlpha,
+						0.38,
+						A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme)))),
+				$mdgriffith$elm_ui$Element$focused(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color(
+						$author$project$OUI$Material$Color$toElementColor(
+							A2(
+								$author$project$OUI$Material$Color$setAlpha,
+								$author$project$OUI$Material$Color$hoverStateLayerOpacity,
+								A2($author$project$OUI$Material$Color$getOnSurfaceColor, color, colorscheme))))
+					]))
+			]);
+	});
+var $mdgriffith$elm_ui$Element$htmlAttribute = $mdgriffith$elm_ui$Internal$Model$Attr;
+var $author$project$OUI$Utils$ARIA$ifThenElse = F3(
+	function (value, ifTrue, ifFalse) {
+		return value ? ifTrue : ifFalse;
+	});
+var $author$project$OUI$Utils$ARIA$checkedAttr = function (value) {
+	return $mdgriffith$elm_ui$Element$htmlAttribute(
+		A2(
+			$elm$html$Html$Attributes$attribute,
+			'aria-checked',
+			A3($author$project$OUI$Utils$ARIA$ifThenElse, value, 'true', 'false')));
+};
+var $author$project$OUI$Utils$ARIA$labelAttr = function (value) {
+	return $mdgriffith$elm_ui$Element$htmlAttribute(
+		A2($elm$html$Html$Attributes$attribute, 'aria-label', value));
+};
+var $author$project$OUI$Utils$ARIA$prependMaybe = A2(
+	$elm$core$Basics$composeR,
+	$elm$core$Maybe$map($elm$core$List$cons),
+	$elm$core$Maybe$withDefault($elm$core$Basics$identity));
+var $author$project$OUI$Utils$ARIA$pressedAttr = function (value) {
+	return $mdgriffith$elm_ui$Element$htmlAttribute(
+		A2(
+			$elm$html$Html$Attributes$attribute,
+			'aria-pressed',
+			A3($author$project$OUI$Utils$ARIA$ifThenElse, value, 'true', 'false')));
+};
+var $author$project$OUI$Utils$ARIA$roleAttr = function (role) {
+	return $mdgriffith$elm_ui$Element$htmlAttribute(
+		A2($elm$html$Html$Attributes$attribute, 'role', role));
+};
+var $author$project$OUI$Utils$ARIA$selectedAttr = function (value) {
+	return $mdgriffith$elm_ui$Element$htmlAttribute(
+		A2(
+			$elm$html$Html$Attributes$attribute,
+			'aria-selected',
+			A3($author$project$OUI$Utils$ARIA$ifThenElse, value, 'true', 'false')));
+};
+var $author$project$OUI$Utils$ARIA$toElementAttributes = function (_v0) {
+	var label = _v0.bg;
+	var role = _v0.cn;
+	return A2(
+		$author$project$OUI$Utils$ARIA$prependMaybe,
+		A2($elm$core$Maybe$map, $author$project$OUI$Utils$ARIA$labelAttr, label),
+		function () {
+			switch (role.$) {
+				case 0:
+					return _List_fromArray(
+						[
+							$author$project$OUI$Utils$ARIA$roleAttr('button')
+						]);
+				case 9:
+					var pressed = role.a;
+					return _List_fromArray(
+						[
+							$author$project$OUI$Utils$ARIA$roleAttr('button'),
+							$author$project$OUI$Utils$ARIA$pressedAttr(pressed)
+						]);
+				case 1:
+					var checked = role.a;
+					return _List_fromArray(
+						[
+							$author$project$OUI$Utils$ARIA$roleAttr('checkbox'),
+							$author$project$OUI$Utils$ARIA$checkedAttr(checked)
+						]);
+				case 2:
+					var checked = role.a;
+					return _List_fromArray(
+						[
+							$author$project$OUI$Utils$ARIA$roleAttr('radio'),
+							$author$project$OUI$Utils$ARIA$checkedAttr(checked)
+						]);
+				case 3:
+					var state = role.a;
+					return _List_fromArray(
+						[
+							$author$project$OUI$Utils$ARIA$roleAttr('switch'),
+							$author$project$OUI$Utils$ARIA$checkedAttr(state)
+						]);
+				case 4:
+					return _List_fromArray(
+						[
+							$author$project$OUI$Utils$ARIA$roleAttr('img')
+						]);
+				case 5:
+					return _List_fromArray(
+						[
+							$author$project$OUI$Utils$ARIA$roleAttr('presentation')
+						]);
+				case 6:
+					var checked = role.a;
+					return _List_fromArray(
+						[
+							$author$project$OUI$Utils$ARIA$roleAttr('radio'),
+							$author$project$OUI$Utils$ARIA$checkedAttr(checked)
+						]);
+				case 7:
+					return _List_fromArray(
+						[
+							$author$project$OUI$Utils$ARIA$roleAttr('radiogroup')
+						]);
+				default:
+					var selected = role.a;
+					return _List_fromArray(
+						[
+							$author$project$OUI$Utils$ARIA$roleAttr('tab'),
+							$author$project$OUI$Utils$ARIA$selectedAttr(selected)
+						]);
+			}
+		}());
+};
+var $author$project$OUI$Utils$ARIA$withLabel = F2(
+	function (label, semantics) {
+		return _Utils_update(
+			semantics,
+			{
+				bg: $elm$core$Maybe$Just(label)
+			});
+	});
+var $author$project$OUI$Material$Button$renderProps = F6(
+	function (typescale, colorscheme, theme, rightIcon, attrs, props) {
+		var label = function () {
+			var _v29 = A5(
+				$author$project$OUI$Material$Button$iconSizeColor,
+				colorscheme,
+				theme,
+				props.dE,
+				props.g6,
+				_Utils_eq(props.aq, $author$project$OUI$Button$Disabled));
+			var size = _v29.a;
+			var color = _v29.b;
+			var iconColor = function (icon) {
+				return A2(
+					$elm$core$Maybe$withDefault,
+					color,
+					A2(
+						$elm$core$Maybe$map,
+						function (c) {
+							return A2($author$project$OUI$Material$Color$getColor, c, colorscheme);
+						},
+						$author$project$OUI$Icon$getColor(icon)));
+			};
+			var _v30 = _Utils_Tuple3(
+				$author$project$OUI$Material$Button$iconOnly(props.dE),
+				props.c4,
+				rightIcon);
+			_v30$0:
+			while (true) {
+				_v30$1:
+				while (true) {
+					if (_v30.a) {
+						if (_v30.b.$ === 1) {
+							if (_v30.c.$ === 1) {
+								break _v30$0;
+							} else {
+								break _v30$1;
+							}
+						} else {
+							if (!_v30.c.$) {
+								break _v30$1;
+							} else {
+								var icon = _v30.b.a;
+								return A4(
+									$author$project$OUI$Material$Icon$renderWithSizeColor,
+									size,
+									iconColor(icon),
+									_List_fromArray(
+										[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
+									icon);
+							}
+						}
+					} else {
+						if ((_v30.b.$ === 1) && (_v30.c.$ === 1)) {
+							break _v30$0;
+						} else {
+							var icon = _v30.b;
+							var rIcon = _v30.c;
+							return A2(
+								$mdgriffith$elm_ui$Element$row,
+								_List_fromArray(
+									[
+										$mdgriffith$elm_ui$Element$spacing(theme.e0.dk)
+									]),
+								A2(
+									$elm$core$List$filterMap,
+									$elm$core$Basics$identity,
+									_List_fromArray(
+										[
+											A2(
+											$elm$core$Maybe$map,
+											function (i) {
+												return A4(
+													$author$project$OUI$Material$Icon$renderWithSizeColor,
+													size,
+													iconColor(i),
+													_List_fromArray(
+														[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
+													i);
+											},
+											icon),
+											$elm$core$Maybe$Just(
+											$mdgriffith$elm_ui$Element$text(props.eI)),
+											A2(
+											$elm$core$Maybe$map,
+											function (i) {
+												return A4(
+													$author$project$OUI$Material$Icon$renderWithSizeColor,
+													size,
+													iconColor(i),
+													_List_fromArray(
+														[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
+													i);
+											},
+											rIcon)
+										])));
+						}
+					}
+				}
+				var icon = _v30.c.a;
+				return A4(
+					$author$project$OUI$Material$Icon$renderWithSizeColor,
+					size,
+					iconColor(icon),
+					_List_fromArray(
+						[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
+					icon);
+			}
+			var _v31 = _v30.b;
+			var _v32 = _v30.c;
+			return A2(
+				$mdgriffith$elm_ui$Element$el,
+				_List_fromArray(
+					[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
+				$mdgriffith$elm_ui$Element$text(props.eI));
+		}();
+		var hasIcon = !_Utils_eq(props.c4, $elm$core$Maybe$Nothing);
+		var aria = $author$project$OUI$Utils$ARIA$toElementAttributes(
+			A2($author$project$OUI$Utils$ARIA$withLabel, props.eI, $author$project$OUI$Utils$ARIA$roleButton));
+		var all_attrs = _Utils_ap(
+			aria,
+			_Utils_ap(
+				attrs,
+				function () {
+					var _v1 = _Utils_Tuple2(props.dE, props.aq);
+					switch (_v1.a) {
+						case 0:
+							if (!_v1.b.$) {
+								var _v2 = _v1.a;
+								var _v3 = _v1.b;
+								return _Utils_ap(
+									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
+									A2($author$project$OUI$Material$Button$elevatedDisabledAttrs, colorscheme, props.g6));
+							} else {
+								var _v4 = _v1.a;
+								return _Utils_ap(
+									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
+									A2($author$project$OUI$Material$Button$elevatedAttrs, colorscheme, props.g6));
+							}
+						case 1:
+							if (!_v1.b.$) {
+								var _v5 = _v1.a;
+								var _v6 = _v1.b;
+								return _Utils_ap(
+									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
+									A2($author$project$OUI$Material$Button$filledDisabledAttrs, colorscheme, props.g6));
+							} else {
+								var _v7 = _v1.a;
+								return _Utils_ap(
+									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
+									A2($author$project$OUI$Material$Button$filledAttrs, colorscheme, props.g6));
+							}
+						case 8:
+							if (!_v1.b.$) {
+								var _v8 = _v1.a;
+								var _v9 = _v1.b;
+								return _Utils_ap(
+									$author$project$OUI$Material$Button$iconButtonAttrs(theme.c4),
+									A2($author$project$OUI$Material$Button$filledDisabledAttrs, colorscheme, props.g6));
+							} else {
+								var _v10 = _v1.a;
+								return _Utils_ap(
+									$author$project$OUI$Material$Button$iconButtonAttrs(theme.c4),
+									A2($author$project$OUI$Material$Button$filledAttrs, colorscheme, props.g6));
+							}
+						case 2:
+							if (!_v1.b.$) {
+								var _v11 = _v1.a;
+								var _v12 = _v1.b;
+								return _Utils_ap(
+									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
+									A2($author$project$OUI$Material$Button$outlinedDisabledAttrs, colorscheme, props.g6));
+							} else {
+								var _v13 = _v1.a;
+								return _Utils_ap(
+									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
+									A2($author$project$OUI$Material$Button$outlinedAttrs, colorscheme, props.g6));
+							}
+						case 9:
+							if (!_v1.b.$) {
+								var _v14 = _v1.a;
+								var _v15 = _v1.b;
+								return _Utils_ap(
+									$author$project$OUI$Material$Button$iconButtonAttrs(theme.c4),
+									A2($author$project$OUI$Material$Button$outlinedDisabledAttrs, colorscheme, props.g6));
+							} else {
+								var _v16 = _v1.a;
+								return _Utils_ap(
+									$author$project$OUI$Material$Button$iconButtonAttrs(theme.c4),
+									A2($author$project$OUI$Material$Button$outlinedAttrs, colorscheme, props.g6));
+							}
+						case 3:
+							if (!_v1.b.$) {
+								var _v17 = _v1.a;
+								var _v18 = _v1.b;
+								return _Utils_ap(
+									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
+									A2($author$project$OUI$Material$Button$textDisabledAttrs, colorscheme, props.g6));
+							} else {
+								var _v19 = _v1.a;
+								return _Utils_ap(
+									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.e0, hasIcon),
+									A2($author$project$OUI$Material$Button$textAttrs, colorscheme, props.g6));
+							}
+						case 10:
+							if (!_v1.b.$) {
+								var _v20 = _v1.a;
+								var _v21 = _v1.b;
+								return _Utils_ap(
+									$author$project$OUI$Material$Button$iconButtonAttrs(theme.c4),
+									A2($author$project$OUI$Material$Button$textDisabledAttrs, colorscheme, props.g6));
+							} else {
+								var _v22 = _v1.a;
+								return _Utils_ap(
+									$author$project$OUI$Material$Button$iconButtonAttrs(theme.c4),
+									A2($author$project$OUI$Material$Button$textAttrs, colorscheme, props.g6));
+							}
+						case 4:
+							var _v23 = _v1.a;
+							return _Utils_ap(
+								$author$project$OUI$Material$Button$fabLayoutAttrs(theme.T.bx),
+								A2($author$project$OUI$Material$Button$fabColorsAttrs, colorscheme, props.g6));
+						case 5:
+							var _v24 = _v1.a;
+							return _Utils_ap(
+								$author$project$OUI$Material$Button$fabLayoutAttrs(theme.T.fw),
+								A2($author$project$OUI$Material$Button$fabColorsAttrs, colorscheme, props.g6));
+						case 6:
+							var _v25 = _v1.a;
+							return _Utils_ap(
+								$author$project$OUI$Material$Button$fabLayoutAttrs(theme.T.X),
+								A2($author$project$OUI$Material$Button$fabColorsAttrs, colorscheme, props.g6));
+						default:
+							if (!_v1.b.$) {
+								var _v26 = _v1.a;
+								var _v27 = _v1.b;
+								return _Utils_ap(
+									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.T.c1, hasIcon),
+									A2($author$project$OUI$Material$Button$fabColorsAttrs, colorscheme, props.g6));
+							} else {
+								var _v28 = _v1.a;
+								return _Utils_ap(
+									A4($author$project$OUI$Material$Button$layoutAttrs, typescale, colorscheme, theme.T.c1, hasIcon),
+									A2($author$project$OUI$Material$Button$fabColorsAttrs, colorscheme, props.g6));
+							}
+					}
+				}()));
+		var _v0 = props.aq;
+		switch (_v0.$) {
+			case 2:
+				var url = _v0.a;
+				return A2(
+					$mdgriffith$elm_ui$Element$link,
+					all_attrs,
+					{bg: label, dF: url});
+			case 3:
+				var url = _v0.a;
+				return A2(
+					$mdgriffith$elm_ui$Element$newTabLink,
+					all_attrs,
+					{bg: label, dF: url});
+			case 4:
+				var url = _v0.a;
+				return A2(
+					$mdgriffith$elm_ui$Element$download,
+					all_attrs,
+					{bg: label, dF: url});
+			case 5:
+				var url = _v0.a;
+				var filename = _v0.b;
+				return A2(
+					$mdgriffith$elm_ui$Element$downloadAs,
+					all_attrs,
+					{hn: filename, bg: label, dF: url});
+			case 1:
+				var msg = _v0.a;
+				return A2(
+					$mdgriffith$elm_ui$Element$Input$button,
+					all_attrs,
+					{
+						bg: label,
+						fI: $elm$core$Maybe$Just(msg)
+					});
+			default:
+				return A2(
+					$mdgriffith$elm_ui$Element$Input$button,
+					all_attrs,
+					{bg: label, fI: $elm$core$Maybe$Nothing});
+		}
+	});
+var $author$project$OUI$Material$Button$render = F6(
+	function (typescale, colorscheme, theme, rightIcon, attrs, button) {
+		var props = {
+			aq: $author$project$OUI$Button$getAction(button),
+			g6: $author$project$OUI$Button$getColor(button),
+			c4: $author$project$OUI$Button$getIcon(button),
+			eI: $author$project$OUI$Button$getText(button),
+			dE: $author$project$OUI$Button$getType(button)
+		};
+		return A6($author$project$OUI$Material$Button$renderProps, typescale, colorscheme, theme, rightIcon, attrs, props);
+	});
+var $author$project$OUI$Material$button = function (theme) {
+	return A4(
+		$author$project$OUI$Material$Button$render,
+		$author$project$OUI$Material$Theme$typescale(theme),
+		$author$project$OUI$Material$Theme$colorscheme(theme),
+		$author$project$OUI$Material$Theme$button(theme),
+		$elm$core$Maybe$Nothing);
+};
+var $author$project$OUI$Icon$clear = $author$project$OUI$Icon$fromRenderer(
+	$author$project$OUI$Icon$Html(
+		F2(
+			function (size, color) {
+				var sizeAsString = $elm$core$String$fromInt(size);
+				return A2(
+					$elm$svg$Svg$svg,
+					_List_fromArray(
+						[
+							$elm$svg$Svg$Attributes$viewBox('0 0 24 24'),
+							$elm$svg$Svg$Attributes$height(sizeAsString),
+							$elm$svg$Svg$Attributes$width(sizeAsString)
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$svg$Svg$g,
+							_List_fromArray(
+								[
+									$elm$svg$Svg$Attributes$fill(
+									$avh4$elm_color$Color$toCssString(color))
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$svg$Svg$path,
+									_List_fromArray(
+										[
+											$elm$svg$Svg$Attributes$d('M0 0h24v24H0V0z'),
+											$elm$svg$Svg$Attributes$fill('none')
+										]),
+									_List_Nil),
+									A2(
+									$elm$svg$Svg$path,
+									_List_fromArray(
+										[
+											$elm$svg$Svg$Attributes$d('M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z')
+										]),
+									_List_Nil)
+								]))
+						]));
+			})));
+var $author$project$OUI$Button$Button = $elm$core$Basics$identity;
+var $author$project$OUI$Button$color = F2(
+	function (value, _v0) {
+		var props = _v0;
+		return _Utils_update(
+			props,
+			{g6: value});
+	});
+var $author$project$OUI$Button$disabled = function (_v0) {
+	var props = _v0;
+	return props;
+};
+var $author$project$OUI$Button$Link = function (a) {
+	return {$: 2, a: a};
+};
+var $author$project$OUI$Button$link = F2(
+	function (url, _v0) {
+		var props = _v0;
+		return _Utils_update(
+			props,
+			{
+				aq: $author$project$OUI$Button$Link(url)
+			});
+	});
+var $author$project$OUI$Explorer$Event = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$OUI$Explorer$logEvent = function (value) {
+	return $author$project$OUI$Explorer$SharedMsg(
+		$author$project$OUI$Explorer$Event(value));
+};
+var $author$project$OUI$Button$new = function (label) {
+	return {aq: $author$project$OUI$Button$Disabled, g6: $author$project$OUI$Primary, c4: $elm$core$Maybe$Nothing, eI: label, dE: 0};
+};
+var $author$project$OUI$Button$OnClick = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$OUI$Button$onClick = F2(
+	function (msg, _v0) {
+		var props = _v0;
+		return _Utils_update(
+			props,
+			{
+				aq: $author$project$OUI$Button$OnClick(msg)
+			});
+	});
+var $author$project$OUI$Button$withIcon = F2(
+	function (value, _v0) {
+		var props = _v0;
+		return _Utils_update(
+			props,
+			{
+				c4: $elm$core$Maybe$Just(value)
+			});
+	});
+var $author$project$OUI$Showcase$Buttons$commonButtonVariants = F3(
+	function (theme, label, btnType) {
+		return _List_fromArray(
+			[
+				A3(
+				$author$project$OUI$Material$button,
+				theme,
+				_List_fromArray(
+					[$mdgriffith$elm_ui$Element$centerX]),
+				A2(
+					$author$project$OUI$Button$onClick,
+					$author$project$OUI$Explorer$logEvent('Clicked ' + label),
+					btnType(
+						$author$project$OUI$Button$new(label)))),
+				A3(
+				$author$project$OUI$Material$button,
+				theme,
+				_List_fromArray(
+					[$mdgriffith$elm_ui$Element$centerX]),
+				A2(
+					$author$project$OUI$Button$onClick,
+					$author$project$OUI$Explorer$logEvent('Clicked ' + (label + ' + icon')),
+					A2(
+						$author$project$OUI$Button$withIcon,
+						$author$project$OUI$Icon$clear,
+						btnType(
+							$author$project$OUI$Button$new('with Icon'))))),
+				A3(
+				$author$project$OUI$Material$button,
+				theme,
+				_List_fromArray(
+					[$mdgriffith$elm_ui$Element$centerX]),
+				A2(
+					$author$project$OUI$Button$link,
+					'#/Basics/Buttons',
+					btnType(
+						$author$project$OUI$Button$new('Link')))),
+				A3(
+				$author$project$OUI$Material$button,
+				theme,
+				_List_fromArray(
+					[$mdgriffith$elm_ui$Element$centerX]),
+				A2(
+					$author$project$OUI$Button$link,
+					'#/Basics/Buttons',
+					A2(
+						$author$project$OUI$Button$withIcon,
+						$author$project$OUI$Icon$clear,
+						btnType(
+							$author$project$OUI$Button$new('Link Icon'))))),
+				A3(
+				$author$project$OUI$Material$button,
+				theme,
+				_List_fromArray(
+					[$mdgriffith$elm_ui$Element$centerX]),
+				$author$project$OUI$Button$disabled(
+					A2(
+						$author$project$OUI$Button$withIcon,
+						$author$project$OUI$Icon$clear,
+						btnType(
+							$author$project$OUI$Button$new('Disabled')))))
+			]);
+	});
+var $author$project$OUI$Button$btntype = F2(
+	function (value, _v0) {
+		var props = _v0;
+		return _Utils_update(
+			props,
+			{dE: value});
+	});
+var $author$project$OUI$Button$elevatedButton = $author$project$OUI$Button$btntype(0);
+var $author$project$OUI$Button$ExtendedFAB = 7;
+var $author$project$OUI$Button$extendedFAB = $author$project$OUI$Button$btntype(7);
+var $author$project$OUI$Button$filledButton = $author$project$OUI$Button$btntype(1);
+var $author$project$OUI$Button$FilledIcon = 8;
+var $author$project$OUI$Button$filledIconButton = $author$project$OUI$Button$btntype(8);
+var $author$project$OUI$Button$Icon = 10;
+var $author$project$OUI$Button$iconButton = $author$project$OUI$Button$btntype(10);
+var $author$project$OUI$Button$LargeFAB = 6;
+var $author$project$OUI$Button$largeFAB = $author$project$OUI$Button$btntype(6);
+var $author$project$OUI$Button$MediumFAB = 5;
+var $author$project$OUI$Button$mediumFAB = $author$project$OUI$Button$btntype(5);
+var $author$project$OUI$Button$Outlined = 2;
+var $author$project$OUI$Button$outlinedButton = $author$project$OUI$Button$btntype(2);
+var $author$project$OUI$Button$OutlinedIcon = 9;
+var $author$project$OUI$Button$outlinedIconButton = $author$project$OUI$Button$btntype(9);
+var $author$project$OUI$Button$smallFAB = $author$project$OUI$Button$btntype(4);
+var $author$project$OUI$Button$Text = 3;
+var $author$project$OUI$Button$textButton = $author$project$OUI$Button$btntype(3);
+var $author$project$OUI$Showcase$Buttons$commonButtons = function (_v0) {
+	var theme = _v0.i8;
+	var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+	var btnRow = F2(
+		function (label, btnType) {
+			return A2(
+				$mdgriffith$elm_ui$Element$row,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$spacing(30)
+					]),
+				A2(
+					$elm$core$List$map,
+					$mdgriffith$elm_ui$Element$el(
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$width(
+								$mdgriffith$elm_ui$Element$px(100))
+							])),
+					A2(
+						$elm$core$List$cons,
+						A2(
+							$author$project$OUI$Material$text,
+							theme,
+							$author$project$OUI$Text$titleSmall(label)),
+						A3($author$project$OUI$Showcase$Buttons$commonButtonVariants, theme, label, btnType))));
+		});
+	return A2(
+		$mdgriffith$elm_ui$Element$column,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$spacing(30)
+			]),
+		_List_fromArray(
+			[
+				divider,
+				A2(
+				$author$project$OUI$Material$text,
+				theme,
+				$author$project$OUI$Text$titleLarge('Common buttons')),
+				A2(
+				$mdgriffith$elm_ui$Element$column,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$spacing(30)
+					]),
+				_List_fromArray(
+					[
+						A2(btnRow, 'Elevated', $author$project$OUI$Button$elevatedButton),
+						A2(btnRow, 'Filled', $author$project$OUI$Button$filledButton),
+						A2(btnRow, 'Outlined', $author$project$OUI$Button$outlinedButton),
+						A2(btnRow, 'Text', $author$project$OUI$Button$textButton)
+					])),
+				divider,
+				A2(
+				$author$project$OUI$Material$text,
+				theme,
+				$author$project$OUI$Text$titleLarge('FAB')),
+				A2(
+				$mdgriffith$elm_ui$Element$row,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$spacing(30)
+					]),
+				function () {
+					var btn = function (s) {
+						return A2(
+							$author$project$OUI$Button$withIcon,
+							$author$project$OUI$Icon$clear,
+							$author$project$OUI$Button$new(s + 'FAB'));
+					};
+					var clickBtn = function (s) {
+						return A2(
+							$author$project$OUI$Button$onClick,
+							$author$project$OUI$Explorer$logEvent('Clicked ' + (s + ' FAB')),
+							btn(s));
+					};
+					var linkBtn = function (s) {
+						return A2(
+							$author$project$OUI$Button$link,
+							'#/Basics/Buttons',
+							btn(s));
+					};
+					return _List_fromArray(
+						[
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							A2(
+								$author$project$OUI$Button$color,
+								$author$project$OUI$PrimaryContainer,
+								$author$project$OUI$Button$smallFAB(
+									clickBtn('Small')))),
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							A2(
+								$author$project$OUI$Button$color,
+								$author$project$OUI$PrimaryContainer,
+								$author$project$OUI$Button$smallFAB(
+									linkBtn('Small')))),
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							A2(
+								$author$project$OUI$Button$color,
+								$author$project$OUI$SecondaryContainer,
+								$author$project$OUI$Button$mediumFAB(
+									clickBtn('Medium')))),
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							A2(
+								$author$project$OUI$Button$color,
+								$author$project$OUI$SecondaryContainer,
+								$author$project$OUI$Button$mediumFAB(
+									linkBtn('Medium')))),
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							A2(
+								$author$project$OUI$Button$color,
+								$author$project$OUI$TertiaryContainer,
+								$author$project$OUI$Button$largeFAB(
+									clickBtn('Large')))),
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							A2(
+								$author$project$OUI$Button$color,
+								$author$project$OUI$TertiaryContainer,
+								$author$project$OUI$Button$largeFAB(
+									linkBtn('Large')))),
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							A2(
+								$author$project$OUI$Button$color,
+								$author$project$OUI$Primary,
+								$author$project$OUI$Button$extendedFAB(
+									clickBtn('Extended')))),
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							A2(
+								$author$project$OUI$Button$color,
+								$author$project$OUI$Primary,
+								$author$project$OUI$Button$extendedFAB(
+									linkBtn('Extended'))))
+						]);
+				}()),
+				divider,
+				A2(
+				$author$project$OUI$Material$text,
+				theme,
+				$author$project$OUI$Text$titleLarge('Icon buttons')),
+				A2(
+				$mdgriffith$elm_ui$Element$row,
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$spacing(30)
+					]),
+				function () {
+					var btn = function (s) {
+						return A2(
+							$author$project$OUI$Button$withIcon,
+							$author$project$OUI$Icon$clear,
+							$author$project$OUI$Button$new(s + ' Icon'));
+					};
+					var clickBtn = function (s) {
+						return A2(
+							$author$project$OUI$Button$onClick,
+							$author$project$OUI$Explorer$logEvent('Clicked ' + (s + ' Icon')),
+							btn(s));
+					};
+					var linkBtn = function (s) {
+						return A2(
+							$author$project$OUI$Button$link,
+							'#/Basics/Buttons',
+							btn(s));
+					};
+					return _List_fromArray(
+						[
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							$author$project$OUI$Button$iconButton(
+								clickBtn('Standard'))),
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							$author$project$OUI$Button$iconButton(
+								linkBtn('Standard'))),
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							A2(
+								$author$project$OUI$Button$color,
+								$author$project$OUI$Primary,
+								$author$project$OUI$Button$filledIconButton(
+									clickBtn('Filled')))),
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							A2(
+								$author$project$OUI$Button$color,
+								$author$project$OUI$Primary,
+								$author$project$OUI$Button$filledIconButton(
+									linkBtn('Filled')))),
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							A2(
+								$author$project$OUI$Button$color,
+								$author$project$OUI$Primary,
+								$author$project$OUI$Button$outlinedIconButton(
+									clickBtn('Outlined')))),
+							A3(
+							$author$project$OUI$Material$button,
+							theme,
+							_List_fromArray(
+								[$mdgriffith$elm_ui$Element$centerX]),
+							A2(
+								$author$project$OUI$Button$color,
+								$author$project$OUI$Primary,
+								$author$project$OUI$Button$outlinedIconButton(
+									linkBtn('Outlined'))))
+						]);
+				}())
+			]));
+};
+var $author$project$OUI$Showcase$Buttons$fabSection = F4(
+	function (theme, title, layout, toMsg) {
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		return _List_fromArray(
+			[
+				divider,
+				A2(
+				$author$project$OUI$Material$text,
+				theme,
+				$author$project$OUI$Text$titleLarge(title)),
+				A5(
+				$author$project$OUI$Explorer$ThemeEditor$slider,
+				theme,
+				toMsg(
+					F2(
+						function (value, l) {
+							return _Utils_update(
+								l,
+								{
+									ak: $elm$core$Basics$round(value)
+								});
+						})),
+				'Container Height',
+				_Utils_Tuple2(0, 200),
+				layout.ak),
+				A5(
+				$author$project$OUI$Explorer$ThemeEditor$slider,
+				theme,
+				toMsg(
+					F2(
+						function (value, l) {
+							return _Utils_update(
+								l,
+								{
+									bW: $elm$core$Basics$round(value)
+								});
+						})),
+				'Container Shape',
+				_Utils_Tuple2(0, layout.ak / 2),
+				layout.bW),
+				A5(
+				$author$project$OUI$Explorer$ThemeEditor$slider,
+				theme,
+				toMsg(
+					F2(
+						function (value, l) {
+							return _Utils_update(
+								l,
+								{
+									bY: $elm$core$Basics$round(value)
+								});
+						})),
+				'Container Width',
+				_Utils_Tuple2(0, 200),
+				layout.bY),
+				A5(
+				$author$project$OUI$Explorer$ThemeEditor$slider,
+				theme,
+				toMsg(
+					F2(
+						function (value, l) {
+							return _Utils_update(
+								l,
+								{
+									s: $elm$core$Basics$round(value)
+								});
+						})),
+				'Icon Size',
+				_Utils_Tuple2(0, layout.ak),
+				layout.s)
+			]);
+	});
 var $author$project$OUI$Material$Theme$withButton = F2(
 	function (value, _v0) {
 		var t = _v0;
@@ -16234,10 +16491,6 @@ var $author$project$OUI$Showcase$Buttons$updateButtonCommon = function (fn) {
 				});
 		});
 };
-var $author$project$OUI$Explorer$UpdateCurrentTheme = function (a) {
-	return {$: 8, a: a};
-};
-var $author$project$OUI$Explorer$updateCurrentThemeMsg = $author$project$OUI$Explorer$UpdateCurrentTheme;
 var $author$project$OUI$Showcase$Buttons$updateButtonCommonMsg = F2(
 	function (fn, value) {
 		return $author$project$OUI$Explorer$sharedMsg(
@@ -16665,14 +16918,6 @@ var $author$project$OUI$Explorer$statefulBook = F2(
 		var update = _v0.a3;
 		var init = _v0.aQ;
 		return {aa: _List_Nil, R: $elm$core$Maybe$Nothing, aQ: init, a1: subscriptions, bD: _List_Nil, gd: title, a3: update};
-	});
-var $author$project$OUI$Explorer$withThemeEditor = F2(
-	function (body, b) {
-		return _Utils_update(
-			b,
-			{
-				bD: A2($elm$core$List$cons, body, b.bD)
-			});
 	});
 var $author$project$OUI$Showcase$Buttons$book = A2(
 	$author$project$OUI$Explorer$withThemeEditor,
@@ -17158,6 +17403,124 @@ var $author$project$OUI$Showcase$Checkbox$checkbox = F2(
 							]))
 					])));
 	});
+var $author$project$OUI$Material$Theme$withCheckbox = F2(
+	function (value, _v0) {
+		var t = _v0;
+		return _Utils_update(
+			t,
+			{bQ: value});
+	});
+var $author$project$OUI$Showcase$Checkbox$updateCheckboxTheme = F2(
+	function (fn, theme) {
+		return A2(
+			$author$project$OUI$Material$Theme$withCheckbox,
+			fn(
+				$author$project$OUI$Material$Theme$checkbox(theme)),
+			theme);
+	});
+var $author$project$OUI$Showcase$Checkbox$updateCheckboxMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Checkbox$updateCheckboxTheme(
+					fn(value))));
+	});
+var $author$project$OUI$Showcase$Checkbox$editorChapter = F2(
+	function (_v0, _v1) {
+		var theme = _v0.i8;
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		var checkboxTheme = $author$project$OUI$Material$Theme$checkbox(theme);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30)
+				]),
+			_List_fromArray(
+				[
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Checkbox')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Checkbox$updateCheckboxMsg(
+						F2(
+							function (value, c) {
+								return _Utils_update(
+									c,
+									{
+										bY: $elm$core$Basics$round(value)
+									});
+							})),
+					'Container Width',
+					_Utils_Tuple2(0, 100),
+					checkboxTheme.bY),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Checkbox$updateCheckboxMsg(
+						F2(
+							function (value, c) {
+								return _Utils_update(
+									c,
+									{
+										ak: $elm$core$Basics$round(value)
+									});
+							})),
+					'Container Height',
+					_Utils_Tuple2(0, 100),
+					checkboxTheme.ak),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Checkbox$updateCheckboxMsg(
+						F2(
+							function (value, c) {
+								return _Utils_update(
+									c,
+									{
+										bW: $elm$core$Basics$round(value)
+									});
+							})),
+					'Container Shape',
+					_Utils_Tuple2(0, 100),
+					checkboxTheme.bW),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Checkbox$updateCheckboxMsg(
+						F2(
+							function (value, c) {
+								return _Utils_update(
+									c,
+									{
+										s: $elm$core$Basics$round(value)
+									});
+							})),
+					'Icon Size',
+					_Utils_Tuple2(0, 100),
+					checkboxTheme.s),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Checkbox$updateCheckboxMsg(
+						F2(
+							function (value, c) {
+								return _Utils_update(
+									c,
+									{
+										cr: $elm$core$Basics$round(value)
+									});
+							})),
+					'State Layer Size',
+					_Utils_Tuple2(0, 100),
+					checkboxTheme.cr),
+					divider
+				]));
+	});
 var $author$project$OUI$Showcase$Checkbox$init = {bJ: true, bL: false, b_: true, b$: false, b3: true, b5: false};
 var $author$project$OUI$Showcase$Checkbox$update = F3(
 	function (_v0, msg, model) {
@@ -17203,21 +17566,24 @@ var $author$project$OUI$Explorer$withChapter = F2(
 			});
 	});
 var $author$project$OUI$Showcase$Checkbox$book = A2(
-	$author$project$OUI$Explorer$withChapter,
-	$author$project$OUI$Showcase$Checkbox$checkbox,
+	$author$project$OUI$Explorer$withThemeEditor,
+	$author$project$OUI$Showcase$Checkbox$editorChapter,
 	A2(
-		$author$project$OUI$Explorer$statefulBook,
-		'Checkbox',
-		{
-			aQ: function (_v0) {
-				return $orus_io$elm_spa$Effect$withNone($author$project$OUI$Showcase$Checkbox$init);
-			},
-			a1: F2(
-				function (_v1, _v2) {
-					return $elm$core$Platform$Sub$none;
-				}),
-			a3: $author$project$OUI$Showcase$Checkbox$update
-		}));
+		$author$project$OUI$Explorer$withChapter,
+		$author$project$OUI$Showcase$Checkbox$checkbox,
+		A2(
+			$author$project$OUI$Explorer$statefulBook,
+			'Checkbox',
+			{
+				aQ: function (_v0) {
+					return $orus_io$elm_spa$Effect$withNone($author$project$OUI$Showcase$Checkbox$init);
+				},
+				a1: F2(
+					function (_v1, _v2) {
+						return $elm$core$Platform$Sub$none;
+					}),
+				a3: $author$project$OUI$Showcase$Checkbox$update
+			})));
 var $author$project$OUI$Showcase$Colors$AcceptColor = {$: 5};
 var $author$project$OUI$Showcase$Colors$ColorPickerMsg = function (a) {
 	return {$: 4, a: a};
@@ -22934,10 +23300,71 @@ var $author$project$OUI$Showcase$Dividers$commonDividers = function (_v0) {
 				$mdgriffith$elm_ui$Element$none)
 			]));
 };
+var $author$project$OUI$Material$Theme$withDivider = F2(
+	function (value, _v0) {
+		var t = _v0;
+		return _Utils_update(
+			t,
+			{b2: value});
+	});
+var $author$project$OUI$Showcase$Dividers$updateDividerTheme = F2(
+	function (fn, theme) {
+		return A2(
+			$author$project$OUI$Material$Theme$withDivider,
+			fn(
+				$author$project$OUI$Material$Theme$divider(theme)),
+			theme);
+	});
+var $author$project$OUI$Showcase$Dividers$updateDividerMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Dividers$updateDividerTheme(
+					fn(value))));
+	});
+var $author$project$OUI$Showcase$Dividers$editorChapter = F2(
+	function (_v0, _v1) {
+		var theme = _v0.i8;
+		var dividerTheme = $author$project$OUI$Material$Theme$divider(theme);
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30)
+				]),
+			_List_fromArray(
+				[
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Divider')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Dividers$updateDividerMsg(
+						F2(
+							function (value, d) {
+								return _Utils_update(
+									d,
+									{
+										eJ: $elm$core$Basics$round(value)
+									});
+							})),
+					'Thickness',
+					_Utils_Tuple2(0, 20),
+					dividerTheme.eJ),
+					divider
+				]));
+	});
 var $author$project$OUI$Showcase$Dividers$book = A2(
-	$author$project$OUI$Explorer$withStaticChapter,
-	$author$project$OUI$Showcase$Dividers$commonDividers,
-	$author$project$OUI$Explorer$book('Dividers'));
+	$author$project$OUI$Explorer$withThemeEditor,
+	$author$project$OUI$Showcase$Dividers$editorChapter,
+	A2(
+		$author$project$OUI$Explorer$withStaticChapter,
+		$author$project$OUI$Showcase$Dividers$commonDividers,
+		$author$project$OUI$Explorer$book('Dividers')));
 var $author$project$OUI$Showcase$MenuButtons$MenuButtonMsg = F2(
 	function (a, b) {
 		return {$: 1, a: a, b: b};
@@ -23915,10 +24342,176 @@ var $author$project$OUI$Showcase$Menus$chapter = F2(
 											$author$project$OUI$Menu$new($elm$core$Basics$identity))))))))
 				]));
 	});
+var $author$project$OUI$Material$Theme$withMenu = F2(
+	function (value, _v0) {
+		var t = _v0;
+		return _Utils_update(
+			t,
+			{fx: value});
+	});
+var $author$project$OUI$Showcase$Menus$updateMenuTheme = F2(
+	function (fn, theme) {
+		return A2(
+			$author$project$OUI$Material$Theme$withMenu,
+			fn(
+				$author$project$OUI$Material$Theme$menu(theme)),
+			theme);
+	});
+var $author$project$OUI$Showcase$Menus$updateMenuMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Menus$updateMenuTheme(
+					fn(value))));
+	});
+var $author$project$OUI$Showcase$Menus$editorChapter = F2(
+	function (_v0, _v1) {
+		var theme = _v0.i8;
+		var menuTheme = $author$project$OUI$Material$Theme$menu(theme);
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30)
+				]),
+			_List_fromArray(
+				[
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Menu')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Menus$updateMenuMsg(
+						F2(
+							function (value, m) {
+								return _Utils_update(
+									m,
+									{
+										ev: $elm$core$Basics$round(value)
+									});
+							})),
+					'Radius',
+					_Utils_Tuple2(0, 50),
+					menuTheme.ev),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Menus$updateMenuMsg(
+						F2(
+							function (value, m) {
+								return _Utils_update(
+									m,
+									{
+										dC: $elm$core$Basics$round(value)
+									});
+							})),
+					'Top/Bottom Padding',
+					_Utils_Tuple2(0, 50),
+					menuTheme.dC),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Menus$updateMenuMsg(
+						F2(
+							function (value, m) {
+								return _Utils_update(
+									m,
+									{
+										da: $elm$core$Basics$round(value)
+									});
+							})),
+					'Left/Right Padding',
+					_Utils_Tuple2(0, 50),
+					menuTheme.da),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Menus$updateMenuMsg(
+						F2(
+							function (value, m) {
+								return _Utils_update(
+									m,
+									{
+										es: $elm$core$Basics$round(value)
+									});
+							})),
+					'Padding Within Item',
+					_Utils_Tuple2(0, 50),
+					menuTheme.es),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Menus$updateMenuMsg(
+						F2(
+							function (value, m) {
+								return _Utils_update(
+									m,
+									{
+										d1: $elm$core$Basics$round(value)
+									});
+							})),
+					'Item Height',
+					_Utils_Tuple2(0, 100),
+					menuTheme.d1),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Menus$updateMenuMsg(
+						F2(
+							function (value, m) {
+								return _Utils_update(
+									m,
+									{
+										s: $elm$core$Basics$round(value)
+									});
+							})),
+					'Icon Size',
+					_Utils_Tuple2(0, 50),
+					menuTheme.s),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Menus$updateMenuMsg(
+						F2(
+							function (value, m) {
+								return _Utils_update(
+									m,
+									{
+										eb: $elm$core$Basics$round(value)
+									});
+							})),
+					'Min Width',
+					_Utils_Tuple2(0, 300),
+					menuTheme.eb),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Menus$updateMenuMsg(
+						F2(
+							function (value, m) {
+								return _Utils_update(
+									m,
+									{
+										d9: $elm$core$Basics$round(value)
+									});
+							})),
+					'Max Width',
+					_Utils_Tuple2(0, 500),
+					menuTheme.d9),
+					divider
+				]));
+	});
 var $author$project$OUI$Showcase$Menus$book = A2(
-	$author$project$OUI$Explorer$withChapter,
-	$author$project$OUI$Showcase$Menus$chapter,
-	$author$project$OUI$Explorer$book('Menu'));
+	$author$project$OUI$Explorer$withThemeEditor,
+	$author$project$OUI$Showcase$Menus$editorChapter,
+	A2(
+		$author$project$OUI$Explorer$withChapter,
+		$author$project$OUI$Showcase$Menus$chapter,
+		$author$project$OUI$Explorer$book('Menu')));
 var $author$project$OUI$Navigation$Divider = {$: 2};
 var $author$project$OUI$Navigation$Navigation = $elm$core$Basics$identity;
 var $author$project$OUI$Navigation$addDivider = function (_v0) {
@@ -24656,15 +25249,107 @@ var $author$project$OUI$Showcase$Navigation$book = A2(
 										{c0: value}));
 							})
 					})))));
+var $author$project$OUI$Material$Theme$progress = function (_v0) {
+	var t = _v0;
+	return t.cl;
+};
+var $author$project$OUI$Material$Theme$withProgress = F2(
+	function (value, _v0) {
+		var t = _v0;
+		return _Utils_update(
+			t,
+			{cl: value});
+	});
+var $author$project$OUI$Showcase$Progress$updateProgressTheme = F2(
+	function (fn, theme) {
+		return A2(
+			$author$project$OUI$Material$Theme$withProgress,
+			fn(
+				$author$project$OUI$Material$Theme$progress(theme)),
+			theme);
+	});
+var $author$project$OUI$Showcase$Progress$updateProgressMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Progress$updateProgressTheme(
+					fn(value))));
+	});
+var $author$project$OUI$Showcase$Progress$editorChapter = F2(
+	function (_v0, _v1) {
+		var theme = _v0.i8;
+		var progressTheme = $author$project$OUI$Material$Theme$progress(theme);
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30)
+				]),
+			_List_fromArray(
+				[
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Progress')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Progress$updateProgressMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										P: {
+											eJ: $elm$core$Basics$round(value)
+										}
+									});
+							})),
+					'Active Indicator Thickness',
+					_Utils_Tuple2(0, 50),
+					progressTheme.P.eJ),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Progress$updateProgressMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										r: {
+											eJ: $elm$core$Basics$round(value)
+										}
+									});
+							})),
+					'Track Indicator Thickness',
+					_Utils_Tuple2(0, 50),
+					progressTheme.r.eJ),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Progress$updateProgressMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										aH: $elm$core$Basics$round(value)
+									});
+							})),
+					'Circular Size',
+					_Utils_Tuple2(0, 200),
+					progressTheme.aH),
+					divider
+				]));
+	});
 var $author$project$OUI$Progress$Circular = 0;
 var $author$project$OUI$Progress$Progress = $elm$core$Basics$identity;
 var $author$project$OUI$Progress$circular = {g6: $author$project$OUI$Primary, dE: 0, gk: $elm$core$Maybe$Nothing};
 var $author$project$OUI$Progress$Linear = 1;
 var $author$project$OUI$Progress$linear = {g6: $author$project$OUI$Primary, dE: 1, gk: $elm$core$Maybe$Nothing};
-var $author$project$OUI$Material$Theme$progress = function (_v0) {
-	var t = _v0;
-	return t.cl;
-};
 var $elm$svg$Svg$circle = $elm$svg$Svg$trustedNode('circle');
 var $elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
 var $elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
@@ -25255,9 +25940,149 @@ var $author$project$OUI$Showcase$Progress$progressChapter = function (_v0) {
 			]));
 };
 var $author$project$OUI$Showcase$Progress$book = A2(
-	$author$project$OUI$Explorer$withStaticChapter,
-	$author$project$OUI$Showcase$Progress$progressChapter,
-	$author$project$OUI$Explorer$book('Progress'));
+	$author$project$OUI$Explorer$withThemeEditor,
+	$author$project$OUI$Showcase$Progress$editorChapter,
+	A2(
+		$author$project$OUI$Explorer$withStaticChapter,
+		$author$project$OUI$Showcase$Progress$progressChapter,
+		$author$project$OUI$Explorer$book('Progress')));
+var $author$project$OUI$Material$Theme$radiobutton = function (_v0) {
+	var t = _v0;
+	return t.cm;
+};
+var $author$project$OUI$Material$Theme$withRadiobutton = F2(
+	function (value, _v0) {
+		var t = _v0;
+		return _Utils_update(
+			t,
+			{cm: value});
+	});
+var $author$project$OUI$Showcase$RadioButtons$updateRadiobuttonTheme = F2(
+	function (fn, theme) {
+		return A2(
+			$author$project$OUI$Material$Theme$withRadiobutton,
+			fn(
+				$author$project$OUI$Material$Theme$radiobutton(theme)),
+			theme);
+	});
+var $author$project$OUI$Showcase$RadioButtons$updateRadiobuttonMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$RadioButtons$updateRadiobuttonTheme(
+					fn(value))));
+	});
+var $author$project$OUI$Showcase$RadioButtons$editorChapter = F2(
+	function (_v0, _v1) {
+		var theme = _v0.i8;
+		var radiobuttonTheme = $author$project$OUI$Material$Theme$radiobutton(theme);
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30)
+				]),
+			_List_fromArray(
+				[
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Radio Button')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$RadioButtons$updateRadiobuttonMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										bY: $elm$core$Basics$round(value)
+									});
+							})),
+					'Container Width',
+					_Utils_Tuple2(0, 100),
+					radiobuttonTheme.bY),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$RadioButtons$updateRadiobuttonMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										ak: $elm$core$Basics$round(value)
+									});
+							})),
+					'Container Height',
+					_Utils_Tuple2(0, 100),
+					radiobuttonTheme.ak),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$RadioButtons$updateRadiobuttonMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										bW: $elm$core$Basics$round(value)
+									});
+							})),
+					'Container Shape',
+					_Utils_Tuple2(0, 100),
+					radiobuttonTheme.bW),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$RadioButtons$updateRadiobuttonMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										c$: $elm$core$Basics$round(value)
+									});
+							})),
+					'Content Size',
+					_Utils_Tuple2(0, 100),
+					radiobuttonTheme.c$),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$RadioButtons$updateRadiobuttonMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										cr: $elm$core$Basics$round(value)
+									});
+							})),
+					'State Layer Size',
+					_Utils_Tuple2(0, 100),
+					radiobuttonTheme.cr),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$RadioButtons$updateRadiobuttonMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										cP: $elm$core$Basics$round(value)
+									});
+							})),
+					'Border Width',
+					_Utils_Tuple2(0, 100),
+					radiobuttonTheme.cP),
+					divider
+				]));
+	});
 var $author$project$OUI$Showcase$RadioButtons$init = {bK: true, bM: false, b4: true, b6: false};
 var $author$project$OUI$Showcase$RadioButtons$OnClickBasicSelect = 0;
 var $author$project$OUI$Showcase$RadioButtons$OnClickBasicUnselect = 1;
@@ -25278,10 +26103,6 @@ var $author$project$OUI$RadioButton$onChange = F2(
 				de: $elm$core$Maybe$Just(msg)
 			});
 	});
-var $author$project$OUI$Material$Theme$radiobutton = function (_v0) {
-	var t = _v0;
-	return t.cm;
-};
 var $author$project$OUI$RadioButton$getColor = function (_v0) {
 	var props = _v0;
 	return props.g6;
@@ -25641,21 +26462,142 @@ var $author$project$OUI$Showcase$RadioButtons$update = F3(
 		}
 	});
 var $author$project$OUI$Showcase$RadioButtons$book = A2(
-	$author$project$OUI$Explorer$withChapter,
-	$author$project$OUI$Showcase$RadioButtons$radiobuttons,
+	$author$project$OUI$Explorer$withThemeEditor,
+	$author$project$OUI$Showcase$RadioButtons$editorChapter,
 	A2(
-		$author$project$OUI$Explorer$statefulBook,
-		'Radio Buttons',
-		{
-			aQ: function (_v0) {
-				return $orus_io$elm_spa$Effect$withNone($author$project$OUI$Showcase$RadioButtons$init);
-			},
-			a1: F2(
-				function (_v1, _v2) {
-					return $elm$core$Platform$Sub$none;
-				}),
-			a3: $author$project$OUI$Showcase$RadioButtons$update
-		}));
+		$author$project$OUI$Explorer$withChapter,
+		$author$project$OUI$Showcase$RadioButtons$radiobuttons,
+		A2(
+			$author$project$OUI$Explorer$statefulBook,
+			'Radio Buttons',
+			{
+				aQ: function (_v0) {
+					return $orus_io$elm_spa$Effect$withNone($author$project$OUI$Showcase$RadioButtons$init);
+				},
+				a1: F2(
+					function (_v1, _v2) {
+						return $elm$core$Platform$Sub$none;
+					}),
+				a3: $author$project$OUI$Showcase$RadioButtons$update
+			})));
+var $author$project$OUI$Material$Theme$withSlider = F2(
+	function (value, _v0) {
+		var t = _v0;
+		return _Utils_update(
+			t,
+			{cp: value});
+	});
+var $author$project$OUI$Showcase$Slider$updateSliderTheme = F2(
+	function (fn, theme) {
+		return A2(
+			$author$project$OUI$Material$Theme$withSlider,
+			fn(
+				$author$project$OUI$Material$Theme$slider(theme)),
+			theme);
+	});
+var $author$project$OUI$Showcase$Slider$updateSliderMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Slider$updateSliderTheme(
+					fn(value))));
+	});
+var $author$project$OUI$Showcase$Slider$editorChapter = F2(
+	function (_v0, _v1) {
+		var theme = _v0.i8;
+		var sliderTheme = $author$project$OUI$Material$Theme$slider(theme);
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30)
+				]),
+			_List_fromArray(
+				[
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Slider')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Slider$updateSliderMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										G: $elm$core$Basics$round(value)
+									});
+							})),
+					'Track Height',
+					_Utils_Tuple2(0, 100),
+					sliderTheme.G),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Slider$updateSliderMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										fu: $elm$core$Basics$round(value)
+									});
+							})),
+					'Label Container Height',
+					_Utils_Tuple2(0, 100),
+					sliderTheme.fu),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Slider$updateSliderMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										fv: $elm$core$Basics$round(value)
+									});
+							})),
+					'Label Container Width',
+					_Utils_Tuple2(0, 100),
+					sliderTheme.fv),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Slider$updateSliderMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										bc: $elm$core$Basics$round(value)
+									});
+							})),
+					'Handle Height',
+					_Utils_Tuple2(0, 100),
+					sliderTheme.bc),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Slider$updateSliderMsg(
+						F2(
+							function (value, p) {
+								return _Utils_update(
+									p,
+									{
+										ab: $elm$core$Basics$round(value)
+									});
+							})),
+					'Handle Width',
+					_Utils_Tuple2(0, 100),
+					sliderTheme.ab),
+					divider
+				]));
+	});
 var $author$project$OUI$Showcase$Slider$SetValue = F2(
 	function (a, b) {
 		return {$: 0, a: a, b: b};
@@ -25882,32 +26824,35 @@ var $author$project$OUI$Showcase$Slider$slider = F2(
 				]));
 	});
 var $author$project$OUI$Showcase$Slider$book = A2(
-	$author$project$OUI$Explorer$withChapter,
-	$author$project$OUI$Showcase$Slider$slider,
+	$author$project$OUI$Explorer$withThemeEditor,
+	$author$project$OUI$Showcase$Slider$editorChapter,
 	A2(
-		$author$project$OUI$Explorer$statefulBook,
-		'Slider',
-		{
-			aQ: function (_v0) {
-				return $orus_io$elm_spa$Effect$withNone(
-					{cq: $elm$core$Dict$empty});
-			},
-			a1: F2(
-				function (_v1, _v2) {
-					return $elm$core$Platform$Sub$none;
-				}),
-			a3: F3(
-				function (_v3, _v4, model) {
-					var name = _v4.a;
-					var value = _v4.b;
+		$author$project$OUI$Explorer$withChapter,
+		$author$project$OUI$Showcase$Slider$slider,
+		A2(
+			$author$project$OUI$Explorer$statefulBook,
+			'Slider',
+			{
+				aQ: function (_v0) {
 					return $orus_io$elm_spa$Effect$withNone(
-						_Utils_update(
-							model,
-							{
-								cq: A3($elm$core$Dict$insert, name, value, model.cq)
-							}));
-				})
-		}));
+						{cq: $elm$core$Dict$empty});
+				},
+				a1: F2(
+					function (_v1, _v2) {
+						return $elm$core$Platform$Sub$none;
+					}),
+				a3: F3(
+					function (_v3, _v4, model) {
+						var name = _v4.a;
+						var value = _v4.b;
+						return $orus_io$elm_spa$Effect$withNone(
+							_Utils_update(
+								model,
+								{
+									cq: A3($elm$core$Dict$insert, name, value, model.cq)
+								}));
+					})
+			})));
 var $author$project$OUI$Secondary = {$: 2};
 var $author$project$OUI$Showcase$Switches$SetSwitch = F2(
 	function (a, b) {
@@ -26407,33 +27352,572 @@ var $author$project$OUI$Showcase$Switches$checkbox = F2(
 						]))
 				]));
 	});
+var $author$project$OUI$Material$Theme$withSwitch = F2(
+	function (value, _v0) {
+		var t = _v0;
+		return _Utils_update(
+			t,
+			{cz: value});
+	});
+var $author$project$OUI$Showcase$Switches$updateSwitchTheme = F2(
+	function (fn, theme) {
+		return A2(
+			$author$project$OUI$Material$Theme$withSwitch,
+			fn(
+				$author$project$OUI$Material$Theme$switch(theme)),
+			theme);
+	});
+var $author$project$OUI$Showcase$Switches$updateSwitchMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Switches$updateSwitchTheme(
+					fn(value))));
+	});
+var $author$project$OUI$Showcase$Switches$editorChapter = F2(
+	function (_v0, _v1) {
+		var theme = _v0.i8;
+		var switchTheme = $author$project$OUI$Material$Theme$switch(theme);
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30)
+				]),
+			_List_fromArray(
+				[
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Track')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Switches$updateSwitchMsg(
+						F2(
+							function (value, sw) {
+								var track = sw.aD;
+								return _Utils_update(
+									sw,
+									{
+										aD: _Utils_update(
+											track,
+											{
+												ff: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Height',
+					_Utils_Tuple2(0, 100),
+					switchTheme.aD.ff),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Switches$updateSwitchMsg(
+						F2(
+							function (value, sw) {
+								var track = sw.aD;
+								return _Utils_update(
+									sw,
+									{
+										aD: _Utils_update(
+											track,
+											{
+												eK: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Width',
+					_Utils_Tuple2(0, 100),
+					switchTheme.aD.eK),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Switches$updateSwitchMsg(
+						F2(
+							function (value, sw) {
+								var track = sw.aD;
+								return _Utils_update(
+									sw,
+									{
+										aD: _Utils_update(
+											track,
+											{
+												ej: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Outline Width',
+					_Utils_Tuple2(0, 20),
+					switchTheme.aD.ej),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Switches$updateSwitchMsg(
+						F2(
+							function (value, sw) {
+								var track = sw.aD;
+								return _Utils_update(
+									sw,
+									{
+										aD: _Utils_update(
+											track,
+											{
+												e1: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Corner',
+					_Utils_Tuple2(0, 50),
+					switchTheme.aD.e1),
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Thumb')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Switches$updateSwitchMsg(
+						F2(
+							function (value, sw) {
+								var thumb = sw.i9;
+								var size = thumb.iD;
+								return _Utils_update(
+									sw,
+									{
+										i9: _Utils_update(
+											thumb,
+											{
+												iD: _Utils_update(
+													size,
+													{
+														gj: $elm$core$Basics$round(value)
+													})
+											})
+									});
+							})),
+					'Size Unselected',
+					_Utils_Tuple2(0, 50),
+					switchTheme.i9.iD.gj),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Switches$updateSwitchMsg(
+						F2(
+							function (value, sw) {
+								var thumb = sw.i9;
+								var size = thumb.iD;
+								return _Utils_update(
+									sw,
+									{
+										i9: _Utils_update(
+											thumb,
+											{
+												iD: _Utils_update(
+													size,
+													{
+														gq: $elm$core$Basics$round(value)
+													})
+											})
+									});
+							})),
+					'Size With Icon',
+					_Utils_Tuple2(0, 50),
+					switchTheme.i9.iD.gq),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Switches$updateSwitchMsg(
+						F2(
+							function (value, sw) {
+								var thumb = sw.i9;
+								var size = thumb.iD;
+								return _Utils_update(
+									sw,
+									{
+										i9: _Utils_update(
+											thumb,
+											{
+												iD: _Utils_update(
+													size,
+													{
+														ex: $elm$core$Basics$round(value)
+													})
+											})
+									});
+							})),
+					'Size Selected',
+					_Utils_Tuple2(0, 50),
+					switchTheme.i9.iD.ex),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Switches$updateSwitchMsg(
+						F2(
+							function (value, sw) {
+								var thumb = sw.i9;
+								var size = thumb.iD;
+								return _Utils_update(
+									sw,
+									{
+										i9: _Utils_update(
+											thumb,
+											{
+												iD: _Utils_update(
+													size,
+													{
+														bs: $elm$core$Basics$round(value)
+													})
+											})
+									});
+							})),
+					'Size Pressed',
+					_Utils_Tuple2(0, 50),
+					switchTheme.i9.iD.bs),
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('State Layer')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Switches$updateSwitchMsg(
+						F2(
+							function (value, sw) {
+								return _Utils_update(
+									sw,
+									{
+										bz: {
+											iD: $elm$core$Basics$round(value)
+										}
+									});
+							})),
+					'Size',
+					_Utils_Tuple2(0, 100),
+					switchTheme.bz.iD),
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Icon')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Switches$updateSwitchMsg(
+						F2(
+							function (value, sw) {
+								var icon = sw.c4;
+								return _Utils_update(
+									sw,
+									{
+										c4: _Utils_update(
+											icon,
+											{
+												f5: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Size Unselected',
+					_Utils_Tuple2(0, 50),
+					switchTheme.c4.f5),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Switches$updateSwitchMsg(
+						F2(
+							function (value, sw) {
+								var icon = sw.c4;
+								return _Utils_update(
+									sw,
+									{
+										c4: _Utils_update(
+											icon,
+											{
+												f4: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Size Selected',
+					_Utils_Tuple2(0, 50),
+					switchTheme.c4.f4),
+					divider
+				]));
+	});
 var $author$project$OUI$Showcase$Switches$book = A2(
-	$author$project$OUI$Explorer$withChapter,
-	$author$project$OUI$Showcase$Switches$checkbox,
+	$author$project$OUI$Explorer$withThemeEditor,
+	$author$project$OUI$Showcase$Switches$editorChapter,
 	A2(
-		$author$project$OUI$Explorer$statefulBook,
-		'Switches',
-		{
-			aQ: function (_v0) {
-				return $orus_io$elm_spa$Effect$withNone(
-					{cA: $elm$core$Dict$empty});
-			},
-			a1: F2(
-				function (_v1, _v2) {
-					return $elm$core$Platform$Sub$none;
-				}),
-			a3: F3(
-				function (_v3, _v4, model) {
-					var name = _v4.a;
-					var selected = _v4.b;
+		$author$project$OUI$Explorer$withChapter,
+		$author$project$OUI$Showcase$Switches$checkbox,
+		A2(
+			$author$project$OUI$Explorer$statefulBook,
+			'Switches',
+			{
+				aQ: function (_v0) {
 					return $orus_io$elm_spa$Effect$withNone(
-						_Utils_update(
-							model,
-							{
-								cA: A3($elm$core$Dict$insert, name, selected, model.cA)
-							}));
-				})
-		}));
+						{cA: $elm$core$Dict$empty});
+				},
+				a1: F2(
+					function (_v1, _v2) {
+						return $elm$core$Platform$Sub$none;
+					}),
+				a3: F3(
+					function (_v3, _v4, model) {
+						var name = _v4.a;
+						var selected = _v4.b;
+						return $orus_io$elm_spa$Effect$withNone(
+							_Utils_update(
+								model,
+								{
+									cA: A3($elm$core$Dict$insert, name, selected, model.cA)
+								}));
+					})
+			})));
+var $author$project$OUI$Material$Theme$tabs = function (_v0) {
+	var t = _v0;
+	return t.cB;
+};
+var $author$project$OUI$Material$Theme$withTabs = F2(
+	function (value, _v0) {
+		var t = _v0;
+		return _Utils_update(
+			t,
+			{cB: value});
+	});
+var $author$project$OUI$Showcase$Tabs$updateTabsTheme = F2(
+	function (fn, theme) {
+		return A2(
+			$author$project$OUI$Material$Theme$withTabs,
+			fn(
+				$author$project$OUI$Material$Theme$tabs(theme)),
+			theme);
+	});
+var $author$project$OUI$Showcase$Tabs$updateTabsMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$Tabs$updateTabsTheme(
+					fn(value))));
+	});
+var $author$project$OUI$Showcase$Tabs$editorChapter = F2(
+	function (_v0, _v1) {
+		var theme = _v0.i8;
+		var tabsTheme = $author$project$OUI$Material$Theme$tabs(theme);
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30)
+				]),
+			_List_fromArray(
+				[
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Primary')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Tabs$updateTabsMsg(
+						F2(
+							function (value, t) {
+								var primary = t.bt;
+								return _Utils_update(
+									t,
+									{
+										bt: _Utils_update(
+											primary,
+											{
+												ak: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Container Height',
+					_Utils_Tuple2(0, 150),
+					tabsTheme.bt.ak),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Tabs$updateTabsMsg(
+						F2(
+							function (value, t) {
+								var primary = t.bt;
+								return _Utils_update(
+									t,
+									{
+										bt: _Utils_update(
+											primary,
+											{
+												Z: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Active Indicator Height',
+					_Utils_Tuple2(0, 20),
+					tabsTheme.bt.Z),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Tabs$updateTabsMsg(
+						F2(
+							function (value, t) {
+								var primary = t.bt;
+								return _Utils_update(
+									t,
+									{
+										bt: _Utils_update(
+											primary,
+											{
+												Q: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Active Indicator Width',
+					_Utils_Tuple2(0, 100),
+					tabsTheme.bt.Q),
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Secondary')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Tabs$updateTabsMsg(
+						F2(
+							function (value, t) {
+								var secondary = t.bu;
+								return _Utils_update(
+									t,
+									{
+										bu: _Utils_update(
+											secondary,
+											{
+												ak: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Container Height',
+					_Utils_Tuple2(0, 150),
+					tabsTheme.bu.ak),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Tabs$updateTabsMsg(
+						F2(
+							function (value, t) {
+								var secondary = t.bu;
+								return _Utils_update(
+									t,
+									{
+										bu: _Utils_update(
+											secondary,
+											{
+												Z: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Active Indicator Height',
+					_Utils_Tuple2(0, 20),
+					tabsTheme.bu.Z),
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Padding')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Tabs$updateTabsMsg(
+						F2(
+							function (value, t) {
+								return _Utils_update(
+									t,
+									{
+										eo: $elm$core$Basics$round(value)
+									});
+							})),
+					'Between Icon And Text',
+					_Utils_Tuple2(0, 50),
+					tabsTheme.eo),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Tabs$updateTabsMsg(
+						F2(
+							function (value, t) {
+								return _Utils_update(
+									t,
+									{
+										eq: $elm$core$Basics$round(value)
+									});
+							})),
+					'Between Inline Icon And Text',
+					_Utils_Tuple2(0, 50),
+					tabsTheme.eq),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Tabs$updateTabsMsg(
+						F2(
+							function (value, t) {
+								return _Utils_update(
+									t,
+									{
+										er: $elm$core$Basics$round(value)
+									});
+							})),
+					'Between Inline Text And Badge',
+					_Utils_Tuple2(0, 50),
+					tabsTheme.er),
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Text')),
+					A4(
+					$author$project$OUI$Explorer$ThemeEditor$textSize,
+					theme,
+					$author$project$OUI$Showcase$Tabs$updateTabsMsg(
+						F2(
+							function (size, t) {
+								var text = t.eI;
+								return _Utils_update(
+									t,
+									{
+										eI: _Utils_update(
+											text,
+											{iD: size})
+									});
+							})),
+					'Text Size',
+					tabsTheme.eI.iD),
+					A4(
+					$author$project$OUI$Explorer$ThemeEditor$textType,
+					theme,
+					$author$project$OUI$Showcase$Tabs$updateTabsMsg(
+						F2(
+							function (type_, t) {
+								var text = t.eI;
+								return _Utils_update(
+									t,
+									{
+										eI: _Utils_update(
+											text,
+											{dE: type_})
+									});
+							})),
+					'Text Type',
+					tabsTheme.eI.dE),
+					divider
+				]));
+	});
 var $author$project$OUI$Showcase$Tabs$OnClickPrimary = function (a) {
 	return {$: 0, a: a};
 };
@@ -26891,10 +28375,6 @@ var $author$project$OUI$Material$Tabs$render = F6(
 				},
 				props.c6));
 	});
-var $author$project$OUI$Material$Theme$tabs = function (_v0) {
-	var t = _v0;
-	return t.cB;
-};
 var $author$project$OUI$Material$tabs = function (theme) {
 	return A4(
 		$author$project$OUI$Material$Tabs$render,
@@ -27038,22 +28518,260 @@ var $author$project$OUI$Showcase$Tabs$update = F3(
 		}
 	});
 var $author$project$OUI$Showcase$Tabs$book = A2(
-	$author$project$OUI$Explorer$withChapter,
-	$author$project$OUI$Showcase$Tabs$tabs,
+	$author$project$OUI$Explorer$withThemeEditor,
+	$author$project$OUI$Showcase$Tabs$editorChapter,
 	A2(
-		$author$project$OUI$Explorer$statefulBook,
-		'Tabs',
-		{
-			aQ: function (_v0) {
-				return $orus_io$elm_spa$Effect$withNone(
-					{dn: 0, dt: 0});
-			},
-			a1: F2(
-				function (_v1, _v2) {
-					return $elm$core$Platform$Sub$none;
-				}),
-			a3: $author$project$OUI$Showcase$Tabs$update
-		}));
+		$author$project$OUI$Explorer$withChapter,
+		$author$project$OUI$Showcase$Tabs$tabs,
+		A2(
+			$author$project$OUI$Explorer$statefulBook,
+			'Tabs',
+			{
+				aQ: function (_v0) {
+					return $orus_io$elm_spa$Effect$withNone(
+						{dn: 0, dt: 0});
+				},
+				a1: F2(
+					function (_v1, _v2) {
+						return $elm$core$Platform$Sub$none;
+					}),
+				a3: $author$project$OUI$Showcase$Tabs$update
+			})));
+var $author$project$OUI$Material$Theme$withTextfield = F2(
+	function (value, _v0) {
+		var t = _v0;
+		return _Utils_update(
+			t,
+			{cE: value});
+	});
+var $author$project$OUI$Showcase$TextFields$updateTextfieldTheme = F2(
+	function (fn, theme) {
+		return A2(
+			$author$project$OUI$Material$Theme$withTextfield,
+			fn(
+				$author$project$OUI$Material$Theme$textfield(theme)),
+			theme);
+	});
+var $author$project$OUI$Showcase$TextFields$updateTextfieldMsg = F2(
+	function (fn, value) {
+		return $author$project$OUI$Explorer$sharedMsg(
+			$author$project$OUI$Explorer$updateCurrentThemeMsg(
+				$author$project$OUI$Showcase$TextFields$updateTextfieldTheme(
+					fn(value))));
+	});
+var $author$project$OUI$Showcase$TextFields$editorChapter = F2(
+	function (_v0, _v1) {
+		var theme = _v0.i8;
+		var textfieldTheme = $author$project$OUI$Material$Theme$textfield(theme);
+		var divider = A3($author$project$OUI$Material$divider, theme, _List_Nil, $author$project$OUI$Divider$new);
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30)
+				]),
+			_List_fromArray(
+				[
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Layout')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$TextFields$updateTextfieldMsg(
+						F2(
+							function (value, t) {
+								return _Utils_update(
+									t,
+									{
+										ff: $elm$core$Basics$round(value)
+									});
+							})),
+					'Height',
+					_Utils_Tuple2(0, 150),
+					textfieldTheme.ff),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$TextFields$updateTextfieldMsg(
+						F2(
+							function (value, t) {
+								return _Utils_update(
+									t,
+									{
+										an: $elm$core$Basics$round(value)
+									});
+							})),
+					'Left/Right Padding Without Icon',
+					_Utils_Tuple2(0, 50),
+					textfieldTheme.an),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$TextFields$updateTextfieldMsg(
+						F2(
+							function (value, t) {
+								return _Utils_update(
+									t,
+									{
+										aS: $elm$core$Basics$round(value)
+									});
+							})),
+					'Left/Right Padding With Icon',
+					_Utils_Tuple2(0, 50),
+					textfieldTheme.aS),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$TextFields$updateTextfieldMsg(
+						F2(
+							function (value, t) {
+								return _Utils_update(
+									t,
+									{
+										eo: $elm$core$Basics$round(value)
+									});
+							})),
+					'Between Icon And Text',
+					_Utils_Tuple2(0, 50),
+					textfieldTheme.eo),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$TextFields$updateTextfieldMsg(
+						F2(
+							function (value, t) {
+								return _Utils_update(
+									t,
+									{
+										eE: $elm$core$Basics$round(value)
+									});
+							})),
+					'Supporting Text Top Padding',
+					_Utils_Tuple2(0, 50),
+					textfieldTheme.eE),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$TextFields$updateTextfieldMsg(
+						F2(
+							function (value, t) {
+								return _Utils_update(
+									t,
+									{
+										fM: $elm$core$Basics$round(value)
+									});
+							})),
+					'Between Supporting Text And Character Counter',
+					_Utils_Tuple2(0, 50),
+					textfieldTheme.fM),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$TextFields$updateTextfieldMsg(
+						F2(
+							function (value, t) {
+								return _Utils_update(
+									t,
+									{
+										s: $elm$core$Basics$round(value)
+									});
+							})),
+					'Icon Size',
+					_Utils_Tuple2(0, 50),
+					textfieldTheme.s),
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Filled')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$TextFields$updateTextfieldMsg(
+						F2(
+							function (value, t) {
+								return _Utils_update(
+									t,
+									{
+										bb: {
+											dC: $elm$core$Basics$round(value)
+										}
+									});
+							})),
+					'Top/Bottom Padding',
+					_Utils_Tuple2(0, 50),
+					textfieldTheme.bb.dC),
+					divider,
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$titleLarge('Outlined')),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$TextFields$updateTextfieldMsg(
+						F2(
+							function (value, t) {
+								var outlined = t.ck;
+								return _Utils_update(
+									t,
+									{
+										ck: _Utils_update(
+											outlined,
+											{
+												d6: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Label Left/Right Padding',
+					_Utils_Tuple2(0, 50),
+					textfieldTheme.ck.d6),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$TextFields$updateTextfieldMsg(
+						F2(
+							function (value, t) {
+								var outlined = t.ck;
+								return _Utils_update(
+									t,
+									{
+										ck: _Utils_update(
+											outlined,
+											{
+												hR: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Label Bottom',
+					_Utils_Tuple2(0, 50),
+					textfieldTheme.ck.hR),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$TextFields$updateTextfieldMsg(
+						F2(
+							function (value, t) {
+								var outlined = t.ck;
+								return _Utils_update(
+									t,
+									{
+										ck: _Utils_update(
+											outlined,
+											{
+												dv: $elm$core$Basics$round(value)
+											})
+									});
+							})),
+					'Shape',
+					_Utils_Tuple2(0, 50),
+					textfieldTheme.ck.dv),
+					divider
+				]));
+	});
 var $author$project$OUI$TextField$Email = {$: 2};
 var $author$project$OUI$TextField$NewPassword = function (a) {
 	return {$: 4, a: a};
@@ -27608,22 +29326,25 @@ var $author$project$OUI$Showcase$TextFields$update = F3(
 		}
 	});
 var $author$project$OUI$Showcase$TextFields$book = A2(
-	$author$project$OUI$Explorer$withChapter,
-	$author$project$OUI$Showcase$TextFields$tabs,
+	$author$project$OUI$Explorer$withThemeEditor,
+	$author$project$OUI$Showcase$TextFields$editorChapter,
 	A2(
-		$author$project$OUI$Explorer$statefulBook,
-		'Text Fields',
-		{
-			aQ: function (_v0) {
-				return $orus_io$elm_spa$Effect$withNone(
-					{H: $elm$core$Dict$empty, co: $author$project$OUI$TextField$Text});
-			},
-			a1: F2(
-				function (_v1, _v2) {
-					return $elm$core$Platform$Sub$none;
-				}),
-			a3: $author$project$OUI$Showcase$TextFields$update
-		}));
+		$author$project$OUI$Explorer$withChapter,
+		$author$project$OUI$Showcase$TextFields$tabs,
+		A2(
+			$author$project$OUI$Explorer$statefulBook,
+			'Text Fields',
+			{
+				aQ: function (_v0) {
+					return $orus_io$elm_spa$Effect$withNone(
+						{H: $elm$core$Dict$empty, co: $author$project$OUI$TextField$Text});
+				},
+				a1: F2(
+					function (_v1, _v2) {
+						return $elm$core$Platform$Sub$none;
+					}),
+				a3: $author$project$OUI$Showcase$TextFields$update
+			})));
 var $author$project$OUI$Text$displayLarge = A2($author$project$OUI$Text$textTypeSize, 0, 2);
 var $author$project$OUI$Text$displayMedium = A2($author$project$OUI$Text$textTypeSize, 0, 1);
 var $author$project$OUI$Text$displaySmall = A2($author$project$OUI$Text$textTypeSize, 0, 0);
@@ -272542,11 +274263,7 @@ var $author$project$OUI$Explorer$decodeFlags = A3(
 				A2($elm$json$Json$Decode$field, 'dark_mode', $elm$json$Json$Decode$bool),
 				$elm$json$Json$Decode$succeed(false)
 			])),
-	$elm$json$Json$Decode$oneOf(
-		_List_fromArray(
-			[
-				A2($elm$json$Json$Decode$field, 'settings', $author$project$OUI$Explorer$decodeSettings)
-			])));
+	A2($elm$json$Json$Decode$field, 'settings', $author$project$OUI$Explorer$decodeSettings));
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $mdgriffith$elm_ui$Internal$Model$FocusStyleOption = function (a) {
 	return {$: 1, a: a};
