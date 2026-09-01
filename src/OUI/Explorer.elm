@@ -4,6 +4,7 @@ module OUI.Explorer exposing
     , ColorSchemeType, setColorTheme, addColorTheme
     , selectColorScheme, getColorTheme, getSelectedColorTheme
     , withMarkdownChapter, withStaticChapter, withChapter, withDialog
+    , withThemeEditor
     , Page, Route, Shared, SharedMsg
     , setTheme, category, logEvent, logEffect, finalize, finalizeWithOptions
     , ColorTheme, ColorThemeType(..), addColorThemeMsg, deleteColorThemeMsg, updateColorThemeMsg, updateCurrentThemeMsg
@@ -31,6 +32,11 @@ module OUI.Explorer exposing
 # Chapters
 
 @docs withMarkdownChapter, withStaticChapter, withChapter, withDialog
+
+
+# Theme editors
+
+@docs withThemeEditor
 
 
 # Other
@@ -311,14 +317,33 @@ addBook b (Explorer expl) =
                                 \model ->
                                     { title = b.title
                                     , content =
-                                        b.chapters
-                                            |> List.reverse
-                                            |> List.map (\v -> v shared model)
-                                            |> Element.column
-                                                [ Element.spacing 20
-                                                , Element.width Element.fill
-                                                , Element.height Element.fill
-                                                ]
+                                        Element.row
+                                            [ Element.spacing 20
+                                            , Element.width Element.fill
+                                            , Element.height Element.fill
+                                            ]
+                                            [ b.chapters
+                                                |> List.reverse
+                                                |> List.map (\v -> v shared model)
+                                                |> Element.column
+                                                    [ Element.spacing 20
+                                                    , Element.width Element.fill
+                                                    , Element.height Element.fill
+                                                    ]
+                                            , case b.themeEditors of
+                                                [] ->
+                                                    Element.none
+
+                                                chapters ->
+                                                    chapters
+                                                        |> List.reverse
+                                                        |> List.map (\v -> v shared model)
+                                                        |> Element.column
+                                                            [ Element.spacing 20
+                                                            , Element.width (Element.px 500)
+                                                            , Element.height Element.fill
+                                                            ]
+                                            ]
                                     , dialog =
                                         case b.dialog of
                                             Nothing ->
@@ -352,6 +377,7 @@ type alias Book themeExt model msg =
     , update : Shared themeExt -> msg -> model -> ( model, Effect (SharedMsg themeExt) msg )
     , subscriptions : Shared themeExt -> model -> Sub msg
     , chapters : List (Shared themeExt -> model -> Element (BookMsg themeExt msg))
+    , themeEditors : List (Shared themeExt -> model -> Element (BookMsg themeExt msg))
     , dialog : Maybe (Shared themeExt -> model -> Maybe (OUI.Element.Modal.Modal (BookMsg themeExt msg)))
     }
 
@@ -433,6 +459,7 @@ book title =
     , update = \_ () () -> ( (), Effect.none )
     , subscriptions = \_ () -> Sub.none
     , chapters = []
+    , themeEditors = []
     , dialog = Nothing
     }
 
@@ -453,6 +480,7 @@ statefulBook title { init, update, subscriptions } =
     , update = update
     , subscriptions = subscriptions
     , chapters = []
+    , themeEditors = []
     , dialog = Nothing
     }
 
@@ -496,6 +524,15 @@ withChapter : (Shared themeExt -> model -> Element (BookMsg themeExt msg)) -> Bo
 withChapter body b =
     { b
         | chapters = body :: b.chapters
+    }
+
+
+{-| Add a theme editor chapter to a book
+-}
+withThemeEditor : (Shared themeExt -> model -> Element (BookMsg themeExt msg)) -> Book themeExt model msg -> Book themeExt model msg
+withThemeEditor body b =
+    { b
+        | themeEditors = body :: b.themeEditors
     }
 
 

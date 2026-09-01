@@ -1,15 +1,15 @@
 module OUI.Showcase.Buttons exposing (Model, Msg, book, commonButtonVariants, commonButtons)
 
-import Effect exposing (Effect)
+import Effect
 import Element exposing (Element)
 import OUI
 import OUI.Button as Button exposing (Button)
 import OUI.Divider as Divider
 import OUI.Explorer as Explorer
+import OUI.Explorer.ThemeEditor as ThemeEditor
 import OUI.Icon exposing (clear)
 import OUI.Material as Material
 import OUI.Material.Theme exposing (Theme)
-import OUI.Slider as Slider
 import OUI.Text as Text
 
 
@@ -21,7 +21,7 @@ book =
         , subscriptions = \_ _ -> Sub.none
         }
         |> Explorer.withStaticChapter commonButtons
-        |> Explorer.withChapter editorChapter
+        |> Explorer.withThemeEditor editorChapter
 
 
 type alias Model =
@@ -68,33 +68,6 @@ updateButtonCommonMsg fn value =
         |> Explorer.sharedMsg
 
 
-slider :
-    Theme themeExt
-    -> (Float -> Explorer.BookMsg themeExt msg)
-    -> String
-    -> ( Float, Float )
-    -> Float
-    -> Element (Explorer.BookMsg themeExt msg)
-slider theme toMsg title ( min, max ) value =
-    Element.row [ Element.spacing 30, Element.width Element.fill ]
-        [ Text.titleSmall title
-            |> Material.text theme
-            |> Element.el [ Element.width (Element.px 100) ]
-        , Slider.new value
-            |> Slider.withStep 1
-            |> Slider.withMinMax min max
-            |> Slider.onChange toMsg
-            |> Material.slider theme
-                [ Element.centerY
-                , Element.width <| Element.px 250
-                ]
-            |> Element.el [ Element.width <| Element.px 250 ]
-        , String.fromFloat value
-            |> Text.bodyLarge
-            |> Material.text theme
-        ]
-
-
 editorChapter : Explorer.Shared themeExt -> Model -> Element (Explorer.BookMsg themeExt Msg)
 editorChapter { theme } _ =
     let
@@ -109,7 +82,7 @@ editorChapter { theme } _ =
     Element.column [ Element.spacing 30 ]
         [ divider
         , Text.titleLarge "Button Layout" |> Material.text theme
-        , slider theme
+        , ThemeEditor.slider theme
             (updateButtonCommonMsg
                 (\value layout ->
                     { layout | containerHeight = round value }
@@ -118,7 +91,7 @@ editorChapter { theme } _ =
             "Container Height"
             ( 0, 200 )
             (toFloat buttonTheme.common.containerHeight)
-        , slider theme
+        , ThemeEditor.slider theme
             (updateButtonCommonMsg
                 (\value layout ->
                     { layout | containerRadius = round value }
