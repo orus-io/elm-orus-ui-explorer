@@ -15945,6 +15945,187 @@ var $author$project$OUI$Explorer$ThemeEditor$slider = F5(
 						$elm$core$String$fromFloat(value)))
 				]));
 	});
+var $author$project$OUI$Slider$withDiscreteStep = F2(
+	function (value, _v0) {
+		var slider = _v0;
+		return _Utils_update(
+			slider,
+			{
+				iH: $elm$core$Maybe$Just(
+					_Utils_Tuple2(value, true))
+			});
+	});
+var $author$project$OUI$Explorer$ThemeEditor$textSize = F4(
+	function (theme, toMsg, title, value) {
+		var sizeToString = function (size) {
+			switch (size) {
+				case 0:
+					return 'Small';
+				case 1:
+					return 'Medium';
+				default:
+					return 'Large';
+			}
+		};
+		var sizeToFloat = function (size) {
+			switch (size) {
+				case 0:
+					return 0;
+				case 1:
+					return 1;
+				default:
+					return 2;
+			}
+		};
+		var floatToSize = function (_float) {
+			return (_float <= 0.5) ? 0 : ((_float <= 1.5) ? 1 : 2);
+		};
+		return A2(
+			$mdgriffith$elm_ui$Element$row,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30),
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$width(
+							$mdgriffith$elm_ui$Element$px(100))
+						]),
+					A2(
+						$author$project$OUI$Material$text,
+						theme,
+						$author$project$OUI$Text$titleSmall(title))),
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$width(
+							$mdgriffith$elm_ui$Element$px(250))
+						]),
+					A3(
+						$author$project$OUI$Material$slider,
+						theme,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$centerY,
+								$mdgriffith$elm_ui$Element$width(
+								$mdgriffith$elm_ui$Element$px(250))
+							]),
+						A2(
+							$author$project$OUI$Slider$onChange,
+							A2($elm$core$Basics$composeR, floatToSize, toMsg),
+							A3(
+								$author$project$OUI$Slider$withMinMax,
+								0,
+								2,
+								A2(
+									$author$project$OUI$Slider$withDiscreteStep,
+									1,
+									$author$project$OUI$Slider$new(
+										sizeToFloat(value))))))),
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$bodyLarge(
+						sizeToString(value)))
+				]));
+	});
+var $author$project$OUI$Text$Display = 0;
+var $author$project$OUI$Text$Headline = 1;
+var $author$project$OUI$Text$Label = 3;
+var $author$project$OUI$Explorer$ThemeEditor$textType = F4(
+	function (theme, toMsg, title, value) {
+		var typeToString = function (type_) {
+			switch (type_) {
+				case 0:
+					return 'Display';
+				case 1:
+					return 'Headline';
+				case 2:
+					return 'Title';
+				case 3:
+					return 'Label';
+				default:
+					return 'Body';
+			}
+		};
+		var typeToFloat = function (type_) {
+			switch (type_) {
+				case 0:
+					return 0;
+				case 1:
+					return 1;
+				case 2:
+					return 2;
+				case 3:
+					return 3;
+				default:
+					return 4;
+			}
+		};
+		var floatToType = function (_float) {
+			return (_float <= 0.5) ? 0 : ((_float <= 1.5) ? 1 : ((_float <= 2.5) ? 2 : ((_float <= 3.5) ? 3 : 4)));
+		};
+		return A2(
+			$mdgriffith$elm_ui$Element$row,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$spacing(30),
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$width(
+							$mdgriffith$elm_ui$Element$px(100))
+						]),
+					A2(
+						$author$project$OUI$Material$text,
+						theme,
+						$author$project$OUI$Text$titleSmall(title))),
+					A2(
+					$mdgriffith$elm_ui$Element$el,
+					_List_fromArray(
+						[
+							$mdgriffith$elm_ui$Element$width(
+							$mdgriffith$elm_ui$Element$px(250))
+						]),
+					A3(
+						$author$project$OUI$Material$slider,
+						theme,
+						_List_fromArray(
+							[
+								$mdgriffith$elm_ui$Element$centerY,
+								$mdgriffith$elm_ui$Element$width(
+								$mdgriffith$elm_ui$Element$px(250))
+							]),
+						A2(
+							$author$project$OUI$Slider$onChange,
+							A2($elm$core$Basics$composeR, floatToType, toMsg),
+							A3(
+								$author$project$OUI$Slider$withMinMax,
+								0,
+								4,
+								A2(
+									$author$project$OUI$Slider$withDiscreteStep,
+									1,
+									$author$project$OUI$Slider$new(
+										typeToFloat(value))))))),
+					A2(
+					$author$project$OUI$Material$text,
+					theme,
+					$author$project$OUI$Text$bodyLarge(
+						typeToString(value)))
+				]));
+	});
 var $author$project$OUI$Explorer$sharedMsg = $author$project$OUI$Explorer$SharedMsg;
 var $author$project$OUI$Material$Theme$Theme = $elm$core$Basics$identity;
 var $author$project$OUI$Material$Theme$withButton = F2(
@@ -16031,6 +16212,105 @@ var $author$project$OUI$Showcase$Buttons$editorChapter = F2(
 					'Container Radius',
 					_Utils_Tuple2(0, (buttonTheme.e0.ak / 2) | 0),
 					buttonTheme.e0.cX),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+						F2(
+							function (value, layout) {
+								return _Utils_update(
+									layout,
+									{
+										s: $elm$core$Basics$round(value)
+									});
+							})),
+					'Icon Size',
+					_Utils_Tuple2(0, buttonTheme.e0.ak),
+					buttonTheme.e0.s),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+						F2(
+							function (value, layout) {
+								return _Utils_update(
+									layout,
+									{
+										da: $elm$core$Basics$round(value)
+									});
+							})),
+					'Left/right Padding',
+					_Utils_Tuple2(0, buttonTheme.e0.ak),
+					buttonTheme.e0.da),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+						F2(
+							function (value, layout) {
+								return _Utils_update(
+									layout,
+									{
+										c9: $elm$core$Basics$round(value)
+									});
+							})),
+					'Left pad. w. Icon',
+					_Utils_Tuple2(0, buttonTheme.e0.ak),
+					buttonTheme.e0.c9),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+						F2(
+							function (value, layout) {
+								return _Utils_update(
+									layout,
+									{
+										dr: $elm$core$Basics$round(value)
+									});
+							})),
+					'Right pad. w. Icon',
+					_Utils_Tuple2(0, buttonTheme.e0.ak),
+					buttonTheme.e0.dr),
+					A5(
+					$author$project$OUI$Explorer$ThemeEditor$slider,
+					theme,
+					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+						F2(
+							function (value, layout) {
+								return _Utils_update(
+									layout,
+									{
+										dk: $elm$core$Basics$round(value)
+									});
+							})),
+					'Pad. bw. Elements',
+					_Utils_Tuple2(0, buttonTheme.e0.ak),
+					buttonTheme.e0.dk),
+					A4(
+					$author$project$OUI$Explorer$ThemeEditor$textType,
+					theme,
+					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+						F2(
+							function (type_, layout) {
+								return _Utils_update(
+									layout,
+									{gc: type_});
+							})),
+					'Text Type',
+					buttonTheme.e0.gc),
+					A4(
+					$author$project$OUI$Explorer$ThemeEditor$textSize,
+					theme,
+					$author$project$OUI$Showcase$Buttons$updateButtonCommonMsg(
+						F2(
+							function (size, layout) {
+								return _Utils_update(
+									layout,
+									{gb: size});
+							})),
+					'Text Size',
+					buttonTheme.e0.gb),
 					divider
 				]));
 	});
@@ -16855,7 +17135,6 @@ var $author$project$OUI$Dialog$getWidth = function (_v0) {
 	var dialog = _v0;
 	return dialog.eK;
 };
-var $author$project$OUI$Text$Headline = 1;
 var $author$project$OUI$Text$headlineSmall = A2($author$project$OUI$Text$textTypeSize, 1, 0);
 var $mdgriffith$elm_ui$Internal$Model$Max = F2(
 	function (a, b) {
@@ -17631,7 +17910,6 @@ var $author$project$OUI$Dialog$Small = 0;
 var $author$project$OUI$Dialog$new = function (headlineText) {
 	return {dG: $elm$core$Maybe$Nothing, dR: $elm$core$Maybe$Nothing, fe: headlineText, c4: $elm$core$Maybe$Nothing, eD: $elm$core$Maybe$Nothing, eK: 0};
 };
-var $author$project$OUI$Text$Label = 3;
 var $author$project$OUI$Menu$new = function (itemToText) {
 	return {
 		hP: function (_v0) {
@@ -25058,16 +25336,6 @@ var $author$project$OUI$Showcase$Slider$fmtFloat = function (value) {
 		$elm$core$String$fromInt(
 			$elm$core$Basics$round(value * 1000)));
 };
-var $author$project$OUI$Slider$withDiscreteStep = F2(
-	function (value, _v0) {
-		var slider = _v0;
-		return _Utils_update(
-			slider,
-			{
-				iH: $elm$core$Maybe$Just(
-					_Utils_Tuple2(value, true))
-			});
-	});
 var $author$project$OUI$Showcase$Slider$slider = F2(
 	function (_v0, _v1) {
 		var theme = _v0.i8;
@@ -27013,7 +27281,6 @@ var $author$project$OUI$Showcase$TextFields$book = A2(
 				}),
 			a3: $author$project$OUI$Showcase$TextFields$update
 		}));
-var $author$project$OUI$Text$Display = 0;
 var $author$project$OUI$Text$displayLarge = A2($author$project$OUI$Text$textTypeSize, 0, 2);
 var $author$project$OUI$Text$displayMedium = A2($author$project$OUI$Text$textTypeSize, 0, 1);
 var $author$project$OUI$Text$displaySmall = A2($author$project$OUI$Text$textTypeSize, 0, 0);

@@ -100,6 +100,67 @@ editorChapter { theme } _ =
             "Container Radius"
             ( 0, buttonTheme.common.containerHeight // 2 |> toFloat )
             (toFloat buttonTheme.common.containerRadius)
+        , ThemeEditor.slider theme
+            (updateButtonCommonMsg
+                (\value layout ->
+                    { layout | iconSize = round value }
+                )
+            )
+            "Icon Size"
+            ( 0, buttonTheme.common.containerHeight |> toFloat )
+            (toFloat buttonTheme.common.iconSize)
+        , ThemeEditor.slider theme
+            (updateButtonCommonMsg
+                (\value layout ->
+                    { layout | leftRightPadding = round value }
+                )
+            )
+            "Left/right Padding"
+            ( 0, buttonTheme.common.containerHeight |> toFloat )
+            (toFloat buttonTheme.common.leftRightPadding)
+        , ThemeEditor.slider theme
+            (updateButtonCommonMsg
+                (\value layout ->
+                    { layout | leftPaddingWithIcon = round value }
+                )
+            )
+            "Left pad. w. Icon"
+            ( 0, buttonTheme.common.containerHeight |> toFloat )
+            (toFloat buttonTheme.common.leftPaddingWithIcon)
+        , ThemeEditor.slider theme
+            (updateButtonCommonMsg
+                (\value layout ->
+                    { layout | rightPaddingWithIcon = round value }
+                )
+            )
+            "Right pad. w. Icon"
+            ( 0, buttonTheme.common.containerHeight |> toFloat )
+            (toFloat buttonTheme.common.rightPaddingWithIcon)
+        , ThemeEditor.slider theme
+            (updateButtonCommonMsg
+                (\value layout ->
+                    { layout | paddingBetweenElements = round value }
+                )
+            )
+            "Pad. bw. Elements"
+            ( 0, buttonTheme.common.containerHeight |> toFloat )
+            (toFloat buttonTheme.common.paddingBetweenElements)
+        , ThemeEditor.textType theme
+            (updateButtonCommonMsg
+                (\type_ layout ->
+                    { layout | textType = type_ }
+                )
+            )
+            "Text Type"
+            buttonTheme.common.textType
+        , ThemeEditor.textSize theme
+            (updateButtonCommonMsg
+                (\size layout ->
+                    { layout | textSize = size }
+                )
+            )
+            "Text Size"
+            buttonTheme.common.textSize
         , divider
         ]
 
